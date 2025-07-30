@@ -1,4 +1,4 @@
-let DEBUG = false;
+let DEBUG = true;
 
 let SCREEN_WIDTH = 384;
 let SCREEN_HEIGHT = 556;
@@ -6,13 +6,13 @@ let SCREEN_HEIGHT = 556;
 let GRAVITY = 10;
 let EPSILON = 0.1;
 
-function disableScript(script){
-  script.sleeping = true;
-  script.physics = "none";
+function disableScript(script) {
+    script.sleeping = true;
+    script.physics = "none";
 
 }
 
-function enableScript(script){
-  script.sleeping = false;
-  script.physics = "static";
+function enableScript(script) {
+    script.sleeping = false;
+    script.physics = "static";
 }
