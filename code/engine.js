@@ -1,5 +1,6 @@
 //Ball
 let ball;
+
 function createBall(x, y) {
     ball = new Sprite();
     ball.x = x;
@@ -8,22 +9,19 @@ function createBall(x, y) {
     ball.debug = DEBUG;
 }
 
+function spawnBonusBall(){
+    createBall(BONUS_SPAWN_BALL_X, BONUS_SPAWN_BALL_Y);
+}
 
-let leftFlipper, rightFlipper;
+
 //Flippers
+let leftFlipper, rightFlipper;
 function controlFlipper(flipper, key, minRotation, maxRotation, speed, epsilon) {
     if (kb.pressing(key)) {
         if (flipper.rotation > maxRotation + epsilon) {
             flipper.rotationSpeed = speed;
         } else {
             flipper.rotation = maxRotation;
-            flipper.rotationSpeed = 0;
-        }
-    } else {
-        if (flipper.rotation < minRotation - epsilon) {
-            flipper.rotationSpeed = -speed;
-        } else {
-            flipper.rotation = minRotation;
             flipper.rotationSpeed = 0;
         }
     }
@@ -48,49 +46,41 @@ function createFlippers(leftFlipperRotationPointX, leftFlipperRotationPointY, ri
     rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
     rightFlipper.debug = DEBUG;
     rightFlipper.offset.x = -14;
-
-    // To prevent the flipper of doing full 360s
-    leftFlipper.body.setFixedRotation(true);
-    rightFlipper.body.setFixedRotation(true);
-
 }
 
-function controlLeftFlipper(){
-    controlFlipper(
-        leftFlipper,
-        'a',
-        LEFT_FLIPPER_MIN_ROTATION,
-        LEFT_FLIPPER_MAX_ROTATION,
-        LEFT_FLIPPER_ROTATION_SPEED,
-        EPSILON
-    );
-}
+function controlLeftFlipper() {
+    if (kb.pressing(LEFT_FLIPPER_KEY)) {
+        if (leftFlipper.rotation > LEFT_FLIPPER_MAX_ROTATION + EPSILON) {
+            leftFlipper.rotationSpeed = LEFT_FLIPPER_ROTATION_SPEED;
+        } else {
+            leftFlipper.rotation = LEFT_FLIPPER_MAX_ROTATION;
+            leftFlipper.rotationSpeed = 0;
 
-function controlRightFlipper(){
-    controlFlipper(
-        rightFlipper,
-        'l',
-        RIGHT_FLIPPER_MIN_ROTATION,
-        RIGHT_FLIPPER_MAX_ROTATION,
-        RIGHT_FLIPPER_ROTATION_SPEED,
-        EPSILON
-    );
-}
-
-function controlFlipper(flipper, key, minRotation, maxRotation, speed, epsilon) {
-  if (kb.pressing(key)) {
-    if (flipper.rotation > maxRotation + epsilon) {
-      flipper.rotationSpeed = speed;
+        }
     } else {
-      flipper.rotation = maxRotation;
-      flipper.rotationSpeed = 0;
+        if (leftFlipper.rotation < LEFT_FLIPPER_MIN_ROTATION) {
+            leftFlipper.rotationSpeed = - LEFT_FLIPPER_ROTATION_SPEED;
+        } else {
+            leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
+            leftFlipper.rotationSpeed = 0;
+        }
     }
-  } else {
-    if (flipper.rotation < minRotation - epsilon) {
-      flipper.rotationSpeed = -speed;
+}
+
+function controlRightFlipper() {
+    if (kb.pressing(RIGHT_FLIPPER_KEY)) {
+        if (rightFlipper.rotation < RIGHT_FLIPPER_MAX_ROTATION - EPSILON) {
+            rightFlipper.rotationSpeed = RIGHT_FLIPPER_ROTATION_SPEED;
+        } else {
+            rightFlipper.rotation = RIGHT_FLIPPER_MAX_ROTATION;
+            rightFlipper.rotationSpeed = 0;
+        }
     } else {
-      flipper.rotation = minRotation;
-      flipper.rotationSpeed = 0;
+        if (rightFlipper.rotation > RIGHT_FLIPPER_MIN_ROTATION) {
+            rightFlipper.rotationSpeed = -RIGHT_FLIPPER_ROTATION_SPEED;
+        } else {
+            rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
+            rightFlipper.rotationSpeed = 0;
+        }
     }
-  }
 }
