@@ -47,36 +47,40 @@ function createFlippers() {
 function draw() {
   background(bg);
 
-  if (kb.pressing('l')) {
-    if (rightFlipper.rotation < RIGHT_FLIPPER_MAX_ROTATION - EPSILON) {
-      rightFlipper.rotationSpeed = RIGHT_FLIPPER_ROTATION_SPEED;
-    } else {
-      rightFlipper.rotation = RIGHT_FLIPPER_MAX_ROTATION;
-      rightFlipper.rotationSpeed = 0;
-    }
-  } else {
-    if (rightFlipper.rotation > RIGHT_FLIPPER_MIN_ROTATION) {
-      rightFlipper.rotationSpeed = -RIGHT_FLIPPER_ROTATION_SPEED;
-    } else {
-      rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
-      rightFlipper.rotationSpeed = 0;
-    }
-  }
+  controlFlipper(
+    leftFlipper,
+    'a',
+    LEFT_FLIPPER_MIN_ROTATION,
+    LEFT_FLIPPER_MAX_ROTATION,
+    LEFT_FLIPPER_ROTATION_SPEED,
+    EPSILON
+  );
+
+  controlFlipper(
+    rightFlipper,
+    'l',
+    RIGHT_FLIPPER_MIN_ROTATION,
+    RIGHT_FLIPPER_MAX_ROTATION,
+    RIGHT_FLIPPER_ROTATION_SPEED,
+    EPSILON
+  );
+}
 
 
-  if (kb.pressing('a')) {
-    if (leftFlipper.rotation > LEFT_FLIPPER_MAX_ROTATION + EPSILON) {
-      leftFlipper.rotationSpeed = LEFT_FLIPPER_ROTATION_SPEED;
-    }else {
-      leftFlipper.rotation = LEFT_FLIPPER_MAX_ROTATION;
-      leftFlipper.rotationSpeed = 0;
+function controlFlipper(flipper, key, minRotation, maxRotation, speed, epsilon) {
+  if (kb.pressing(key)) {
+    if (flipper.rotation > maxRotation + epsilon) {
+      flipper.rotationSpeed = speed;
+    } else {
+      flipper.rotation = maxRotation;
+      flipper.rotationSpeed = 0;
     }
   } else {
-    if (leftFlipper.rotation < LEFT_FLIPPER_MIN_ROTATION) {
-      leftFlipper.rotationSpeed = - LEFT_FLIPPER_ROTATION_SPEED;
-    }else {
-      leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
-      leftFlipper.rotationSpeed = 0;
+    if (flipper.rotation < minRotation - epsilon) {
+      flipper.rotationSpeed = -speed;
+    } else {
+      flipper.rotation = minRotation;
+      flipper.rotationSpeed = 0;
     }
   }
 }
