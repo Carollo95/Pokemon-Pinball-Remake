@@ -3,7 +3,7 @@ let leftFlipper, rightFlipper;
 
 let bg;
 
-  
+
 
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -26,15 +26,15 @@ function createBall() {
   ball.debug = DEBUG;
 }
 
-function createFlippers(){
+function createFlippers() {
 
   leftFlipper = new Sprite(LEFT_FLIPPER_ROTATION_POINT_X, LEFT_FLIPPER_ROTATION_POINT_Y, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
-  leftFlipper.rotation = 35;
+  leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
   leftFlipper.debug = DEBUG;
   leftFlipper.offset.x = 14;
 
   rightFlipper = new Sprite(RIGHT_FLIPPER_ROTATION_POINT_X, RIGHT_FLIPPER_ROTATION_POINT_Y, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
-  rightFlipper.rotation = -35
+  rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
   rightFlipper.debug = DEBUG;
   rightFlipper.offset.x = -14;
 
@@ -47,17 +47,36 @@ function createFlippers(){
 function draw() {
   background(bg);
 
- 
   if (kb.pressing('l')) {
-    if (rightFlipper.rotation < 15) rightFlipper.rotation += 15;
+    if (rightFlipper.rotation < RIGHT_FLIPPER_MAX_ROTATION - EPSILON) {
+      rightFlipper.rotationSpeed = RIGHT_FLIPPER_ROTATION_SPEED;
+    } else {
+      rightFlipper.rotation = RIGHT_FLIPPER_MAX_ROTATION;
+      rightFlipper.rotationSpeed = 0;
+    }
   } else {
-    if (rightFlipper.rotation > -35) rightFlipper.rotation -= 15;
+    if (rightFlipper.rotation > RIGHT_FLIPPER_MIN_ROTATION) {
+      rightFlipper.rotationSpeed = -RIGHT_FLIPPER_ROTATION_SPEED;
+    } else {
+      rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
+      rightFlipper.rotationSpeed = 0;
+    }
   }
 
 
   if (kb.pressing('a')) {
-    if (leftFlipper.rotation > -15) leftFlipper.rotation -= 15;
+    if (leftFlipper.rotation > LEFT_FLIPPER_MAX_ROTATION + EPSILON) {
+      leftFlipper.rotationSpeed = LEFT_FLIPPER_ROTATION_SPEED;
+    }else {
+      leftFlipper.rotation = LEFT_FLIPPER_MAX_ROTATION;
+      leftFlipper.rotationSpeed = 0;
+    }
   } else {
-    if (leftFlipper.rotation < 35) leftFlipper.rotation += 15;
+    if (leftFlipper.rotation < LEFT_FLIPPER_MIN_ROTATION) {
+      leftFlipper.rotationSpeed = - LEFT_FLIPPER_ROTATION_SPEED;
+    }else {
+      leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
+      leftFlipper.rotationSpeed = 0;
+    }
   }
 }
