@@ -1,22 +1,38 @@
+let HAUNTER1_SPAWN_X = 65;
+let HAUNTER1_SPAWN_Y = 235;
+
+let HAUNTER2_SPAWN_X = 233;
+let HAUNTER2_SPAWN_Y = 167;
+
 let gate;
 
-let gastly, gastly2, gastly3;
+let gastly1, gastly2, gastly3;
+let haunter1, haunter2;
+
+let extraGastlyLives = 7;
+let extraHaunterLives = 10;
 
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
 
   bg = loadImage(BONUS_GHOST_BACKGROUND);
 
-  createScenario();
-  
-  gastly = new Gastly(70, 140);
-  gastly2 = new Gastly(200, 203);
-  gastly3 = new Gastly(159, 280);
-  createBonusFlippers()
-  spawnBonusBall();
-
   world.gravity.y = GRAVITY;
 
+  createScenario();
+
+  gastly1 = new Gastly(70, 140);
+  gastly2 = new Gastly(200, 203);
+  gastly3 = new Gastly(159, 280);
+
+  //Disabled until
+  haunter1 = new Gastly(HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
+  haunter1.disableScript()
+  haunter2 = new Gastly(HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
+  haunter2.disableScript()
+
+  createBonusFlippers()
+  spawnBonusBall();
 }
 
 function createScenario() {
@@ -38,16 +54,15 @@ function createScenario() {
   scenario.debug = DEBUG;
   scenario.visible = DEBUG;
 
-  grave1 = createGrave(88, 225);
-  grave2 = createGrave(152, 176);
-  grave3 = createGrave(264, 160);
-  grave4 = createGrave(247, 240);
+  /*   grave1 = createGrave(88, 225);
+    grave2 = createGrave(152, 176);
+    grave3 = createGrave(264, 160);
+    grave4 = createGrave(247, 240); */
 
   createGate();
 }
 
-
-function createGate(){
+function createGate() {
   gate = new Sprite(337, 254, 10, 39, "static");
   gate.debug = DEBUG;
   gate.visible = DEBUG;
@@ -70,6 +85,7 @@ function createGrave(x, y) {
   return grave;
 }
 
+
 function draw() {
   background(bg);
 
@@ -78,8 +94,36 @@ function draw() {
 
   controlLeftFlipper();
   controlRightFlipper();
+  
+  if (extraGastlyLives > 0 || !gastly1.isDisabled() || !gastly2.isDisabled() || !gastly3.isDisabled()) {
+    gastly1 = updateGastly(gastly1);
+    gastly2 = updateGastly(gastly2);
+    gastly3 = updateGastly(gastly3);
+  } else {
+    haunter1 = updateHaunter(haunter1);
+    haunter2 = updateHaunter(haunter2);
+  }
 
+}
+
+function updateGastly(gastly) {
   gastly.update();
-  gastly2.update();
-  gastly3.update();
+  
+  if (extraGastlyLives > 0 && gastly.readyToRespawn()) {
+    gastly = new Gastly(gastly.start_x, gastly.start_y);
+    extraGastlyLives -= 1;
+  }
+
+  return gastly;
+}
+
+function updateHaunter(gastly) {
+  gastly.update();
+  
+  if (extraHaunterLives > 0 && gastly.readyToRespawn()) {
+    gastly = new Gastly(gastly.start_x, gastly.start_y);
+    extraHaunterLives -= 1;
+  }
+
+  return gastly;
 }
