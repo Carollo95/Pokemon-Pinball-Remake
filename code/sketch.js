@@ -1,11 +1,17 @@
 let gate;
 
+let gastly, gastly2, gastly3;
+
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
 
   bg = loadImage(BONUS_GHOST_BACKGROUND);
 
   createScenario();
+  
+  gastly = new Gastly(70, 140);
+  gastly2 = new Gastly(200, 203);
+  gastly3 = new Gastly(159, 280);
   createBonusFlippers()
   spawnBonusBall();
 
@@ -40,6 +46,7 @@ function createScenario() {
   createGate();
 }
 
+
 function createGate(){
   gate = new Sprite(337, 254, 10, 39, "static");
   gate.debug = DEBUG;
@@ -71,4 +78,8 @@ function draw() {
 
   controlLeftFlipper();
   controlRightFlipper();
+
+  gastly.update();
+  gastly2.update();
+  gastly3.update();
 }
