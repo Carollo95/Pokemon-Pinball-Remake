@@ -15,7 +15,7 @@ let gate;
 let gastly1, gastly2, gastly3;
 let haunter1, haunter2;
 
-let extraGastlyLives = 7;
+let extraGastlyLives = 0;//7;
 let extraHaunterLives = 10;
 
 function setup() {
@@ -38,9 +38,9 @@ function createGhosts() {
   gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
 
   //Disabled until its time comes
-  haunter1 = new Gastly(HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
+  haunter1 = new Haunter(HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
   haunter1.disableScript();
-  haunter2 = new Gastly(HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
+  haunter2 = new Haunter(HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
   haunter2.disableScript();
 }
 
@@ -131,7 +131,7 @@ function updateHaunter(gastly) {
   gastly.update();
 
   if (extraHaunterLives > 0 && gastly.readyToRespawn()) {
-    gastly = new Gastly(gastly.start_x, gastly.start_y);
+    gastly = new Haunter(gastly.start_x, gastly.start_y);
     extraHaunterLives -= 1;
   }
 
