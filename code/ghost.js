@@ -29,7 +29,6 @@ class Ghost {
         }
     }
 
-
     update() {
         if (!this.isDisabled()) {
             this.checkCollision();
@@ -61,6 +60,5 @@ class Ghost {
     hasPassedDeathCooldown() {
         return (millis() - this.timeOfDissapearance) > this.thresholdMills;
     }
-
 
 }

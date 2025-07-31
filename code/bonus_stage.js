@@ -1,6 +1,8 @@
 let HEIGHT_OF_BALL_LOSS = SCREEN_HEIGHT;
 let WIDTH_THRESHOLD_TO_CLOSE_GATE = 310;
 
+let gate;
+
 function createBonusNewBallIfBallLoss() {
     if (checkBonusBallLoss()) {
         spawnBonusBall();

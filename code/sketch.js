@@ -1,8 +1,8 @@
 let GASTLY1_SPAWN_X = 70;
 let GASTLY1_SPAWN_Y = 140;
 let GASTLY2_SPAWN_X = 200;
-let GASTLY2_SPAWN_Y= 203;
-let GASTLY3_SPAWN_X =159;
+let GASTLY2_SPAWN_Y = 203;
+let GASTLY3_SPAWN_X = 159;
 let GASTLY3_SPAWN_Y = 280;
 
 let HAUNTER1_SPAWN_X = 65;
@@ -10,13 +10,18 @@ let HAUNTER1_SPAWN_Y = 235;
 let HAUNTER2_SPAWN_X = 233;
 let HAUNTER2_SPAWN_Y = 167;
 
-let gate;
+let GENGAR_SPAWN_X = SCREEN_WIDTH / 2;
+let GENGAR_SPAWN_Y = 120;
+
 
 let gastly1, gastly2, gastly3;
 let haunter1, haunter2;
+let gengar;
 
 let extraGastlyLives = 0;//7;
-let extraHaunterLives = 10;
+let extraHaunterLives = 2;//10;
+
+let level_completed=false;
 
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -42,6 +47,10 @@ function createGhosts() {
   haunter1.disableScript();
   haunter2 = new Haunter(HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
   haunter2.disableScript();
+
+  //Disabled until its time comes
+  gengar = new Gastly(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
+  gengar.disableScript();
 }
 
 function createScenario() {
@@ -64,10 +73,10 @@ function createScenario() {
   scenario.visible = DEBUG;
 
   //TODO reenable after testing
-/*     grave1 = createGrave(88, 225);
-    grave2 = createGrave(152, 176);
-    grave3 = createGrave(264, 160);
-    grave4 = createGrave(247, 240); */
+  /*     grave1 = createGrave(88, 225);
+      grave2 = createGrave(152, 176);
+      grave3 = createGrave(264, 160);
+      grave4 = createGrave(247, 240); */
 
   createGate();
 }
@@ -95,7 +104,6 @@ function createGrave(x, y) {
   return grave;
 }
 
-
 function draw() {
   background(bg);
 
@@ -109,9 +117,11 @@ function draw() {
     gastly1 = updateGastly(gastly1);
     gastly2 = updateGastly(gastly2);
     gastly3 = updateGastly(gastly3);
-  } else {
+  } else if (extraHaunterLives > 0 || !haunter1.isDisabled() || !haunter2.isDisabled()) {
     haunter1 = updateHaunter(haunter1);
     haunter2 = updateHaunter(haunter2);
+  } else if (!level_completed || !gengar.isDisabled()) {
+    gengar = updateGengar();
   }
 
 }
@@ -127,13 +137,24 @@ function updateGastly(gastly) {
   return gastly;
 }
 
-function updateHaunter(gastly) {
-  gastly.update();
+function updateHaunter(haunter) {
+  haunter.update();
 
-  if (extraHaunterLives > 0 && gastly.readyToRespawn()) {
-    gastly = new Haunter(gastly.start_x, gastly.start_y);
+  if (extraHaunterLives > 0 && haunter.readyToRespawn()) {
+    haunter = new Haunter(haunter.start_x, haunter.start_y);
     extraHaunterLives -= 1;
   }
 
-  return gastly;
+  return haunter;
+}
+
+function updateGengar() {
+  gengar.update();
+
+  if (gengar.readyToRespawn()) {
+    gengar = new Gengar(gengar.start_x, gengar.start_y);
+    level_completed = true;
+  }
+
+  return gengar;
 }
