@@ -1,6 +1,12 @@
+let GASTLY1_SPAWN_X = 70;
+let GASTLY1_SPAWN_Y = 140;
+let GASTLY2_SPAWN_X = 200;
+let GASTLY2_SPAWN_Y= 203;
+let GASTLY3_SPAWN_X =159;
+let GASTLY3_SPAWN_Y = 280;
+
 let HAUNTER1_SPAWN_X = 65;
 let HAUNTER1_SPAWN_Y = 235;
-
 let HAUNTER2_SPAWN_X = 233;
 let HAUNTER2_SPAWN_Y = 167;
 
@@ -20,19 +26,22 @@ function setup() {
   world.gravity.y = GRAVITY;
 
   createScenario();
-
-  gastly1 = new Gastly(70, 140);
-  gastly2 = new Gastly(200, 203);
-  gastly3 = new Gastly(159, 280);
-
-  //Disabled until
-  haunter1 = new Gastly(HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
-  haunter1.disableScript()
-  haunter2 = new Gastly(HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
-  haunter2.disableScript()
+  createGhosts();
 
   createBonusFlippers()
   spawnBonusBall();
+}
+
+function createGhosts() {
+  gastly1 = new Gastly(GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
+  gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
+  gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
+
+  //Disabled until its time comes
+  haunter1 = new Gastly(HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
+  haunter1.disableScript();
+  haunter2 = new Gastly(HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
+  haunter2.disableScript();
 }
 
 function createScenario() {
@@ -54,7 +63,8 @@ function createScenario() {
   scenario.debug = DEBUG;
   scenario.visible = DEBUG;
 
-  /*   grave1 = createGrave(88, 225);
+  //TODO reenable after testing
+/*     grave1 = createGrave(88, 225);
     grave2 = createGrave(152, 176);
     grave3 = createGrave(264, 160);
     grave4 = createGrave(247, 240); */
@@ -94,7 +104,7 @@ function draw() {
 
   controlLeftFlipper();
   controlRightFlipper();
-  
+
   if (extraGastlyLives > 0 || !gastly1.isDisabled() || !gastly2.isDisabled() || !gastly3.isDisabled()) {
     gastly1 = updateGastly(gastly1);
     gastly2 = updateGastly(gastly2);
@@ -108,7 +118,7 @@ function draw() {
 
 function updateGastly(gastly) {
   gastly.update();
-  
+
   if (extraGastlyLives > 0 && gastly.readyToRespawn()) {
     gastly = new Gastly(gastly.start_x, gastly.start_y);
     extraGastlyLives -= 1;
@@ -119,7 +129,7 @@ function updateGastly(gastly) {
 
 function updateHaunter(gastly) {
   gastly.update();
-  
+
   if (extraHaunterLives > 0 && gastly.readyToRespawn()) {
     gastly = new Gastly(gastly.start_x, gastly.start_y);
     extraHaunterLives -= 1;
