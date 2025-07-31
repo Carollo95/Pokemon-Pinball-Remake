@@ -14,12 +14,12 @@ function checkBonusBallLoss() {
 
 function openBonusGate() {
     disableScript(gate);
-    //TODO change background
+    bg = loadImage(BONUS_GHOST_BACKGROUND_OPEN);
 }
 
 function closeBonusGate() {
     enableScript(gate);
-    //TODO change background
+    bg = loadImage(BONUS_GHOST_BACKGROUND);
 }
 
 function closeBonusGateIfBallInsideBoard() {

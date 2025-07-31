@@ -1,4 +1,3 @@
-let bg;
 let gate;
 
 function setup() {
