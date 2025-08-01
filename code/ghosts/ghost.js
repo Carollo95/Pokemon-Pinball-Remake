@@ -39,11 +39,11 @@ class Ghost {
 
     checkCollision() {
         if (this.sprite.collide(ball)) {
-            this.disableSprite();
+            this.disableScript();
         }
     }
 
-    disableSprite() {
+    disableScript() {
         disableSprite(this.sprite);
         this.sprite.visible = false;
         this.timeOfLastStep = millis();

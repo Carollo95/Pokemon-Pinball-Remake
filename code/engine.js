@@ -8,13 +8,13 @@ let EPSILON = 0.1;
 
 let bg;
 
-function disableScript(script) {
-    script.sleeping = true;
-    script.physics = "none";
+function disableSprite(sprite) {
+    sprite.sleeping = true;
+    sprite.physics = "none";
 
 }
 
-function enableScript(script) {
-    script.sleeping = false;
-    script.physics = "static";
+function enableSprite(sprite) {
+    sprite.sleeping = false;
+    sprite.physics = "static";
 }

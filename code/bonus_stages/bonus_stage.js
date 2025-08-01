@@ -15,12 +15,12 @@ function checkBonusBallLoss() {
 }
 
 function openBonusGate() {
-    disableScript(gate);
+    disableSprite(gate);
     bg = loadImage(BONUS_GHOST_BACKGROUND_OPEN);
 }
 
 function closeBonusGate() {
-    enableScript(gate);
+    enableSprite(gate);
     bg = loadImage(BONUS_GHOST_BACKGROUND);
 }
 

@@ -8,7 +8,7 @@ const GENGAR_MAX_DISTANCE = 100; //Number of pixels it can advance
 
 class Gengar {
     hitPoints;
-    keepMovingDown;
+    keepMovinDown;
     sprite;
     start_y;
     step_start_y;
@@ -17,7 +17,7 @@ class Gengar {
     constructor(x, y) {
         this.start_y = y;
         this.step_start_y = y;
-        this.keepMovingDown = true;
+        this.keepMovinDown = true;
 
         this.sprite = new Sprite(x, y, GENGAR_HITBOX_WIDTH, GENGAR_HITBOX_HEIGHT, "static");
         this.sprite.debug = DEBUG;
@@ -36,70 +36,42 @@ class Gengar {
             this.hitPoints -= 1;
             if (this.hitPoints < 0) {
                 this.disableScript(); //TODO temporary
-            } else {
-                disableSprite(this.sprite);
-                this.keepMovingDown = false;
             }
         }
     }
 
     move() {
-
         if (this.hasPassedStepCooldown()) {
-            this.takeStepForwards();
-            this.takeStepBackwards();
+            this.takeStep();
         }
     }
 
-    isAtMaxDistanceFromStart() {
-        return this.sprite.pos.y - this.start_y >= GENGAR_MAX_DISTANCE;
-    }
 
-    isAtMinDistanceFromStart() {
-        return this.sprite.pos.y <= GENGAR_SPAWN_Y;
+    isAtMaxDistanceFromStart(){
+        return this.sprite.pos.y - this.start_y >= GENGAR_MAX_DISTANCE;
     }
 
     hasPassedStepCooldown() {
         return (millis() - this.timeOfLastStep) > GENGAR_STEP_COOLDOWN_MILLS;
     }
 
-    takeStepBackwards() {
-        if (!this.keepMovingDown) {
-            this.sprite.pos.y -= GENGAR_SPEED;
-
-            if (this.backstepCompleted()) {
-                this.step_start_y = this.sprite.pos.y;
-                this.timeOfLastStep = millis();
-                this.keepMovingDown = true;
-                enableSprite(this.sprite);
-            }
-
-            if (this.isAtMinDistanceFromStart()) {
-                this.keepMovingDown = true;
-            }
-        }
-    }
-
-    takeStepForwards() {
-        if (this.keepMovingDown) {
+    takeStep() {
+        if (this.keepMovinDown) {
             this.sprite.pos.y += GENGAR_SPEED;
 
-            if (this.stepCompleted()) {
+            if(this.stepCompleted()){
                 this.step_start_y = this.sprite.pos.y;
                 this.timeOfLastStep = millis();
             }
 
             if (this.isAtMaxDistanceFromStart()) {
-                this.keepMovingDown = false;
+                this.keepMovinDown = false;
             }
         }
     }
 
-    stepCompleted() {
+    stepCompleted(){
         return this.sprite.pos.y > (this.step_start_y + GENGAR_STEP_LENGTH);
-    }
-    backstepCompleted() {
-        return this.sprite.pos.y < (this.step_start_y - GENGAR_STEP_LENGTH);
     }
 
     disableScript() {
@@ -112,5 +84,13 @@ class Gengar {
         return !this.sprite.visible;
     }
 
+    //TODO remove
+    readyToRespawn() {
+        return this.isDisabled() && this.hasPassedDeathCooldown();
+    }
 
+    //TODO remove
+    hasPassedDeathCooldown() {
+        return (millis() - this.timeOfLastStep) > this.thresholdMills;
+    }
 }
