@@ -1,30 +1,30 @@
 class Ghost {
-    keepMovinRight;
+    keepMovinDown;
     sprite;
     start_x;
     start_y;
-    timeOfDissapearance = 0;
+    timeOfLastStep = 0;
 
-    maxHorizontalMovement;
+    maxVerticalMovement;
     speed;
     thresholdMills;
 
     constructor(x, y) {
         this.start_x = x;
         this.start_y = y;
-        this.keepMovinRight = true;
+        this.keepMovinDown = true;
     }
 
         move() {
-        if (this.keepMovinRight) {
+        if (this.keepMovinDown) {
             this.sprite.pos.x += this.speed;
-            if (this.sprite.pos.x > this.start_x + this.maxHorizontalMovement) {
-                this.keepMovinRight = false;
+            if (this.sprite.pos.x > this.start_x + this.maxVerticalMovement) {
+                this.keepMovinDown = false;
             }
         } else {
             this.sprite.pos.x -= this.speed;
             if (this.sprite.pos.x < this.start_x) {
-                this.keepMovinRight = true;
+                this.keepMovinDown = true;
             }
         }
     }
@@ -46,7 +46,7 @@ class Ghost {
     disableScript() {
         disableScript(this.sprite);
         this.sprite.visible = false;
-        this.timeOfDissapearance = millis();
+        this.timeOfLastStep = millis();
     }
 
     isDisabled() {
@@ -58,7 +58,7 @@ class Ghost {
     }
 
     hasPassedDeathCooldown() {
-        return (millis() - this.timeOfDissapearance) > this.thresholdMills;
+        return (millis() - this.timeOfLastStep) > this.thresholdMills;
     }
 
 }

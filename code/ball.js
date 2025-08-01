@@ -1,7 +1,7 @@
-let BALL_DIAMETER = 24;
+const BALL_DIAMETER = 24;
 
-let BONUS_SPAWN_BALL_X = 361;
-let BONUS_SPAWN_BALL_Y = 245;
+const BONUS_SPAWN_BALL_X = 361;
+const BONUS_SPAWN_BALL_Y = 245;
 
 let ball;
 

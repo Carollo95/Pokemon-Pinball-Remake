@@ -19,7 +19,7 @@ let haunter1, haunter2;
 let gengar;
 
 let extraGastlyLives = 0;//7;
-let extraHaunterLives = 2;//10;
+let extraHaunterLives = 0;//10;
 
 let level_completed=false;
 
@@ -39,8 +39,11 @@ function setup() {
 
 function createGhosts() {
   gastly1 = new Gastly(GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
+  gastly1.disableScript();
   gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
+  gastly2.disableScript();
   gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
+  gastly3.disableScript();
 
   //Disabled until its time comes
   haunter1 = new Haunter(HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
@@ -49,8 +52,8 @@ function createGhosts() {
   haunter2.disableScript();
 
   //Disabled until its time comes
-  gengar = new Gastly(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
-  gengar.disableScript();
+  gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
+  /* gengar.disableScript(); */
 }
 
 function createScenario() {
@@ -152,8 +155,8 @@ function updateGengar() {
   gengar.update();
 
   if (gengar.readyToRespawn()) {
-    gengar = new Gengar(gengar.start_x, gengar.start_y);
-    level_completed = true;
+   /*  gengar = new Gengar(gengar.start_x, gengar.start_y);
+    level_completed = true; */
   }
 
   return gengar;
