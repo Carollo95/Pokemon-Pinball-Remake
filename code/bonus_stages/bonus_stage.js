@@ -2,11 +2,12 @@ const HEIGHT_OF_BALL_LOSS = SCREEN_HEIGHT;
 const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310;
 
 let gate;
+let levelCompleted = false;
 
-function createBonusNewBallIfBallLoss() {
-    if (checkBonusBallLoss()) {
+function createBonusNewBallIfBallLoss(bonusGateBackground) {
+    if (checkBonusBallLoss() && !levelCompleted) {
         spawnBonusBall();
-        openBonusGate();
+        openBonusGate(bonusGateBackground);
     }
 }
 
@@ -14,19 +15,19 @@ function checkBonusBallLoss() {
     return ball.y > HEIGHT_OF_BALL_LOSS;
 }
 
-function openBonusGate() {
+function openBonusGate(bonusGateBackground) {
     disableSprite(gate);
-    bg = loadImage(BONUS_GHOST_BACKGROUND_OPEN);
+    replaceBackground(bonusGateBackground);
 }
 
-function closeBonusGate() {
+function closeBonusGate(bonusGateBackground) {
     enableSprite(gate);
-    bg = loadImage(BONUS_GHOST_BACKGROUND);
+    replaceBackground(bonusGateBackground);
 }
 
-function closeBonusGateIfBallInsideBoard() {
+function closeBonusGateIfBallInsideBoard(bonusGateBackground) {
     if (chechBallInsideBonusBoard()) {
-        closeBonusGate();
+        closeBonusGate(bonusGateBackground);
     }
 }
 

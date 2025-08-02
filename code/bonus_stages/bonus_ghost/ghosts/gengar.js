@@ -2,7 +2,7 @@ const GENGAR_HITBOX_HEIGHT = 45;
 const GENGAR_HITBOX_WIDTH = 30;
 const GENGAR_SPEED = 0.5; // Step speed
 const GENGAR_STEP_LENGTH = 10.0; //Pixel length of each step
-const GENGAR_HITPOINTS = 5; //Number of hits to go down
+const GENGAR_HITPOINTS = 1;//5; //Number of hits to go down
 const GENGAR_STEP_COOLDOWN_MILLS = 1500; //Time between steps
 const GENGAR_MAX_DISTANCE = 100; //Number of pixels it can advance
 
@@ -35,7 +35,7 @@ class Gengar {
         if (this.sprite.collide(ball)) {
             this.hitPoints -= 1;
             if (this.hitPoints < 0) {
-                this.disableScript(); //TODO temporary
+                this.disableSprite(); //TODO temporary
             } else {
                 disableSprite(this.sprite);
                 this.keepMovingDown = false;
@@ -69,9 +69,9 @@ class Gengar {
 
             if (this.backstepCompleted()) {
                 this.step_start_y = this.sprite.pos.y;
-                this.timeOfLastStep = millis();
                 this.keepMovingDown = true;
                 enableSprite(this.sprite);
+                this.timeOfLastStep = millis();
             }
 
             if (this.isAtMinDistanceFromStart()) {
@@ -102,7 +102,7 @@ class Gengar {
         return this.sprite.pos.y < (this.step_start_y - GENGAR_STEP_LENGTH);
     }
 
-    disableScript() {
+    disableSprite() {
         disableSprite(this.sprite);
         this.sprite.visible = false;
         this.timeOfLastStep = millis();
@@ -110,6 +110,10 @@ class Gengar {
 
     isDisabled() {
         return !this.sprite.visible;
+    }
+
+    readyToRespawn() {
+        return this.isDisabled();
     }
 
 

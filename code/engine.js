@@ -14,7 +14,24 @@ function disableSprite(sprite) {
 
 }
 
+function disablePolygonSprite(sprite) {
+    sprite.sleeping = true;
+}
+
 function enableSprite(sprite) {
     sprite.sleeping = false;
     sprite.physics = "static";
+}
+
+
+function getImage(name) {
+    let image = loadImage(name + ".png");
+    if (DEBUG) {
+        image.filter(GRAY);
+    }
+    return image;
+}
+
+function replaceBackground(name) {
+    bg = getImage(name);
 }

@@ -19,14 +19,14 @@ let haunter1, haunter2;
 let gengar;
 
 let extraGastlyLives = 0;//7;
-let extraHaunterLives = 0;//10;
+let extraHaunterLives = 2; //10;
 
-let level_completed = false;
+let phase = 1;
 
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-  bg = loadImage(BONUS_GHOST_BACKGROUND);
+  replaceBackground(BONUS_GHOST_BACKGROUND);
 
   world.gravity.y = GRAVITY;
 
@@ -39,11 +39,8 @@ function setup() {
 
 function createGhosts() {
   gastly1 = new Gastly(GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
-  gastly1.disableSprite();
   gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
-  gastly2.disableSprite();
   gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
-  gastly3.disableSprite();
 
   //Disabled until its time comes
   haunter1 = new Haunter(HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
@@ -53,7 +50,7 @@ function createGhosts() {
 
   //Disabled until its time comes
   gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
-  /* gengar.disableScript(); */
+  gengar.disableSprite();
 }
 
 function createScenario() {
@@ -75,11 +72,10 @@ function createScenario() {
   scenario.debug = DEBUG;
   scenario.visible = DEBUG;
 
-  //TODO reenable after testing
-  /*     grave1 = createGrave(88, 225);
-      grave2 = createGrave(152, 176);
-      grave3 = createGrave(264, 160);
-      grave4 = createGrave(247, 240); */
+  grave1 = createGrave(88, 225);
+  grave2 = createGrave(152, 176);
+  grave3 = createGrave(264, 160);
+  grave4 = createGrave(247, 240);
 
   createGate();
 }
@@ -110,23 +106,69 @@ function createGrave(x, y) {
 function draw() {
   background(bg);
 
-  createBonusNewBallIfBallLoss()
-  closeBonusGateIfBallInsideBoard()
+  createBonusNewBallIfBallLoss(getOpenGateBackground())
+  closeBonusGateIfBallInsideBoard(getBackground())
 
   controlLeftFlipper();
   controlRightFlipper();
 
-  if (extraGastlyLives > 0 || !gastly1.isDisabled() || !gastly2.isDisabled() || !gastly3.isDisabled()) {
+  if (phase == 1) {
     gastly1 = updateGastly(gastly1);
     gastly2 = updateGastly(gastly2);
     gastly3 = updateGastly(gastly3);
-  } else if (extraHaunterLives > 0 || !haunter1.isDisabled() || !haunter2.isDisabled()) {
+  } else if (phase == 2) {
     haunter1 = updateHaunter(haunter1);
     haunter2 = updateHaunter(haunter2);
-  } else if (!level_completed || !gengar.isDisabled()) {
+  } else if (phase == 3) {
     gengar = updateGengar();
   }
 
+  checkPhase();
+
+}
+
+function checkPhase() {
+  if (phase < 3) {
+    if (isGastlyPhase()) {
+      phase = 1;
+    } else if (isHaunterPhase()) {
+      phase = 2;
+    } else if (isGengarPhase()) {
+      phase = 3;
+      replaceBackground(getBackground());
+      grave1.remove();
+      grave2.remove();
+      grave3.remove();
+      grave4.remove();
+    }
+  }
+}
+
+function isGastlyPhase() {
+  return extraGastlyLives > 0 || !gastly1.isDisabled() || !gastly2.isDisabled() || !gastly3.isDisabled()
+}
+
+function isHaunterPhase() {
+  return !isGastlyPhase() && extraHaunterLives > 0 || !haunter1.isDisabled() || !haunter2.isDisabled()
+}
+
+function isGengarPhase() {
+  return !isHaunterPhase() && !levelCompleted || !gengar.isDisabled()
+}
+
+function getBackground() {
+  if (phase == 3) {
+    return BONUS_GHOST_BACKGROUND_P2;
+  }
+
+  return BONUS_GHOST_BACKGROUND;
+}
+
+function getOpenGateBackground() {
+  if (phase == 3) {
+    return BONUS_GHOST_BACKGROUND_OPEN_P2;
+  }
+  return BONUS_GHOST_BACKGROUND_OPEN;
 }
 
 function updateGastly(gastly) {
@@ -154,10 +196,13 @@ function updateHaunter(haunter) {
 function updateGengar() {
   gengar.update();
 
-
-  /*  gengar = new Gengar(gengar.start_x, gengar.start_y);
-   level_completed = true; */
-
-
+  if (gengar.hitPoints == 0) {
+    levelCompleted = true;
+    disableFlippers();
+    gengar.disableSprite();
+    console.log("Bonus complete");
+  } else if (gengar.readyToRespawn() && !levelCompleted) {
+    gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
+  }
   return gengar;
 }
