@@ -1,3 +1,4 @@
+const GENGAR_RESPAWN_THRESHOLD_MILLS = 3000;
 const GENGAR_HITBOX_HEIGHT = 45;
 const GENGAR_HITBOX_WIDTH = 30;
 const GENGAR_SPEED = 0.5; // Step speed
@@ -6,6 +7,7 @@ const GENGAR_HITPOINTS = 1;//5; //Number of hits to go down
 const GENGAR_STEP_COOLDOWN_MILLS = 1500; //Time between steps
 const GENGAR_MAX_DISTANCE = 100; //Number of pixels it can advance
 
+
 class Gengar {
     hitPoints;
     keepMovingDown;
@@ -13,6 +15,7 @@ class Gengar {
     start_y;
     step_start_y;
     timeOfLastStep;
+    timeOfDissapearanceM
 
     constructor(x, y) {
         this.start_y = y;
@@ -21,8 +24,10 @@ class Gengar {
 
         this.sprite = new Sprite(x, y, GENGAR_HITBOX_WIDTH, GENGAR_HITBOX_HEIGHT, "static");
         this.sprite.debug = DEBUG;
+
         this.hitPoints = GENGAR_HITPOINTS;
         this.timeOfLastStep = millis();
+        this.timeOfDissapearance = millis();
     }
 
 
@@ -106,6 +111,7 @@ class Gengar {
         disableSprite(this.sprite);
         this.sprite.visible = false;
         this.timeOfLastStep = millis();
+        this.timeOfDissapearance = millis();
     }
 
     isDisabled() {
@@ -113,8 +119,11 @@ class Gengar {
     }
 
     readyToRespawn() {
-        return this.isDisabled();
+        return this.isDisabled() && this.hasPassedDeathCooldown();
     }
 
+    hasPassedDeathCooldown() {
+        return (millis() - this.timeOfDissapearance) > GENGAR_RESPAWN_THRESHOLD_MILLS;
+    }
 
 }
