@@ -1,9 +1,9 @@
-const GENGAR_RESPAWN_THRESHOLD_MILLS = 3000;
-const GENGAR_HITBOX_HEIGHT = 45;
-const GENGAR_HITBOX_WIDTH = 30;
+const GENGAR_RESPAWN_THRESHOLD_MILLS = 3000; //Time between instance creation and spawn
+const GENGAR_HITBOX_HEIGHT = 45; //Height of gengar's hitbox
+const GENGAR_HITBOX_WIDTH = 30; //Width of gengar's hitbox
 const GENGAR_SPEED = 0.5; // Step speed
 const GENGAR_STEP_LENGTH = 10.0; //Pixel length of each step
-const GENGAR_HITPOINTS = 1;//5; //Number of hits to go down
+const GENGAR_HITPOINTS = 5; //Number of hits to go down
 const GENGAR_STEP_COOLDOWN_MILLS = 1500; //Time between steps
 const GENGAR_MAX_DISTANCE = 100; //Number of pixels it can advance
 
@@ -14,12 +14,14 @@ class Gengar {
     sprite;
     start_y;
     step_start_y;
+    start_y;
     timeOfLastStep;
     timeOfDissapearanceM
 
     constructor(x, y) {
         this.start_y = y;
         this.step_start_y = y;
+        this.start_y = y;
         this.keepMovingDown = true;
 
         this.sprite = new Sprite(x, y, GENGAR_HITBOX_WIDTH, GENGAR_HITBOX_HEIGHT, "static");
@@ -39,8 +41,9 @@ class Gengar {
     checkCollision() {
         if (this.sprite.collide(ball)) {
             this.hitPoints -= 1;
+            this.timeOfLastStep = millis() - GENGAR_STEP_COOLDOWN_MILLS; //To immediatly step backwards
             if (this.hitPoints < 0) {
-                this.disableSprite(); //TODO temporary
+                this.disableSprite();
             } else {
                 disableSprite(this.sprite);
                 this.keepMovingDown = false;
@@ -104,7 +107,7 @@ class Gengar {
         return this.sprite.pos.y > (this.step_start_y + GENGAR_STEP_LENGTH);
     }
     backstepCompleted() {
-        return this.sprite.pos.y < (this.step_start_y - GENGAR_STEP_LENGTH);
+        return this.sprite.pos.y < (this.step_start_y - GENGAR_STEP_LENGTH) || this.sprite.pos.y <= this.start_y;
     }
 
     disableSprite() {
