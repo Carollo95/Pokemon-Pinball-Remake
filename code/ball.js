@@ -1,7 +1,7 @@
-let BALL_DIAMETER = 24;
+const BALL_DIAMETER = 24; //Diameter of the ball
 
-let BONUS_SPAWN_BALL_X = 361;
-let BONUS_SPAWN_BALL_Y = 245;
+const BONUS_SPAWN_BALL_X = 361; //Horizontal pixel for the spawn of a ball on bonus levels
+const BONUS_SPAWN_BALL_Y = 245; //Vertical pixel for the spawn of a ball on bonus levels
 
 let ball;
 

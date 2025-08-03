@@ -1,4 +1,4 @@
-let DEBUG = true;
+let DEBUG = false;
 
 let SCREEN_WIDTH = 384;
 let SCREEN_HEIGHT = 556;
@@ -6,13 +6,32 @@ let SCREEN_HEIGHT = 556;
 let GRAVITY = 10;
 let EPSILON = 0.1;
 
-function disableScript(script) {
-    script.sleeping = true;
-    script.physics = "none";
+let bg;
+
+function disableSprite(sprite) {
+    sprite.sleeping = true;
+    sprite.physics = "none";
 
 }
 
-function enableScript(script) {
-    script.sleeping = false;
-    script.physics = "static";
+function disablePolygonSprite(sprite) {
+    sprite.sleeping = true;
+}
+
+function enableSprite(sprite) {
+    sprite.sleeping = false;
+    sprite.physics = "static";
+}
+
+
+function getImage(name) {
+    let image = loadImage(name + ".png");
+    if (DEBUG) {
+        image.filter(GRAY);
+    }
+    return image;
+}
+
+function replaceBackground(name) {
+    bg = getImage(name);
 }
