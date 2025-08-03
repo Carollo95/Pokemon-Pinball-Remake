@@ -18,8 +18,8 @@ let gastly1, gastly2, gastly3;
 let haunter1, haunter2;
 let gengar;
 
-let extraGastlyLives = 10;
-let extraHaunterLives = 10;
+let extraGastlyLives = 3;//10;
+let extraHaunterLives = 2;//10;
 
 let currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
@@ -94,6 +94,7 @@ function createGrave(x, y) {
 }
 
 function draw() {
+  clear();
   background(bg);
 
   createBonusNewBallIfBallLoss(getOpenGateBackground())
@@ -136,20 +137,21 @@ function changePhaseIfNecessary() {
 }
 
 function setupGastlyPhase() {
-  gastly1 = new Gastly(GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
-  gastly1.disableSprite();
-  gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
-  gastly2.disableSprite();
-  gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
-  gastly3.disableSprite();
+  gastly1 = createDisabledGhost(Gastly, GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
+  gastly2 = createDisabledGhost(Gastly, GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
+  gastly3 = createDisabledGhost(Gastly, GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
 }
 function setupHaunterPhase() {
-  haunter1 = new Haunter(HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
-  haunter1.disableSprite();
-  haunter2 = new Haunter(HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
-  haunter2.disableSprite();
-
+  haunter1 = createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
+  haunter2 = createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
 }
+
+function createDisabledGhost(clazz, x, y) {
+  let ghost = new clazz(x, y);
+  ghost.disableSprite();
+  return ghost;
+}
+
 function setupGengarPhase() {
   replaceBackground(getBackground());
   grave1.remove();
@@ -157,8 +159,7 @@ function setupGengarPhase() {
   grave3.remove();
   grave4.remove();
 
-  gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
-  gengar.disableSprite();
+  gengar = createDisabledGhost(Gengar, GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
 }
 
 function checkIfTimeForANewPhase() {
