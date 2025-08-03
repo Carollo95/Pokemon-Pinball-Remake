@@ -1,10 +1,10 @@
 let DEBUG = false;
 
-let SCREEN_WIDTH = 384;
-let SCREEN_HEIGHT = 556;
+const SCREEN_WIDTH = 384;
+const SCREEN_HEIGHT = 556;
 
-let GRAVITY = 10;
-let EPSILON = 0.1;
+const GRAVITY = 10;
+const EPSILON = 0.1;
 
 let bg;
 
