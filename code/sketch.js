@@ -18,29 +18,21 @@ let gastly1, gastly2, gastly3;
 let haunter1, haunter2;
 let gengar;
 
-let extraGastlyLives = 3;//10;
-let extraHaunterLives = 2;//10;
+let extraGastlyLives = 7;
+let extraHaunterLives = 10;
 
 let currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
-
   replaceBackground(BONUS_GHOST_BACKGROUND);
 
   world.gravity.y = GRAVITY;
-  currentPhase = 0;
-
   createScenario();
-
   createBonusFlippers()
   spawnBonusBall();
-}
 
-function createGhost(ghostClass, x, y) {
-  let ghost = new ghostClass(x, y);
-  ghost.disable();
-  return ghost;
+  currentPhase = 0;
 }
 
 function createScenario() {
@@ -137,9 +129,9 @@ function changePhaseIfNecessary() {
 }
 
 function setupGastlyPhase() {
-  gastly1 = createDisabledGhost(Gastly, GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
-  gastly2 = createDisabledGhost(Gastly, GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
-  gastly3 = createDisabledGhost(Gastly, GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
+  gastly1 = new Gastly(GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
+  gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
+  gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
 }
 function setupHaunterPhase() {
   haunter1 = createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
