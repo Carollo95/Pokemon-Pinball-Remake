@@ -18,8 +18,8 @@ let gastly1, gastly2, gastly3;
 let haunter1, haunter2;
 let gengar;
 
-let extraGastlyLives = 3;//7;
-let extraHaunterLives = 2; //10;
+let extraGastlyLives = 10;
+let extraHaunterLives = 10;
 
 let currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 

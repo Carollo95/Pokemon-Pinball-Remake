@@ -1,8 +1,8 @@
-const HAUNTER_RESPAWN_THRESHOLD_MILLS = 3000;
-const HAUNTER_HITBOX_HEIGHT = 32;
-const HAUNTER_HITBOX_WIDTH = 24;
-const HAUNTER_SPEED = 0.5;
-const HAUNTER_MAX_HORIZONTAL_MOVEMENT = 60;
+const HAUNTER_RESPAWN_THRESHOLD_MILLS = 3000; //Time between instance creation and spawn
+const HAUNTER_HITBOX_HEIGHT = 32;//Height of haunter's hitbox
+const HAUNTER_HITBOX_WIDTH = 24; //Width of haunter's hitbox
+const HAUNTER_SPEED = 0.5; //Horizontal movement speed
+const HAUNTER_MAX_HORIZONTAL_MOVEMENT = 60; //Max horizontal desplacement pixels
 
 class Haunter extends Ghost {
 

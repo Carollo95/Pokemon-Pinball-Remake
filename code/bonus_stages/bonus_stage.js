@@ -1,5 +1,5 @@
-const HEIGHT_OF_BALL_LOSS = SCREEN_HEIGHT;
-const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310;
+const HEIGHT_OF_BALL_LOSS = SCREEN_HEIGHT; //Height at which a ball is considered lost
+const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310; //Horizontal pixel that when a ball crosses it, the gate on bonus levels closes
 
 let gate;
 let levelCompleted = false;

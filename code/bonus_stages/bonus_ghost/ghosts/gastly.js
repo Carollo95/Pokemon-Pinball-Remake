@@ -1,8 +1,8 @@
-const GASTLY_RESPAWN_THRESHOLD_MILLS = 3000;
-const GASTLY_HITBOX_HEIGHT = 24;
-const GASTLY_HITBOX_WIDTH = 24;
-const GASTLY_SPEED = 0.5;
-const GASTLY_MAX_HORIZONTAL_MOVEMENT = 60;
+const GASTLY_RESPAWN_THRESHOLD_MILLS = 3000; //Time between instance creation and spawn
+const GASTLY_HITBOX_HEIGHT = 24; //Height of gastly's hitbox
+const GASTLY_HITBOX_WIDTH = 24; //Width of gastly's hitbox
+const GASTLY_SPEED = 0.5; //Horizontal movement speed
+const GASTLY_MAX_HORIZONTAL_MOVEMENT = 60; //Max horizontal desplacement pixels
 
 class Gastly extends Ghost {
 
