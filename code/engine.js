@@ -11,12 +11,8 @@ let bg;
 function disableSprite(sprite) {
     sprite.sleeping = true;
     sprite.physics = "none";
-
 }
 
-function disablePolygonSprite(sprite) {
-    sprite.sleeping = true;
-}
 
 function enableSprite(sprite) {
     sprite.sleeping = false;

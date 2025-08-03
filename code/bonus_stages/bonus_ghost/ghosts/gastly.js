@@ -1,19 +1,21 @@
-const GASTLY_RESPAWN_THRESHOLD_MILLS = 3000; //Time between instance creation and spawn
+
 const GASTLY_HITBOX_HEIGHT = 24; //Height of gastly's hitbox
 const GASTLY_HITBOX_WIDTH = 24; //Width of gastly's hitbox
-const GASTLY_SPEED = 0.5; //Horizontal movement speed
+const GASTLY_HORIZONTAL_SPEED = 0.5; //Horizontal movement speed
+const GASTLY_VERTICAL_SPEED = 0.15; //Vertical movement speed
 const GASTLY_MAX_HORIZONTAL_MOVEMENT = 60; //Max horizontal desplacement pixels
+const GASTLY_MAX_VERTICAL_MOVEMENT = 4; //Max vertical desplacement pixels
 
 class Gastly extends Ghost {
 
     constructor(x, y) {
-        super(x, y)
-        this.sprite = new Sprite(x, y, GASTLY_HITBOX_WIDTH, GASTLY_HITBOX_HEIGHT, "static");
-        this.sprite.debug = DEBUG;
+        super(x, y, GASTLY_HITBOX_WIDTH, GASTLY_HITBOX_HEIGHT)
 
         this.maxHorizontalMovement = GASTLY_MAX_HORIZONTAL_MOVEMENT;
-        this.speed = GASTLY_SPEED;
-        this.thresholdMills = GASTLY_RESPAWN_THRESHOLD_MILLS;
+        this.maxVerticalMovement = GASTLY_MAX_VERTICAL_MOVEMENT;
+        this.horizontalSpeed = GASTLY_HORIZONTAL_SPEED;
+        this.verticalSpeed = GASTLY_VERTICAL_SPEED;
 
+        this.hurtImage = BONUS_GHOST_GASTLY_HURT;
     }
 }

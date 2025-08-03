@@ -156,7 +156,7 @@ function setupGengarPhase() {
 
 function checkIfTimeForANewPhase() {
   if (currentPhase == 0
-    || (currentPhase == 1 && gasltyPhaseFinished())
+    || (currentPhase == 1 && gastlyPhaseFinished())
     || (currentPhase == 2 && haunterPhaseFinished())
     || (currentPhase == 3 && gengarPhaseFinished())) {
     return true;
@@ -164,12 +164,12 @@ function checkIfTimeForANewPhase() {
   return false;
 }
 
-function gasltyPhaseFinished() {
-  return extraGastlyLives == 0 && gastly1.isDisabled() && gastly2.isDisabled() && gastly3.isDisabled();
+function gastlyPhaseFinished() {
+  return extraGastlyLives == 0 && gastly1.disabled && gastly2.disabled && gastly3.disabled;
 }
 
 function haunterPhaseFinished() {
-  return extraHaunterLives == 0 && haunter1.isDisabled() && haunter2.isDisabled();
+  return extraHaunterLives == 0 && haunter1.disabled && haunter2.disabled;
 }
 
 function gengarPhaseFinished() {
