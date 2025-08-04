@@ -16,6 +16,10 @@ class Gastly extends Ghost {
         this.horizontalSpeed = GASTLY_HORIZONTAL_SPEED;
         this.verticalSpeed = GASTLY_VERTICAL_SPEED;
 
-        this.hurtImage = BONUS_GHOST_GASTLY_HURT;
+        this.idleAnimation = getAnimation(BONUS_GHOST_GASTLY, 64, 64, 1);
+        this.hurtAnimation = getAnimation(BONUS_GHOST_GASTLY_HURT, 64, 64, 2);;
+
+        this.setup();
     }
+
 }

@@ -15,7 +15,10 @@ class Haunter extends Ghost {
         this.horizontalSpeed = HAUNTER_HORIZONTAL_SPEED;
         this.verticalSpeed = HAUNTER_VERTICAL_SPEED;
         
-        this.hurtImage = BONUS_GHOST_HAUNTER_HURT;
+        this.idleAnimation = getAnimation(BONUS_GHOST_HAUNTER, 96, 80, 4);
+        this.hurtAnimation = getAnimation(BONUS_GHOST_HAUNTER_HURT, 96, 80, 2);
+
+        this.setup();
     }
 
 }

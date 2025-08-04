@@ -16,19 +16,26 @@ class Ghost {
     maxVerticalMovement;
     horizontalSpeed;
     verticalSpeed;
-    hurtImage;
+    hurtAnimation;
+    idleAnimation;
 
     constructor(x, y, width, height) {
         this.start_x = x;
         this.start_y = y;
+        this.sprite = new Sprite(x, y, width, height, "static");
+
+    }
+
+    setup(){
         this.keepMovinRight = true;
         this.keepMovinUp = true;
         this.timeOfDissapearance = 0;
         this.timeOfHurt = 0;
         this.disabled = false;
 
-        this.sprite = new Sprite(x, y, width, height, "static");
-        this.sprite.image = BONUS_GHOST_GASTLY; //TODO remove images
+        this.sprite.addAnimation("idle", this.idleAnimation);
+        this.sprite.addAnimation("hurt", this.hurtAnimation);
+        this.sprite.changeAnimation("idle");
         this.sprite.debug = DEBUG;
     }
 
@@ -74,7 +81,7 @@ class Ghost {
                 if (this.isTimeToDisappear()) {
                     this.disableSprite();
                 } else {
-                    this.blink();
+                    this.sprite.changeAnimation("hurt");
                 }
             }
         }
@@ -84,13 +91,9 @@ class Ghost {
         return (millis() - this.timeOfHurt) > GHOST_TIME_OF_HURT
     }
 
-    blink() {
-        this.sprite.visible = (frameCount % (GHOST_BLINKING_FRAMES * 2) < GHOST_BLINKING_FRAMES);
-    }
-
     checkCollision() {
         if (this.sprite.collide(ball)) {
-            this.sprite.image = this.hurtImage
+            this.sprite.image = this.hurtAnimation
             disableSprite(this.sprite);
             this.timeOfHurt = millis();
         }
