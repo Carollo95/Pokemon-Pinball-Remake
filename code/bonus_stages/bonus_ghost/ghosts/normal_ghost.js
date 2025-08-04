@@ -1,0 +1,95 @@
+class NormalGhost extends Ghost {
+    keepMovinRight;
+    keepMovinUp;
+    timeOfDissapearance;
+    timeOfHurt;
+
+    maxHorizontalMovement;
+    maxVerticalMovement;
+    horizontalSpeed;
+    verticalSpeed;
+
+    constructor(x, y, width, height) {
+        super(x, y, width, height);
+    }
+
+    setup() {
+        this.keepMovinRight = true;
+        this.keepMovinUp = true;
+        this.timeOfDissapearance = 0;
+        this.timeOfHurt = 0;
+
+        this.sprite.addAnimation("idle", this.idleAnimation);
+        this.sprite.addAnimation("hurt", this.hurtAnimation);
+        this.sprite.changeAnimation("idle");
+        this.sprite.debug = DEBUG;
+    }
+
+    move() {
+        this.moveXAxis();
+        this.moveYAxis();
+    }
+
+    moveXAxis() {
+        if (this.keepMovinRight) {
+            this.sprite.pos.x += this.horizontalSpeed;
+            if (this.sprite.pos.x > this.start_x + this.maxHorizontalMovement) {
+                this.keepMovinRight = false;
+            }
+        } else {
+            this.sprite.pos.x -= this.horizontalSpeed;
+            if (this.sprite.pos.x < this.start_x) {
+                this.keepMovinRight = true;
+            }
+        }
+    }
+
+    moveYAxis() {
+        if (this.keepMovinUp) {
+            this.sprite.pos.y += this.verticalSpeed;
+            if (this.sprite.pos.y > this.start_y + this.maxVerticalMovement) {
+                this.keepMovinUp = false;
+            }
+        } else {
+            this.sprite.pos.y -= this.verticalSpeed;
+            if (this.sprite.pos.y < this.start_y) {
+                this.keepMovinUp = true;
+            }
+        }
+    }
+
+    update() {
+        if (!this.disabled) {
+            if (this.timeOfHurt == 0) {
+                this.checkCollision();
+                this.move();
+            } else {
+                if (this.isTimeToDisappear()) {
+                    this.disableSprite();
+                } else {
+                    this.sprite.changeAnimation("hurt");
+                }
+            }
+        }
+    }
+
+    isTimeToDisappear() {
+        return (millis() - this.timeOfHurt) > GHOST_TIME_OF_HURT
+    }
+
+    checkCollision() {
+        if (this.sprite.collide(ball)) {
+            this.sprite.image = this.hurtAnimation
+            disableSprite(this.sprite);
+            this.timeOfHurt = millis();
+        }
+    }
+
+    disableSprite() {
+        disableSprite(this.sprite);
+        this.sprite.visible = false;
+        this.timeOfDissapearance = millis();
+        this.disabled = true;
+    }
+
+}

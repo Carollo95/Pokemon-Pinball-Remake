@@ -1,4 +1,3 @@
-const GENGAR_RESPAWN_THRESHOLD_MILLS = 3000; //Time between instance creation and spawn
 const GENGAR_HITBOX_HEIGHT = 45; //Height of gengar's hitbox
 const GENGAR_HITBOX_WIDTH = 30; //Width of gengar's hitbox
 const GENGAR_SPEED = 0.5; // Step speed
@@ -8,28 +7,31 @@ const GENGAR_STEP_COOLDOWN_MILLS = 1500; //Time between steps
 const GENGAR_MAX_DISTANCE = 100; //Number of pixels it can advance
 
 
-class Gengar {
+class Gengar extends Ghost {
     hitPoints;
     keepMovingDown;
-    sprite;
-    start_y;
     step_start_y;
-    start_y;
     timeOfLastStep;
-    timeOfDissapearanceM
+    timeOfDissapearance;
+    walkAnimation;
 
     constructor(x, y) {
-        this.start_y = y;
+        super(x, y, GENGAR_HITBOX_WIDTH, GENGAR_HITBOX_HEIGHT);
         this.step_start_y = y;
-        this.start_y = y;
         this.keepMovingDown = true;
-
-        this.sprite = new Sprite(x, y, GENGAR_HITBOX_WIDTH, GENGAR_HITBOX_HEIGHT, "static");
-        this.sprite.debug = DEBUG;
 
         this.hitPoints = GENGAR_HITPOINTS;
         this.timeOfLastStep = millis();
         this.timeOfDissapearance = millis();
+
+        this.idleAnimation = getAnimation(BONUS_GHOST_GENGAR, 96, 128, 3, 16);
+        this.sprite.addAnimation("idle", this.idleAnimation);
+        this.hurtAnimation = getAnimation(BONUS_GHOST_GENGAR_HURT, 112, 128, 2, DEFAULT_ANIMATION_DELAY);
+        this.sprite.addAnimation("hurt", this.hurtAnimation);
+        this.walkAnimation = getAnimation(BONUS_GHOST_GENGAR_WALK, 96, 128, 4, DEFAULT_ANIMATION_DELAY);
+        this.sprite.addAnimation("walk", this.walkAnimation);
+        this.sprite.changeAnimation("idle");
+
     }
 
 
@@ -52,8 +54,8 @@ class Gengar {
     }
 
     move() {
-
         if (this.hasPassedStepCooldown()) {
+            this.sprite.changeAnimation("walk");
             this.takeStepForwards();
             this.takeStepBackwards();
         }
@@ -80,6 +82,7 @@ class Gengar {
                 this.keepMovingDown = true;
                 enableSprite(this.sprite);
                 this.timeOfLastStep = millis();
+                this.sprite.changeAnimation("idle");
             }
 
             if (this.isAtMinDistanceFromStart()) {
@@ -95,6 +98,7 @@ class Gengar {
             if (this.stepCompleted()) {
                 this.step_start_y = this.sprite.pos.y;
                 this.timeOfLastStep = millis();
+                this.sprite.changeAnimation("idle");
             }
 
             if (this.isAtMaxDistanceFromStart()) {
@@ -112,21 +116,10 @@ class Gengar {
 
     disableSprite() {
         disableSprite(this.sprite);
+        this.disabled = true;
         this.sprite.visible = false;
         this.timeOfLastStep = millis();
         this.timeOfDissapearance = millis();
-    }
-
-    isDisabled() {
-        return !this.sprite.visible;
-    }
-
-    readyToRespawn() {
-        return this.isDisabled() && this.hasPassedDeathCooldown();
-    }
-
-    hasPassedDeathCooldown() {
-        return (millis() - this.timeOfDissapearance) > GENGAR_RESPAWN_THRESHOLD_MILLS;
     }
 
 }

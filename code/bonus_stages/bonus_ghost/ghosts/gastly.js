@@ -6,7 +6,7 @@ const GASTLY_VERTICAL_SPEED = 0.15; //Vertical movement speed
 const GASTLY_MAX_HORIZONTAL_MOVEMENT = 60; //Max horizontal desplacement pixels
 const GASTLY_MAX_VERTICAL_MOVEMENT = 4; //Max vertical desplacement pixels
 
-class Gastly extends Ghost {
+class Gastly extends NormalGhost {
 
     constructor(x, y) {
         super(x, y, GASTLY_HITBOX_WIDTH, GASTLY_HITBOX_HEIGHT)
@@ -16,8 +16,8 @@ class Gastly extends Ghost {
         this.horizontalSpeed = GASTLY_HORIZONTAL_SPEED;
         this.verticalSpeed = GASTLY_VERTICAL_SPEED;
 
-        this.idleAnimation = getAnimation(BONUS_GHOST_GASTLY, 64, 64, 1);
-        this.hurtAnimation = getAnimation(BONUS_GHOST_GASTLY_HURT, 64, 64, 2);;
+        this.idleAnimation = getAnimation(BONUS_GHOST_GASTLY, 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+        this.hurtAnimation = getAnimation(BONUS_GHOST_GASTLY_HURT, 64, 64, 2, DEFAULT_ANIMATION_DELAY);
 
         this.setup();
     }

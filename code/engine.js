@@ -3,7 +3,7 @@ let DEBUG = false;
 const SCREEN_WIDTH = 384;
 const SCREEN_HEIGHT = 556;
 
-const ANIMATION_DELAY = 12;
+const DEFAULT_ANIMATION_DELAY = 12;
 
 const GRAVITY = 10;
 const EPSILON = 0.1;
@@ -34,10 +34,10 @@ function replaceBackground(name) {
     bg = getImage(name);
 }
 
-function getAnimation(name, frameHeight, frameWidth, imageNum){
-        let sheet = loadImage(name);
-        let animation = loadAnimation(sheet, {frameSize: [frameHeight, frameWidth], frameCount: imageNum});
-        animation.frameDelay = ANIMATION_DELAY;
+function getAnimation(name, frameHeight, frameWidth, imageNum, delay) {
+    let sheet = loadImage(name);
+    let animation = loadAnimation(sheet, { frameSize: [frameHeight, frameWidth], frameCount: imageNum });
+    animation.frameDelay = delay;
 
-        return animation;
+    return animation;
 }
