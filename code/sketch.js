@@ -224,10 +224,10 @@ function updateGengar() {
   if (gengar.hitPoints == 0) {
     levelCompleted = true;
     disableFlippers();
-    gengar.disableSprite();
-    console.log("Bonus complete");
-  } else if (gengar.readyToRespawn() && !levelCompleted) {
-    gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
+    if (gengar.disabled) {
+      console.log("Bonus complete");
+    }
   }
+
   return gengar;
 }
