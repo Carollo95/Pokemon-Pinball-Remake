@@ -227,6 +227,8 @@ function updateGengar() {
     if (gengar.disabled) {
       console.log("Bonus complete");
     }
+  } else if (gengar.readyToRespawn()) {
+    gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
   }
 
   return gengar;

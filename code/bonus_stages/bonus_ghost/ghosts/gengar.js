@@ -37,17 +37,19 @@ class Gengar extends Ghost {
 
 
     update() {
-        if (this.hitPoints > 0) {
-            if (this.isRecentlyHurt()) {
-                this.blink();
+        if (!this.disabled) {
+            if (this.hitPoints > 0) {
+                if (this.isRecentlyHurt()) {
+                    this.blink();
+                } else {
+                    enableSprite(this.sprite);
+                    this.sprite.visible = true; //If case blinking stops at an invisible frame
+                }
+                this.checkCollision();
+                this.move();
             } else {
-                enableSprite(this.sprite);
-                this.sprite.visible = true; //If case blinking stops at an invisible frame
+                this.moonwalkIntoOblivion();
             }
-            this.checkCollision();
-            this.move();
-        } else {
-            this.moonwalkIntoOblivion();
         }
     }
 
