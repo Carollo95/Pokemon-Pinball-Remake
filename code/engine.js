@@ -8,7 +8,10 @@ const DEFAULT_ANIMATION_DELAY = 12;
 const GRAVITY = 10;
 const EPSILON = 0.1;
 
+const SHAKE_STRENGTH = 4;
+
 let bg;
+let shakeDuration = 0;
 
 function disableSprite(sprite) {
     sprite.sleeping = true;
@@ -40,4 +43,18 @@ function getAnimation(name, frameHeight, frameWidth, imageNum, delay) {
     animation.frameDelay = delay;
 
     return animation;
+}
+
+function startShake() {
+    shakeDuration = 20;
+}
+
+function shake() {
+    if (shakeDuration > 0) {
+        displacement = random(-SHAKE_STRENGTH, SHAKE_STRENGTH)
+        translate(0, displacement);
+        image(bg, 0, displacement, width, height);
+
+        shakeDuration--;
+    }
 }

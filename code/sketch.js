@@ -86,8 +86,10 @@ function createGrave(x, y) {
 }
 
 function draw() {
+  //This is more engine stuff, maybe move?
   clear();
-  background(bg);
+  image(bg, 0, 0, width, height);
+  shake();
 
   createBonusNewBallIfBallLoss(getOpenGateBackground())
   closeBonusGateIfBallInsideBoard(getBackground())
@@ -98,6 +100,7 @@ function draw() {
   updatePhaseSprites();
 
   changePhaseIfNecessary();
+
 }
 
 function updatePhaseSprites() {
@@ -133,6 +136,7 @@ function setupGastlyPhase() {
   gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
   gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
 }
+
 function setupHaunterPhase() {
   haunter1 = createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
   haunter2 = createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
@@ -146,6 +150,7 @@ function createDisabledGhost(clazz, x, y) {
 
 function setupGengarPhase() {
   replaceBackground(getBackground());
+  startShake();
   grave1.remove();
   grave2.remove();
   grave3.remove();

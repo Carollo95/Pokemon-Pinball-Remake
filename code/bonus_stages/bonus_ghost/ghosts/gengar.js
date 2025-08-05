@@ -86,6 +86,7 @@ class Gengar extends Ghost {
                 this.timeOfLastStep = millis();
                 this.sprite.changeAnimation("idle");
                 this.stopBlink();
+                startShake();
             }
 
             if (this.isAtMinDistanceFromStart()) {
@@ -102,6 +103,7 @@ class Gengar extends Ghost {
                 this.step_start_y = this.sprite.pos.y;
                 this.timeOfLastStep = millis();
                 this.sprite.changeAnimation("idle");
+                startShake();
             }
 
             if (this.isAtMaxDistanceFromStart()) {
