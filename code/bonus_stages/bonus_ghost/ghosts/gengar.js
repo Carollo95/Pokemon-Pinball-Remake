@@ -1,5 +1,5 @@
-const GENGAR_HITBOX_HEIGHT = 45; //Height of gengar's hitbox
-const GENGAR_HITBOX_WIDTH = 30; //Width of gengar's hitbox
+const GENGAR_HITBOX_HEIGHT = 56; //Height of gengar's hitbox
+const GENGAR_HITBOX_WIDTH = 36; //Width of gengar's hitbox
 const GENGAR_SPEED = 0.5; // Step speed
 const GENGAR_STEP_LENGTH = 10.0; //Pixel length of each step
 const GENGAR_HITPOINTS = 5; //Number of hits to go down
@@ -26,7 +26,7 @@ class Gengar extends Ghost {
 
         this.idleAnimation = getAnimation(BONUS_GHOST_GENGAR, 96, 128, 3, 16);
         this.sprite.addAnimation("idle", this.idleAnimation);
-        this.hurtAnimation = getAnimation(BONUS_GHOST_GENGAR_HURT, 112, 128, 2, DEFAULT_ANIMATION_DELAY);
+        this.hurtAnimation = getAnimation(BONUS_GHOST_GENGAR_HURT, 112, 128, 1, DEFAULT_ANIMATION_DELAY);
         this.sprite.addAnimation("hurt", this.hurtAnimation);
         this.walkAnimation = getAnimation(BONUS_GHOST_GENGAR_WALK, 96, 128, 4, DEFAULT_ANIMATION_DELAY);
         this.sprite.addAnimation("walk", this.walkAnimation);
@@ -43,6 +43,8 @@ class Gengar extends Ghost {
     checkCollision() {
         if (this.sprite.collide(ball)) {
             this.hitPoints -= 1;
+            this.sprite.changeAnimation("hurt");
+            this.blink();
             this.timeOfLastStep = millis() - GENGAR_STEP_COOLDOWN_MILLS; //To immediatly step backwards
             if (this.hitPoints < 0) {
                 this.disableSprite();
@@ -83,6 +85,7 @@ class Gengar extends Ghost {
                 enableSprite(this.sprite);
                 this.timeOfLastStep = millis();
                 this.sprite.changeAnimation("idle");
+                this.stopBlink();
             }
 
             if (this.isAtMinDistanceFromStart()) {

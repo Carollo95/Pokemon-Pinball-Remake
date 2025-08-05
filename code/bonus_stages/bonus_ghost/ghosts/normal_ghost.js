@@ -67,6 +67,7 @@ class NormalGhost extends Ghost {
                 if (this.isTimeToDisappear()) {
                     this.disableSprite();
                 } else {
+                    this.blink();
                     this.sprite.changeAnimation("hurt");
                 }
             }

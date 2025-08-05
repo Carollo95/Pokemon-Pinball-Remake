@@ -17,7 +17,7 @@ class Gastly extends NormalGhost {
         this.verticalSpeed = GASTLY_VERTICAL_SPEED;
 
         this.idleAnimation = getAnimation(BONUS_GHOST_GASTLY, 64, 64, 1, DEFAULT_ANIMATION_DELAY);
-        this.hurtAnimation = getAnimation(BONUS_GHOST_GASTLY_HURT, 64, 64, 2, DEFAULT_ANIMATION_DELAY);
+        this.hurtAnimation = getAnimation(BONUS_GHOST_GASTLY_HURT, 64, 64, 1, DEFAULT_ANIMATION_DELAY);
 
         this.setup();
     }

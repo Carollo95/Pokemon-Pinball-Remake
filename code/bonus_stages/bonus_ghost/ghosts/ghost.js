@@ -17,7 +17,15 @@ class Ghost {
         this.sprite.debug = DEBUG;
         this.disabled = false;
     }
-    
+
+    blink() {
+        this.sprite.visible = (frameCount % (GHOST_BLINKING_FRAMES * 2) < GHOST_BLINKING_FRAMES);
+    }
+
+    stopBlink(){
+        this.sprite.visible = true;
+    }
+
     readyToRespawn() {
         return this.disabled && this.hasPassedDeathCooldown();
     }
