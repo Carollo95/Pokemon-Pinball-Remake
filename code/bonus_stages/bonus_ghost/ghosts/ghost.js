@@ -9,10 +9,15 @@ class Ghost {
     disabled;
 
     hurtAnimation;
+    timeOfHurt;
+
 
     constructor(x, y, width, height) {
         this.start_x = x;
         this.start_y = y;
+
+        this.timeOfHurt = 0;
+
         this.sprite = new Sprite(x, y, width, height, "static");
         this.sprite.debug = DEBUG;
         this.disabled = false;
@@ -22,7 +27,7 @@ class Ghost {
         this.sprite.visible = (frameCount % (GHOST_BLINKING_FRAMES * 2) < GHOST_BLINKING_FRAMES);
     }
 
-    stopBlink(){
+    stopBlink() {
         this.sprite.visible = true;
     }
 
@@ -32,6 +37,10 @@ class Ghost {
 
     hasPassedDeathCooldown() {
         return (millis() - this.timeOfDissapearance) > GHOST_RESPAWN_THRESHOLD_MILLS;
+    }
+
+    isHurtTimeFinished() {
+        return (millis() - this.timeOfHurt) > GHOST_TIME_OF_HURT
     }
 
 }

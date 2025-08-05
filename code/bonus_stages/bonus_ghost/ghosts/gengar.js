@@ -5,6 +5,7 @@ const GENGAR_STEP_LENGTH = 10.0; //Pixel length of each step
 const GENGAR_HITPOINTS = 5; //Number of hits to go down
 const GENGAR_STEP_COOLDOWN_MILLS = 1500; //Time between steps
 const GENGAR_MAX_DISTANCE = 100; //Number of pixels it can advance
+const GENGAR__INVINCIBILITY_TIME = 1500; //Milliseconds of invulnerabiliy after getting hit
 
 
 class Gengar extends Ghost {
@@ -30,27 +31,37 @@ class Gengar extends Ghost {
         this.sprite.addAnimation("hurt", this.hurtAnimation);
         this.walkAnimation = getAnimation(BONUS_GHOST_GENGAR_WALK, 96, 128, 4, DEFAULT_ANIMATION_DELAY);
         this.sprite.addAnimation("walk", this.walkAnimation);
-        this.sprite.changeAnimation("idle");
 
+        this.sprite.changeAnimation("idle");
     }
 
 
     update() {
+        if (this.isRecentlyHurt()) {
+            this.blink();
+        } else {
+            enableSprite(this.sprite);
+            this.sprite.visible= true; //If case blinking stops at an invisible frame
+        }
         this.checkCollision();
         this.move();
+    }
+
+    isRecentlyHurt() {
+        return (millis() - this.timeOfHurt) < GENGAR__INVINCIBILITY_TIME;
     }
 
     checkCollision() {
         if (this.sprite.collide(ball)) {
             this.hitPoints -= 1;
-            this.sprite.changeAnimation("hurt");
-            this.blink();
-            this.timeOfLastStep = millis() - GENGAR_STEP_COOLDOWN_MILLS; //To immediatly step backwards
             if (this.hitPoints < 0) {
-                this.disableSprite();
+                this.disableSprite(this.sprite);
+                //TODO not disable but walk butwards and disappear
             } else {
                 disableSprite(this.sprite);
+                this.sprite.changeAnimation("hurt");
                 this.keepMovingDown = false;
+                this.timeOfHurt = millis();
             }
         }
     }
@@ -79,13 +90,11 @@ class Gengar extends Ghost {
         if (!this.keepMovingDown) {
             this.sprite.pos.y -= GENGAR_SPEED;
 
-            if (this.backstepCompleted()) {
+            if (this.isBackstepCompleted()) {
                 this.step_start_y = this.sprite.pos.y;
                 this.keepMovingDown = true;
-                enableSprite(this.sprite);
                 this.timeOfLastStep = millis();
                 this.sprite.changeAnimation("idle");
-                this.stopBlink();
                 startShake();
             }
 
@@ -99,7 +108,7 @@ class Gengar extends Ghost {
         if (this.keepMovingDown) {
             this.sprite.pos.y += GENGAR_SPEED;
 
-            if (this.stepCompleted()) {
+            if (this.isStepCompleted()) {
                 this.step_start_y = this.sprite.pos.y;
                 this.timeOfLastStep = millis();
                 this.sprite.changeAnimation("idle");
@@ -112,10 +121,11 @@ class Gengar extends Ghost {
         }
     }
 
-    stepCompleted() {
+    isStepCompleted() {
         return this.sprite.pos.y > (this.step_start_y + GENGAR_STEP_LENGTH);
     }
-    backstepCompleted() {
+
+    isBackstepCompleted() {
         return this.sprite.pos.y < (this.step_start_y - GENGAR_STEP_LENGTH) || this.sprite.pos.y <= this.start_y;
     }
 

@@ -2,7 +2,6 @@ class NormalGhost extends Ghost {
     keepMovinRight;
     keepMovinUp;
     timeOfDissapearance;
-    timeOfHurt;
 
     maxHorizontalMovement;
     maxVerticalMovement;
@@ -17,7 +16,6 @@ class NormalGhost extends Ghost {
         this.keepMovinRight = true;
         this.keepMovinUp = true;
         this.timeOfDissapearance = 0;
-        this.timeOfHurt = 0;
 
         this.sprite.addAnimation("idle", this.idleAnimation);
         this.sprite.addAnimation("hurt", this.hurtAnimation);
@@ -64,7 +62,7 @@ class NormalGhost extends Ghost {
                 this.checkCollision();
                 this.move();
             } else {
-                if (this.isTimeToDisappear()) {
+                if (this.isHurtTimeFinished()) {
                     this.disableSprite();
                 } else {
                     this.blink();
@@ -74,9 +72,6 @@ class NormalGhost extends Ghost {
         }
     }
 
-    isTimeToDisappear() {
-        return (millis() - this.timeOfHurt) > GHOST_TIME_OF_HURT
-    }
 
     checkCollision() {
         if (this.sprite.collide(ball)) {
