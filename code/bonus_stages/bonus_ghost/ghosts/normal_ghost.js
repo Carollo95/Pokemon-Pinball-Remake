@@ -1,4 +1,4 @@
-class NormalGhost extends Ghost {
+class SmallGhost extends Ghost {
     keepMovinRight;
     keepMovinUp;
     timeOfDissapearance;
