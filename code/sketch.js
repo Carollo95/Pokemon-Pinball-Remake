@@ -23,6 +23,8 @@ let extraHaunterLives = 2;//10;
 
 let currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
+let timer;
+
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   replaceBackground(BONUS_GHOST_BACKGROUND);
@@ -31,6 +33,7 @@ function setup() {
   createScenario();
   createBonusFlippers()
   spawnBonusBall();
+  timer = new Timer(90000);
 
   currentPhase = 0;
 }
@@ -91,6 +94,7 @@ function draw() {
   image(bg, 0, 0, width, height);
   shake();
 
+  timer.update();
   createBonusNewBallIfBallLoss(getOpenGateBackground())
   closeBonusGateIfBallInsideBoard(getBackground())
 
