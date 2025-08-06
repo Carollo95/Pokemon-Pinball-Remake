@@ -1,22 +1,23 @@
 let DEBUG = false;
 
-let SCREEN_WIDTH = 384;
-let SCREEN_HEIGHT = 556;
+const SCREEN_WIDTH = 384;
+const SCREEN_HEIGHT = 556;
 
-let GRAVITY = 10;
-let EPSILON = 0.1;
+const DEFAULT_ANIMATION_DELAY = 12;
+
+const GRAVITY = 10;
+const EPSILON = 0.1;
+
+const SHAKE_STRENGTH = 4;
 
 let bg;
+let shakeDuration = 0;
 
 function disableSprite(sprite) {
     sprite.sleeping = true;
     sprite.physics = "none";
-
 }
 
-function disablePolygonSprite(sprite) {
-    sprite.sleeping = true;
-}
 
 function enableSprite(sprite) {
     sprite.sleeping = false;
@@ -34,4 +35,26 @@ function getImage(name) {
 
 function replaceBackground(name) {
     bg = getImage(name);
+}
+
+function getAnimation(name, frameHeight, frameWidth, imageNum, delay) {
+    let sheet = loadImage(name);
+    let animation = loadAnimation(sheet, { frameSize: [frameHeight, frameWidth], frameCount: imageNum });
+    animation.frameDelay = delay;
+
+    return animation;
+}
+
+function startShake() {
+    shakeDuration = 20;
+}
+
+function shake() {
+    if (shakeDuration > 0) {
+        displacement = random(-SHAKE_STRENGTH, SHAKE_STRENGTH)
+        translate(0, displacement);
+        image(bg, 0, displacement, width, height);
+
+        shakeDuration--;
+    }
 }

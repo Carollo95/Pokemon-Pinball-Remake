@@ -1,13 +1,13 @@
-let GASTLY1_SPAWN_X = 70;
+let GASTLY1_SPAWN_X = 80;
 let GASTLY1_SPAWN_Y = 140;
-let GASTLY2_SPAWN_X = 200;
+let GASTLY2_SPAWN_X = 240;
 let GASTLY2_SPAWN_Y = 203;
 let GASTLY3_SPAWN_X = 159;
-let GASTLY3_SPAWN_Y = 280;
+let GASTLY3_SPAWN_Y = 260;
 
-let HAUNTER1_SPAWN_X = 65;
+let HAUNTER1_SPAWN_X = 90;
 let HAUNTER1_SPAWN_Y = 235;
-let HAUNTER2_SPAWN_X = 233;
+let HAUNTER2_SPAWN_X = 220;
 let HAUNTER2_SPAWN_Y = 167;
 
 let GENGAR_SPAWN_X = SCREEN_WIDTH / 2;
@@ -18,8 +18,8 @@ let gastly1, gastly2, gastly3;
 let haunter1, haunter2;
 let gengar;
 
-let extraGastlyLives = 7;
-let extraHaunterLives = 10;
+let extraGastlyLives = 0;//7;
+let extraHaunterLives = 2;//10;
 
 let currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
@@ -86,8 +86,10 @@ function createGrave(x, y) {
 }
 
 function draw() {
+  //This is more engine stuff, maybe move?
   clear();
-  background(bg);
+  image(bg, 0, 0, width, height);
+  shake();
 
   createBonusNewBallIfBallLoss(getOpenGateBackground())
   closeBonusGateIfBallInsideBoard(getBackground())
@@ -98,6 +100,7 @@ function draw() {
   updatePhaseSprites();
 
   changePhaseIfNecessary();
+
 }
 
 function updatePhaseSprites() {
@@ -133,6 +136,7 @@ function setupGastlyPhase() {
   gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
   gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
 }
+
 function setupHaunterPhase() {
   haunter1 = createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
   haunter2 = createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
@@ -146,6 +150,7 @@ function createDisabledGhost(clazz, x, y) {
 
 function setupGengarPhase() {
   replaceBackground(getBackground());
+  startShake();
   grave1.remove();
   grave2.remove();
   grave3.remove();
@@ -156,7 +161,7 @@ function setupGengarPhase() {
 
 function checkIfTimeForANewPhase() {
   if (currentPhase == 0
-    || (currentPhase == 1 && gasltyPhaseFinished())
+    || (currentPhase == 1 && gastlyPhaseFinished())
     || (currentPhase == 2 && haunterPhaseFinished())
     || (currentPhase == 3 && gengarPhaseFinished())) {
     return true;
@@ -164,12 +169,12 @@ function checkIfTimeForANewPhase() {
   return false;
 }
 
-function gasltyPhaseFinished() {
-  return extraGastlyLives == 0 && gastly1.isDisabled() && gastly2.isDisabled() && gastly3.isDisabled();
+function gastlyPhaseFinished() {
+  return extraGastlyLives == 0 && gastly1.disabled && gastly2.disabled && gastly3.disabled;
 }
 
 function haunterPhaseFinished() {
-  return extraHaunterLives == 0 && haunter1.isDisabled() && haunter2.isDisabled();
+  return extraHaunterLives == 0 && haunter1.disabled && haunter2.disabled;
 }
 
 function gengarPhaseFinished() {
@@ -219,10 +224,12 @@ function updateGengar() {
   if (gengar.hitPoints == 0) {
     levelCompleted = true;
     disableFlippers();
-    gengar.disableSprite();
-    console.log("Bonus complete");
-  } else if (gengar.readyToRespawn() && !levelCompleted) {
+    if (gengar.disabled) {
+      console.log("Bonus complete");
+    }
+  } else if (gengar.readyToRespawn()) {
     gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
   }
+
   return gengar;
 }
