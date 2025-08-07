@@ -36,7 +36,7 @@ class Gengar extends Ghost {
     }
 
 
-    update() {
+    update(ballSprite) {
         if (!this.disabled) {
             if (this.hitPoints > 0) {
                 if (this.isRecentlyHurt()) {
@@ -45,7 +45,7 @@ class Gengar extends Ghost {
                     enableSprite(this.sprite);
                     this.sprite.visible = true; //If case blinking stops at an invisible frame
                 }
-                this.checkCollision();
+                this.checkCollision(ballSprite);
                 this.move();
             } else {
                 this.moonwalkIntoOblivion();
@@ -67,18 +67,13 @@ class Gengar extends Ghost {
         return (millis() - this.timeOfHurt) < GENGAR__INVINCIBILITY_TIME;
     }
 
-    checkCollision() {
-        if (this.sprite.collide(ball.sprite)) {
+    checkCollision(ballSprite) {
+        if (this.sprite.collide(ballSprite)) {
             this.hitPoints -= 1;
-            if (this.hitPoints < 0) {
-                disableSprite(this.sprite);
-                //TODO not disable but walk butwards and disappear
-            } else {
-                disableSprite(this.sprite);
-                this.sprite.changeAnimation("hurt");
-                this.keepMovingDown = false;
-                this.timeOfHurt = millis();
-            }
+            disableSprite(this.sprite);
+            this.sprite.changeAnimation("hurt");
+            this.keepMovingDown = false;
+            this.timeOfHurt = millis();
         }
     }
 
