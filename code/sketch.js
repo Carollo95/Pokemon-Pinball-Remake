@@ -1,3 +1,5 @@
+const GHOST_STATE_TIME_MILLIS = 91000; //Duration of the ghost stage
+
 let GASTLY1_SPAWN_X = 80;
 let GASTLY1_SPAWN_Y = 140;
 let GASTLY2_SPAWN_X = 240;
@@ -23,6 +25,8 @@ let extraHaunterLives = 2;//10;
 
 let currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
+let flippers;
+let ball;
 let timer;
 
 function setup() {
@@ -31,9 +35,10 @@ function setup() {
 
   world.gravity.y = GRAVITY;
   createScenario();
-  createBonusFlippers()
-  spawnBonusBall();
-  timer = new Timer(91000);
+  ball = spawnBonusBall();
+  flippers = createBonusFlippers();
+  
+  timer = new Timer(GHOST_STATE_TIME_MILLIS);
 
   currentPhase = 0;
 }
@@ -97,8 +102,7 @@ function draw() {
   createBonusNewBallIfBallLoss(getOpenGateBackground())
   closeBonusGateIfBallInsideBoard(getBackground())
   
-  controlLeftFlipper();
-  controlRightFlipper();
+  flippers.update();
   
   updatePhaseSprites();
   timer.update();
@@ -232,7 +236,7 @@ function updateGengar() {
 
   if (gengar.hitPoints == 0) {
     levelCompleted = true;
-    disableFlippers();
+    this.flippers.disableFlippers();
     if (gengar.disabled) {
       console.log("Bonus complete");
     }

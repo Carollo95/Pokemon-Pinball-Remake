@@ -74,7 +74,7 @@ class SmallGhost extends Ghost {
 
 
     checkCollision() {
-        if (this.sprite.collide(ball)) {
+        if (this.sprite.collide(ball.sprite)) {
             this.sprite.image = this.hurtAnimation
             disableSprite(this.sprite);
             this.timeOfHurt = millis();

@@ -6,13 +6,13 @@ let levelCompleted = false;
 
 function createBonusNewBallIfBallLoss(bonusGateBackground) {
     if (checkBonusBallLoss() && !levelCompleted) {
-        spawnBonusBall();
+        ball = spawnBonusBall();
         openBonusGate(bonusGateBackground);
     }
 }
 
 function checkBonusBallLoss() {
-    return ball.y > HEIGHT_OF_BALL_LOSS;
+    return ball.getPositionY() > HEIGHT_OF_BALL_LOSS;
 }
 
 function openBonusGate(bonusGateBackground) {
@@ -32,10 +32,10 @@ function closeBonusGateIfBallInsideBoard(bonusGateBackground) {
 }
 
 function chechBallInsideBonusBoard() {
-    return ball.x < WIDTH_THRESHOLD_TO_CLOSE_GATE;
+    return ball.getPositionX() < WIDTH_THRESHOLD_TO_CLOSE_GATE;
 }
 
 function loseBonusStage(){
-    disableFlippers();
+    flippers.disableFlippers();
     timer.stop();
 }

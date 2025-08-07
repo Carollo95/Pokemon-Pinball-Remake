@@ -48,7 +48,6 @@ class Timer {
                 this.timeUp = true;
             } else {
                 this.remainingMillis = newTime;
-                console.log(this.getTime());
             }
 
             this.updateSprite();

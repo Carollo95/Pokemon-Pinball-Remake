@@ -68,7 +68,7 @@ class Gengar extends Ghost {
     }
 
     checkCollision() {
-        if (this.sprite.collide(ball)) {
+        if (this.sprite.collide(ball.sprite)) {
             this.hitPoints -= 1;
             if (this.hitPoints < 0) {
                 disableSprite(this.sprite);
