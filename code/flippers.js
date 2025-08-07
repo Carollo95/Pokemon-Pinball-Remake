@@ -15,7 +15,7 @@ const BONUS_RIGHT_FLIPPER_ROTATION_POINT_Y = BONUS_LEFT_FLIPPER_ROTATION_POINT_Y
 
 const LEFT_FLIPPER_MIN_ROTATION = 35; //Min angle for the left flipper
 const RIGHT_FLIPPER_MIN_ROTATION = LEFT_FLIPPER_MIN_ROTATION * -1; //Min angle for the right flipper
-const LEFT_FLIPPER_MAX_ROTATION = -15; //Max angle for the left flipper
+const LEFT_FLIPPER_MAX_ROTATION = -24; //Max angle for the left flipper
 const RIGHT_FLIPPER_MAX_ROTATION = LEFT_FLIPPER_MAX_ROTATION * -1; //Max angle for the right flipper
 
 const RIGHT_FLIPPER_ROTATION_SPEED = 15; //Movement speed for the right flipper
@@ -90,7 +90,7 @@ class Flippers {
             } else if (this.leftFlipper.rotation < 10) {
 
                 this.leftFlipper.changeAnimation("middle");
-        } else {
+            } else {
                 this.leftFlipper.changeAnimation("down");
             }
 
@@ -149,6 +149,13 @@ function createBonusFlippers() {
 }
 
 function rotateFlipperAnimation(flipper, minFlipperRotation, maxFlipperRotation, flipperOffset) {
+    if (DEBUG) {
+        stroke(255, 0, 0);
+        noFill();
+        rectMode(CENTER);
+        rect(flipper._offset._x, flipper._offset._y, flipper.width, flipper._h);
+    }
+
     if (flipper.animation.name == "down") {
         rotate(-minFlipperRotation);
     } else if (flipper.animation.name == "middle") {
@@ -156,5 +163,7 @@ function rotateFlipperAnimation(flipper, minFlipperRotation, maxFlipperRotation,
     } else {
         rotate(-maxFlipperRotation);
     }
-    flipper.animation.draw(flipperOffset, 0);
+    flipper.animation.draw(flipperOffset, -2);
+
+
 }
