@@ -33,7 +33,7 @@ function setup() {
   createScenario();
   createBonusFlippers()
   spawnBonusBall();
-  timer = new Timer(90000);
+  timer = new Timer(91000);
 
   currentPhase = 0;
 }
@@ -94,14 +94,19 @@ function draw() {
   image(bg, 0, 0, width, height);
   shake();
 
-  timer.update();
   createBonusNewBallIfBallLoss(getOpenGateBackground())
   closeBonusGateIfBallInsideBoard(getBackground())
-
+  
   controlLeftFlipper();
   controlRightFlipper();
-
+  
   updatePhaseSprites();
+  timer.update();
+
+  if(timer.timeIsUp()){
+    loseBonusStage();
+    console.log("Bonus stage ended");
+  }
 
   changePhaseIfNecessary();
 
@@ -237,3 +242,4 @@ function updateGengar() {
 
   return gengar;
 }
+

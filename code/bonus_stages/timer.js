@@ -1,5 +1,5 @@
-const TIMER_POSITION_BONUS_X = 285;
-const TIMER_POSITION_BONUS_Y = 126;
+const TIMER_POSITION_BONUS_X = 290;
+const TIMER_POSITION_BONUS_Y = 116;
 const TIMER_CHAR_HEIGHT = 32;
 const TIMER_CHAR_WIDTH = 16;
 
@@ -73,7 +73,7 @@ class Timer {
         return minutes + ":" + nf(seconds, 2);
     }
 
-    stopTimer(){
+    stop(){
         this.stopped = true;
     }
 

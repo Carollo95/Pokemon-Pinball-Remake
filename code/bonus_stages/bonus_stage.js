@@ -34,3 +34,8 @@ function closeBonusGateIfBallInsideBoard(bonusGateBackground) {
 function chechBallInsideBonusBoard() {
     return ball.x < WIDTH_THRESHOLD_TO_CLOSE_GATE;
 }
+
+function loseBonusStage(){
+    disableFlippers();
+    timer.stop();
+}
