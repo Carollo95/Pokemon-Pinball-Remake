@@ -23,6 +23,8 @@ let extraHaunterLives = 2;//10;
 
 let currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
+let timer;
+
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   replaceBackground(BONUS_GHOST_BACKGROUND);
@@ -31,6 +33,7 @@ function setup() {
   createScenario();
   createBonusFlippers()
   spawnBonusBall();
+  timer = new Timer(91000);
 
   currentPhase = 0;
 }
@@ -93,11 +96,17 @@ function draw() {
 
   createBonusNewBallIfBallLoss(getOpenGateBackground())
   closeBonusGateIfBallInsideBoard(getBackground())
-
+  
   controlLeftFlipper();
   controlRightFlipper();
-
+  
   updatePhaseSprites();
+  timer.update();
+
+  if(timer.timeIsUp()){
+    loseBonusStage();
+    console.log("Bonus stage ended");
+  }
 
   changePhaseIfNecessary();
 
@@ -233,3 +242,4 @@ function updateGengar() {
 
   return gengar;
 }
+
