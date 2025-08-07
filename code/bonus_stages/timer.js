@@ -29,14 +29,14 @@ class Timer {
 
         let sheet;
         for (let i = 0; i < 10; i++) {
-            this.minutesSprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i + ".png", TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
+            this.minutesSprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
             this.minutesSprite.debug = DEBUG;
-            this.second1Sprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i + ".png", TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
+            this.second1Sprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
             this.second1Sprite.debug = DEBUG;
-            this.second2Sprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i + ".png", TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
+            this.second2Sprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
             this.second2Sprite.debug = DEBUG;
         }
-        this.colonSprite.addAnimation("colon", getAnimation(TIMER_NUMBERS_PREFIX + "colon.png", TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
+        this.colonSprite.addAnimation("colon", getAnimation(TIMER_NUMBERS_PREFIX + "colon", TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
         this.colonSprite.changeAnimation("colon");
 
     }
@@ -72,7 +72,7 @@ class Timer {
         return minutes + ":" + nf(seconds, 2);
     }
 
-    stop(){
+    stop() {
         this.stopped = true;
     }
 

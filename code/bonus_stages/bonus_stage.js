@@ -1,12 +1,15 @@
 const HEIGHT_OF_BALL_LOSS = SCREEN_HEIGHT; //Height at which a ball is considered lost
 const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310; //Horizontal pixel that when a ball crosses it, the gate on bonus levels closes
 
-class BonusStage {
-
+class BonusStage extends Stage {
     gate;
     levelCompleted = false;
 
-    constructor() {}
+    timer;
+
+    constructor() {
+        super();
+    }
 
     createBonusNewBallIfBallLoss(bonusGateBackground) {
         if (this.checkBonusBallLoss() && !this.levelCompleted) {
@@ -21,12 +24,12 @@ class BonusStage {
 
     openBonusGate(bonusGateBackground) {
         disableSprite(this.gate);
-        replaceBackground(bonusGateBackground);
+        super.replaceBackground(bonusGateBackground);
     }
 
     closeBonusGate(bonusGateBackground) {
         enableSprite(this.gate);
-        replaceBackground(bonusGateBackground);
+        super.replaceBackground(bonusGateBackground);
     }
 
     closeBonusGateIfBallInsideBoard(bonusGateBackground) {

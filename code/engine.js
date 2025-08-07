@@ -1,30 +1,26 @@
-let DEBUG = false;
+let DEBUG = false; //true to start the game on debug mode
 
-const SCREEN_WIDTH = 384;
-const SCREEN_HEIGHT = 556;
+const SCREEN_WIDTH = 384; //Widht of the canvas
+const SCREEN_HEIGHT = 556; //Height of the canvas
 
-const DEFAULT_ANIMATION_DELAY = 12;
+const DEFAULT_ANIMATION_DELAY = 12; //Delay between frames of animation
 
-const GRAVITY = 10;
-const EPSILON = 0.1;
-
-const SHAKE_STRENGTH = 4;
-
-let bg;
-let shakeDuration = 0;
+GRAVITY = 10; //The gravity applied to the game
+const EPSILON = 0.1; //Marging for physics calculation (Avoids jittering)
 
 function disableSprite(sprite) {
     sprite.sleeping = true;
     sprite.physics = "none";
 }
 
+function startShake(){
+    stage.startShake();
+}
 
 function enableSprite(sprite) {
     sprite.sleeping = false;
     sprite.physics = "static";
 }
-
-
 function getImage(name) {
     let image = loadImage(name + ".png");
     if (DEBUG) {
@@ -33,28 +29,10 @@ function getImage(name) {
     return image;
 }
 
-function replaceBackground(name) {
-    bg = getImage(name);
-}
-
 function getAnimation(name, frameHeight, frameWidth, imageNum, delay) {
-    let sheet = loadImage(name);
+    let sheet = getImage(name);
     let animation = loadAnimation(sheet, { frameSize: [frameHeight, frameWidth], frameCount: imageNum });
     animation.frameDelay = delay;
 
     return animation;
-}
-
-function startShake() {
-    shakeDuration = 20;
-}
-
-function shake() {
-    if (shakeDuration > 0) {
-        displacement = random(-SHAKE_STRENGTH, SHAKE_STRENGTH)
-        translate(0, displacement);
-        image(bg, 0, displacement, width, height);
-
-        shakeDuration--;
-    }
 }

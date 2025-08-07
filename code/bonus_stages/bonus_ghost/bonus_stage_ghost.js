@@ -15,13 +15,6 @@ let HAUNTER2_SPAWN_Y = 167;
 let GENGAR_SPAWN_X = SCREEN_WIDTH / 2;
 let GENGAR_SPAWN_Y = 120;
 
-
-
-
-let flippers;
-let ball;
-let timer;
-
 class BonusStageGhost extends BonusStage {
   gastly1;
   gastly2;
@@ -47,7 +40,7 @@ class BonusStageGhost extends BonusStage {
 
   setup() {
     createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
-    replaceBackground(BONUS_GHOST_BACKGROUND);
+    super.replaceBackground(BONUS_GHOST_BACKGROUND);
 
     world.gravity.y = GRAVITY;
     this.createScenario();
@@ -112,8 +105,8 @@ class BonusStageGhost extends BonusStage {
   draw() {
     //This is more engine stuff, maybe move?
     clear();
-    image(bg, 0, 0, width, height);
-    shake();
+    super.drawBackground();
+    super.shake();
 
     super.createBonusNewBallIfBallLoss(this.getOpenGateBackground())
     super.closeBonusGateIfBallInsideBoard(this.getBackground())
@@ -178,8 +171,8 @@ class BonusStageGhost extends BonusStage {
   }
 
   setupGengarPhase() {
-    replaceBackground(this.getBackground());
-    startShake();
+    super.replaceBackground(this.getBackground());
+    super.startShake();
     this.grave1.remove();
     this.grave2.remove();
     this.grave3.remove();
