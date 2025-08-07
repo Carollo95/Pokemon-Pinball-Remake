@@ -15,7 +15,7 @@ const BONUS_RIGHT_FLIPPER_ROTATION_POINT_Y = BONUS_LEFT_FLIPPER_ROTATION_POINT_Y
 
 const LEFT_FLIPPER_MIN_ROTATION = 35; //Min angle for the left flipper
 const RIGHT_FLIPPER_MIN_ROTATION = LEFT_FLIPPER_MIN_ROTATION * -1; //Min angle for the right flipper
-const LEFT_FLIPPER_MAX_ROTATION = -15; //Max angle for the left flipper
+const LEFT_FLIPPER_MAX_ROTATION = -19; //Max angle for the left flipper
 const RIGHT_FLIPPER_MAX_ROTATION = LEFT_FLIPPER_MAX_ROTATION * -1; //Max angle for the right flipper
 
 const RIGHT_FLIPPER_ROTATION_SPEED = 15; //Movement speed for the right flipper
@@ -24,9 +24,14 @@ const LEFT_FLIPPER_ROTATION_SPEED = RIGHT_FLIPPER_ROTATION_SPEED * -1; //Movemen
 const LEFT_FLIPPER_KEY = 'a'; //Key for the movemenet of the left flipper
 const RIGHT_FLIPPER_KEY = 'l'; //Key for the movemenet of the right flipper
 
+const FLIPPER_IMAGE_WIDHT = 48;
+const FLIPPER_IMAGE_HEIGHT = 48;
+
+const LEFT_FLIPPER_OFFSET = 14;
+const RIGHT_FLIPPER_OFFSET = -14;
 
 
-class Flippers{
+class Flippers {
     leftFlipper;
     rightFlipper;
 
@@ -38,17 +43,44 @@ class Flippers{
         this.leftFlipper = new Sprite(leftFlipperRotationPointX, leftFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
         this.leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
         this.leftFlipper.debug = DEBUG;
-        this.leftFlipper.offset.x = 14;
-        this.leftFlipper.pixelPerfect = true;
+        this.leftFlipper.offset.x = LEFT_FLIPPER_OFFSET;
+
+        this.leftFlipper.addAnimation("up", getAnimation(LEFT_FLIPPER_UP, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.leftFlipper.addAnimation("middle", getAnimation(LEFT_FLIPPER_MIDDLE, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.leftFlipper.addAnimation("down", getAnimation(LEFT_FLIPPER_DOWN, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.leftFlipper.draw = function () {
+            if (this.animation.name == "down") {
+                rotate(-LEFT_FLIPPER_MIN_ROTATION);
+            } else if (this.animation.name == "middle") {
+                rotate(0);
+            } else {
+                rotate(-LEFT_FLIPPER_MAX_ROTATION);
+            }
+            this.animation.draw(LEFT_FLIPPER_OFFSET, -2);
+
+        }
 
         this.rightFlipper = new Sprite(rightFlipperRotationPointX, rightFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
         this.rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
         this.rightFlipper.debug = DEBUG;
-        this.rightFlipper.offset.x = -14;
-        this.rightFlipper.pixelPerfect = true;
+        this.rightFlipper.offset.x = RIGHT_FLIPPER_OFFSET;
+
+        this.rightFlipper.addAnimation("up", getAnimation(RIGHT_FLIPPER_UP, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.rightFlipper.addAnimation("middle", getAnimation(RIGHT_FLIPPER_MIDDLE, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.rightFlipper.addAnimation("down", getAnimation(RIGHT_FLIPPER_DOWN, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.rightFlipper.draw = function () {
+            if (this.animation.name == "down") {
+                rotate(-RIGHT_FLIPPER_MIN_ROTATION);
+            } else if (this.animation.name == "middle") {
+                rotate(0);
+            } else {
+                rotate(-RIGHT_FLIPPER_MAX_ROTATION);
+            }
+            this.animation.draw(RIGHT_FLIPPER_OFFSET, -2);
+        }
     }
 
-    update(){
+    update() {
         this.controlLeftFlipper();
         this.controlRightFlipper();
     }
@@ -71,6 +103,16 @@ class Flippers{
                     this.leftFlipper.rotationSpeed = 0;
                 }
             }
+
+            if (this.leftFlipper.rotation < -10) {
+                this.leftFlipper.changeAnimation("up");
+            } else if (this.leftFlipper.rotation < 10) {
+
+                this.leftFlipper.changeAnimation("middle");
+            } else {
+                this.leftFlipper.changeAnimation("down");
+            }
+
         }
     }
 
@@ -91,6 +133,15 @@ class Flippers{
                     this.rightFlipper.rotationSpeed = 0;
                 }
             }
+
+            if (this.rightFlipper.rotation > 10) {
+                this.rightFlipper.changeAnimation("up");
+            } else if (this.rightFlipper.rotation > -10) {
+
+                this.rightFlipper.changeAnimation("middle");
+            } else {
+                this.rightFlipper.changeAnimation("down");
+            }
         }
     }
 
@@ -108,10 +159,10 @@ class Flippers{
     }
 }
 
-    function createTableFlippers() {
-        return new Flippers(LEFT_FLIPPER_ROTATION_POINT_X, LEFT_FLIPPER_ROTATION_POINT_Y, RIGHT_FLIPPER_ROTATION_POINT_X, RIGHT_FLIPPER_ROTATION_POINT_Y);
-    }
+function createTableFlippers() {
+    return new Flippers(LEFT_FLIPPER_ROTATION_POINT_X, LEFT_FLIPPER_ROTATION_POINT_Y, RIGHT_FLIPPER_ROTATION_POINT_X, RIGHT_FLIPPER_ROTATION_POINT_Y);
+}
 
-    function createBonusFlippers() {
-        return new Flippers(BONUS_LEFT_FLIPPER_ROTATION_POINT_X, BONUS_LEFT_FLIPPER_ROTATION_POINT_Y, BONUS_RIGHT_FLIPPER_ROTATION_POINT_X, BONUS_RIGHT_FLIPPER_ROTATION_POINT_Y);
-    }
+function createBonusFlippers() {
+    return new Flippers(BONUS_LEFT_FLIPPER_ROTATION_POINT_X, BONUS_LEFT_FLIPPER_ROTATION_POINT_Y, BONUS_RIGHT_FLIPPER_ROTATION_POINT_X, BONUS_RIGHT_FLIPPER_ROTATION_POINT_Y);
+}

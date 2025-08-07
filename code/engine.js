@@ -1,4 +1,4 @@
-let DEBUG = false; //true to start the game on debug mode
+let DEBUG = true; //true to start the game on debug mode
 
 const SCREEN_WIDTH = 384; //Widht of the canvas
 const SCREEN_HEIGHT = 556; //Height of the canvas
