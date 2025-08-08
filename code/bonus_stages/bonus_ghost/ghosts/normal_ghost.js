@@ -56,10 +56,10 @@ class SmallGhost extends Ghost {
         }
     }
 
-    update() {
+    update(ballSprite) {
         if (!this.disabled) {
             if (this.timeOfHurt == 0) {
-                this.checkCollision();
+                this.checkCollision(ballSprite);
                 this.move();
             } else {
                 if (this.isHurtTimeFinished()) {
@@ -73,8 +73,8 @@ class SmallGhost extends Ghost {
     }
 
 
-    checkCollision() {
-        if (this.sprite.collide(ball)) {
+    checkCollision(ballSprite) {
+        if (this.sprite.collide(ballSprite)) {
             this.sprite.image = this.hurtAnimation
             disableSprite(this.sprite);
             this.timeOfHurt = millis();
