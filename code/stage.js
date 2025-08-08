@@ -33,7 +33,6 @@ class Stage {
     }
 
     draw() {
-        //clear();
         this.drawBackground();
         this.shake();
     }

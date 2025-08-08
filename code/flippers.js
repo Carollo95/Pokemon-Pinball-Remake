@@ -24,9 +24,6 @@ const LEFT_FLIPPER_ROTATION_SPEED = RIGHT_FLIPPER_ROTATION_SPEED * -1; //Movemen
 const LEFT_FLIPPER_KEY = 'a'; //Key for the movemenet of the left flipper
 const RIGHT_FLIPPER_KEY = 'l'; //Key for the movemenet of the right flipper
 
-const FLIPPER_IMAGE_WIDHT = 48;
-const FLIPPER_IMAGE_HEIGHT = 48;
-
 const LEFT_FLIPPER_OFFSET = 14;
 const RIGHT_FLIPPER_OFFSET = -14;
 
