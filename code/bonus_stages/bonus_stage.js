@@ -3,12 +3,14 @@ const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310; //Horizontal pixel that when a ball c
 
 class BonusStage extends Stage {
     gate;
+    gateIsOpen;
     levelCompleted = false;
 
     timer;
 
     constructor() {
         super();
+        this.gateIsOpen = true;
     }
 
     createBonusNewBallIfBallLoss(bonusGateBackground) {
@@ -23,17 +25,20 @@ class BonusStage extends Stage {
     }
 
     openBonusGate(bonusGateBackground) {
+        this.gateIsOpen = true;
         disableSprite(this.gate);
         super.replaceBackground(bonusGateBackground);
     }
 
     closeBonusGate(bonusGateBackground) {
         enableSprite(this.gate);
+        this.gateIsOpen = false;
+        sfx3F.play();
         super.replaceBackground(bonusGateBackground);
     }
 
     closeBonusGateIfBallInsideBoard(bonusGateBackground) {
-        if (this.chechBallInsideBonusBoard()) {
+        if (this.chechBallInsideBonusBoard() && this.gateIsOpen) {
             this.closeBonusGate(bonusGateBackground);
         }
     }

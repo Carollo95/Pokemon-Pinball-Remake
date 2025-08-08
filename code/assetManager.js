@@ -8,17 +8,6 @@ const BONUS_GHOST_BACKGROUND_P2 = 'assets/img/bonus-ghost/bonus_ghost_background
 const TIMER_CHAR_HEIGHT = 32;
 const TIMER_CHAR_WIDTH = 16;
 
-const BONUS_GHOST_GASTLY = 'assets/img/bonus-ghost/gastly';
-const BONUS_GHOST_GASTLY_HURT = 'assets/img/bonus-ghost/gastly_hurt';
-const BONUS_GHOST_HAUNTER_HURT = 'assets/img/bonus-ghost/haunter_hurt';
-const BONUS_GHOST_HAUNTER = 'assets/img/bonus-ghost/haunter';
-const BONUS_GHOST_GENGAR = 'assets/img/bonus-ghost/gengar';
-const BONUS_GHOST_GENGAR_HURT = 'assets/img/bonus-ghost/gengar_hurt';
-const BONUS_GHOST_GENGAR_WALK = 'assets/img/bonus-ghost/gengar_walk';
-
-
-let currentSong;
-
 let songGhostStageGastly, songGhostStageHaunter, songGhostStageGengar;
 
 let sfx00, sfx01, sfx02, sfx03, sfx04, sfx05, sfx06, sfx07, sfx08, sfx09,
@@ -29,6 +18,8 @@ let sfx00, sfx01, sfx02, sfx03, sfx04, sfx05, sfx06, sfx07, sfx08, sfx09,
     sfx32, sfx33, sfx34, sfx35, sfx36, sfx37, sfx38, sfx39, sfx3A, sfx3B,
     sfx3C, sfx3D, sfx3E, sfx3F, sfx40, sfx41, sfx42, sfx43, sfx44, sfx45,
     sfx46, sfx47, sfx48, sfx49, sfx4A, sfx4B, sfx4C, sfx4D;
+
+let currentSong;
 
 function preloadAudio() {
     songGhostStageGastly = getAudio('assets/audio/GhostStage_Gastly');
@@ -98,7 +89,7 @@ function preloadAudio() {
     sfx3C = getAudio('assets/audio/sfx/SFX-3C');
     sfx3D = getAudio('assets/audio/sfx/SFX-3D');
     sfx3E = getAudio('assets/audio/sfx/SFX-3E');
-    sfx3F = getAudio('assets/audio/sfx/SFX-3F');
+    sfx3F = getAudio('assets/audio/sfx/SFX-3F'); //Close gate on bonus level
     sfx40 = getAudio('assets/audio/sfx/SFX-40');
     sfx41 = getAudio('assets/audio/sfx/SFX-41');
     sfx42 = getAudio('assets/audio/sfx/SFX-42');
@@ -124,11 +115,13 @@ function getAudio(soundName) {
 }
 
 function playSong(song) {
-    if (this.currentSong != null) {
-        this.currentSong.stop();
+    if (!MUTE_MUSIC) {
+        if (this.currentSong != null) {
+            this.currentSong.stop();
+        }
+        this.currentSong = song;
+        this.currentSong.play();
     }
-    this.currentSong = song;
-    this.currentSong.play();
 }
 
 /**
@@ -169,18 +162,17 @@ function preloadAnimations() {
     }
     animTimerColon = getAnimation('assets/img/timer_colon', TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1);
 
-    animGastly = getAnimation(BONUS_GHOST_GASTLY, 64, 64, 1, DEFAULT_ANIMATION_DELAY);
-    animGastlyHurt = getAnimation(BONUS_GHOST_GASTLY_HURT, 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+    animGastly = getAnimation('assets/img/bonus-ghost/gastly', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+    animGastlyHurt = getAnimation('assets/img/bonus-ghost/gastly_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
 
-    animHaunter = getAnimation(BONUS_GHOST_HAUNTER, 96, 80, 4, DEFAULT_ANIMATION_DELAY);
-    animHaunterHurt = getAnimation(BONUS_GHOST_HAUNTER_HURT, 96, 80, 1, DEFAULT_ANIMATION_DELAY);
+    animHaunter = getAnimation('assets/img/bonus-ghost/haunter', 96, 80, 4, DEFAULT_ANIMATION_DELAY);
+    animHaunterHurt = getAnimation('assets/img/bonus-ghost/haunter_hurt', 96, 80, 1, DEFAULT_ANIMATION_DELAY);
 
-    animGengar = getAnimation(BONUS_GHOST_GENGAR, 96, 128, 3, 16);
-    animGengarHurt = getAnimation(BONUS_GHOST_GENGAR_HURT, 112, 128, 1, DEFAULT_ANIMATION_DELAY);
-    animGengarWalk = getAnimation(BONUS_GHOST_GENGAR_WALK, 96, 128, 4, DEFAULT_ANIMATION_DELAY);
+    animGengar = getAnimation('assets/img/bonus-ghost/gengar', 96, 128, 3, 16);
+    animGengarHurt = getAnimation('assets/img/bonus-ghost/gengar_hurt', 112, 128, 1, DEFAULT_ANIMATION_DELAY);
+    animGengarWalk = getAnimation('assets/img/bonus-ghost/gengar_walk', 96, 128, 4, DEFAULT_ANIMATION_DELAY);
 
 }
-
 
 /**
  * Loads an animation

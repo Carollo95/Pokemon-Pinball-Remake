@@ -1,4 +1,5 @@
 let DEBUG = false; //true to start the game on debug mode
+let MUTE_MUSIC = true; //true to mute the music but not the sfx
 
 const SCREEN_WIDTH = 384; //Widht of the canvas
 const SCREEN_HEIGHT = 556; //Height of the canvas
