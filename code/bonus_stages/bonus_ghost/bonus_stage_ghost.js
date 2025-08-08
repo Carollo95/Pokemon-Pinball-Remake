@@ -39,7 +39,6 @@ class BonusStageGhost extends BonusStage {
   }
 
   setup() {
-    createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
     super.replaceBackground(BONUS_GHOST_BACKGROUND);
 
     world.gravity.y = GRAVITY;
@@ -103,10 +102,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   draw() {
-    //This is more engine stuff, maybe move?
-    clear();
-    super.drawBackground();
-    super.shake();
+    super.draw();
 
     super.createBonusNewBallIfBallLoss(this.getOpenGateBackground())
     super.closeBonusGateIfBallInsideBoard(this.getBackground())
@@ -157,16 +153,23 @@ class BonusStageGhost extends BonusStage {
     this.gastly1 = new Gastly(GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
     this.gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
     this.gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
+
+    playSong(songGhostStageGastly);
   }
 
   setupHaunterPhase() {
     this.haunter1 = this.createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
     this.haunter2 = this.createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
+    
+    playSong(songGhostStageHaunter);
   }
 
   createDisabledGhost(clazz, x, y) {
     let ghost = new clazz(x, y);
     ghost.disableSprite();
+
+    playSong(songGhostStageGengar);
+
     return ghost;
   }
 

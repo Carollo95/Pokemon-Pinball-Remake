@@ -31,4 +31,10 @@ class Stage {
             this.shakeDuration--;
         }
     }
+
+    draw() {
+        //clear();
+        this.drawBackground();
+        this.shake();
+    }
 }

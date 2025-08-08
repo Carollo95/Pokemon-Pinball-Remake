@@ -44,10 +44,10 @@ class Flippers {
         this.leftFlipper.debug = DEBUG;
         this.leftFlipper.offset.x = LEFT_FLIPPER_OFFSET;
 
-        this.leftFlipper.addAnimation("up", getAnimation(LEFT_FLIPPER_UP, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
-        this.leftFlipper.addAnimation("middle", getAnimation(LEFT_FLIPPER_MIDDLE, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
-        this.leftFlipper.addAnimation("down", getAnimation(LEFT_FLIPPER_DOWN, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
-        this.leftFlipper.addAnimation("down_disabled", getAnimation(LEFT_FLIPPER_DOWN_DISABLED, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.leftFlipper.addAnimation("up", animLeftFlipperUp);
+        this.leftFlipper.addAnimation("middle", animLeftFlipperMiddle);
+        this.leftFlipper.addAnimation("down", animLeftFlipperDown);
+        this.leftFlipper.addAnimation("down_disabled", animLeftFlipperDownDisabled);
         this.leftFlipper.draw = function () { rotateFlipperAnimation(this, LEFT_FLIPPER_MIN_ROTATION, LEFT_FLIPPER_MAX_ROTATION, LEFT_FLIPPER_OFFSET); }
 
         this.rightFlipper = new Sprite(rightFlipperRotationPointX, rightFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
@@ -55,10 +55,10 @@ class Flippers {
         this.rightFlipper.debug = DEBUG;
         this.rightFlipper.offset.x = RIGHT_FLIPPER_OFFSET;
 
-        this.rightFlipper.addAnimation("up", getAnimation(RIGHT_FLIPPER_UP, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
-        this.rightFlipper.addAnimation("middle", getAnimation(RIGHT_FLIPPER_MIDDLE, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
-        this.rightFlipper.addAnimation("down", getAnimation(RIGHT_FLIPPER_DOWN, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
-        this.rightFlipper.addAnimation("down_disabled", getAnimation(RIGHT_FLIPPER_DOWN_DISABLED, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.rightFlipper.addAnimation("up", animRightFlipperUp);
+        this.rightFlipper.addAnimation("middle", animRightFlipperMiddle);
+        this.rightFlipper.addAnimation("down", animRightFlipperDown);
+        this.rightFlipper.addAnimation("down_disabled", animRightFlipperDownDisabled);
         this.rightFlipper.draw = function () { rotateFlipperAnimation(this, RIGHT_FLIPPER_MIN_ROTATION, RIGHT_FLIPPER_MAX_ROTATION, RIGHT_FLIPPER_OFFSET); }
     }
 

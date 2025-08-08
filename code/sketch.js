@@ -1,16 +1,17 @@
-let stage;
+function preload() {
+  preloadAudio();
+  preloadAnimations();
+}
 
 function setup() {
+  createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   stage = new BonusStageGhost();
   stage.setup();
 }
 
 
 function draw() {
-  stage.draw();
-  if (DEBUG) {
-    showFPS();
-  }
+  drawStage();
 }
 
 function showFPS() {

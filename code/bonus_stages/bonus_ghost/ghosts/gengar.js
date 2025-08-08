@@ -25,11 +25,11 @@ class Gengar extends Ghost {
         this.timeOfLastStep = millis();
         this.timeOfDissapearance = millis();
 
-        this.idleAnimation = getAnimation(BONUS_GHOST_GENGAR, 96, 128, 3, 16);
+        this.idleAnimation = animGengar;
         this.sprite.addAnimation("idle", this.idleAnimation);
-        this.hurtAnimation = getAnimation(BONUS_GHOST_GENGAR_HURT, 112, 128, 1, DEFAULT_ANIMATION_DELAY);
+        this.hurtAnimation = animGengarHurt
         this.sprite.addAnimation("hurt", this.hurtAnimation);
-        this.walkAnimation = getAnimation(BONUS_GHOST_GENGAR_WALK, 96, 128, 4, DEFAULT_ANIMATION_DELAY);
+        this.walkAnimation = animGengarWalk;
         this.sprite.addAnimation("walk", this.walkAnimation);
 
         this.sprite.changeAnimation("idle");

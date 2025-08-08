@@ -15,8 +15,8 @@ class Haunter extends SmallGhost {
         this.horizontalSpeed = HAUNTER_HORIZONTAL_SPEED;
         this.verticalSpeed = HAUNTER_VERTICAL_SPEED;
 
-        this.idleAnimation = getAnimation(BONUS_GHOST_HAUNTER, 96, 80, 4, DEFAULT_ANIMATION_DELAY);
-        this.hurtAnimation = getAnimation(BONUS_GHOST_HAUNTER_HURT, 96, 80, 1, DEFAULT_ANIMATION_DELAY);
+        this.idleAnimation = animHaunter;
+        this.hurtAnimation = animHaunterHurt;
 
         this.setup();
     }

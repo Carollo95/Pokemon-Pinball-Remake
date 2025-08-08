@@ -5,8 +5,11 @@ const SCREEN_HEIGHT = 556; //Height of the canvas
 
 const DEFAULT_ANIMATION_DELAY = 12; //Delay between frames of animation
 
-GRAVITY = 10; //The gravity applied to the game
+const GRAVITY = 10; //The gravity applied to the game
 const EPSILON = 0.1; //Marging for physics calculation (Avoids jittering)
+
+let stage; //The p5 sketch in use
+let canvas;
 
 /**
  * Disables the physiics of a sprite.
@@ -20,7 +23,7 @@ function disableSprite(sprite) {
 /**
  * Starts a screen shake for the default amount of time.
  */
-function startShake(){
+function startShake() {
     stage.startShake();
 }
 
@@ -33,32 +36,10 @@ function enableSprite(sprite) {
     sprite.physics = "static";
 }
 
-/**
- * Loads a '.png' image. It will be in grayscale if the debug mode is active
- * @param {string} name the local path of the image without its extension
- * @returns The loaded image
- */
-function getImage(name) {
-    let image = loadImage(name + ".png");
+
+function drawStage() {
+    stage.draw();
     if (DEBUG) {
-        image.filter(GRAY);
+        showFPS();
     }
-    return image;
-}
-
-/**
- * Loads an animation
- * @param {string} name the local path of the image without its extension
- * @param {*} frameHeight the pixel height of each frame
- * @param {*} frameWidth the pixel width of each frame
- * @param {*} imageNum the number of frames on the animation
- * @param {*} delay the number of frames between each frame
- * @returns the loaded animation
- */
-function getAnimation(name, frameHeight, frameWidth, imageNum, delay) {
-    let sheet = getImage(name);
-    let animation = loadAnimation(sheet, { frameSize: [frameHeight, frameWidth], frameCount: imageNum });
-    animation.frameDelay = delay;
-
-    return animation;
 }
