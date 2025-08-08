@@ -70,7 +70,7 @@ function preloadAudio() {
     sfx29 = getAudio('assets/audio/sfx/SFX-29');
     sfx2A = getAudio('assets/audio/sfx/SFX-2A');
     sfx2B = getAudio('assets/audio/sfx/SFX-2B');
-    sfx2C = getAudio('assets/audio/sfx/SFX-2C');
+    sfx2C = getAudio('assets/audio/sfx/SFX-2C'); //Gastly hurt
     sfx2D = getAudio('assets/audio/sfx/SFX-2D');
     sfx2E = getAudio('assets/audio/sfx/SFX-2E');
     sfx2F = getAudio('assets/audio/sfx/SFX-2F');

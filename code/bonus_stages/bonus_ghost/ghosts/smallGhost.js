@@ -8,6 +8,8 @@ class SmallGhost extends Ghost {
     horizontalSpeed;
     verticalSpeed;
 
+    hurtSfx;
+
     constructor(x, y, width, height) {
         super(x, y, width, height);
     }
@@ -76,6 +78,7 @@ class SmallGhost extends Ghost {
     checkCollision(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
             this.sprite.image = this.hurtAnimation
+            this.hurtSfx.play();
             disableSprite(this.sprite);
             this.timeOfHurt = millis();
         }
