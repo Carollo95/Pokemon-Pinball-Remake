@@ -75,4 +75,12 @@ class Timer {
         this.stopped = true;
     }
 
+    disable(){
+        this.stop();
+        this.minutesSprite.visible = false;
+        this.colonSprite.visible = false;
+        this.second1Sprite.visible = false;
+        this.second2Sprite.visible = false;
+    }
+
 }
