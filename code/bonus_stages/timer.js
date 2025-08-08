@@ -27,7 +27,6 @@ class Timer {
         this.second1Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 2, TIMER_POSITION_BONUS_Y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
         this.second2Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 3, TIMER_POSITION_BONUS_Y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
 
-        let sheet;
         for (let i = 0; i < 10; i++) {
             this.minutesSprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
             this.minutesSprite.debug = DEBUG;
@@ -74,6 +73,14 @@ class Timer {
 
     stop() {
         this.stopped = true;
+    }
+
+    disable(){
+        this.stop();
+        this.minutesSprite.visible = false;
+        this.colonSprite.visible = false;
+        this.second1Sprite.visible = false;
+        this.second2Sprite.visible = false;
     }
 
 }

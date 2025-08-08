@@ -244,6 +244,7 @@ class BonusStageGhost extends BonusStage {
     this.gengar.update(this.ball.sprite);
 
     if (this.gengar.hitPoints == 0) {
+      this.timer.disable();
       this.levelCompleted = true;
       this.flippers.disableFlippers();
       if (this.gengar.disabled) {
