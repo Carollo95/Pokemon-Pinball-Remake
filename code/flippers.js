@@ -37,7 +37,6 @@ class Flippers {
 
     flippersEnabled;
     constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY) {
-
         this.flippersEnabled = true;
 
         this.leftFlipper = new Sprite(leftFlipperRotationPointX, leftFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
@@ -48,6 +47,7 @@ class Flippers {
         this.leftFlipper.addAnimation("up", getAnimation(LEFT_FLIPPER_UP, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
         this.leftFlipper.addAnimation("middle", getAnimation(LEFT_FLIPPER_MIDDLE, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
         this.leftFlipper.addAnimation("down", getAnimation(LEFT_FLIPPER_DOWN, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.leftFlipper.addAnimation("down_disabled", getAnimation(LEFT_FLIPPER_DOWN_DISABLED, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
         this.leftFlipper.draw = function () { rotateFlipperAnimation(this, LEFT_FLIPPER_MIN_ROTATION, LEFT_FLIPPER_MAX_ROTATION, LEFT_FLIPPER_OFFSET); }
 
         this.rightFlipper = new Sprite(rightFlipperRotationPointX, rightFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
@@ -58,6 +58,7 @@ class Flippers {
         this.rightFlipper.addAnimation("up", getAnimation(RIGHT_FLIPPER_UP, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
         this.rightFlipper.addAnimation("middle", getAnimation(RIGHT_FLIPPER_MIDDLE, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
         this.rightFlipper.addAnimation("down", getAnimation(RIGHT_FLIPPER_DOWN, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
+        this.rightFlipper.addAnimation("down_disabled", getAnimation(RIGHT_FLIPPER_DOWN_DISABLED, FLIPPER_IMAGE_WIDHT, FLIPPER_IMAGE_HEIGHT, 1));
         this.rightFlipper.draw = function () { rotateFlipperAnimation(this, RIGHT_FLIPPER_MIN_ROTATION, RIGHT_FLIPPER_MAX_ROTATION, RIGHT_FLIPPER_OFFSET); }
     }
 
@@ -88,12 +89,13 @@ class Flippers {
             if (this.leftFlipper.rotation < -10) {
                 this.leftFlipper.changeAnimation("up");
             } else if (this.leftFlipper.rotation < 10) {
-
                 this.leftFlipper.changeAnimation("middle");
             } else {
                 this.leftFlipper.changeAnimation("down");
             }
 
+        }else{
+            this.leftFlipper.changeAnimation("down_disabled");
         }
     }
 
@@ -123,6 +125,8 @@ class Flippers {
             } else {
                 this.rightFlipper.changeAnimation("down");
             }
+        }else{
+            this.rightFlipper.changeAnimation("down_disabled");
         }
     }
 
@@ -156,7 +160,7 @@ function rotateFlipperAnimation(flipper, minFlipperRotation, maxFlipperRotation,
         rect(flipper._offset._x, flipper._offset._y, flipper.width, flipper._h);
     }
 
-    if (flipper.animation.name == "down") {
+    if (flipper.animation.name == "down" || flipper.animation.name =="down_disabled") {
         rotate(-minFlipperRotation);
     } else if (flipper.animation.name == "middle") {
         rotate(0);
