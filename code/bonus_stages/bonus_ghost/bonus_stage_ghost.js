@@ -24,17 +24,17 @@ class BonusStageGhost extends BonusStage {
   gengar;
 
   scenario;
-  grave1;
-  grave2;
-  grave3;
-  grave4;
+  gravestone1;
+  gravestone2;
+  gravestone3;
+  gravestone4;
 
   extraGastlyLives = 0;//7;
   extraHaunterLives = 2;//10;
 
   currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
-  constructor(){
+  constructor() {
     super();
   }
 
@@ -70,10 +70,10 @@ class BonusStageGhost extends BonusStage {
     this.scenario.debug = DEBUG;
     this.scenario.visible = DEBUG;
 
-    this.grave1 = this.createGrave(88, 225);
-    this.grave2 = this.createGrave(152, 176);
-    this.grave3 = this.createGrave(264, 160);
-    this.grave4 = this.createGrave(247, 240);
+    this.gravestone1 = this.createGravestone(88, 225);
+    this.gravestone2 = this.createGravestone(152, 176);
+    this.gravestone3 = this.createGravestone(264, 160);
+    this.gravestone4 = this.createGravestone(247, 240);
 
     this.createGate();
   }
@@ -85,7 +85,7 @@ class BonusStageGhost extends BonusStage {
     disableSprite(this.gate);
   }
 
-  createGrave(x, y) {
+  createGravestone(x, y) {
     let width = 26;
     let height = 26;
     let grave = new Sprite([
@@ -110,6 +110,7 @@ class BonusStageGhost extends BonusStage {
     this.flippers.update();
 
     this.updatePhaseSprites();
+    this.updateGravestoneCollisions()
     this.timer.update();
 
     if (this.timer.timeIsUp()) {
@@ -121,11 +122,26 @@ class BonusStageGhost extends BonusStage {
 
   }
 
+  updateGravestoneCollisions() {
+    this.updateGravestoneCollision(this.gravestone1);
+    this.updateGravestoneCollision(this.gravestone2);
+    this.updateGravestoneCollision(this.gravestone3);
+    this.updateGravestoneCollision(this.gravestone4);
+  }
+
+  updateGravestoneCollision(gravestone) {
+    if (gravestone.collide(this.ball.sprite)) {
+      sfx2F.play();
+      console.log("HEY");
+    }
+  }
+
+
   updatePhaseSprites() {
     if (this.currentPhase == 1) {
-     this.gastly1 =this.updateGastly(this.gastly1);
-     this.gastly2 =this.updateGastly(this.gastly2);
-     this.gastly3 =this.updateGastly(this.gastly3);
+      this.gastly1 = this.updateGastly(this.gastly1);
+      this.gastly2 = this.updateGastly(this.gastly2);
+      this.gastly3 = this.updateGastly(this.gastly3);
     } else if (this.currentPhase == 2) {
       this.haunter1 = this.updateHaunter(this.haunter1);
       this.haunter2 = this.updateHaunter(this.haunter2);
@@ -160,7 +176,7 @@ class BonusStageGhost extends BonusStage {
   setupHaunterPhase() {
     this.haunter1 = this.createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
     this.haunter2 = this.createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
-    
+
     playSong(songGhostStageHaunter);
   }
 
@@ -176,10 +192,10 @@ class BonusStageGhost extends BonusStage {
   setupGengarPhase() {
     super.replaceBackground(this.getBackground());
     super.startShake();
-    this.grave1.remove();
-    this.grave2.remove();
-    this.grave3.remove();
-    this.grave4.remove();
+    this.gravestone1.remove();
+    this.gravestone2.remove();
+    this.gravestone3.remove();
+    this.gravestone4.remove();
 
     this.gengar = this.createDisabledGhost(Gengar, GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
   }

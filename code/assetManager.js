@@ -28,7 +28,7 @@ function preloadAudio() {
 
     sfx00 = getAudio('assets/audio/sfx/SFX-00');
     sfx01 = getAudio('assets/audio/sfx/SFX-01');
-    sfx02 = getAudio('assets/audio/sfx/SFX-02');
+    sfx02 = getAudio('assets/audio/sfx/SFX-02'); //Bonus ball lost
     sfx03 = getAudio('assets/audio/sfx/SFX-03');
     sfx04 = getAudio('assets/audio/sfx/SFX-04');
     sfx05 = getAudio('assets/audio/sfx/SFX-05');
@@ -73,7 +73,7 @@ function preloadAudio() {
     sfx2C = getAudio('assets/audio/sfx/SFX-2C'); //Gastly hurt
     sfx2D = getAudio('assets/audio/sfx/SFX-2D'); //Haunter hurt
     sfx2E = getAudio('assets/audio/sfx/SFX-2E');
-    sfx2F = getAudio('assets/audio/sfx/SFX-2F');
+    sfx2F = getAudio('assets/audio/sfx/SFX-2F'); //Hit gravestone
     sfx30 = getAudio('assets/audio/sfx/SFX-30');
     sfx31 = getAudio('assets/audio/sfx/SFX-31');
     sfx32 = getAudio('assets/audio/sfx/SFX-32');
