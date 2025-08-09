@@ -261,9 +261,10 @@ class BonusStageGhost extends BonusStage {
   updateGengar() {
     this.gengar.update(this.ball.sprite);
 
-    if (this.gengar.hitPoints == 0) {
+    if (this.gengar.isDefeated()) {
       this.finishStageSucessfully();
     } else if (this.gengar.readyToRespawn()) {
+      console.log(this.gengar.hitPoints);
       this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
       sfx4E.play();
     }

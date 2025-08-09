@@ -1,4 +1,3 @@
-const GHOST_RESPAWN_THRESHOLD_MILLS = 3000; //Time between instance creation and spawn
 const GHOST_BLINKING_FRAMES = 6; //Frame count between visible and not visible while blinking
 const GHOST_TIME_OF_HURT = 1000; //Frames showing the blinking hurt animation
 
@@ -10,6 +9,7 @@ class Ghost {
 
     hurtAnimation;
     timeOfHurt;
+    respawnThreshHoldTime;
 
 
     constructor(x, y, width, height) {
@@ -36,7 +36,7 @@ class Ghost {
     }
 
     hasPassedDeathCooldown() {
-        return (millis() - this.timeOfDissapearance) > GHOST_RESPAWN_THRESHOLD_MILLS;
+        return (millis() - this.timeOfDissapearance) > this.respawnThreshHoldTime;
     }
 
     isHurtTimeFinished() {

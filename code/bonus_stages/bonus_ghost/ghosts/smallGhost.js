@@ -1,3 +1,4 @@
+const SMALL_GHOST_RESPAWN_THRESHOLD_MILLS = 3000; //Time between instance creation and spawn
 class SmallGhost extends Ghost {
     keepMovinRight;
     keepMovinUp;
@@ -18,6 +19,7 @@ class SmallGhost extends Ghost {
         this.keepMovinRight = true;
         this.keepMovinUp = true;
         this.timeOfDissapearance = 0;
+        this.respawnThreshHoldTime = SMALL_GHOST_RESPAWN_THRESHOLD_MILLS;
 
         this.sprite.addAnimation("idle", this.idleAnimation);
         this.sprite.addAnimation("hurt", this.hurtAnimation);

@@ -69,10 +69,10 @@ function preloadAudio() {
     sfx28 = getAudio('assets/audio/sfx/SFX-28');
     sfx29 = getAudio('assets/audio/sfx/SFX-29');
     sfx2A = getAudio('assets/audio/sfx/SFX-2A');
-    sfx2B = getAudio('assets/audio/sfx/SFX-2B');
+    sfx2B = getAudio('assets/audio/sfx/SFX-2B'); //Gengar step
     sfx2C = getAudio('assets/audio/sfx/SFX-2C'); //Gastly hurt
     sfx2D = getAudio('assets/audio/sfx/SFX-2D'); //Haunter hurt
-    sfx2E = getAudio('assets/audio/sfx/SFX-2E');
+    sfx2E = getAudio('assets/audio/sfx/SFX-2E'); //Gengar defated
     sfx2F = getAudio('assets/audio/sfx/SFX-2F'); //Hit gravestone
     sfx30 = getAudio('assets/audio/sfx/SFX-30');
     sfx31 = getAudio('assets/audio/sfx/SFX-31');

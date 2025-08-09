@@ -6,6 +6,7 @@ const GENGAR_HITPOINTS = 5; //Number of hits to go down
 const GENGAR_STEP_COOLDOWN_MILLS = 1500; //Time between steps
 const GENGAR_MAX_DISTANCE = 100; //Number of pixels it can advance
 const GENGAR__INVINCIBILITY_TIME = 1500; //Milliseconds of invulnerabiliy after getting hit
+const GENGAR_SPAWN_THRESHOLD_MILLS = 1000; //Time to spawn after creation
 
 
 class Gengar extends Ghost {
@@ -24,6 +25,7 @@ class Gengar extends Ghost {
         this.hitPoints = GENGAR_HITPOINTS;
         this.timeOfLastStep = millis();
         this.timeOfDissapearance = millis();
+        this.respawnThreshHoldTime = GENGAR_SPAWN_THRESHOLD_MILLS;
 
         this.idleAnimation = animGengar;
         this.sprite.addAnimation("idle", this.idleAnimation);
@@ -39,18 +41,30 @@ class Gengar extends Ghost {
     update(ballSprite) {
         if (!this.disabled) {
             if (this.hitPoints > 0) {
-                if (this.isRecentlyHurt()) {
-                    this.blink();
-                } else {
-                    enableSprite(this.sprite);
-                    this.sprite.visible = true; //If case blinking stops at an invisible frame
-                }
+                this.blinkIfHurt();
                 this.checkCollision(ballSprite);
                 this.move();
             } else {
-                this.moonwalkIntoOblivion();
+                this.gengarIsDefeated();
             }
         }
+    }
+
+    blinkIfHurt() {
+        if (this.isRecentlyHurt()) {
+            this.blink();
+        } else {
+            enableSprite(this.sprite);
+            this.sprite.visible = true; //If case blinking stops at an invisible frame
+        }
+    }
+
+    gengarIsDefeated() {
+        if (this.hitPoints == 0) {
+            sfx2E.play();
+            this.hitPoints--;
+        }
+        this.moonwalkIntoOblivion();
     }
 
     moonwalkIntoOblivion() {
@@ -119,6 +133,7 @@ class Gengar extends Ghost {
                 this.step_start_y = this.sprite.pos.y;
                 this.timeOfLastStep = millis();
                 this.sprite.changeAnimation("idle");
+                sfx2B.play();
                 startShake();
             }
 
@@ -142,6 +157,10 @@ class Gengar extends Ghost {
         this.sprite.visible = false;
         this.timeOfLastStep = millis();
         this.timeOfDissapearance = millis();
+    }
+
+    isDefeated(){
+        return this.hitPoints <= 0;
     }
 
 }
