@@ -132,7 +132,6 @@ class BonusStageGhost extends BonusStage {
   updateGravestoneCollision(gravestone) {
     if (gravestone.collide(this.ball.sprite)) {
       sfx2F.play();
-      console.log("HEY");
     }
   }
 
@@ -263,18 +262,24 @@ class BonusStageGhost extends BonusStage {
     this.gengar.update(this.ball.sprite);
 
     if (this.gengar.hitPoints == 0) {
-      this.timer.disable();
-      this.levelCompleted = true;
-      this.flippers.disableFlippers();
-      if (this.gengar.disabled) {
-        console.log("Bonus complete");
-      }
+      this.finishStageSucessfully();
     } else if (this.gengar.readyToRespawn()) {
       this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
       sfx4E.play();
     }
 
     return this.gengar;
+  }
+
+  finishStageSucessfully() {
+    stopMusic();
+    this.timer.disable();
+    this.flippers.disableFlippers();
+    this.levelCompleted = true;
+    if (this.gengar.disabled) {
+      console.log("Bonus complete");
+    }
+
   }
 
 

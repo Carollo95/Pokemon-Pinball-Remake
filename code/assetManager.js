@@ -38,7 +38,7 @@ function preloadAudio() {
     sfx09 = getAudio('assets/audio/sfx/SFX-09');
     sfx0A = getAudio('assets/audio/sfx/SFX-0A');
     sfx0B = getAudio('assets/audio/sfx/SFX-0B');
-    sfx0C = getAudio('assets/audio/sfx/SFX-0C');
+    sfx0C = getAudio('assets/audio/sfx/SFX-0C'); //FLipper moved
     sfx0D = getAudio('assets/audio/sfx/SFX-0D');
     sfx0E = getAudio('assets/audio/sfx/SFX-0E');
     sfx0F = getAudio('assets/audio/sfx/SFX-0F');
@@ -122,6 +122,12 @@ function playSong(song) {
         }
         this.currentSong = song;
         this.currentSong.play();
+    }
+}
+
+function stopMusic() {
+    if (this.currentSong != null) {
+        this.currentSong.stop();
     }
 }
 

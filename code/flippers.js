@@ -24,8 +24,10 @@ const LEFT_FLIPPER_ROTATION_SPEED = RIGHT_FLIPPER_ROTATION_SPEED * -1; //Movemen
 const LEFT_FLIPPER_KEY = 'a'; //Key for the movemenet of the left flipper
 const RIGHT_FLIPPER_KEY = 'l'; //Key for the movemenet of the right flipper
 
-const LEFT_FLIPPER_OFFSET = 14;
-const RIGHT_FLIPPER_OFFSET = -14;
+const LEFT_FLIPPER_OFFSET = 14;//Offset of the left flipper animation
+const RIGHT_FLIPPER_OFFSET = -14; //Offset of the right flipper animation
+
+const FLIPPER_SFX_PLAY_COOLDOWN = 200; //Cooldown betwen flipper sfx plays to avoid spamming
 
 
 class Flippers {
@@ -33,9 +35,19 @@ class Flippers {
     rightFlipper;
 
     flippersEnabled;
+
+    hasLeftFlipperBeenLowered;
+    hasrightFlipperBeenLowered;
+
     constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY) {
         this.flippersEnabled = true;
 
+        this.createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY);
+        this.createRightFlipper(rightFlipperRotationPointX, rightFlipperRotationPointY);
+
+    }
+
+    createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY) {
         this.leftFlipper = new Sprite(leftFlipperRotationPointX, leftFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
         this.leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
         this.leftFlipper.debug = DEBUG;
@@ -47,6 +59,10 @@ class Flippers {
         this.leftFlipper.addAnimation("down_disabled", animLeftFlipperDownDisabled);
         this.leftFlipper.draw = function () { rotateFlipperAnimation(this, LEFT_FLIPPER_MIN_ROTATION, LEFT_FLIPPER_MAX_ROTATION, LEFT_FLIPPER_OFFSET); }
 
+        this.hasLeftFlipperBeenLowered = true;
+    }
+
+    createRightFlipper(rightFlipperRotationPointX, rightFlipperRotationPointY) {
         this.rightFlipper = new Sprite(rightFlipperRotationPointX, rightFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
         this.rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
         this.rightFlipper.debug = DEBUG;
@@ -57,6 +73,8 @@ class Flippers {
         this.rightFlipper.addAnimation("down", animRightFlipperDown);
         this.rightFlipper.addAnimation("down_disabled", animRightFlipperDownDisabled);
         this.rightFlipper.draw = function () { rotateFlipperAnimation(this, RIGHT_FLIPPER_MIN_ROTATION, RIGHT_FLIPPER_MAX_ROTATION, RIGHT_FLIPPER_OFFSET); }
+
+        this.hasRightFlipperBeenLowered = true;
     }
 
     update() {
@@ -66,64 +84,125 @@ class Flippers {
 
     controlLeftFlipper() {
         if (this.flippersEnabled) {
-            if (kb.pressing(LEFT_FLIPPER_KEY)) {
-                if (this.leftFlipper.rotation > LEFT_FLIPPER_MAX_ROTATION + EPSILON) {
-                    this.leftFlipper.rotationSpeed = LEFT_FLIPPER_ROTATION_SPEED;
-                } else {
-                    this.leftFlipper.rotation = LEFT_FLIPPER_MAX_ROTATION;
-                    this.leftFlipper.rotationSpeed = 0;
-
-                }
+            if (this.isLeftFlipperAction()) {
+                this.shouldPlayFlipperSFX = true;
+                this.liftLeftFlipper();
             } else {
-                if (this.leftFlipper.rotation < LEFT_FLIPPER_MIN_ROTATION) {
-                    this.leftFlipper.rotationSpeed = - LEFT_FLIPPER_ROTATION_SPEED;
-                } else {
-                    this.leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
-                    this.leftFlipper.rotationSpeed = 0;
-                }
+                this.lowerLeftFlipper();
             }
+            this.playLeftFLipperSFX();
+            this.changeLeftFlipperAnimation();
+        } else {
+            this.disableLeftFlipper();
+        }
+    }
 
-            if (this.leftFlipper.rotation < -10) {
-                this.leftFlipper.changeAnimation("up");
-            } else if (this.leftFlipper.rotation < 10) {
-                this.leftFlipper.changeAnimation("middle");
-            } else {
-                this.leftFlipper.changeAnimation("down");
-            }
+    isLeftFlipperAction() {
+        return kb.pressing(LEFT_FLIPPER_KEY);
+    }
 
-        }else{
-            this.leftFlipper.changeAnimation("down_disabled");
+    liftLeftFlipper() {
+        if (this.leftFlipper.rotation > LEFT_FLIPPER_MAX_ROTATION + EPSILON) {
+            this.leftFlipper.rotationSpeed = LEFT_FLIPPER_ROTATION_SPEED;
+        } else {
+            this.leftFlipper.rotation = LEFT_FLIPPER_MAX_ROTATION;
+            this.leftFlipper.rotationSpeed = 0;
+
+        }
+    }
+
+    lowerLeftFlipper() {
+        if (this.leftFlipper.rotation < LEFT_FLIPPER_MIN_ROTATION) {
+            this.leftFlipper.rotationSpeed = - LEFT_FLIPPER_ROTATION_SPEED;
+        } else {
+            this.leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
+            this.leftFlipper.rotationSpeed = 0;
+        }
+    }
+
+    changeLeftFlipperAnimation() {
+        if (this.leftFlipper.rotation < -10) {
+            this.leftFlipper.changeAnimation("up");
+        } else if (this.leftFlipper.rotation < 10) {
+            this.leftFlipper.changeAnimation("middle");
+        } else {
+            this.leftFlipper.changeAnimation("down");
+        }
+    }
+
+    disableLeftFlipper() {
+        this.leftFlipper.changeAnimation("down_disabled");
+
+    }
+
+    playLeftFLipperSFX() {
+        if (this.leftFlipper.rotation == LEFT_FLIPPER_MIN_ROTATION) {
+            this.hasLeftFlipperBeenLowered = true;
+
+        } else if (this.hasLeftFlipperBeenLowered == true && this.leftFlipper.rotation > 0) {
+            this.hasLeftFlipperBeenLowered = false;
+            sfx0C.play();
         }
     }
 
     controlRightFlipper() {
         if (this.flippersEnabled) {
-            if (kb.pressing(RIGHT_FLIPPER_KEY)) {
-                if (this.rightFlipper.rotation < RIGHT_FLIPPER_MAX_ROTATION - EPSILON) {
-                    this.rightFlipper.rotationSpeed = RIGHT_FLIPPER_ROTATION_SPEED;
-                } else {
-                    this.rightFlipper.rotation = RIGHT_FLIPPER_MAX_ROTATION;
-                    this.rightFlipper.rotationSpeed = 0;
-                }
+            if (this.isRightFlipperActive()) {
+                this.liftRightFlipper();
             } else {
-                if (this.rightFlipper.rotation > RIGHT_FLIPPER_MIN_ROTATION) {
-                    this.rightFlipper.rotationSpeed = -RIGHT_FLIPPER_ROTATION_SPEED;
-                } else {
-                    this.rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
-                    this.rightFlipper.rotationSpeed = 0;
-                }
+                this.lowerRightFlipper();
             }
+            this.playRightFlipperSFX();
+            this.changeActiveRightFlipperAnimation();
+        } else {
+            this.disableRightFlipperAnimation();
+        }
+    }
 
-            if (this.rightFlipper.rotation > 10) {
-                this.rightFlipper.changeAnimation("up");
-            } else if (this.rightFlipper.rotation > -10) {
+    isRightFlipperActive() {
+        return kb.pressing(RIGHT_FLIPPER_KEY);
+    }
 
-                this.rightFlipper.changeAnimation("middle");
-            } else {
-                this.rightFlipper.changeAnimation("down");
-            }
-        }else{
-            this.rightFlipper.changeAnimation("down_disabled");
+    liftRightFlipper() {
+        if (this.rightFlipper.rotation < RIGHT_FLIPPER_MAX_ROTATION - EPSILON) {
+            this.rightFlipper.rotationSpeed = RIGHT_FLIPPER_ROTATION_SPEED;
+        } else {
+            this.rightFlipper.rotation = RIGHT_FLIPPER_MAX_ROTATION;
+            this.rightFlipper.rotationSpeed = 0;
+        }
+    }
+
+    lowerRightFlipper() {
+        if (this.rightFlipper.rotation > RIGHT_FLIPPER_MIN_ROTATION) {
+            this.rightFlipper.rotationSpeed = -RIGHT_FLIPPER_ROTATION_SPEED;
+        } else {
+            this.rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
+            this.rightFlipper.rotationSpeed = 0;
+        }
+    }
+
+    changeActiveRightFlipperAnimation() {
+        if (this.rightFlipper.rotation > 10) {
+            this.rightFlipper.changeAnimation("up");
+        } else if (this.rightFlipper.rotation > -10) {
+
+            this.rightFlipper.changeAnimation("middle");
+        } else {
+            this.rightFlipper.changeAnimation("down");
+        }
+    }
+
+    disableRightFlipperAnimation() {
+        this.rightFlipper.changeAnimation("down_disabled");
+    }
+
+    playRightFlipperSFX() {
+        if (this.rightFlipper.rotation == RIGHT_FLIPPER_MIN_ROTATION) {
+            this.hasRightFlipperBeenLowered = true;
+
+        } else if (this.hasRightFlipperBeenLowered == true && this.rightFlipper.rotation < 0) {
+            this.hasRightFlipperBeenLowered = false;
+            sfx0C.play();
         }
     }
 
@@ -157,7 +236,7 @@ function rotateFlipperAnimation(flipper, minFlipperRotation, maxFlipperRotation,
         rect(flipper._offset._x, flipper._offset._y, flipper.width, flipper._h);
     }
 
-    if (flipper.animation.name == "down" || flipper.animation.name =="down_disabled") {
+    if (flipper.animation.name == "down" || flipper.animation.name == "down_disabled") {
         rotate(-minFlipperRotation);
     } else if (flipper.animation.name == "middle") {
         rotate(0);
