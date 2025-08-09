@@ -4,17 +4,29 @@ const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310; //Horizontal pixel that when a ball c
 class BonusStage extends Stage {
     gate;
     gateIsOpen;
-    levelCompleted = false;
-
+    
     timer;
+
+    isStageLost;
+    isStageWon;
 
     constructor() {
         super();
+        this.isStageLost = false
+        this.isStageWon = false;
+
         this.gateIsOpen = true;
     }
 
+    createGate() {
+        this.gate = new Sprite(337, 254, 10, 39, "static");
+        this.gate.debug = DEBUG;
+        this.gate.visible = DEBUG;
+        disableSprite(this.gate);
+    }
+
     createBonusNewBallIfBallLoss(bonusGateBackground) {
-        if (this.checkBonusBallLoss() && !this.levelCompleted) {
+        if (this.checkBonusBallLoss() && !this.isStageWon && !this.isStageLost) {
             sfx02.play();
             this.ball = spawnBonusBall();
             this.openBonusGate(bonusGateBackground);

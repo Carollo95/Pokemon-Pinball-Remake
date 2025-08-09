@@ -40,18 +40,16 @@ class BonusStageGhost extends BonusStage {
 
   setup() {
     super.replaceBackground(BONUS_GHOST_BACKGROUND);
+    this.createScenarioGeometry();
 
-    world.gravity.y = GRAVITY;
-    this.createScenario();
     this.ball = spawnBonusBall();
     this.flippers = createBonusFlippers();
-
     this.timer = new Timer(GHOST_STATE_TIME_MILLIS);
 
     this.currentPhase = 0;
   }
 
-  createScenario() {
+  createScenarioGeometry() {
     this.scenario = new Sprite([[0, 0],
     [SCREEN_WIDTH, 0],
     [SCREEN_WIDTH, SCREEN_HEIGHT],
@@ -75,14 +73,7 @@ class BonusStageGhost extends BonusStage {
     this.gravestone3 = this.createGravestone(264, 160);
     this.gravestone4 = this.createGravestone(247, 240);
 
-    this.createGate();
-  }
-
-  createGate() {
-    this.gate = new Sprite(337, 254, 10, 39, "static");
-    this.gate.debug = DEBUG;
-    this.gate.visible = DEBUG;
-    disableSprite(this.gate);
+    super.createGate();
   }
 
   createGravestone(x, y) {
@@ -104,6 +95,16 @@ class BonusStageGhost extends BonusStage {
   draw() {
     super.draw();
 
+    if (this.isStageLost) {
+      console.log("STAGE LOST");
+    } else if (this.isStageWon) {
+      console.log("STAGE WON");
+    } else {
+      this.drawStage();
+    }
+  }
+
+  drawStage() {
     super.createBonusNewBallIfBallLoss(this.getOpenGateBackground())
     super.closeBonusGateIfBallInsideBoard(this.getBackground())
 
@@ -111,15 +112,13 @@ class BonusStageGhost extends BonusStage {
 
     this.updatePhaseSprites();
     this.updateGravestoneCollisions()
-    this.timer.update();
 
+    this.timer.update();
     if (this.timer.timeIsUp()) {
-      this.loseBonusStage();
-      console.log("Bonus stage ended");
+      super.isStageLost = true;
     }
 
     this.changePhaseIfNecessary();
-
   }
 
   updateGravestoneCollisions() {
@@ -264,7 +263,6 @@ class BonusStageGhost extends BonusStage {
     if (this.gengar.isDefeated()) {
       this.finishStageSucessfully();
     } else if (this.gengar.readyToRespawn()) {
-      console.log(this.gengar.hitPoints);
       this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
       sfx4E.play();
     }
@@ -278,7 +276,8 @@ class BonusStageGhost extends BonusStage {
     this.flippers.disableFlippers();
     this.levelCompleted = true;
     if (this.gengar.disabled) {
-      console.log("Bonus complete");
+      sfx2A.play();
+      this.isStageWon = true;
     }
 
   }
