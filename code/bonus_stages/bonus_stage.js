@@ -15,6 +15,7 @@ class BonusStage extends Stage {
 
     createBonusNewBallIfBallLoss(bonusGateBackground) {
         if (this.checkBonusBallLoss() && !this.levelCompleted) {
+            sfx02.play();
             this.ball = spawnBonusBall();
             this.openBonusGate(bonusGateBackground);
         }
