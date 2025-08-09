@@ -34,7 +34,7 @@ function preloadAudio() {
     sfx05 = getAudio('assets/audio/sfx/SFX-05');
     sfx06 = getAudio('assets/audio/sfx/SFX-06');
     sfx07 = getAudio('assets/audio/sfx/SFX-07');
-    sfx08 = getAudio('assets/audio/sfx/SFX-08');
+    sfx08 = getAudio('assets/audio/sfx/SFX-08'); //Bonus scenario hit
     sfx09 = getAudio('assets/audio/sfx/SFX-09');
     sfx0A = getAudio('assets/audio/sfx/SFX-0A');
     sfx0B = getAudio('assets/audio/sfx/SFX-0B');

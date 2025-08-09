@@ -23,7 +23,9 @@ class BonusStageGhost extends BonusStage {
   haunter2;
   gengar;
 
-  scenario;
+  scenarioTop;
+  scenarioRight;
+  scenarioLeft;
   gravestone1;
   gravestone2;
   gravestone3;
@@ -50,23 +52,47 @@ class BonusStageGhost extends BonusStage {
   }
 
   createScenarioGeometry() {
-    this.scenario = new Sprite([[0, 0],
-    [SCREEN_WIDTH, 0],
-    [SCREEN_WIDTH, SCREEN_HEIGHT],
-    [236, SCREEN_HEIGHT],
-    [236, 338],
-    [373, 246],
-    [373, 212],
-    [332, 236],
-    [332, 122],
-    [44, 122],
-    [44, 275],
-    [139, 338],
-    [139, SCREEN_HEIGHT],
-    [0, SCREEN_HEIGHT],
-    [0, 0]], "static");
-    this.scenario.debug = DEBUG;
-    this.scenario.visible = DEBUG;
+
+
+    this.scenarioTop = new Sprite(
+      [[0, 0],
+      [SCREEN_WIDTH, 0],
+      [SCREEN_WIDTH, 212],
+      [373, 212],
+      [332, 236],
+      [332, 122],
+      [44, 122],
+      [44, 275],
+      [0, 275],
+      [0, 0]
+      ], "static");
+    this.scenarioTop.debug = DEBUG;
+    this.scenarioTop.visible = DEBUG;
+
+    this.scenarioRight = new Sprite([
+      [SCREEN_WIDTH, 212],
+      [SCREEN_WIDTH, SCREEN_HEIGHT],
+      [236, SCREEN_HEIGHT],
+      [236, 338],
+      [373, 246],
+      [373, 212],
+      [SCREEN_WIDTH, 212]
+    ], "static");
+
+    this.scenarioRight.debug = DEBUG;
+    this.scenarioRight.visible = DEBUG;
+
+    this.scenarioLeft = new Sprite([
+      [0, 275],
+      [44, 275],
+      [139, 338],
+      [139, SCREEN_HEIGHT],
+      [0, SCREEN_HEIGHT],
+      [0, 275]
+    ], "static");
+
+    this.scenarioLeft.debug = DEBUG;
+    this.scenarioLeft.visible = DEBUG;
 
     this.gravestone1 = this.createGravestone(88, 225);
     this.gravestone2 = this.createGravestone(152, 176);
@@ -112,6 +138,9 @@ class BonusStageGhost extends BonusStage {
 
     this.updatePhaseSprites();
     this.updateGravestoneCollisions()
+    if(this.scenarioTop.collide(this.ball.sprite)){
+      sfx08.play();
+    }
 
     this.timer.update();
     if (this.timer.timeIsUp()) {
