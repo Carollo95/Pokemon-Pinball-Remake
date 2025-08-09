@@ -17,7 +17,7 @@ let sfx00, sfx01, sfx02, sfx03, sfx04, sfx05, sfx06, sfx07, sfx08, sfx09,
     sfx28, sfx29, sfx2A, sfx2B, sfx2C, sfx2D, sfx2E, sfx2F, sfx30, sfx31,
     sfx32, sfx33, sfx34, sfx35, sfx36, sfx37, sfx38, sfx39, sfx3A, sfx3B,
     sfx3C, sfx3D, sfx3E, sfx3F, sfx40, sfx41, sfx42, sfx43, sfx44, sfx45,
-    sfx46, sfx47, sfx48, sfx49, sfx4A, sfx4B, sfx4C, sfx4D;
+    sfx46, sfx47, sfx48, sfx49, sfx4A, sfx4B, sfx4C, sfx4D, sfx4E;
 
 let currentSong;
 
@@ -104,6 +104,7 @@ function preloadAudio() {
     sfx4B = getAudio('assets/audio/sfx/SFX-4B');
     sfx4C = getAudio('assets/audio/sfx/SFX-4C');
     sfx4D = getAudio('assets/audio/sfx/SFX-4D');
+    sfx4E = getAudio('assets/audio/sfx/SFX-4E');  //Gengar cry
 
 
 }

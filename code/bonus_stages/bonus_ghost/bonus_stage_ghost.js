@@ -271,6 +271,7 @@ class BonusStageGhost extends BonusStage {
       }
     } else if (this.gengar.readyToRespawn()) {
       this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
+      sfx4E.play();
     }
 
     return this.gengar;
