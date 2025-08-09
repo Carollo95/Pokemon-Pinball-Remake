@@ -81,7 +81,7 @@ function preloadAudio() {
     sfx34 = getAudio('assets/audio/sfx/SFX-34');
     sfx35 = getAudio('assets/audio/sfx/SFX-35');
     sfx36 = getAudio('assets/audio/sfx/SFX-36');
-    sfx37 = getAudio('assets/audio/sfx/SFX-37');
+    sfx37 = getAudio('assets/audio/sfx/SFX-37'); //Gengar hurt
     sfx38 = getAudio('assets/audio/sfx/SFX-38');
     sfx39 = getAudio('assets/audio/sfx/SFX-39');
     sfx3A = getAudio('assets/audio/sfx/SFX-3A');
