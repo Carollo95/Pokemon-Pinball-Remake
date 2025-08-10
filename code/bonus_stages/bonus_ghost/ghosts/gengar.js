@@ -105,7 +105,12 @@ class Gengar extends Ghost {
     }
 
     isAtMinDistanceFromStart() {
-        return this.sprite.pos.y <= GENGAR_SPAWN_Y;
+        if (this.hitPoints > 0) {
+            return this.sprite.pos.y - this.start_y >= GENGAR_MAX_DISTANCE;
+        } else {
+            //Exit disance is farther away than normal backing distance
+            return this.sprite.pos.y <= GENGAR_SPAWN_Y;
+        } 
     }
 
     hasPassedStepCooldown() {
@@ -160,7 +165,7 @@ class Gengar extends Ghost {
         this.timeOfDissapearance = millis();
     }
 
-    isDefeated(){
+    isDefeated() {
         return this.hitPoints <= 0;
     }
 

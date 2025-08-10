@@ -7,11 +7,13 @@ class BonusStage extends Stage {
     
     timer;
 
+    levelCompleted
     isStageLost;
     isStageWon;
 
     constructor() {
         super();
+        this.levelCompleted = false;
         this.isStageLost = false
         this.isStageWon = false;
 
@@ -26,7 +28,7 @@ class BonusStage extends Stage {
     }
 
     createBonusNewBallIfBallLoss(bonusGateBackground) {
-        if (this.checkBonusBallLoss() && !this.isStageWon && !this.isStageLost) {
+        if (this.checkBonusBallLoss() && !this.levelCompleted) {
             sfx02.play();
             this.ball = spawnBonusBall();
             this.openBonusGate(bonusGateBackground);
