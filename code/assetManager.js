@@ -21,6 +21,9 @@ let sfx00, sfx01, sfx02, sfx03, sfx04, sfx05, sfx06, sfx07, sfx08, sfx09,
 
 let currentSong;
 
+/**
+ * Loads in memory all the audio files
+ */
 function preloadAudio() {
     songGhostStageGastly = getAudio('assets/audio/GhostStage_Gastly');
     songGhostStageHaunter = getAudio('assets/audio/GhostStage_Haunter');
@@ -109,12 +112,21 @@ function preloadAudio() {
 
 }
 
+/**
+ * Loads an audio file
+ * @param {string} soundName the local path of the file without the extension
+ * @returns  the audio file
+ */
 function getAudio(soundName) {
     sound = loadSound(soundName + ".mp3");
     sound.volume = 0.4;
     return sound;
 }
 
+/**
+ * Plays the provided song. If another song was being played, then that song is replaced instead of playing both at the same time
+ *  @param {*} the song to play
+ */
 function playSong(song) {
     if (!MUTE_MUSIC) {
         if (this.currentSong != null) {
@@ -125,6 +137,9 @@ function playSong(song) {
     }
 }
 
+/**
+ * Stops the song being playd currently
+ */
 function stopMusic() {
     if (this.currentSong != null) {
         this.currentSong.stop();
@@ -154,6 +169,9 @@ let animGastly, animGastlyHurt;
 let animHaunter, animHaunterHurt;
 let animGengar, animGengarHurt, animGengarWalk;
 
+/**
+ * loads in memory all the animations
+ */
 function preloadAnimations() {
     animLeftFlipperUp = getAnimation('assets/img/left_flipper_up', 48, 48, 1);
     animLeftFlipperMiddle = getAnimation('assets/img/left_flipper_middle', 48, 48, 1);

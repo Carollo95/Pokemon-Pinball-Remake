@@ -38,6 +38,9 @@ function enableSprite(sprite) {
 }
 
 
+/**
+ * Draws the current stage
+ */
 function drawStage() {
     stage.draw();
     if (DEBUG) {
