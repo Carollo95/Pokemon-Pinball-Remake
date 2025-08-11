@@ -8,6 +8,7 @@ class Stage {
 
     constructor() {
         this.shakeDuration = 0;
+        world.gravity.y = GRAVITY;
     }
 
     drawBackground() {
@@ -30,5 +31,10 @@ class Stage {
 
             this.shakeDuration--;
         }
+    }
+
+    draw() {
+        this.drawBackground();
+        this.shake();
     }
 }

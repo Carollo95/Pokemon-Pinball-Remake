@@ -1,7 +1,5 @@
 const TIMER_POSITION_BONUS_X = 290;
 const TIMER_POSITION_BONUS_Y = 116;
-const TIMER_CHAR_HEIGHT = 32;
-const TIMER_CHAR_WIDTH = 16;
 
 class Timer {
     totalMillis;
@@ -28,14 +26,14 @@ class Timer {
         this.second2Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 3, TIMER_POSITION_BONUS_Y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
 
         for (let i = 0; i < 10; i++) {
-            this.minutesSprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
+            this.minutesSprite.addAnimation(i.toString(), animTimer[i]);
             this.minutesSprite.debug = DEBUG;
-            this.second1Sprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
+            this.second1Sprite.addAnimation(i.toString(), animTimer[i]);
             this.second1Sprite.debug = DEBUG;
-            this.second2Sprite.addAnimation(i.toString(), getAnimation(TIMER_NUMBERS_PREFIX + i, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
+            this.second2Sprite.addAnimation(i.toString(), animTimer[i]);
             this.second2Sprite.debug = DEBUG;
         }
-        this.colonSprite.addAnimation("colon", getAnimation(TIMER_NUMBERS_PREFIX + "colon", TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1));
+        this.colonSprite.addAnimation("colon", animTimerColon);
         this.colonSprite.changeAnimation("colon");
 
     }

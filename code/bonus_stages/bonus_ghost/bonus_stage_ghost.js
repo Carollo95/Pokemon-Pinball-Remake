@@ -23,70 +23,86 @@ class BonusStageGhost extends BonusStage {
   haunter2;
   gengar;
 
-  scenario;
-  grave1;
-  grave2;
-  grave3;
-  grave4;
+  scenarioTop;
+  scenarioRight;
+  scenarioLeft;
+  gravestone1;
+  gravestone2;
+  gravestone3;
+  gravestone4;
 
   extraGastlyLives = 0;//7;
   extraHaunterLives = 2;//10;
 
   currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
-  constructor(){
+  constructor() {
     super();
   }
 
   setup() {
-    createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
     super.replaceBackground(BONUS_GHOST_BACKGROUND);
+    this.createScenarioGeometry();
 
-    world.gravity.y = GRAVITY;
-    this.createScenario();
     this.ball = spawnBonusBall();
     this.flippers = createBonusFlippers();
-
     this.timer = new Timer(GHOST_STATE_TIME_MILLIS);
 
     this.currentPhase = 0;
   }
 
-  createScenario() {
-    this.scenario = new Sprite([[0, 0],
-    [SCREEN_WIDTH, 0],
-    [SCREEN_WIDTH, SCREEN_HEIGHT],
-    [236, SCREEN_HEIGHT],
-    [236, 338],
-    [373, 246],
-    [373, 212],
-    [332, 236],
-    [332, 122],
-    [44, 122],
-    [44, 275],
-    [139, 338],
-    [139, SCREEN_HEIGHT],
-    [0, SCREEN_HEIGHT],
-    [0, 0]], "static");
-    this.scenario.debug = DEBUG;
-    this.scenario.visible = DEBUG;
+  createScenarioGeometry() {
 
-    this.grave1 = this.createGrave(88, 225);
-    this.grave2 = this.createGrave(152, 176);
-    this.grave3 = this.createGrave(264, 160);
-    this.grave4 = this.createGrave(247, 240);
 
-    this.createGate();
+    this.scenarioTop = new Sprite(
+      [[0, 0],
+      [SCREEN_WIDTH, 0],
+      [SCREEN_WIDTH, 212],
+      [373, 212],
+      [332, 236],
+      [332, 122],
+      [44, 122],
+      [44, 275],
+      [0, 275],
+      [0, 0]
+      ], "static");
+    this.scenarioTop.debug = DEBUG;
+    this.scenarioTop.visible = DEBUG;
+
+    this.scenarioRight = new Sprite([
+      [SCREEN_WIDTH, 212],
+      [SCREEN_WIDTH, SCREEN_HEIGHT],
+      [236, SCREEN_HEIGHT],
+      [236, 338],
+      [373, 246],
+      [373, 212],
+      [SCREEN_WIDTH, 212]
+    ], "static");
+
+    this.scenarioRight.debug = DEBUG;
+    this.scenarioRight.visible = DEBUG;
+
+    this.scenarioLeft = new Sprite([
+      [0, 275],
+      [44, 275],
+      [139, 338],
+      [139, SCREEN_HEIGHT],
+      [0, SCREEN_HEIGHT],
+      [0, 275]
+    ], "static");
+
+    this.scenarioLeft.debug = DEBUG;
+    this.scenarioLeft.visible = DEBUG;
+
+    this.gravestone1 = this.createGravestone(88, 225);
+    this.gravestone2 = this.createGravestone(152, 176);
+    this.gravestone3 = this.createGravestone(264, 160);
+    this.gravestone4 = this.createGravestone(247, 240);
+
+    super.createGate();
   }
 
-  createGate() {
-    this.gate = new Sprite(337, 254, 10, 39, "static");
-    this.gate.debug = DEBUG;
-    this.gate.visible = DEBUG;
-    disableSprite(this.gate);
-  }
-
-  createGrave(x, y) {
+  createGravestone(x, y) {
     let width = 26;
     let height = 26;
     let grave = new Sprite([
@@ -103,33 +119,56 @@ class BonusStageGhost extends BonusStage {
   }
 
   draw() {
-    //This is more engine stuff, maybe move?
-    clear();
-    super.drawBackground();
-    super.shake();
+    super.draw();
 
+    if (this.isStageLost) {
+      console.log("STAGE LOST");
+    } else if (this.isStageWon) {
+      console.log("STAGE WON");
+    } else {
+      this.drawStage();
+    }
+  }
+
+  drawStage() {
     super.createBonusNewBallIfBallLoss(this.getOpenGateBackground())
     super.closeBonusGateIfBallInsideBoard(this.getBackground())
 
     this.flippers.update();
 
     this.updatePhaseSprites();
-    this.timer.update();
+    this.updateGravestoneCollisions()
+    if(this.scenarioTop.collide(this.ball.sprite)){
+      sfx08.play();
+    }
 
+    this.timer.update();
     if (this.timer.timeIsUp()) {
-      this.loseBonusStage();
-      console.log("Bonus stage ended");
+      super.isStageLost = true;
     }
 
     this.changePhaseIfNecessary();
-
   }
+
+  updateGravestoneCollisions() {
+    this.updateGravestoneCollision(this.gravestone1);
+    this.updateGravestoneCollision(this.gravestone2);
+    this.updateGravestoneCollision(this.gravestone3);
+    this.updateGravestoneCollision(this.gravestone4);
+  }
+
+  updateGravestoneCollision(gravestone) {
+    if (gravestone.collide(this.ball.sprite)) {
+      sfx2F.play();
+    }
+  }
+
 
   updatePhaseSprites() {
     if (this.currentPhase == 1) {
-     this.gastly1 =this.updateGastly(this.gastly1);
-     this.gastly2 =this.updateGastly(this.gastly2);
-     this.gastly3 =this.updateGastly(this.gastly3);
+      this.gastly1 = this.updateGastly(this.gastly1);
+      this.gastly2 = this.updateGastly(this.gastly2);
+      this.gastly3 = this.updateGastly(this.gastly3);
     } else if (this.currentPhase == 2) {
       this.haunter1 = this.updateHaunter(this.haunter1);
       this.haunter2 = this.updateHaunter(this.haunter2);
@@ -157,26 +196,33 @@ class BonusStageGhost extends BonusStage {
     this.gastly1 = new Gastly(GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
     this.gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
     this.gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
+
+    playSong(songGhostStageGastly);
   }
 
   setupHaunterPhase() {
     this.haunter1 = this.createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
     this.haunter2 = this.createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
+
+    playSong(songGhostStageHaunter);
   }
 
   createDisabledGhost(clazz, x, y) {
     let ghost = new clazz(x, y);
     ghost.disableSprite();
+
+    playSong(songGhostStageGengar);
+
     return ghost;
   }
 
   setupGengarPhase() {
     super.replaceBackground(this.getBackground());
     super.startShake();
-    this.grave1.remove();
-    this.grave2.remove();
-    this.grave3.remove();
-    this.grave4.remove();
+    this.gravestone1.remove();
+    this.gravestone2.remove();
+    this.gravestone3.remove();
+    this.gravestone4.remove();
 
     this.gengar = this.createDisabledGhost(Gengar, GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
   }
@@ -243,18 +289,26 @@ class BonusStageGhost extends BonusStage {
   updateGengar() {
     this.gengar.update(this.ball.sprite);
 
-    if (this.gengar.hitPoints == 0) {
-      this.timer.disable();
-      this.levelCompleted = true;
-      this.flippers.disableFlippers();
-      if (this.gengar.disabled) {
-        console.log("Bonus complete");
-      }
+    if (this.gengar.isDefeated()) {
+      this.finishStageSucessfully();
     } else if (this.gengar.readyToRespawn()) {
       this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
+      sfx4E.play();
     }
 
     return this.gengar;
+  }
+
+  finishStageSucessfully() {
+    stopMusic();
+    this.timer.disable();
+    this.flippers.disableFlippers();
+    this.levelCompleted = true;
+    if (this.gengar.disabled) {
+      sfx2A.play();
+      this.isStageWon = true;
+    }
+
   }
 
 
