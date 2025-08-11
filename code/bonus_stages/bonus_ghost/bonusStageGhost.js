@@ -41,11 +41,9 @@ class BonusStageGhost extends BonusStage {
   }
 
   setup() {
-    super.replaceBackground(BONUS_GHOST_BACKGROUND);
+    super.replaceBackground(bonusGhostBackgroundClosed);
     this.createScenarioGeometry();
 
-    this.ball = spawnBonusBall();
-    this.flippers = createBonusFlippers();
     this.timer = new Timer(GHOST_STATE_TIME_MILLIS);
 
     this.currentPhase = 0;
@@ -251,17 +249,17 @@ class BonusStageGhost extends BonusStage {
 
   getBackground() {
     if (this.currentPhase == 3) {
-      return BONUS_GHOST_BACKGROUND_P2;
+      return bonusGhostBackgroundP2Closed;
     }
 
-    return BONUS_GHOST_BACKGROUND;
+    return bonusGhostBackgroundClosed;
   }
 
   getOpenGateBackground() {
     if (this.currentPhase == 3) {
-      return BONUS_GHOST_BACKGROUND_OPEN_P2;
+      return bonusGhostBackgroundP2Open;
     }
-    return BONUS_GHOST_BACKGROUND_OPEN;
+    return bonusGhostBackgroundOpen;
   }
 
   updateGastly(gastly) {

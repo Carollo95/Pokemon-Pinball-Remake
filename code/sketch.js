@@ -1,5 +1,6 @@
 function preload() {
   preloadAudio();
+  preLoadBackgrounds();
   preloadAnimations();
 }
 

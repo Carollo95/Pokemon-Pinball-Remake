@@ -1,9 +1,3 @@
-//BACKGROUND IMAGES
-const BONUS_GHOST_BACKGROUND_OPEN = 'assets/img/bonus-ghost/bonus_ghost_background_open';
-const BONUS_GHOST_BACKGROUND = 'assets/img/bonus-ghost/bonus_ghost_background';
-const BONUS_GHOST_BACKGROUND_OPEN_P2 = 'assets/img/bonus-ghost/bonus_ghost_background_open_p2';
-const BONUS_GHOST_BACKGROUND_P2 = 'assets/img/bonus-ghost/bonus_ghost_background_p2';
-
 //SPRITES
 const TIMER_CHAR_HEIGHT = 32;
 const TIMER_CHAR_WIDTH = 16;
@@ -160,14 +154,29 @@ function getImage(name) {
 }
 
 
+let bonusGhostBackgroundOpen, bonusGhostBackgroundClosed, bonusGhostBackgroundP2Open, bonusGhostBackgroundP2Closed;
+
 let animLeftFlipperUp, animLeftFlipperMiddle, animLeftFlipperDown, animLeftFlipperDownDisabled;
 let animRightFlipperUp, animRightFlipperMiddle, animRightFlipperDown, animRightFlipperDownDisabled;
+
 let animTimer = new Array(10);
 let animTimerColon;
+
+let stageTextA, stageTextB, stageTextC, stageTextD, stageTextE, stageTextF, stageTextG, stageTextH,
+    stageTextI, stageTextJ, stageTextK, stageTextL, stageTextM, stageTextN, stageTextO, stageTextP,
+    stageTextQ, stageTextR, stageTextS, stageTextT, stageTextU, stageTextV, stageTextW, stageTextX,
+    stageTextY, stageTextZ, stageTextDot, stageTextColon, stageTextExcl, stageTextSpace;
 
 let animGastly, animGastlyHurt;
 let animHaunter, animHaunterHurt;
 let animGengar, animGengarHurt, animGengarWalk;
+
+function preLoadBackgrounds() {
+    bonusGhostBackgroundOpen = getImage('assets/img/bonus-ghost/bonus_ghost_background_open');
+    bonusGhostBackgroundClosed = getImage('assets/img/bonus-ghost/bonus_ghost_background');
+    bonusGhostBackgroundP2Open = getImage('assets/img/bonus-ghost/bonus_ghost_background_open_p2');
+    bonusGhostBackgroundP2Closed = getImage('assets/img/bonus-ghost/bonus_ghost_background_p2');
+}
 
 /**
  * loads in memory all the animations
@@ -183,9 +192,9 @@ function preloadAnimations() {
     animRightFlipperDownDisabled = getAnimation('assets/img/right_flipper_down_disabled', 48, 48, 1);
 
     for (let i = 0; i < 10; i++) {
-        animTimer[i] = getAnimation('assets/img/timer_' + i, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1);
+        animTimer[i] = getAnimation('assets/img/timer/timer_' + i, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1);
     }
-    animTimerColon = getAnimation('assets/img/timer_colon', TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1);
+    animTimerColon = getAnimation('assets/img/timer/timer_colon', TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, 1);
 
     animGastly = getAnimation('assets/img/bonus-ghost/gastly', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
     animGastlyHurt = getAnimation('assets/img/bonus-ghost/gastly_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
@@ -196,6 +205,37 @@ function preloadAnimations() {
     animGengar = getAnimation('assets/img/bonus-ghost/gengar', 96, 128, 3, 16);
     animGengarHurt = getAnimation('assets/img/bonus-ghost/gengar_hurt', 112, 128, 1, DEFAULT_ANIMATION_DELAY);
     animGengarWalk = getAnimation('assets/img/bonus-ghost/gengar_walk', 96, 128, 4, DEFAULT_ANIMATION_DELAY);
+
+    stageTextA = getAnimation('assets/img/stage-text/a', 16, 16, 1);
+    stageTextB = getAnimation('assets/img/stage-text/b', 16, 16, 1);
+    stageTextC = getAnimation('assets/img/stage-text/c', 16, 16, 1);
+    stageTextD = getAnimation('assets/img/stage-text/d', 16, 16, 1);
+    stageTextE = getAnimation('assets/img/stage-text/e', 16, 16, 1);
+    stageTextF = getAnimation('assets/img/stage-text/f', 16, 16, 1);
+    stageTextG = getAnimation('assets/img/stage-text/g', 16, 16, 1);
+    stageTextH = getAnimation('assets/img/stage-text/h', 16, 16, 1);
+    stageTextI = getAnimation('assets/img/stage-text/i', 16, 16, 1);
+    stageTextJ = getAnimation('assets/img/stage-text/j', 16, 16, 1);
+    stageTextK = getAnimation('assets/img/stage-text/k', 16, 16, 1);
+    stageTextL = getAnimation('assets/img/stage-text/l', 16, 16, 1);
+    stageTextM = getAnimation('assets/img/stage-text/m', 16, 16, 1);
+    stageTextN = getAnimation('assets/img/stage-text/n', 16, 16, 1);
+    stageTextO = getAnimation('assets/img/stage-text/o', 16, 16, 1);
+    stageTextP = getAnimation('assets/img/stage-text/p', 16, 16, 1);
+    stageTextQ = getAnimation('assets/img/stage-text/q', 16, 16, 1);
+    stageTextR = getAnimation('assets/img/stage-text/r', 16, 16, 1);
+    stageTextS = getAnimation('assets/img/stage-text/s', 16, 16, 1);
+    stageTextT = getAnimation('assets/img/stage-text/t', 16, 16, 1);
+    stageTextU = getAnimation('assets/img/stage-text/u', 16, 16, 1);
+    stageTextV = getAnimation('assets/img/stage-text/v', 16, 16, 1);
+    stageTextW = getAnimation('assets/img/stage-text/w', 16, 16, 1);
+    stageTextX = getAnimation('assets/img/stage-text/x', 16, 16, 1);
+    stageTextY = getAnimation('assets/img/stage-text/y', 16, 16, 1);
+    stageTextZ = getAnimation('assets/img/stage-text/z', 16, 16, 1);
+    stageTextDot = getAnimation('assets/img/stage-text/dot', 16, 16, 1);
+    stageTextColon = getAnimation('assets/img/stage-text/colon', 16, 16, 1);
+    stageTextExcl = getAnimation('assets/img/stage-text/excl', 16, 16, 1);
+    stageTextSpace = getAnimation('assets/img/stage-text/space', 16, 16, 1);
 
 }
 

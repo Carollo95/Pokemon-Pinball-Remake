@@ -4,8 +4,9 @@ const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310; //Horizontal pixel that when a ball c
 class BonusStage extends Stage {
     gate;
     gateIsOpen;
-    
+
     timer;
+    stageText;
 
     levelCompleted
     isStageLost;
@@ -18,6 +19,15 @@ class BonusStage extends Stage {
         this.isStageWon = false;
 
         this.gateIsOpen = true;
+
+        this.ball = spawnBonusBall();
+        this.flippers = createBonusFlippers();
+        this.stageText = createBonusStageStatusBanner();
+    }
+
+    draw(){
+        super.draw();
+        this.stageText.draw();
     }
 
     createGate() {
