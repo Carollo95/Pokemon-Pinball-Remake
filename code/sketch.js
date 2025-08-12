@@ -5,11 +5,12 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+  let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+  cnv.parent("canvas-container");
+  
   stage = new BonusStageGhost();
   stage.setup();
 }
-
 
 function draw() {
   drawStage();

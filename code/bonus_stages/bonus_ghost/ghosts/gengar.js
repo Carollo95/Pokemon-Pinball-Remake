@@ -1,5 +1,5 @@
-const GENGAR_HITBOX_HEIGHT = 56; //Height of gengar's hitbox
-const GENGAR_HITBOX_WIDTH = 36; //Width of gengar's hitbox
+const GENGAR_HITBOX_HEIGHT = 62; //Height of gengar's hitbox
+const GENGAR_HITBOX_WIDTH = 42; //Width of gengar's hitbox
 const GENGAR_SPEED = 0.5; // Step speed
 const GENGAR_STEP_LENGTH = 10.0; //Pixel length of each step
 const GENGAR_HITPOINTS = 5; //Number of hits to go down

@@ -39,12 +39,59 @@ class Flippers {
     hasLeftFlipperBeenLowered;
     hasrightFlipperBeenLowered;
 
+    leftFlipperButtonPressed;
+    rightFlipperButtonPressed;
+
     constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY) {
         this.flippersEnabled = true;
+
+        this.createHtmlButtonControls();
 
         this.createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY);
         this.createRightFlipper(rightFlipperRotationPointX, rightFlipperRotationPointY);
 
+    }
+
+    createHtmlButtonControls() {
+        leftFlipperButton.addEventListener("mousedown", () => {
+            this.leftFlipperButtonPressed = true;
+        });
+        leftFlipperButton.addEventListener("mouseup", () => {
+            this.leftFlipperButtonPressed = false;
+        });
+        leftFlipperButton.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            this.leftFlipperButtonPressed = true;
+        }, { passive: false });
+        leftFlipperButton.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            this.leftFlipperButtonPressed = false;
+        }, { passive: false });
+
+        document.addEventListener("mouseup", () => {
+            this.leftFlipperButtonPressed = false;
+            this.rightFlipperButtonPressed = false;
+        });
+        document.addEventListener("touchend", () => {
+            this.leftFlipperButtonPressed = false;
+            this.rightFlipperButtonPressed = false;
+        });
+
+
+        rightFlipperButton.addEventListener("mousedown", () => {
+            this.rightFlipperButtonPressed = true;
+        });
+        rightFlipperButton.addEventListener("mouseup", () => {
+            this.rightFlipperButtonPressed = false;
+        });
+        rightFlipperButton.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            this.rightFlipperButtonPressed = true;
+        }, { passive: false });
+        rightFlipperButton.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            this.rightFlipperButtonPressed = false;
+        }, { passive: false });
     }
 
     createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY) {
@@ -85,7 +132,6 @@ class Flippers {
     controlLeftFlipper() {
         if (this.flippersEnabled) {
             if (this.isLeftFlipperAction()) {
-                this.shouldPlayFlipperSFX = true;
                 this.liftLeftFlipper();
             } else {
                 this.lowerLeftFlipper();
@@ -96,10 +142,11 @@ class Flippers {
     }
 
     isLeftFlipperAction() {
-        return kb.pressing(LEFT_FLIPPER_KEY);
+        return kb.pressing(LEFT_FLIPPER_KEY) || this.leftFlipperButtonPressed;
     }
 
     liftLeftFlipper() {
+        this.shouldPlayFlipperSFX = true;
         if (this.leftFlipper.rotation > LEFT_FLIPPER_MAX_ROTATION + EPSILON) {
             this.leftFlipper.rotationSpeed = LEFT_FLIPPER_ROTATION_SPEED;
         } else {
@@ -157,7 +204,7 @@ class Flippers {
     }
 
     isRightFlipperActive() {
-        return kb.pressing(RIGHT_FLIPPER_KEY);
+        return kb.pressing(RIGHT_FLIPPER_KEY) || this.rightFlipperButtonPressed;
     }
 
     liftRightFlipper() {

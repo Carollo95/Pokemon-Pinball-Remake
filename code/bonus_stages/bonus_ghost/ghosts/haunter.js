@@ -1,5 +1,5 @@
 const HAUNTER_HITBOX_HEIGHT = 32;//Height of haunter's hitbox
-const HAUNTER_HITBOX_WIDTH = 24; //Width of haunter's hitbox
+const HAUNTER_HITBOX_WIDTH = 28; //Width of haunter's hitbox
 const HAUNTER_HORIZONTAL_SPEED = 0.4; //Horizontal movement speed
 const HAUNTER_VERTICAL_SPEED = 0.15; //Vertical movement speed
 const HAUNTER_MAX_HORIZONTAL_MOVEMENT = 72; //Max horizontal desplacement pixels
