@@ -154,6 +154,7 @@ function getImage(name) {
 }
 
 
+let bonusStageFrame;
 let bonusGhostBackgroundOpen, bonusGhostBackgroundClosed, bonusGhostBackgroundP2Open, bonusGhostBackgroundP2Closed;
 
 let animLeftFlipperUp, animLeftFlipperMiddle, animLeftFlipperDown, animLeftFlipperDownDisabled;
@@ -176,6 +177,8 @@ function preLoadBackgrounds() {
     bonusGhostBackgroundClosed = getImage('assets/img/bonus-ghost/bonus_ghost_background');
     bonusGhostBackgroundP2Open = getImage('assets/img/bonus-ghost/bonus_ghost_background_open_p2');
     bonusGhostBackgroundP2Closed = getImage('assets/img/bonus-ghost/bonus_ghost_background_p2');
+
+    bonusStageFrame = getImage('assets/img/bonus_state_frame');
 }
 
 /**

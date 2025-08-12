@@ -16,7 +16,7 @@ class StageStatusBanner {
     constructor(x, y) {
         for (var i = 0; i <= MAX_CHARS; i++) {
             this.textArray[i] = new Sprite(x - (CHAR_SIZE * i + 1), y, CHAR_SIZE, CHAR_SIZE, "none");
-
+            this.textArray[i].layer = 10;
 
             this.textArray[i].addAnimation("$a", stageTextA);
             this.textArray[i].addAnimation("$b", stageTextB);

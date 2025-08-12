@@ -35,6 +35,7 @@ class Gengar extends Ghost {
         this.sprite.addAnimation("walk", this.walkAnimation);
 
         this.sprite.changeAnimation("idle");
+        this.sprite.layer = 9;
     }
 
 

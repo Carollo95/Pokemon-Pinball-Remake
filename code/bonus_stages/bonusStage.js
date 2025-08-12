@@ -20,7 +20,16 @@ class BonusStage extends Stage {
 
         this.ball = spawnBonusBall();
         this.flippers = createBonusFlippers();
+        this.timer = new Timer(GHOST_STAGE_TIME_MILLIS);
         this.stageText = createBonusStageStatusBanner();
+
+        this.createFrame();
+    }
+
+    createFrame() {
+        var frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
+        frame.addAnimation("", bonusStageFrame);
+        frame.layer = 11;
     }
 
     draw() {
