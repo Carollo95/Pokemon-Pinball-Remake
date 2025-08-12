@@ -89,7 +89,7 @@ class StageStatusBanner {
     drawGameStatus() {
         //TODO temporary
         for (var i = MAX_CHARS; i >= 0; i--) {
-            this.textArray[i].changeAnimation("$!");
+            this.textArray[i].changeAnimation("$ ");
         }
     }
 

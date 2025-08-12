@@ -31,8 +31,8 @@ class BonusStageGhost extends BonusStage {
   gravestone3;
   gravestone4;
 
-  extraGastlyLives = 0;//7;
-  extraHaunterLives = 2;//10;
+  extraGastlyLives = 7;
+  extraHaunterLives = 10;
 
   currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
@@ -124,13 +124,9 @@ class BonusStageGhost extends BonusStage {
     super.draw();
     this.drawStage();
 
-    if (this.isStageLost) {
+    if (this.isStageLost || this.isStageWon) {
       if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-        console.log("PA CASA LOSER");
-      }
-    } else if (this.isStageWon) {
-      if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-        console.log("PA CASA WINNER");
+        //TODO end stage
       }
     }
   }
