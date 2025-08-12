@@ -1,4 +1,4 @@
-const GHOST_STAGE_TIME_MILLIS = 91000; //Duration of the ghost stage
+const GHOST_STAGE_TIME_MILLIS = 2000;//91000; //Duration of the ghost stage
 
 let GASTLY1_SPAWN_X = 80;
 let GASTLY1_SPAWN_Y = 140;
@@ -37,6 +37,8 @@ class BonusStageGhost extends BonusStage {
   currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
   wrapUp = false;
+
+  millisSinceStageComplete = 0;
 
   constructor() {
     super();
@@ -120,33 +122,52 @@ class BonusStageGhost extends BonusStage {
 
   draw() {
     super.draw();
+    this.drawStage();
 
     if (this.isStageLost) {
-      console.log("STAGE LOST");
+      if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
+        console.log("PA CASA LOSER");
+      }
     } else if (this.isStageWon) {
-      console.log("STAGE WON");
-    } else {
-    this.drawStage();
+      if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
+        console.log("PA CASA WINNER");
+      }
     }
   }
 
   drawStage() {
-    super.createBonusNewBallIfBallLoss(this.getOpenGateBackground())
+    this.createBonusNewBallIfBallLoss(this.getOpenGateBackground())
     super.closeBonusGateIfBallInsideBoard(this.getBackground())
 
     this.updatePhaseSprites();
     this.updateGravestoneCollisions()
-    if(this.scenarioTop.collide(this.ball.sprite)){
+    if (this.scenarioTop.collide(this.ball.sprite)) {
       sfx08.play();
     }
 
     this.timer.update();
     if (this.timer.timeIsUp()) {
-      super.isStageLost = true;
+      this.flippers.disableFlippers();
+      this.levelCompleted = true;
     }
 
     this.changePhaseIfNecessary();
   }
+
+  createBonusNewBallIfBallLoss(bonusGateBackground) {
+    if (this.checkBonusBallLoss()) {
+      if (!this.levelCompleted) {
+        this.createNewBonusBall(bonusGateBackground);
+      } else {
+        if (!this.isStageLost && this.millisSinceStageComplete == 0) {
+          this.millisSinceStageComplete = millis();
+          this.stageText.setText(" end stage clear  ", (STAGE_RESULT_SHOW_MILLS / 2));
+          this.isStageLost = true;
+        }
+      }
+    }
+  }
+
 
   updateGravestoneCollisions() {
     this.updateGravestoneCollision(this.gravestone1);
@@ -302,11 +323,16 @@ class BonusStageGhost extends BonusStage {
     this.timer.disable();
     this.flippers.disableFlippers();
     this.levelCompleted = true;
-    if (this.gengar.disabled) {
-    sfx2A.play();
-      this.isStageWon = true;
+    if (this.gengar.disabled && !this.isStageWon) { // Wait until gengar walks backwards out of the stage
+      this.clearStage();
     }
+  }
 
+  clearStage() {
+    sfx2A.play();
+    this.isStageWon = true;
+    this.millisSinceStageComplete = millis();
+    this.stageText.setText("gengar stage clear ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
   }
 
 
