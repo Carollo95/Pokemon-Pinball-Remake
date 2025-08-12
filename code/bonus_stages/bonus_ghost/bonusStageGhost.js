@@ -31,8 +31,8 @@ class BonusStageGhost extends BonusStage {
   gravestone3;
   gravestone4;
 
-  extraGastlyLives = 0;//7;
-  extraHaunterLives = 2;//10;
+  extraGastlyLives = 7;
+  extraHaunterLives = 10;
 
   currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
