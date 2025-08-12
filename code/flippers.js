@@ -92,8 +92,6 @@ class Flippers {
             }
             this.playLeftFLipperSFX();
             this.changeLeftFlipperAnimation();
-        } else {
-            this.disableLeftFlipper();
         }
     }
 
@@ -131,8 +129,9 @@ class Flippers {
     }
 
     disableLeftFlipper() {
+        this.leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
         this.leftFlipper.changeAnimation("down_disabled");
-
+        this.leftFlipper.rotationSpeed = 0;
     }
 
     playLeftFLipperSFX() {
@@ -154,8 +153,6 @@ class Flippers {
             }
             this.playRightFlipperSFX();
             this.changeActiveRightFlipperAnimation();
-        } else {
-            this.disableRightFlipperAnimation();
         }
     }
 
@@ -192,8 +189,10 @@ class Flippers {
         }
     }
 
-    disableRightFlipperAnimation() {
+    disableRightFlipper() {
+        this.rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
         this.rightFlipper.changeAnimation("down_disabled");
+        this.rightFlipper.rotationSpeed = 0;
     }
 
     playRightFlipperSFX() {
@@ -210,9 +209,8 @@ class Flippers {
     disableFlippers() {
         this.flippersEnabled = false;
 
-        this.rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
-        this.leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
-
+        this.disableRightFlipper();
+        this.disableLeftFlipper();
     }
 
     enableFlippers() {

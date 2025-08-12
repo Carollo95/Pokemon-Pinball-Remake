@@ -15,8 +15,8 @@ class Stage {
         background(this.bg);
     }
 
-    replaceBackground(name) {
-        this.bg = getImage(name);
+    replaceBackground(image) {
+        this.bg = image;
     }
 
     startShake() {
