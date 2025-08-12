@@ -140,17 +140,17 @@ class BonusStageGhost extends BonusStage {
     }
 
     this.timer.update();
+
     if (this.timer.timeIsUp()) {
       this.flippers.disableFlippers();
-      this.levelCompleted = true;
     }
 
     this.changePhaseIfNecessary();
   }
 
   createBonusNewBallIfBallLoss(bonusGateBackground) {
-    if (this.checkBonusBallLoss()) {
-      if (!this.levelCompleted) {
+    if (this.checkBonusBallLoss() && !this.levelCompleted) {
+      if (!this.timer.timeIsUp()) {
         this.createNewBonusBall(bonusGateBackground);
       } else {
         if (!this.isStageLost && this.millisSinceStageComplete == 0) {
