@@ -1,4 +1,4 @@
-const GHOST_STATE_TIME_MILLIS = 91000; //Duration of the ghost stage
+const GHOST_STAGE_TIME_MILLIS = 91000; //Duration of the ghost stage
 
 let GASTLY1_SPAWN_X = 80;
 let GASTLY1_SPAWN_Y = 140;
@@ -36,6 +36,8 @@ class BonusStageGhost extends BonusStage {
 
   currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
 
+  wrapUp = false;
+
   constructor() {
     super();
   }
@@ -44,7 +46,7 @@ class BonusStageGhost extends BonusStage {
     super.replaceBackground(bonusGhostBackgroundClosed);
     this.createScenarioGeometry();
 
-    this.timer = new Timer(GHOST_STATE_TIME_MILLIS);
+    this.timer = new Timer(GHOST_STAGE_TIME_MILLIS);
 
     this.currentPhase = 0;
   }
@@ -124,15 +126,13 @@ class BonusStageGhost extends BonusStage {
     } else if (this.isStageWon) {
       console.log("STAGE WON");
     } else {
-      this.drawStage();
+    this.drawStage();
     }
   }
 
   drawStage() {
     super.createBonusNewBallIfBallLoss(this.getOpenGateBackground())
     super.closeBonusGateIfBallInsideBoard(this.getBackground())
-
-    this.flippers.update();
 
     this.updatePhaseSprites();
     this.updateGravestoneCollisions()
@@ -303,7 +303,7 @@ class BonusStageGhost extends BonusStage {
     this.flippers.disableFlippers();
     this.levelCompleted = true;
     if (this.gengar.disabled) {
-      sfx2A.play();
+    sfx2A.play();
       this.isStageWon = true;
     }
 

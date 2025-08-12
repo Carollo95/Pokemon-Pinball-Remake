@@ -3,7 +3,7 @@ const MAX_CHARS = 19;
 const MAX_CHARS_BONUS = 19;
 
 const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showing text
-const DEFAULT_TEXT_PERSISTENCE_MILLIS = 3000; //Default millis to keep on screen the shown text
+const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on screen the shown text
 
 class StageStatusBanner {
     textArray = new Array(MAX_CHARS);
@@ -89,7 +89,7 @@ class StageStatusBanner {
     drawGameStatus() {
         //TODO temporary
         for (var i = MAX_CHARS; i >= 0; i--) {
-            this.textArray[i].changeAnimation("$ ");
+            this.textArray[i].changeAnimation("$!");
         }
     }
 
