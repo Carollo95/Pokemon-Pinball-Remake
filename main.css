@@ -33,8 +33,21 @@ body {
     padding: 10px 20px;
 }
 
+#keyboard-instructions{
+    margin-top: 10px;
+    display: none;
+    gap: 10px;
+    justify-content: center;
+}
+
 @media screen and (max-width: 768px) {
   #flipper-buttons{
     display: flex;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #keyboard-instructions{
+    display: block;
   }
 }

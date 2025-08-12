@@ -1,3 +1,7 @@
+p5playConfig = {
+  showIntro: false
+};
+
 function preload() {
   preloadAudio();
   preLoadBackgrounds();
@@ -7,7 +11,7 @@ function preload() {
 function setup() {
   let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   cnv.parent("canvas-container");
-  
+
   stage = new BonusStageGhost();
   stage.setup();
 }
