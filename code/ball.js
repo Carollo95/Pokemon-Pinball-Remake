@@ -6,9 +6,14 @@ const BONUS_SPAWN_BALL_Y = 245; //Vertical pixel for the spawn of a ball on bonu
 
 class Ball {
     sprite;
+    spawn_x;
+    spawn_x;
 
     constructor(x, y) {
         this.sprite = new Sprite();
+        this.sprite.layer = 5;
+        this.spawn_x = x;
+        this.spawn_y = y;
         this.sprite.x = x;
         this.sprite.y = y;
         this.sprite.diameter = BALL_DIAMETER;

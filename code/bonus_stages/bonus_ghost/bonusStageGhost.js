@@ -1,4 +1,4 @@
-const GHOST_STAGE_TIME_MILLIS = 2000;//91000; //Duration of the ghost stage
+const GHOST_STAGE_TIME_MILLIS = 91000; //Duration of the ghost stage
 
 let GASTLY1_SPAWN_X = 80;
 let GASTLY1_SPAWN_Y = 140;
@@ -47,8 +47,6 @@ class BonusStageGhost extends BonusStage {
   setup() {
     super.replaceBackground(bonusGhostBackgroundClosed);
     this.createScenarioGeometry();
-
-    this.timer = new Timer(GHOST_STAGE_TIME_MILLIS);
 
     this.currentPhase = 0;
   }
