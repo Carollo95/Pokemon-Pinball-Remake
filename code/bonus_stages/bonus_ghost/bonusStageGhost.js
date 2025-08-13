@@ -47,13 +47,13 @@ class BonusStageGhost extends BonusStage {
 
   setup() {
     super.replaceBackground(bonusGhostBackgroundClosed);
-    this.createScenarioGeometry();
+    this.createBonusScenarioGeometry();
 
     this.currentPhase = 0;
   }
 
-  createScenarioGeometry() {
-    super.createScenarioGeometry();
+  createBonusScenarioGeometry() {
+    super.createBonusScenarioGeometry();
 
     this.gravestone1 = this.createGravestone(88, 225);
     this.gravestone2 = this.createGravestone(152, 176);
