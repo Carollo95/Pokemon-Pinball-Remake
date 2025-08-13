@@ -12,11 +12,11 @@ function setup() {
   let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   cnv.parent("canvas-container");
 
-  stage = new BonusStageGhost();
-  stage.setup();
+  startMoleStage();
 }
 
 function draw() {
+  console.log("heer");
   drawStage();
 }
 
@@ -27,3 +27,13 @@ function showFPS() {
   text("FPS: " + fps.toFixed(2), 10, 10);
 }
 
+
+function startGhostStage(){
+  stage = new BonusStageGhost();
+  stage.setup();
+}
+
+function startMoleStage(){
+  stage = new BonusStageMole();
+  stage.setup();
+}

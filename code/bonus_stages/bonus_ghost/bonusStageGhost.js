@@ -42,6 +42,7 @@ class BonusStageGhost extends BonusStage {
 
   constructor() {
     super();
+    this.timer = new Timer(GHOST_STAGE_TIME_MILLIS);
   }
 
   setup() {
@@ -52,54 +53,12 @@ class BonusStageGhost extends BonusStage {
   }
 
   createScenarioGeometry() {
-
-
-    this.scenarioTop = new Sprite(
-      [[0, 0],
-      [SCREEN_WIDTH, 0],
-      [SCREEN_WIDTH, 212],
-      [373, 212],
-      [332, 236],
-      [332, 122],
-      [44, 122],
-      [44, 275],
-      [0, 275],
-      [0, 0]
-      ], "static");
-    this.scenarioTop.debug = DEBUG;
-    this.scenarioTop.visible = DEBUG;
-
-    this.scenarioRight = new Sprite([
-      [SCREEN_WIDTH, 212],
-      [SCREEN_WIDTH, SCREEN_HEIGHT],
-      [236, SCREEN_HEIGHT],
-      [236, 338],
-      [373, 246],
-      [373, 212],
-      [SCREEN_WIDTH, 212]
-    ], "static");
-
-    this.scenarioRight.debug = DEBUG;
-    this.scenarioRight.visible = DEBUG;
-
-    this.scenarioLeft = new Sprite([
-      [0, 275],
-      [44, 275],
-      [139, 338],
-      [139, SCREEN_HEIGHT],
-      [0, SCREEN_HEIGHT],
-      [0, 275]
-    ], "static");
-
-    this.scenarioLeft.debug = DEBUG;
-    this.scenarioLeft.visible = DEBUG;
+    super.createScenarioGeometry();
 
     this.gravestone1 = this.createGravestone(88, 225);
     this.gravestone2 = this.createGravestone(152, 176);
     this.gravestone3 = this.createGravestone(264, 160);
     this.gravestone4 = this.createGravestone(247, 240);
-
-    super.createGate();
   }
 
   createGravestone(x, y) {

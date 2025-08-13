@@ -156,6 +156,7 @@ function getImage(name) {
 
 let bonusStageFrame;
 let bonusGhostBackgroundOpen, bonusGhostBackgroundClosed, bonusGhostBackgroundP2Open, bonusGhostBackgroundP2Closed;
+let bonusMoleBackgroundOpen, bonusMoleBackgroundClosed;
 
 let animLeftFlipperUp, animLeftFlipperMiddle, animLeftFlipperDown, animLeftFlipperDownDisabled;
 let animRightFlipperUp, animRightFlipperMiddle, animRightFlipperDown, animRightFlipperDownDisabled;
@@ -177,6 +178,9 @@ function preLoadBackgrounds() {
     bonusGhostBackgroundClosed = getImage('assets/img/bonus-ghost/bonus_ghost_background');
     bonusGhostBackgroundP2Open = getImage('assets/img/bonus-ghost/bonus_ghost_background_open_p2');
     bonusGhostBackgroundP2Closed = getImage('assets/img/bonus-ghost/bonus_ghost_background_p2');
+
+    bonusMoleBackgroundOpen = getImage('assets/img/bonus-mole/bonus_mole_background_open');
+    bonusMoleBackgroundClosed = getImage('assets/img/bonus-mole/bonus_mole_background');
 
     bonusStageFrame = getImage('assets/img/bonus_state_frame');
 }

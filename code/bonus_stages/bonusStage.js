@@ -14,16 +14,59 @@ class BonusStage extends Stage {
     isStageLost = false;
     isStageWon = false;
 
-
     constructor() {
         super();
 
         this.ball = spawnBonusBall();
         this.flippers = createBonusFlippers();
-        this.timer = new Timer(GHOST_STAGE_TIME_MILLIS);
         this.stageText = createBonusStageStatusBanner();
 
         this.createFrame();
+    }
+
+    createScenarioGeometry() {
+        this.scenarioTop = new Sprite(
+            [[0, 0],
+            [SCREEN_WIDTH, 0],
+            [SCREEN_WIDTH, 212],
+            [373, 212],
+            [336, 236],
+            [336, 122],
+            [40, 122],
+            [40, 275],
+            [0, 275],
+            [0, 0]
+            ], "static");
+        this.scenarioTop.debug = DEBUG;
+        this.scenarioTop.visible = DEBUG;
+
+        this.scenarioRight = new Sprite([
+            [SCREEN_WIDTH, 212],
+            [SCREEN_WIDTH, SCREEN_HEIGHT],
+            [236, SCREEN_HEIGHT],
+            [236, 338],
+            [373, 246],
+            [373, 212],
+            [SCREEN_WIDTH, 212]
+        ], "static");
+
+        this.scenarioRight.debug = DEBUG;
+        this.scenarioRight.visible = DEBUG;
+
+        this.scenarioLeft = new Sprite([
+            [0, 275],
+            [44, 275],
+            [139, 338],
+            [139, SCREEN_HEIGHT],
+            [0, SCREEN_HEIGHT],
+            [0, 275]
+        ], "static");
+
+        this.scenarioLeft.debug = DEBUG;
+        this.scenarioLeft.visible = DEBUG;
+
+
+        this.createGate();
     }
 
     createFrame() {
@@ -39,7 +82,7 @@ class BonusStage extends Stage {
     }
 
     createGate() {
-        this.gate = new Sprite(337, 254, 10, 39, "static");
+        this.gate = new Sprite(341, 254, 10, 39, "static");
         this.gate.debug = DEBUG;
         this.gate.visible = DEBUG;
         disableSprite(this.gate);
