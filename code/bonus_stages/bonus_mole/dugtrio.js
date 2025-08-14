@@ -1,7 +1,7 @@
-DUGTRIO_WIDTH = 58a; //Width of the Dugtrio hitbox
+DUGTRIO_WIDTH = 58; //Width of the Dugtrio hitbox
 DUGTRIO_HEIGHT = 58; //Height of the Dugtrio hitbox
 
-DIGLETT_TIME_OF_HURT = 500;
+DUGTRIO_TIME_OF_HURT = 500;
 
 class Dugtrio {
     timeOfHurt = 0;
@@ -15,22 +15,34 @@ class Dugtrio {
 
         this.sprite.addAnimation("idle1", animDugtrio1);
         this.sprite.addAnimation("hurt1", animDugtrio1Hurt)
+        this.sprite.addAnimation("idle2", animDugtrio2);
+        this.sprite.addAnimation("hurt2", animDugtrio2Hurt)
+        this.sprite.addAnimation("idle3", animDugtrio3);
+        this.sprite.addAnimation("hurt3", animDugtrio3Hurt)
+        this.sprite.addAnimation("idle4", animDugtrio4);
+        this.sprite.addAnimation("hurt4", animDugtrio4Hurt)
 
         this.sprite.visible = false;
+        disableSprite(this.sprite);
     }
 
     spawn() {
+        enableSprite(this.sprite);
         this.sprite.visible = true;
         this.sprite.changeAnimation("idle1");
     }
 
     update(ballSprite) {
         if (!this.disabled) {
-            if (this.timeOfHurt == 0) {
-                this.checkCollision(ballSprite);
-            } else {
-                if (this.isHurtTimeFinished()) {
-                    this.sprite.changeAnimation("hurt" + phase)
+            if (this.isHurtTimeFinished()) {
+                if (this.phase == 4) {
+                    this.phase++;
+                    this.timeOfHurt = millis();
+                } else if (this.phase == 5) {
+                    this.disableSprite();
+                } else {
+                    this.sprite.changeAnimation("idle" + this.phase)
+                    this.checkCollision(ballSprite);
                 }
             }
         }
@@ -38,15 +50,15 @@ class Dugtrio {
 
     checkCollision(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
-            this.sprite.changeAnimation("hurt" + phase)
-            phase ++;
-            this.sfx36.play();
+            this.sprite.changeAnimation("hurt" + this.phase)
+            this.phase++;
+            sfx36.play();
             this.timeOfHurt = millis();
         }
     }
 
     isHurtTimeFinished() {
-        return (millis() - this.timeOfHurt) > DIGLETT_TIME_OF_HURT
+        return (millis() - this.timeOfHurt) > DUGTRIO_TIME_OF_HURT
     }
 
     disableSprite() {
