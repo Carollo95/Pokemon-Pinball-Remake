@@ -50,7 +50,6 @@ class Diglett {
         if (this.sprite.collide(ballSprite)) {
             this.sprite.changeAnimation("hurt")
             sfx35.play();
-            disableSprite(this.sprite);
             this.timeOfHurt = millis();
         }
     }
