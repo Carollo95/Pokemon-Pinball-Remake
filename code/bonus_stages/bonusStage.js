@@ -68,7 +68,6 @@ class BonusStage extends Stage {
             [373, 246],
             [373, 212],
             [SCREEN_WIDTH, 212]]);
-        console.log(this.scenarioRight);
     }
 
     createScenarioGeometry(positions) {

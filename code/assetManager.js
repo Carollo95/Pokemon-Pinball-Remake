@@ -173,7 +173,7 @@ let animGastly, animGastlyHurt;
 let animHaunter, animHaunterHurt;
 let animGengar, animGengarHurt, animGengarWalk;
 
-let animDiglett;
+let animDiglett, animDiglettHurt, animDiglettDown;
 
 function preLoadBackgrounds() {
     bonusGhostBackgroundOpen = getImage('assets/img/bonus-ghost/bonus_ghost_background_open');
@@ -215,7 +215,9 @@ function preloadAnimations() {
     animGengarHurt = getAnimation('assets/img/bonus-ghost/gengar_hurt', 112, 128, 1, DEFAULT_ANIMATION_DELAY);
     animGengarWalk = getAnimation('assets/img/bonus-ghost/gengar_walk', 96, 128, 4, DEFAULT_ANIMATION_DELAY);
 
-    animDiglett = getAnimation('assets/img/bonus-mole/diglett', 32, 32, 4, DEFAULT_ANIMATION_DELAY);
+    animDiglett = getAnimation('assets/img/bonus-mole/diglett', 32, 32, 4, 8);
+    animDiglettHurt = getAnimation('assets/img/bonus-mole/diglett_hurt', 32, 32, 1, DEFAULT_ANIMATION_DELAY);
+    animDiglettDown = getAnimation('assets/img/bonus-mole/diglett_down', 32, 32, 1, DEFAULT_ANIMATION_DELAY);
 
     stageTextA = getAnimation('assets/img/stage-text/a', 16, 16, 1);
     stageTextB = getAnimation('assets/img/stage-text/b', 16, 16, 1);
@@ -261,10 +263,6 @@ function preloadAnimations() {
  */
 function getAnimation(name, frameHeight, frameWidth, imageNum, delay) {
     let sheet = getImage(name);
-    if (sheet == undefined) {
-        console.log(name);
-        console.log(sheet);
-    }
     let animation = loadAnimation(sheet, { frameSize: [frameHeight, frameWidth], frameCount: imageNum });
     animation.frameDelay = delay;
 
