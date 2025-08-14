@@ -12,8 +12,7 @@ function setup() {
   let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   cnv.parent("canvas-container");
 
-  stage = new BonusStageGhost();
-  stage.setup();
+  startMoleStage();
 }
 
 function draw() {
@@ -26,4 +25,25 @@ function showFPS() {
   stroke(0);
   text("FPS: " + fps.toFixed(2), 10, 10);
 }
+
+
+function startGhostStage() {
+  allSprites.remove();
+  stage = new BonusStageGhost();
+  stage.setup();
+}
+
+function startMoleStage() {
+  allSprites.remove();
+  stage = new BonusStageMole();
+  stage.setup();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("ghost-stage").addEventListener("click", startGhostStage);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("mole-stage").addEventListener("click", startMoleStage);
+});
 

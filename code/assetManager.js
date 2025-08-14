@@ -19,9 +19,12 @@ let currentSong;
  * Loads in memory all the audio files
  */
 function preloadAudio() {
-    songGhostStageGastly = getAudio('assets/audio/GhostStage_Gastly');
-    songGhostStageHaunter = getAudio('assets/audio/GhostStage_Haunter');
-    songGhostStageGengar = getAudio('assets/audio/GhostStage_Gengar');
+    songGhostStageGastly = getAudio('assets/audio/GhostStage_Gastly_In_The_Graveyard');
+    songGhostStageHaunter = getAudio('assets/audio/GhostStage_Haunter_In_The_Graveyard');
+    songGhostStageGengar = getAudio('assets/audio/GhostStage_Gengar_In_The_Graveyard');
+
+    songMoleStageDiglett = getAudio('assets/audio/MoleStage_Whack_the_Digletts');
+    songMoleStageDugtrio = getAudio('assets/audio/MoleStage_Whack_Dugtrio');
 
     sfx00 = getAudio('assets/audio/sfx/SFX-00');
     sfx01 = getAudio('assets/audio/sfx/SFX-01');
@@ -76,8 +79,8 @@ function preloadAudio() {
     sfx32 = getAudio('assets/audio/sfx/SFX-32');
     sfx33 = getAudio('assets/audio/sfx/SFX-33');
     sfx34 = getAudio('assets/audio/sfx/SFX-34');
-    sfx35 = getAudio('assets/audio/sfx/SFX-35');
-    sfx36 = getAudio('assets/audio/sfx/SFX-36');
+    sfx35 = getAudio('assets/audio/sfx/SFX-35'); //Diglett hurt
+    sfx36 = getAudio('assets/audio/sfx/SFX-36'); //Dugtrio hurt
     sfx37 = getAudio('assets/audio/sfx/SFX-37'); //Gengar hurt
     sfx38 = getAudio('assets/audio/sfx/SFX-38');
     sfx39 = getAudio('assets/audio/sfx/SFX-39');
@@ -102,8 +105,6 @@ function preloadAudio() {
     sfx4C = getAudio('assets/audio/sfx/SFX-4C');
     sfx4D = getAudio('assets/audio/sfx/SFX-4D');
     sfx4E = getAudio('assets/audio/sfx/SFX-4E');  //Gengar cry
-
-
 }
 
 /**
@@ -156,6 +157,7 @@ function getImage(name) {
 
 let bonusStageFrame;
 let bonusGhostBackgroundOpen, bonusGhostBackgroundClosed, bonusGhostBackgroundP2Open, bonusGhostBackgroundP2Closed;
+let bonusMoleBackgroundOpen, bonusMoleBackgroundClosed;
 
 let animLeftFlipperUp, animLeftFlipperMiddle, animLeftFlipperDown, animLeftFlipperDownDisabled;
 let animRightFlipperUp, animRightFlipperMiddle, animRightFlipperDown, animRightFlipperDownDisabled;
@@ -172,11 +174,17 @@ let animGastly, animGastlyHurt;
 let animHaunter, animHaunterHurt;
 let animGengar, animGengarHurt, animGengarWalk;
 
+let animDiglett, animDiglettHurt, animDiglettDown;
+let animDugtrio1, animDugtrio1Hurt, animDugtrio2, animDugtrio2Hurt, animDugtrio3, animDugtrio3Hurt, animDugtrio4;
+
 function preLoadBackgrounds() {
     bonusGhostBackgroundOpen = getImage('assets/img/bonus-ghost/bonus_ghost_background_open');
     bonusGhostBackgroundClosed = getImage('assets/img/bonus-ghost/bonus_ghost_background');
     bonusGhostBackgroundP2Open = getImage('assets/img/bonus-ghost/bonus_ghost_background_open_p2');
     bonusGhostBackgroundP2Closed = getImage('assets/img/bonus-ghost/bonus_ghost_background_p2');
+
+    bonusMoleBackgroundOpen = getImage('assets/img/bonus-mole/bonus_mole_background_open');
+    bonusMoleBackgroundClosed = getImage('assets/img/bonus-mole/bonus_mole_background');
 
     bonusStageFrame = getImage('assets/img/bonus_state_frame');
 }
@@ -208,6 +216,19 @@ function preloadAnimations() {
     animGengar = getAnimation('assets/img/bonus-ghost/gengar', 96, 128, 3, 16);
     animGengarHurt = getAnimation('assets/img/bonus-ghost/gengar_hurt', 112, 128, 1, DEFAULT_ANIMATION_DELAY);
     animGengarWalk = getAnimation('assets/img/bonus-ghost/gengar_walk', 96, 128, 4, DEFAULT_ANIMATION_DELAY);
+
+    animDiglett = getAnimation('assets/img/bonus-mole/diglett', 32, 32, 4, 8);
+    animDiglettHurt = getAnimation('assets/img/bonus-mole/diglett_hurt', 32, 32, 1, DEFAULT_ANIMATION_DELAY);
+    animDiglettDown = getAnimation('assets/img/bonus-mole/diglett_down', 32, 32, 1, DEFAULT_ANIMATION_DELAY);
+
+    animDugtrio1 = getAnimation('assets/img/bonus-mole/dugtrio1', 64, 64, 3, DEFAULT_ANIMATION_DELAY);
+    animDugtrio1Hurt = getAnimation('assets/img/bonus-mole/dugtrio1_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+    animDugtrio2 = getAnimation('assets/img/bonus-mole/dugtrio2', 64, 64, 3, DEFAULT_ANIMATION_DELAY);
+    animDugtrio2Hurt = getAnimation('assets/img/bonus-mole/dugtrio2_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+    animDugtrio3 = getAnimation('assets/img/bonus-mole/dugtrio3', 64, 64, 2, DEFAULT_ANIMATION_DELAY);
+    animDugtrio3Hurt = getAnimation('assets/img/bonus-mole/dugtrio3_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+    animDugtrio4 = getAnimation('assets/img/bonus-mole/dugtrio4', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+    animDugtrio4Hurt = getAnimation('assets/img/bonus-mole/dugtrio4_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
 
     stageTextA = getAnimation('assets/img/stage-text/a', 16, 16, 1);
     stageTextB = getAnimation('assets/img/stage-text/b', 16, 16, 1);
@@ -253,10 +274,6 @@ function preloadAnimations() {
  */
 function getAnimation(name, frameHeight, frameWidth, imageNum, delay) {
     let sheet = getImage(name);
-    if (sheet == undefined) {
-        console.log(name);
-        console.log(sheet);
-    }
     let animation = loadAnimation(sheet, { frameSize: [frameHeight, frameWidth], frameCount: imageNum });
     animation.frameDelay = delay;
 

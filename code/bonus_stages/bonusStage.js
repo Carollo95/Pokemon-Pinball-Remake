@@ -14,16 +14,68 @@ class BonusStage extends Stage {
     isStageLost = false;
     isStageWon = false;
 
+    scenarioTop;
+    scenarioLeft;
+    scenarioRight;
 
     constructor() {
         super();
-
         this.ball = spawnBonusBall();
         this.flippers = createBonusFlippers();
-        this.timer = new Timer(GHOST_STAGE_TIME_MILLIS);
         this.stageText = createBonusStageStatusBanner();
-
         this.createFrame();
+    }
+
+    createBonusScenarioGeometry() {
+        this.createScenarioTopGeometry();
+        this.createScenarioLeftGeometry();
+        this.createScenarioRightGeometry();
+        this.createGate();
+    }
+
+
+    createScenarioTopGeometry() {
+        this.scenarioTop = this.createScenarioGeometry([[0, 0],
+        [SCREEN_WIDTH, 0],
+        [SCREEN_WIDTH, 212],
+        [373, 212],
+        [336, 236],
+        [336, 122],
+        [40, 122],
+        [40, 275],
+        [0, 275],
+        [0, 0]
+        ]);
+    }
+
+    createScenarioLeftGeometry() {
+        this.scenarioLeft = this.createScenarioGeometry([
+            [0, 275],
+            [44, 275],
+            [139, 338],
+            [139, SCREEN_HEIGHT],
+            [0, SCREEN_HEIGHT],
+            [0, 275]
+        ]);
+    }
+
+    createScenarioRightGeometry() {
+        this.scenarioRight = this.createScenarioGeometry([
+            [SCREEN_WIDTH, 212],
+            [SCREEN_WIDTH, SCREEN_HEIGHT],
+            [236, SCREEN_HEIGHT],
+            [236, 338],
+            [373, 246],
+            [373, 212],
+            [SCREEN_WIDTH, 212]]);
+    }
+
+    createScenarioGeometry(positions) {
+        let scenario = new Sprite(positions, "static");
+        scenario.debug = DEBUG;
+        scenario.visible = DEBUG;
+
+        return scenario;
     }
 
     createFrame() {
@@ -39,7 +91,7 @@ class BonusStage extends Stage {
     }
 
     createGate() {
-        this.gate = new Sprite(337, 254, 10, 39, "static");
+        this.gate = new Sprite(341, 254, 10, 39, "static");
         this.gate.debug = DEBUG;
         this.gate.visible = DEBUG;
         disableSprite(this.gate);
