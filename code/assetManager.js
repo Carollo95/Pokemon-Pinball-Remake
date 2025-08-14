@@ -175,6 +175,7 @@ let animHaunter, animHaunterHurt;
 let animGengar, animGengarHurt, animGengarWalk;
 
 let animDiglett, animDiglettHurt, animDiglettDown;
+let animDugtrio1, animDugtrio1Hurt;
 
 function preLoadBackgrounds() {
     bonusGhostBackgroundOpen = getImage('assets/img/bonus-ghost/bonus_ghost_background_open');
@@ -219,6 +220,9 @@ function preloadAnimations() {
     animDiglett = getAnimation('assets/img/bonus-mole/diglett', 32, 32, 4, 8);
     animDiglettHurt = getAnimation('assets/img/bonus-mole/diglett_hurt', 32, 32, 1, DEFAULT_ANIMATION_DELAY);
     animDiglettDown = getAnimation('assets/img/bonus-mole/diglett_down', 32, 32, 1, DEFAULT_ANIMATION_DELAY);
+
+    animDugtrio1 = getAnimation('assets/img/bonus-mole/dugtrio1', 64, 64, 3, DEFAULT_ANIMATION_DELAY);
+    animDugtrio1Hurt = getAnimation('assets/img/bonus-mole/dugtrio1_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
 
     stageTextA = getAnimation('assets/img/stage-text/a', 16, 16, 1);
     stageTextB = getAnimation('assets/img/stage-text/b', 16, 16, 1);

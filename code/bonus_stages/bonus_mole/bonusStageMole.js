@@ -1,6 +1,7 @@
 class BonusStageMole extends BonusStage {
 
   diglettMatrix;
+  phase = 0;
 
   constructor() {
     super();
@@ -11,6 +12,7 @@ class BonusStageMole extends BonusStage {
     super.createBonusScenarioGeometry();
 
     this.createDigletts();
+    this.dugtrio = new Dugtrio(188, 130),
 
     playSong(songMoleStageDiglett);
   }
@@ -105,15 +107,22 @@ class BonusStageMole extends BonusStage {
     super.closeBonusGateIfBallInsideBoard(this.getBackground())
 
     this.updatePhaseSprites();
-    if (this.checkIfPhaseChange()) {
-      console.log("DUGTRIO TIME");
-    }
+    this.changePhaseIfNeeded();
 
     if (this.scenarioTop.collide(this.ball.sprite)) {
       sfx08.play();
     }
 
   }
+
+  changePhaseIfNeeded() {
+    if (this.isPhaseChange()) {
+      this.phase++;
+      playSong(songMoleStageDugtrio);
+      this.dugtrio.spawn();
+    }
+  }
+
 
   updatePhaseSprites() {
     for (let i = 0; i < this.diglettMatrix.length; i++) {
@@ -123,15 +132,19 @@ class BonusStageMole extends BonusStage {
     }
   }
 
-  checkIfPhaseChange() {
-    for (let i = 0; i < this.diglettMatrix.length; i++) {
-      for (let j = 0; j < this.diglettMatrix[i].length; j++) {
-        if (!this.diglettMatrix[i][j].disabled) {
-          return false;
+  isPhaseChange() {
+    if (this.phase == 0) {
+      for (let i = 0; i < this.diglettMatrix.length; i++) {
+        for (let j = 0; j < this.diglettMatrix[i].length; j++) {
+          if (!this.diglettMatrix[i][j].disabled) {
+            return false;
+          }
         }
       }
+      return true;
+    } else {
+      return false;
     }
-    return true;
   }
 
   createBonusNewBallIfBallLoss() {

@@ -49,7 +49,7 @@ class Diglett {
         checkCollision(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
             this.sprite.changeAnimation("hurt")
-            this.sfx35.play();
+            sfx35.play();
             disableSprite(this.sprite);
             this.timeOfHurt = millis();
         }
