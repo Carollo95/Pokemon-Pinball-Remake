@@ -10,8 +10,13 @@ class BonusStageMole extends BonusStage {
     super.replaceBackground(bonusMoleBackgroundOpen);
     super.createBonusScenarioGeometry();
 
-    let timeOfDiggletCreation = millis();
+    this.createDigletts();
 
+    playSong(songMoleStageDiglett);
+  }
+
+  createDigletts() {
+    let timeOfDiggletCreation = millis();
     let diglettColumn0 = [];
     diglettColumn0[0] = new Diglett(60, 166, timeOfDiggletCreation, 100);
     diglettColumn0[1] = new Diglett(60, 198, timeOfDiggletCreation, 200);

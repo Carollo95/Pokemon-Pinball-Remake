@@ -19,9 +19,12 @@ let currentSong;
  * Loads in memory all the audio files
  */
 function preloadAudio() {
-    songGhostStageGastly = getAudio('assets/audio/GhostStage_Gastly');
-    songGhostStageHaunter = getAudio('assets/audio/GhostStage_Haunter');
-    songGhostStageGengar = getAudio('assets/audio/GhostStage_Gengar');
+    songGhostStageGastly = getAudio('assets/audio/GhostStage_Gastly_In_The_Graveyard');
+    songGhostStageHaunter = getAudio('assets/audio/GhostStage_Haunter_In_The_Graveyard');
+    songGhostStageGengar = getAudio('assets/audio/GhostStage_Gengar_In_The_Graveyard');
+    
+    songMoleStageDiglett = getAudio('assets/audio/MoleStage_Whack_the_Digletts');
+    songMoleStageDugtrio = getAudio('assets/audio/MoleStage_Whack_Dugtrio');
 
     sfx00 = getAudio('assets/audio/sfx/SFX-00');
     sfx01 = getAudio('assets/audio/sfx/SFX-01');
@@ -76,8 +79,8 @@ function preloadAudio() {
     sfx32 = getAudio('assets/audio/sfx/SFX-32');
     sfx33 = getAudio('assets/audio/sfx/SFX-33');
     sfx34 = getAudio('assets/audio/sfx/SFX-34');
-    sfx35 = getAudio('assets/audio/sfx/SFX-35');
-    sfx36 = getAudio('assets/audio/sfx/SFX-36');
+    sfx35 = getAudio('assets/audio/sfx/SFX-35'); //Diglett hurt
+    sfx36 = getAudio('assets/audio/sfx/SFX-36'); //Dugtrio hurt
     sfx37 = getAudio('assets/audio/sfx/SFX-37'); //Gengar hurt
     sfx38 = getAudio('assets/audio/sfx/SFX-38');
     sfx39 = getAudio('assets/audio/sfx/SFX-39');
@@ -102,8 +105,6 @@ function preloadAudio() {
     sfx4C = getAudio('assets/audio/sfx/SFX-4C');
     sfx4D = getAudio('assets/audio/sfx/SFX-4D');
     sfx4E = getAudio('assets/audio/sfx/SFX-4E');  //Gengar cry
-
-
 }
 
 /**
