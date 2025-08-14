@@ -97,7 +97,6 @@ class BonusStageMole extends BonusStage {
 
     if (this.isStageLost || this.isStageWon) {
       if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-        console.log("PA CASA");
         //TODO end stage
       }
     }
@@ -121,10 +120,11 @@ class BonusStageMole extends BonusStage {
       this.phase++;
       playSong(songMoleStageDugtrio);
       this.dugtrio.spawn();
-    } else if (this.phase == 1 && this.dugtrio.disabled) {
-      this.isStageWon == true;
+    } else if (this.dugtrio.disabled && !this.levelCompleted) {
+      this.isStageWon = true;
+      this.millisSinceStageComplete = millis();
+      this.levelCompleted = true;
       this.flippers.disableFlippers();
-      this.phase++;
       this.stageText.setText(" diglett stage clear ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
     }
   }
@@ -153,8 +153,11 @@ class BonusStageMole extends BonusStage {
   createBonusNewBallIfBallLoss() {
     if (this.checkBonusBallLoss() && !this.levelCompleted) {
       if (!this.isStageLost && !this.isStageWon) {
+        console.log()
         this.stageText.setText(" end diglett stage ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
         this.isStageLost = true;
+        this.millisSinceStageComplete = millis();
+        console.log("Restart");
       }
     }
   }

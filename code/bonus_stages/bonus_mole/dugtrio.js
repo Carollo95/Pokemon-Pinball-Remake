@@ -38,10 +38,11 @@ class Dugtrio {
                 if (this.phase == 4) {
                     this.phase++;
                     this.timeOfHurt = millis();
+                    this.sprite.changeAnimation("idle4");
                 } else if (this.phase == 5) {
                     this.disableSprite();
                 } else {
-                    this.sprite.changeAnimation("idle" + this.phase)
+                    this.sprite.changeAnimation("idle" + this.phase);
                     this.checkCollision(ballSprite);
                 }
             }
