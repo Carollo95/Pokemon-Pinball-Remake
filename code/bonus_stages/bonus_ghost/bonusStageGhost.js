@@ -114,7 +114,7 @@ class BonusStageGhost extends BonusStage {
       } else {
         if (!this.isStageLost && this.millisSinceStageComplete == 0) {
           this.millisSinceStageComplete = millis();
-          this.stageText.setText(" end stage clear  ", (STAGE_RESULT_SHOW_MILLS / 2));
+          this.stageText.setText(" end gengar stage ", (STAGE_RESULT_SHOW_MILLS / 2));
           this.isStageLost = true;
         }
       }
