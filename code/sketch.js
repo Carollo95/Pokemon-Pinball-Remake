@@ -27,14 +27,23 @@ function showFPS() {
 }
 
 
-function startGhostStage(){
+function startGhostStage() {
   allSprites.remove();
   stage = new BonusStageGhost();
   stage.setup();
 }
 
-function startMoleStage(){
+function startMoleStage() {
   allSprites.remove();
   stage = new BonusStageMole();
   stage.setup();
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("ghost-stage").addEventListener("click", startGhostStage);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("mole-stage").addEventListener("click", startMoleStage);
+});
+

@@ -167,6 +167,7 @@ class BonusStageMole extends BonusStage {
   loseStage() {
     this.stageText.setText(" end diglett stage ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
     this.isStageLost = true;
+    this.flippers.disableFlippers();
     this.millisSinceStageComplete = millis();
   }
 
