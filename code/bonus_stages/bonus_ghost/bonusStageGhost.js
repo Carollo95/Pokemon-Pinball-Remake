@@ -113,12 +113,16 @@ class BonusStageGhost extends BonusStage {
         this.createNewBonusBall(bonusGateBackground);
       } else {
         if (!this.isStageLost && this.millisSinceStageComplete == 0) {
-          this.millisSinceStageComplete = millis();
-          this.stageText.setText(" end gengar stage ", (STAGE_RESULT_SHOW_MILLS / 2));
-          this.isStageLost = true;
+          this.loseStage();
         }
       }
     }
+  }
+
+  loseStage() {
+    this.millisSinceStageComplete = millis();
+    this.stageText.setText(" end gengar stage ", (STAGE_RESULT_SHOW_MILLS / 2));
+    this.isStageLost = true;
   }
 
 

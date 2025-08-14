@@ -28,11 +28,13 @@ function showFPS() {
 
 
 function startGhostStage(){
+  allSprites.remove();
   stage = new BonusStageGhost();
   stage.setup();
 }
 
 function startMoleStage(){
+  allSprites.remove();
   stage = new BonusStageMole();
   stage.setup();
 }
