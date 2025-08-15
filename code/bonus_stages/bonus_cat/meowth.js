@@ -6,11 +6,13 @@ const MEOWTH_MIN_HORIZONTAL_MOVEMENT = 80;
 const MEOWTH_MAX_HORIZONTAL_MOVEMENT = 290;
 
 const MEOWTH_HIGH_POS = 160;
-const MEOWTH_LOW_POS = 230;
+const MEOWTH_LOW_POS = 200;
 
 class Meowth {
 
     keepMovingRight = true;
+    keepMovingVertically = false;
+    isHighLane = true;
 
     sprite;
 
@@ -24,9 +26,13 @@ class Meowth {
 
     update() {
         this.moveXAxis();
+        this.moveYAxis();
 
-        if(this.isRandomChangeOfHorizontalDirection()){
+        if (this.isRandomChangeOfHorizontalDirection()) {
             this.changeHorizontalDirection();
+        }
+        if (this.isRandomChangeOfVerticalDirection()) {
+            this.keepMovingVertically = true;
         }
     }
 
@@ -44,13 +50,35 @@ class Meowth {
         }
     }
 
-    changeHorizontalDirection(){
+    moveYAxis() {
+        if (this.keepMovingVertically) {
+            if (this.isHighLane) {
+                this.sprite.pos.y += MEOWTH_SPEED;
+                if (this.sprite.pos.y >= MEOWTH_LOW_POS) {
+                    this.keepMovingVertically = false;
+                    this.isHighLane = false;
+                }
+            } else {
+                this.sprite.pos.y -= MEOWTH_SPEED;
+                if (this.sprite.pos.y < MEOWTH_HIGH_POS) {
+                    this.keepMovingVertically = false;
+                    this.isHighLane = true;
+                }
+            }
+        }
+    }
+
+    changeHorizontalDirection() {
         this.keepMovinRight = !this.keepMovinRight;
         this.sprite.mirror.x = !this.sprite.mirror.x;
     }
 
-    isRandomChangeOfHorizontalDirection(){
-        return random(0,1000) > 995;
+    isRandomChangeOfHorizontalDirection() {
+        return random(0, 1000) > 995;
+    }
+
+    isRandomChangeOfVerticalDirection() {
+        return random(0, 1000) > 995;
     }
 
 }
