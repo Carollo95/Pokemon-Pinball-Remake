@@ -29,7 +29,7 @@ class BonusStageCat extends BonusStage {
         super.createBonusNewBallIfBallLoss(bonusCatBackgroundOpen);
         super.closeBonusGateIfBallInsideBoard(bonusCatBackgroundClosed);
 
-        this.meowth.update();
+        this.meowth.update(this.ball.sprite);
 
         if (this.scenarioTop.collide(this.ball.sprite)) {
             sfx08.play();

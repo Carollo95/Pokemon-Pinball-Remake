@@ -2,11 +2,13 @@ const MEOWTH_HITBOX_WIDTH = 20; //Width fo the meowth hitbox
 const MEOWTH_HITBOX_HEIGHT = 20; //Height fo the meowth hitbox
 
 const MEOWTH_SPEED = 2; //Speed at which meowth walks across the screen
-const MEOWTH_MIN_HORIZONTAL_MOVEMENT = 80;
-const MEOWTH_MAX_HORIZONTAL_MOVEMENT = 290;
+const MEOWTH_MIN_HORIZONTAL_MOVEMENT = 80; //Min position on the X axis where meowth can move
+const MEOWTH_MAX_HORIZONTAL_MOVEMENT = 290; //Miax position on the X axis where meowth can move
 
-const MEOWTH_HIGH_POS = 160;
-const MEOWTH_LOW_POS = 200;
+const MEOWTH_HIGH_POS = 160; //Position on the Y axis for the high lane
+const MEOWTH_LOW_POS = 200; //Position on the Y axis for the low lane
+
+const MEOWTH_HURT_TIME = 500; //time spent on the hurt animation
 
 class Meowth {
 
@@ -15,24 +17,43 @@ class Meowth {
     isHighLane = true;
 
     sprite;
+    timeOfHurt = 0;
 
     constructor() {
         this.sprite = new Sprite(MEOWTH_MIN_HORIZONTAL_MOVEMENT, MEOWTH_HIGH_POS, MEOWTH_HITBOX_WIDTH, MEOWTH_HITBOX_HEIGHT, "static");
         this.sprite.debug = DEBUG;
 
+        this.sprite.addAnimation("hurt", animMeowthHurt);
         this.sprite.addAnimation("walk", animMeowthWalk);
         this.sprite.mirror.x = true;
     }
 
-    update() {
-        this.moveXAxis();
-        this.moveYAxis();
+    update(ballSprite) {
+        if (this.isHurtTimeOver()) {
+            this.sprite.changeAnimation("walk");
+            this.moveXAxis();
+            this.moveYAxis();
 
-        if (this.isRandomChangeOfHorizontalDirection()) {
-            this.changeHorizontalDirection();
+            if (this.isRandomChangeOfHorizontalDirection()) {
+                this.changeHorizontalDirection();
+            }
+            if (this.isRandomChangeOfVerticalDirection()) {
+                this.keepMovingVertically = true;
+            }
+
+            this.checkCollision(ballSprite);
         }
-        if (this.isRandomChangeOfVerticalDirection()) {
-            this.keepMovingVertically = true;
+    }
+
+    isHurtTimeOver() {
+        return millis() - this.timeOfHurt > MEOWTH_HURT_TIME;
+    }
+
+    checkCollision(ballSprite) {
+        if (this.sprite.collide(ballSprite)) {
+            this.sprite.changeAnimation("hurt");
+            this.timeOfHurt = millis();
+            sfx30.play();
         }
     }
 

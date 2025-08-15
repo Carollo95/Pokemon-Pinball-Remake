@@ -76,7 +76,7 @@ function preloadAudio() {
     sfx2D = getAudio('assets/audio/sfx/SFX-2D'); //Haunter hurt
     sfx2E = getAudio('assets/audio/sfx/SFX-2E'); //Gengar defated
     sfx2F = getAudio('assets/audio/sfx/SFX-2F'); //Hit gravestone
-    sfx30 = getAudio('assets/audio/sfx/SFX-30');
+    sfx30 = getAudio('assets/audio/sfx/SFX-30'); // Meowth hurt
     sfx31 = getAudio('assets/audio/sfx/SFX-31');
     sfx32 = getAudio('assets/audio/sfx/SFX-32');
     sfx33 = getAudio('assets/audio/sfx/SFX-33');
@@ -177,7 +177,7 @@ let animGengar, animGengarHurt, animGengarWalk;
 
 let animDiglett, animDiglettHurt, animDiglettDown;
 let animDugtrio1, animDugtrio1Hurt, animDugtrio2, animDugtrio2Hurt, animDugtrio3, animDugtrio3Hurt, animDugtrio4;
-let animMeowthWalk;
+let animMeowthWalk, animMeowthHurt;
 
 function preLoadBackgrounds() {
     bonusGhostBackgroundOpen = getImage('assets/img/bonus-ghost/bonus_ghost_background_open');
@@ -236,6 +236,7 @@ function preloadAnimations() {
     animDugtrio4Hurt = getAnimation('assets/img/bonus-mole/dugtrio4_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
 
     animMeowthWalk = getAnimation('assets/img/bonus-cat/meowth_walk', 64, 64, 3, DEFAULT_ANIMATION_DELAY);
+    animMeowthHurt = getAnimation('assets/img/bonus-cat/meowth_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
 
     stageTextA = getAnimation('assets/img/stage-text/a', 16, 16, 1);
     stageTextB = getAnimation('assets/img/stage-text/b', 16, 16, 1);

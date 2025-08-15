@@ -5,7 +5,7 @@ const GENGAR_STEP_LENGTH = 10.0; //Pixel length of each step
 const GENGAR_HITPOINTS = 5; //Number of hits to go down
 const GENGAR_STEP_COOLDOWN_MILLS = 1500; //Time between steps
 const GENGAR_MAX_DISTANCE = 100; //Number of pixels it can advance
-const GENGAR__INVINCIBILITY_TIME = 1500; //Milliseconds of invulnerabiliy after getting hit
+const GENGAR_INVINCIBILITY_TIME = 1500; //Milliseconds of invulnerabiliy after getting hit
 const GENGAR_SPAWN_THRESHOLD_MILLS = 1000; //Time to spawn after creation
 
 
@@ -79,7 +79,7 @@ class Gengar extends Ghost {
     }
 
     isRecentlyHurt() {
-        return (millis() - this.timeOfHurt) < GENGAR__INVINCIBILITY_TIME;
+        return (millis() - this.timeOfHurt) < GENGAR_INVINCIBILITY_TIME;
     }
 
     checkCollision(ballSprite) {
