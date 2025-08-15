@@ -1,3 +1,4 @@
+
 class BonusStageCat extends BonusStage {
 
     constructor() {
@@ -9,6 +10,8 @@ class BonusStageCat extends BonusStage {
         super.createBonusScenarioGeometry();
 
         playSong(songCatStage);
+
+        this.meowth = new Meowth();
     }
 
     draw() {
@@ -25,6 +28,8 @@ class BonusStageCat extends BonusStage {
     drawStage() {
         super.createBonusNewBallIfBallLoss(bonusCatBackgroundOpen);
         super.closeBonusGateIfBallInsideBoard(bonusCatBackgroundClosed);
+
+        this.meowth.update();
 
         if (this.scenarioTop.collide(this.ball.sprite)) {
             sfx08.play();
