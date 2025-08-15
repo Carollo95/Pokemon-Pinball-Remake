@@ -23,8 +23,11 @@ function preloadAudio() {
     songGhostStageHaunter = getAudio('assets/audio/GhostStage_Haunter_In_The_Graveyard');
     songGhostStageGengar = getAudio('assets/audio/GhostStage_Gengar_In_The_Graveyard');
 
+    //The mole stage doesn't have a time limit, so the song must loop in case it takes too much time
     songMoleStageDiglett = getAudio('assets/audio/MoleStage_Whack_the_Digletts');
+    songMoleStageDiglett.loop =true;
     songMoleStageDugtrio = getAudio('assets/audio/MoleStage_Whack_Dugtrio');
+    songMoleStageDugtrio.loop =true;
 
     songCatStage = getAudio('assets/audio/CatStage_Meowth');
 

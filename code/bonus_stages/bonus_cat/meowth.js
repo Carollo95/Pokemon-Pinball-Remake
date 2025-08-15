@@ -1,5 +1,5 @@
-const MEOWTH_HITBOX_WIDTH = 20; //Width fo the meowth hitbox
-const MEOWTH_HITBOX_HEIGHT = 20; //Height fo the meowth hitbox
+const MEOWTH_HITBOX_WIDTH = 30; //Width fo the meowth hitbox
+const MEOWTH_HITBOX_HEIGHT = 30; //Height fo the meowth hitbox
 
 const MEOWTH_SPEED = 2; //Speed at which meowth walks across the screen
 const MEOWTH_MIN_HORIZONTAL_MOVEMENT = 80; //Min position on the X axis where meowth can move
@@ -12,7 +12,7 @@ const MEOWTH_HURT_TIME = 500; //time spent on the hurt animation
 
 class Meowth {
 
-    keepMovingRight = true;
+    keepMovinRight = true;
     keepMovingVertically = false;
     isHighLane = true;
 
@@ -25,7 +25,6 @@ class Meowth {
 
         this.sprite.addAnimation("hurt", animMeowthHurt);
         this.sprite.addAnimation("walk", animMeowthWalk);
-        this.sprite.mirror.x = true;
     }
 
     update(ballSprite) {
