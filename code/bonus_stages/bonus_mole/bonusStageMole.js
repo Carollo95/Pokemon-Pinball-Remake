@@ -14,7 +14,7 @@ class BonusStageMole extends BonusStage {
     this.createDigletts();
     this.dugtrio = new Dugtrio(188, 130),
 
-      playSong(songMoleStageDiglett);
+    playSong(songMoleStageDiglett);
   }
 
   createDigletts() {

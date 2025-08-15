@@ -26,6 +26,8 @@ function preloadAudio() {
     songMoleStageDiglett = getAudio('assets/audio/MoleStage_Whack_the_Digletts');
     songMoleStageDugtrio = getAudio('assets/audio/MoleStage_Whack_Dugtrio');
 
+    songCatStage = getAudio('assets/audio/CatStage_Meowth');
+
     sfx00 = getAudio('assets/audio/sfx/SFX-00');
     sfx01 = getAudio('assets/audio/sfx/SFX-01');
     sfx02 = getAudio('assets/audio/sfx/SFX-02'); //Bonus ball lost
@@ -124,9 +126,7 @@ function getAudio(soundName) {
  */
 function playSong(song) {
     if (!MUTE_MUSIC) {
-        if (this.currentSong != null) {
-            this.currentSong.stop();
-        }
+        stopMusic();
         this.currentSong = song;
         this.currentSong.play();
     }
@@ -136,7 +136,7 @@ function playSong(song) {
  * Stops the song being playd currently
  */
 function stopMusic() {
-    if (this.currentSong != null) {
+    if (this.currentSong != null && this.currentSong.isPlaying) {
         this.currentSong.stop();
     }
 }
@@ -158,6 +158,7 @@ function getImage(name) {
 let bonusStageFrame;
 let bonusGhostBackgroundOpen, bonusGhostBackgroundClosed, bonusGhostBackgroundP2Open, bonusGhostBackgroundP2Closed;
 let bonusMoleBackgroundOpen, bonusMoleBackgroundClosed;
+let bonusCatBackgroundOpen, bonusCatBackgroundClosed;
 
 let animLeftFlipperUp, animLeftFlipperMiddle, animLeftFlipperDown, animLeftFlipperDownDisabled;
 let animRightFlipperUp, animRightFlipperMiddle, animRightFlipperDown, animRightFlipperDownDisabled;
@@ -185,6 +186,9 @@ function preLoadBackgrounds() {
 
     bonusMoleBackgroundOpen = getImage('assets/img/bonus-mole/bonus_mole_background_open');
     bonusMoleBackgroundClosed = getImage('assets/img/bonus-mole/bonus_mole_background');
+
+    bonusCatBackgroundOpen = getImage('assets/img/bonus-cat/bonus_cat_background_open');
+    bonusCatBackgroundClosed = getImage('assets/img/bonus-cat/bonus_cat_background');
 
     bonusStageFrame = getImage('assets/img/bonus_state_frame');
 }
