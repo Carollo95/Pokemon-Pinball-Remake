@@ -55,6 +55,27 @@ class BonusStageCat extends BonusStage {
         this.meowth.update(this.ball.sprite);
         this.checkCreateCoin();
 
+        if (this.coin != null) {
+            this.coin.update();
+            if (this.meowth.isHighLane) {
+                for (let i = 0; i < 8; i++) {
+                    if (this.coin != null && this.highLaneCoins[i].isClose(this.coin.sprite)) {
+                        this.coin.sprite.remove();
+                        this.coin = null;
+                        this.highLaneCoins[i].enableSprite();
+                    }
+                }
+            } else {
+                for (let i = 0; i < 6; i++) {
+                    if (this.coin != null &&  this.lowLaneCoins[i].isClose(this.coin.sprite)) {
+                        this.coin.sprite.remove();
+                        this.coin = null;
+                        this.lowLaneCoins[i].enableSprite();
+                    }
+                }
+            }
+        }
+
         if (this.scenarioTop.collide(this.ball.sprite)) {
             sfx08.play();
         }
@@ -63,7 +84,7 @@ class BonusStageCat extends BonusStage {
 
     checkCreateCoin() {
         if (this.meowth.createCoin) {
-            this.createCoin();
+            this.createCoinProjectile(this.meowth.sprite.pos);
         }
     }
 
@@ -91,6 +112,10 @@ class BonusStageCat extends BonusStage {
                 return;
             }
         }
+    }
+
+    createCoinProjectile(startPos) {
+        this.coin = new FlyingCoin(startPos.x, startPos.y);
     }
 
 }

@@ -42,6 +42,8 @@ class Meowth {
             }
 
             this.checkCollision(ballSprite);
+        }else{
+            this.createCoin = false;
         }
     }
 
@@ -55,8 +57,6 @@ class Meowth {
             this.timeOfHurt = millis();
             sfx30.play();
             this.createCoin = true;
-        }else{
-            this.createCoin = false;
         }
     }
 

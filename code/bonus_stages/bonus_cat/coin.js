@@ -22,6 +22,7 @@ const COIN_LOW_SLOT_6 = 275;
 
 class Coin {
     disabled = false;
+    sprite;
 
     constructor(x, isHighLane) {
         let y = isHighLane ? COIN_HIGH_LANE : COIN_LOW_LANE;
@@ -40,10 +41,16 @@ class Coin {
         this.disabled = true;
     }
 
-    enableSprite(){
+    enableSprite() {
         enableSprite(this.sprite);
         this.sprite.visible = true;
         this.disabled = false;
+    }
+
+    isClose(thrown) {
+        const dx = this.sprite.pos.x - thrown.pos.x;
+        const dy = this.sprite.pos.y - thrown.pos.y;
+        return dx * dx + dy * dy < 325;
     }
 
 
