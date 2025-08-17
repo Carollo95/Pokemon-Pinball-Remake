@@ -25,9 +25,9 @@ function preloadAudio() {
 
     //The mole stage doesn't have a time limit, so the song must loop in case it takes too much time
     songMoleStageDiglett = getAudio('assets/audio/MoleStage_Whack_the_Digletts');
-    songMoleStageDiglett.loop =true;
+    songMoleStageDiglett.loop = true;
     songMoleStageDugtrio = getAudio('assets/audio/MoleStage_Whack_Dugtrio');
-    songMoleStageDugtrio.loop =true;
+    songMoleStageDugtrio.loop = true;
 
     songCatStage = getAudio('assets/audio/CatStage_Meowth');
 
@@ -120,6 +120,7 @@ function preloadAudio() {
 function getAudio(soundName) {
     sound = loadSound(soundName + ".mp3");
     sound.volume = 0.4;
+    sound.playMode("restart");
     return sound;
 }
 
