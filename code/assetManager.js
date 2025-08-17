@@ -43,7 +43,7 @@ function preloadAudio() {
     sfx09 = getAudio('assets/audio/sfx/SFX-09');
     sfx0A = getAudio('assets/audio/sfx/SFX-0A');
     sfx0B = getAudio('assets/audio/sfx/SFX-0B');
-    sfx0C = getAudio('assets/audio/sfx/SFX-0C'); //FLipper moved
+    sfx0C = getAudio('assets/audio/sfx/SFX-0C'); //Flipper moved
     sfx0D = getAudio('assets/audio/sfx/SFX-0D');
     sfx0E = getAudio('assets/audio/sfx/SFX-0E');
     sfx0F = getAudio('assets/audio/sfx/SFX-0F');
@@ -241,6 +241,7 @@ function preloadAnimations() {
 
     animMeowthWalk = getAnimation('assets/img/bonus-cat/meowth_walk', 64, 64, 3, DEFAULT_ANIMATION_DELAY);
     animMeowthHurt = getAnimation('assets/img/bonus-cat/meowth_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+    animCoinIdle = getAnimation('assets/img/bonus-cat/coin', 32, 32, 2, DEFAULT_ANIMATION_DELAY);
 
     stageTextA = getAnimation('assets/img/stage-text/a', 16, 16, 1);
     stageTextB = getAnimation('assets/img/stage-text/b', 16, 16, 1);

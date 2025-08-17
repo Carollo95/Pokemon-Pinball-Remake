@@ -5,8 +5,8 @@ const MEOWTH_SPEED = 2; //Speed at which meowth walks across the screen
 const MEOWTH_MIN_HORIZONTAL_MOVEMENT = 80; //Min position on the X axis where meowth can move
 const MEOWTH_MAX_HORIZONTAL_MOVEMENT = 290; //Miax position on the X axis where meowth can move
 
-const MEOWTH_HIGH_POS = 160; //Position on the Y axis for the high lane
-const MEOWTH_LOW_POS = 200; //Position on the Y axis for the low lane
+const MEOWTH_HIGH_POS = 156; //Position on the Y axis for the high lane
+const MEOWTH_LOW_POS = 196; //Position on the Y axis for the low lane
 
 const MEOWTH_HURT_TIME = 500; //time spent on the hurt animation
 
@@ -15,6 +15,7 @@ class Meowth {
     keepMovinRight = true;
     keepMovingVertically = false;
     isHighLane = true;
+    createCoin = false;
 
     sprite;
     timeOfHurt = 0;
@@ -53,6 +54,9 @@ class Meowth {
             this.sprite.changeAnimation("hurt");
             this.timeOfHurt = millis();
             sfx30.play();
+            this.createCoin = true;
+        }else{
+            this.createCoin = false;
         }
     }
 
