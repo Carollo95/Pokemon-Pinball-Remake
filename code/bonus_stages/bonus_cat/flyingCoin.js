@@ -21,17 +21,22 @@ class FlyingCoin {
         }
 
         this.bounceOnCollision();
+
         if (this.sprite.y > 300) {
-            this.sprite.applyForce(random([1, -1]) * 6, -9);
+            this.bounce();
         }
 
 
     }
 
+    bounce() {
+        this.sprite.applyForce(random([1, -1]) * 6, -14);
+    }
+
     bounceOnCollision() {
         for (let other of allSprites) {
             if (this.sprite.collides(other)) {
-                this.sprite.applyForce(random([1, -1]) * 6, -9);
+                this.bounce();
             }
         }
     }
