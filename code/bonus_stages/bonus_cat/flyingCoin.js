@@ -1,5 +1,6 @@
 class FlyingCoin {
     sprite
+    disabled = false;
 
     constructor(x, y) {
         this.sprite = new Sprite(x, y, 10, 10, "dynamic");
@@ -20,6 +21,10 @@ class FlyingCoin {
         }
 
         this.bounceOnCollision();
+        if (this.sprite.y > 300) {
+            this.sprite.applyForce(random([1, -1]) * 6, -9);
+        }
+
 
     }
 
@@ -29,6 +34,12 @@ class FlyingCoin {
                 this.sprite.applyForce(random([1, -1]) * 6, -9);
             }
         }
+    }
+
+    disableSprite() {
+        disableSprite(this.sprite);
+        this.sprite.visible = false;
+        this.disabled = true;
     }
 
 }

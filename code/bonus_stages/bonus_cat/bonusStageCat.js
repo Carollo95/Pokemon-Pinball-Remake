@@ -4,6 +4,8 @@ class BonusStageCat extends BonusStage {
     highLaneCoins = new Array(8);
     lowLaneCoins = new Array(6);
 
+    flyingCoins = new Array();
+
     constructor() {
         super();
     }
@@ -55,31 +57,47 @@ class BonusStageCat extends BonusStage {
         this.meowth.update(this.ball.sprite);
         this.checkCreateCoin();
 
-        if (this.coin != null) {
-            this.coin.update();
-            if (this.meowth.isHighLane) {
-                for (let i = 0; i < 8; i++) {
-                    if (this.coin != null && this.highLaneCoins[i].isClose(this.coin.sprite)) {
-                        this.coin.sprite.remove();
-                        this.coin = null;
-                        this.highLaneCoins[i].enableSprite();
-                    }
-                }
-            } else {
-                for (let i = 0; i < 6; i++) {
-                    if (this.coin != null &&  this.lowLaneCoins[i].isClose(this.coin.sprite)) {
-                        this.coin.sprite.remove();
-                        this.coin = null;
-                        this.lowLaneCoins[i].enableSprite();
-                    }
-                }
-            }
-        }
+        this.updateFlyingCoins();
+        this.updateCoins();
 
         if (this.scenarioTop.collide(this.ball.sprite)) {
             sfx08.play();
         }
 
+    }
+
+    updateCoins() {
+        for (var i = 0; i < this.highLaneCoins.length; i++) {
+            this.highLaneCoins[i].update(this.ball.sprite);
+        }
+        for (var i = 0; i < this.lowLaneCoins.length; i++) {
+            this.lowLaneCoins[i].update(this.ball.sprite);
+        }
+    }
+
+    updateFlyingCoins() {
+        for (var c = 0; c < this.flyingCoins.length; c++) {
+            if (this.flyingCoins[c]) {
+                this.flyingCoins[c].update();
+                if (this.meowth.isHighLane) {
+                    for (let i = 0; i < 8; i++) {
+                        if (this.highLaneCoins[i].isClose(this.flyingCoins[c].sprite)) {
+                            this.flyingCoins[c].disableSprite();
+                            this.highLaneCoins[i].enableSprite();
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < 6; i++) {
+                        if (this.lowLaneCoins[i].isClose(this.flyingCoins[c].sprite)) {
+                            this.flyingCoins[c].disableSprite();
+                            this.lowLaneCoins[i].enableSprite();
+                        }
+                    }
+                }
+            }
+        }
+
+        this.flyingCoins = this.flyingCoins.filter(c => !c.disabled)
     }
 
     checkCreateCoin() {
@@ -115,7 +133,7 @@ class BonusStageCat extends BonusStage {
     }
 
     createCoinProjectile(startPos) {
-        this.coin = new FlyingCoin(startPos.x, startPos.y);
+        this.flyingCoins.push(new FlyingCoin(startPos.x, startPos.y));
     }
 
 }
