@@ -24,21 +24,29 @@ const COIN_LOW_SLOT_6 = 275;
 
 class Coin {
     disabled = false;
+    timeOfLastHit = 0;
+    dissapearAnimationMillis;
     sprite;
 
     constructor(x, isHighLane) {
         let y = isHighLane ? COIN_HIGH_LANE : COIN_LOW_LANE;
         this.sprite = new Sprite(x, y, COIN_WIDTH, COIN_HEIGHT, "static");
+        this.sprite.addAnimation("dissapear", animCoinDisappear);
         this.sprite.addAnimation("idle", animCoinIdle);
         this.sprite.debug = DEBUG;
         this.disableSprite();
+        this.dissapearAnimationMillis = animCoinDisappear.length * animCoinDisappear.frameDelay;
     }
 
     update(ballSprite) {
         if (!this.disabled) {
-            if (this.sprite.collide(ballSprite)) {
-                this.disableSprite();
+            if (this.sprite.animation.name == "idle" && this.sprite.collide(ballSprite)) {
+                disableSprite(this.sprite);
+                this.sprite.changeAnimation("dissapear");
+                this.timeOfLastHit = millis();
                 return true;
+            } else if (this.sprite.animation.name == "dissapear" && millis() - this.timeOfLastHit > (this.dissapearAnimationMillis)) {
+                this.disableSprite();
             }
         }
         return false;
