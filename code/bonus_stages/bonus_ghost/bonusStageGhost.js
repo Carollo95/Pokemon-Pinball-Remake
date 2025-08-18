@@ -42,7 +42,7 @@ class BonusStageGhost extends BonusStage {
 
   constructor() {
     super();
-    this.timer = new Timer(GHOST_STAGE_TIME_MILLIS);
+    this.timer = new Timer(TIMER_POSITION_BONUS_HIGH_Y, GHOST_STAGE_TIME_MILLIS);
   }
 
   setup() {

@@ -1,3 +1,4 @@
+const CAT_STAGE_TIME_MILLIS = 200000;//61000;
 
 class BonusStageCat extends BonusStage {
 
@@ -8,6 +9,7 @@ class BonusStageCat extends BonusStage {
 
     meowth;
     coinCounter;
+    timer;
 
     constructor() {
         super();
@@ -16,6 +18,8 @@ class BonusStageCat extends BonusStage {
     setup() {
         super.replaceBackground(bonusCatBackgroundOpen);
         super.createBonusScenarioGeometry();
+
+        this.timer = new Timer(TIMER_POSITION_BONUS_LOW_Y, CAT_STAGE_TIME_MILLIS);
 
         playSong(songCatStage);
 
@@ -64,23 +68,46 @@ class BonusStageCat extends BonusStage {
         this.updateFlyingCoins();
         this.updateCoins();
 
+        this.updateTimer();
+
         if (this.scenarioTop.collide(this.ball.sprite)) {
             sfx08.play();
         }
 
     }
 
-    updateCoins() {
-        for (var i = 0; i < this.highLaneCoins.length; i++) {
-            let caught = this.highLaneCoins[i].update(this.ball.sprite);
-            if(caught){
-                this.coinCounter.addCoin();
+    updateTimer() {
+        this.timer.update();
+        if (this.timer.timeIsUp()) {
+            this.flippers.disableFlippers();
+            if (!this.levelCompleted) {
+                this.loseStage();
             }
         }
+    }
+
+    loseStage() {
+        this.levelCompleted = true;
+        this.millisSinceStageComplete = millis();
+        this.stageText.setText(" end meowth stage ", (STAGE_RESULT_SHOW_MILLS / 2));
+        this.isStageLost = true;
+    }
+
+    updateCoins() {
+        for (var i = 0; i < this.highLaneCoins.length; i++) {
+            this.updateCoin(this.highLaneCoins[i]);
+        }
         for (var i = 0; i < this.lowLaneCoins.length; i++) {
-            let caught = this.lowLaneCoins[i].update(this.ball.sprite);
-            if(caught){
-                this.coinCounter.addCoin();
+            this.updateCoin(this.lowLaneCoins[i]);
+        }
+    }
+
+    updateCoin(coin) {
+        let caught = coin.update(this.ball.sprite);
+        if (caught) {
+            this.coinCounter.addCoin();
+            if (this.coinCounter.counter == 20) {
+                this.clearStage();
             }
         }
     }
@@ -145,5 +172,14 @@ class BonusStageCat extends BonusStage {
     createCoinProjectile(startPos) {
         this.flyingCoins.push(new FlyingCoin(startPos.x, startPos.y));
     }
+
+    clearStage() {
+        sfx2A.play();
+        this.levelCompleted = true;
+        this.isStageWon = true;
+        this.millisSinceStageComplete = millis();
+        this.stageText.setText("meowth stage clear ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
+    }
+
 
 }

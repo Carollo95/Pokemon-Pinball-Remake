@@ -4,7 +4,7 @@ class CoinCounter {
 
     constructor() {
         for (let i = 0; i < 20; i++) {
-            let sprite = new Sprite(34 + i * 16, 106, 16, 16, "none");
+            let sprite = new Sprite(35 + i * 16, 106, 16, 16, "none");
             sprite.addAnimation("coin", animCoinCounter);
             sprite.addAnimation("coinShine", animCoinCounterShine);
             sprite.mirror.x = i % 2;

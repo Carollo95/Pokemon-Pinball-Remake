@@ -1,5 +1,6 @@
 const TIMER_POSITION_BONUS_X = 290;
-const TIMER_POSITION_BONUS_Y = 116;
+const TIMER_POSITION_BONUS_HIGH_Y = 116;
+const TIMER_POSITION_BONUS_LOW_Y = 320;
 
 class Timer {
     totalMillis;
@@ -13,20 +14,20 @@ class Timer {
     second1Sprite;
     second2Sprite;
 
-    constructor(totalMillis) {
+    constructor(y, totalMillis) {
         this.timeUp = false;
         this.stopped = false;
         this.totalMillis = totalMillis;
         this.startingMillis = millis();
         this.remainingMillis = this.totalMillis;
 
-        this.minutesSprite = new Sprite(TIMER_POSITION_BONUS_X, TIMER_POSITION_BONUS_Y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
+        this.minutesSprite = new Sprite(TIMER_POSITION_BONUS_X, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
         this.minutesSprite.layer = 10;
-        this.colonSprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH, TIMER_POSITION_BONUS_Y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
+        this.colonSprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
         this.colonSprite.layer = 10;
-        this.second1Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 2, TIMER_POSITION_BONUS_Y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
+        this.second1Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 2, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
         this.second1Sprite.layer = 10;
-        this.second2Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 3, TIMER_POSITION_BONUS_Y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
+        this.second2Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 3, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
         this.second2Sprite.layer = 10;
 
         for (let i = 0; i < 10; i++) {
