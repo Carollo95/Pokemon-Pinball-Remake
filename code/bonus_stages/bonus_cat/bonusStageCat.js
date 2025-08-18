@@ -6,6 +6,9 @@ class BonusStageCat extends BonusStage {
 
     flyingCoins = new Array();
 
+    meowth;
+    coinCounter;
+
     constructor() {
         super();
     }
@@ -17,6 +20,7 @@ class BonusStageCat extends BonusStage {
         playSong(songCatStage);
 
         this.meowth = new Meowth();
+        this.coinCounter = new CoinCounter();
         this.createCoins();
 
     }
@@ -68,10 +72,16 @@ class BonusStageCat extends BonusStage {
 
     updateCoins() {
         for (var i = 0; i < this.highLaneCoins.length; i++) {
-            this.highLaneCoins[i].update(this.ball.sprite);
+            let caught = this.highLaneCoins[i].update(this.ball.sprite);
+            if(caught){
+                this.coinCounter.addCoin();
+            }
         }
         for (var i = 0; i < this.lowLaneCoins.length; i++) {
-            this.lowLaneCoins[i].update(this.ball.sprite);
+            let caught = this.lowLaneCoins[i].update(this.ball.sprite);
+            if(caught){
+                this.coinCounter.addCoin();
+            }
         }
     }
 
