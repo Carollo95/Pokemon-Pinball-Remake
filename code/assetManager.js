@@ -241,6 +241,7 @@ function preloadAnimations() {
 
     animMeowthWalk = getAnimation('assets/img/bonus-cat/meowth_walk', 64, 64, 3, DEFAULT_ANIMATION_DELAY);
     animMeowthHurt = getAnimation('assets/img/bonus-cat/meowth_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+    animMeowthSmug = getAnimation('assets/img/bonus-cat/meowth_smug', 64, 64, 2, DEFAULT_ANIMATION_DELAY);
     animCoinIdle = getAnimation('assets/img/bonus-cat/coin', 32, 32, 2, DEFAULT_ANIMATION_DELAY);
     animCoinDisappear = getAnimation('assets/img/bonus-cat/coin_disappear', 32, 32, 5, DEFAULT_ANIMATION_DELAY);
     animFlyingCoin1 = getAnimation('assets/img/bonus-cat/flying_coin_1', 16, 32, 1, DEFAULT_ANIMATION_DELAY);

@@ -1,4 +1,4 @@
-const CAT_STAGE_TIME_MILLIS = 200000;//61000;
+const CAT_STAGE_TIME_MILLIS = 1000;//61000;
 
 class BonusStageCat extends BonusStage {
 
@@ -52,6 +52,8 @@ class BonusStageCat extends BonusStage {
         this.drawStage();
 
         if (this.isStageLost || this.isStageWon) {
+
+            this.meowth.stopAndSmug();
             if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
                 //TODO end stage
             }
@@ -174,6 +176,7 @@ class BonusStageCat extends BonusStage {
     }
 
     clearStage() {
+        //TODO stop music and restart it
         sfx2A.play();
         this.isStageWon = true;
         this.millisSinceStageComplete = millis();

@@ -67,7 +67,7 @@ class Coin {
 
         if (millis() - this.timeOfLastHit > 1000) {
             this.multiplierSprite.visible = false;
-        } else {
+        } else if(coinMultiplier > 1){
             this.blinkMultiplier();
         }
 

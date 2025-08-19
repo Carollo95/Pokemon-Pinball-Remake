@@ -25,6 +25,7 @@ class Meowth {
         this.sprite.debug = DEBUG;
 
         this.sprite.addAnimation("hurt", animMeowthHurt);
+        this.sprite.addAnimation("smug", animMeowthSmug);
         this.sprite.addAnimation("walk", animMeowthWalk);
     }
 
@@ -34,15 +35,15 @@ class Meowth {
             this.moveXAxis();
             this.moveYAxis();
 
-            if (this.isRandomChangeOfHorizontalDirection()) {
+            if (this.keepMovinRight != null && this.isRandomChangeOfHorizontalDirection()) {
                 this.changeHorizontalDirection();
             }
-            if (this.isRandomChangeOfVerticalDirection()) {
+            if (this.keepMovingVertically != null && this.isRandomChangeOfVerticalDirection()) {
                 this.keepMovingVertically = true;
             }
 
             this.checkCollision(ballSprite);
-        }else{
+        } else {
             this.createCoin = false;
         }
     }
@@ -66,7 +67,7 @@ class Meowth {
             if (this.sprite.pos.x > MEOWTH_MAX_HORIZONTAL_MOVEMENT) {
                 this.changeHorizontalDirection();
             }
-        } else {
+        } else if (this.keepMovinRight == false) {
             this.sprite.pos.x -= MEOWTH_SPEED;
             if (this.sprite.pos.x < MEOWTH_MIN_HORIZONTAL_MOVEMENT) {
                 this.changeHorizontalDirection();
@@ -103,6 +104,12 @@ class Meowth {
 
     isRandomChangeOfVerticalDirection() {
         return random(0, 1000) > 995;
+    }
+
+    stopAndSmug() {
+        this.keepMovinRight = null;
+        this.keepMovingVertically = null;
+        this.sprite.changeAnimation("smug");
     }
 
 }
