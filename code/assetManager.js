@@ -79,11 +79,11 @@ function preloadAudio() {
     sfx2D = getAudio('assets/audio/sfx/SFX-2D'); //Haunter hurt
     sfx2E = getAudio('assets/audio/sfx/SFX-2E'); //Gengar defated
     sfx2F = getAudio('assets/audio/sfx/SFX-2F'); //Hit gravestone
-    sfx30 = getAudio('assets/audio/sfx/SFX-30'); // Meowth hurt
-    sfx31 = getAudio('assets/audio/sfx/SFX-31');
-    sfx32 = getAudio('assets/audio/sfx/SFX-32');
-    sfx33 = getAudio('assets/audio/sfx/SFX-33');
-    sfx34 = getAudio('assets/audio/sfx/SFX-34');
+    sfx30 = getAudio('assets/audio/sfx/SFX-30'); //Seel hurt
+    sfx31 = getAudio('assets/audio/sfx/SFX-31'); 
+    sfx32 = getAudio('assets/audio/sfx/SFX-32'); //Coin caught
+    sfx33 = getAudio('assets/audio/sfx/SFX-33'); //Meowth hurt
+    sfx34 = getAudio('assets/audio/sfx/SFX-34'); //Coin fell
     sfx35 = getAudio('assets/audio/sfx/SFX-35'); //Diglett hurt
     sfx36 = getAudio('assets/audio/sfx/SFX-36'); //Dugtrio hurt
     sfx37 = getAudio('assets/audio/sfx/SFX-37'); //Gengar hurt

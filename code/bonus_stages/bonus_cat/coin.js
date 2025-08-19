@@ -76,6 +76,7 @@ class Coin {
 
     onCoinHit() {
         disableSprite(this.sprite);
+        sfx32.play();
         this.sprite.changeAnimation("dissapear");
         this.timeOfLastHit = millis();
 
@@ -101,6 +102,7 @@ class Coin {
     enableSprite() {
         enableSprite(this.sprite);
         this.sprite.changeAnimation("idle");
+        sfx34.play();
         this.sprite.visible = true;
         this.disabled = false;
     }
