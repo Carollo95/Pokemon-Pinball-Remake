@@ -246,7 +246,7 @@ function preloadAnimations() {
     animFlyingCoin1 = getAnimation('assets/img/bonus-cat/flying_coin_1', 16, 32, 1, DEFAULT_ANIMATION_DELAY);
     animFlyingCoin2 = getAnimation('assets/img/bonus-cat/flying_coin_2', 32, 32, 1, DEFAULT_ANIMATION_DELAY);
     animCoinCounter = getAnimation('assets/img/bonus-cat/coin_counter', 16, 16, 1, DEFAULT_ANIMATION_DELAY);
-    animCoinCounterShine = getAnimation('assets/img/bonus-cat/coin_counter_shine', 16, 16, 2, 4);
+    animCoinCounterShine = getAnimation('assets/img/bonus-cat/coin_counter_shine', 16, 16, 2, DEFAULT_ANIMATION_DELAY);
     animCoinMultiplier2 = getAnimation('assets/img/bonus-cat/coin_multiplier_2', 32, 16, 1);
     animCoinMultiplier3 = getAnimation('assets/img/bonus-cat/coin_multiplier_3', 32, 16, 1);
     animCoinMultiplier4 = getAnimation('assets/img/bonus-cat/coin_multiplier_4', 32, 16, 1);

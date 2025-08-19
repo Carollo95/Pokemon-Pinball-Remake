@@ -1,3 +1,5 @@
+const COIN_MULTIPLIER_BLINKING_FRAMES = 6; //Frame count between visible and not visible while blinking
+
 const COIN_WIDTH = 36;
 const COIN_HEIGHT = 36;
 
@@ -6,7 +8,7 @@ const COIN_LOW_LANE = 286;
 
 const COIN_CLOSENESS_COLLIDER_DIAMETER = 38;
 
-const COIN_MULTIPLIER_THRESHOLD_MILLIS = 20000;//1000;
+const COIN_MULTIPLIER_THRESHOLD_MILLIS = 1000;
 
 const COIN_HIGH_SLOT_1 = 62;
 const COIN_HIGH_SLOT_2 = 98;
@@ -29,7 +31,7 @@ let coinMultiplier = 1;
 
 class Coin {
     disabled = false;
-    timeOfLastHit = 0;
+    timeOfLastHit = -10000;
     dissapearAnimationMillis;
     sprite;
     multiplierSprite;
@@ -63,8 +65,10 @@ class Coin {
             }
         }
 
-        if (this.multiplierSprite.visible && (millis() - this.timeOfLastHit > 1000)) {
+        if (millis() - this.timeOfLastHit > 1000) {
             this.multiplierSprite.visible = false;
+        } else {
+            this.blinkMultiplier();
         }
 
         return 0;
@@ -105,6 +109,10 @@ class Coin {
         const dx = this.sprite.pos.x - thrown.pos.x;
         const dy = this.sprite.pos.y - thrown.pos.y;
         return dx * dx + dy * dy < 325;
+    }
+
+    blinkMultiplier() {
+        this.multiplierSprite.visible = (frameCount % (COIN_MULTIPLIER_BLINKING_FRAMES * 2) < COIN_MULTIPLIER_BLINKING_FRAMES);
     }
 
 }
