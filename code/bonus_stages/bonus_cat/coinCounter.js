@@ -14,6 +14,12 @@ class CoinCounter {
         }
     }
 
+    addCoins(coins){
+        for(let i = 0; i< coins ; i++){
+            this.addCoin();
+        }
+    }
+    
     addCoin() {
         if (this.counter < 20) {
             this.coins[this.counter].visible = true;

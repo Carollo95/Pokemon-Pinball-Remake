@@ -103,9 +103,9 @@ class BonusStageCat extends BonusStage {
     }
 
     updateCoin(coin) {
-        let caught = coin.update(this.ball.sprite);
-        if (caught) {
-            this.coinCounter.addCoin();
+        let coinsTaken = coin.update(this.ball.sprite);
+        if (coinsTaken > 0) {
+            this.coinCounter.addCoins(coinsTaken);
             if (this.coinCounter.counter == 20) {
                 this.clearStage();
             }
@@ -175,7 +175,6 @@ class BonusStageCat extends BonusStage {
 
     clearStage() {
         sfx2A.play();
-        this.levelCompleted = true;
         this.isStageWon = true;
         this.millisSinceStageComplete = millis();
         this.stageText.setText("meowth stage clear ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
