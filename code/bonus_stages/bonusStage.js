@@ -1,21 +1,30 @@
 const HEIGHT_OF_BALL_LOSS = SCREEN_HEIGHT; //Height at which a ball is considered lost
 const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310; //Horizontal pixel that when a ball crosses it, the gate on bonus levels closes
 
-const STAGE_RESULT_SHOW_MILLS = 5000;
+const STAGE_RESULT_SHOW_MILLS = 5000; //Amount of time to show stage result
+
+const BONUS_STAGE_STATE = {
+    PLAYING: "playing",
+    WON: "won",
+    LOST: "lost",
+    WRAP_UP: "wrapUp"
+};
 
 class BonusStage extends Stage {
-
     constructor() {
         super();
-        this.ball = Ball.spawnBonusBall();
-        this.flippers = createBonusFlippers();
-        this.stageText = createBonusStageStatusBanner();
-        this.createFrame();
-        this.gateIsOpen = true;
-        this.levelCompleted = false;
 
-        this.isStageLost = false;
-        this.isStageWon = false;
+        this.attachBall(Ball.spawnBonusBall());
+        this.attachFlippers(createBonusFlippers());
+        this.attachStageText(createBonusStageStatusBanner());
+        this.timer = null;
+        
+        this.gateIsOpen = true;
+        
+        this.state = BONUS_STAGE_STATE.PLAYING;
+        this.millisSinceStageComplete = 0;
+        
+        this.createFrame();
     }
 
     createBonusScenarioGeometry() {
@@ -71,9 +80,10 @@ class BonusStage extends Stage {
     }
 
     createFrame() {
-        var frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
+        const frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
         frame.addAnimation("", bonusStageFrame);
         frame.layer = 11;
+        return frame;
     }
 
     draw() {
@@ -89,15 +99,22 @@ class BonusStage extends Stage {
         EngineUtils.disableSprite(this.gate);
     }
 
-    createBonusNewBallIfBallLoss(bonusGateBackground) {
-        if (this.checkBonusBallLoss() && !this.levelCompleted) {
-            this.createNewBonusBall(bonusGateBackground);
+    createBonusNewBallIfBallLoss(bonusGateBackground) {    
+        if (this.state !== BONUS_STAGE_STATE.PLAYING) return;
+    
+        if (!this.checkBonusBallLoss()) return;
+
+        if (this.timer.timeIsUp()) {
+            this.endStage(BONUS_STAGE_STATE.LOST);
+            return;
         }
+
+        this.createNewBonusBall(bonusGateBackground);
     }
 
     createNewBonusBall(bonusGateBackground) {
         sfx02.play();
-        this.ball = Ball.spawnBonusBall();
+        this.attachBall(Ball.spawnBonusBall());
         this.openBonusGate(bonusGateBackground);
     }
 
@@ -119,18 +136,34 @@ class BonusStage extends Stage {
     }
 
     closeBonusGateIfBallInsideBoard(bonusGateBackground) {
-        if (this.chechBallInsideBonusBoard() && this.gateIsOpen) {
+        if (this.checkBallInsideBonusBoard() && this.gateIsOpen) {
             this.closeBonusGate(bonusGateBackground);
         }
     }
 
-    chechBallInsideBonusBoard() {
+    
+    checkBallInsideBonusBoard() {
         return this.ball.getPositionX() < WIDTH_THRESHOLD_TO_CLOSE_GATE;
     }
+
+    endStage(resultState, i18nKey) {
+        this.timer.disable();
+        this.flippers.disableFlippers();
+        stopMusic && stopMusic();
+
+        this.state = resultState;
+        this.millisSinceStageComplete = millis();
+
+        this.stageText.setText(I18NManager.translate(i18nKey), (STAGE_RESULT_SHOW_MILLS / 2));
+
+        sfx2A.play();
+    }
+
 
     loseBonusStage() {
         this.flippers.disableFlippers();
         this.timer.stop();
+        this.endStage(BONUS_STAGE_STATE.LOST);
     }
 
 }

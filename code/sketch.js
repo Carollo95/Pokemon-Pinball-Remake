@@ -11,7 +11,9 @@ function setup() {
   let userLang = navigator.language || navigator.userLanguage;
   I18NManager.setLanguage(userLang);
 
-  startCatStage();
+  EngineUtils.initPhysics();
+
+  startGhostStage();
 }
 
 function draw() {

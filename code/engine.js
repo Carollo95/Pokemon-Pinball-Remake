@@ -53,6 +53,10 @@ const EngineUtils = {
         if (DEBUG) {
             showFPS();
         }
+    },
+
+    initPhysics() {
+        world.gravity.y = GRAVITY;
     }
 
 }
