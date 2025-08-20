@@ -1,10 +1,10 @@
 class BonusStageMole extends BonusStage {
 
+  diglettMatrix;
+  phase = 0;
+
   constructor() {
     super();
-    
-    this.diglettMatrix;
-    this.phase = 0;
   }
 
   setup() {
@@ -132,7 +132,7 @@ class BonusStageMole extends BonusStage {
     this.millisSinceStageComplete = millis();
     this.levelCompleted = true;
     this.flippers.disableFlippers();
-    this.stageText.setText("diglett stage cleared", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
+    this.stageText.setText(I18NManager.translate("diglett_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
   }
 
 
@@ -165,7 +165,7 @@ class BonusStageMole extends BonusStage {
   }
 
   loseStage() {
-    this.stageText.setText(" end diglett stage ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
+    this.stageText.setText(I18NManager.translate("end_diglett_stage"), (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
     this.isStageLost = true;
     this.flippers.disableFlippers();
     this.millisSinceStageComplete = millis();

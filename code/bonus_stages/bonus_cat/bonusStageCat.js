@@ -85,7 +85,7 @@ class BonusStageCat extends BonusStage {
     loseStage() {
         this.levelCompleted = true;
         this.millisSinceStageComplete = millis();
-        this.stageText.setText(" end meowth stage ", (STAGE_RESULT_SHOW_MILLS / 2));
+        this.stageText.setText(I18NManager.translate("end_meowth_stage"), (STAGE_RESULT_SHOW_MILLS / 2));
         this.isStageLost = true;
     }
 
@@ -174,7 +174,7 @@ class BonusStageCat extends BonusStage {
         interruptMusicToPlaySFX(sfx2A);
         this.isStageWon = true;
         this.millisSinceStageComplete = millis();
-        this.stageText.setText("meowth stage clear ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
+        this.stageText.setText(I18NManager.translate("meowth_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
     }
 
 

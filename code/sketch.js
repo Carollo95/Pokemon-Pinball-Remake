@@ -8,6 +8,9 @@ function setup() {
   let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   cnv.parent("canvas-container");
 
+  let userLang = navigator.language || navigator.userLanguage;
+  I18NManager.setLanguage(userLang);
+
   startCatStage();
 }
 

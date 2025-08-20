@@ -104,7 +104,7 @@ class BonusStageGhost extends BonusStage {
 
   loseStage() {
     this.millisSinceStageComplete = millis();
-    this.stageText.setText(" end gengar stage ", (STAGE_RESULT_SHOW_MILLS / 2));
+    this.stageText.setText(I18NManager.translate("end_gengar_stage"), (STAGE_RESULT_SHOW_MILLS / 2));
     this.isStageLost = true;
   }
 
@@ -272,7 +272,7 @@ class BonusStageGhost extends BonusStage {
     sfx2A.play();
     this.isStageWon = true;
     this.millisSinceStageComplete = millis();
-    this.stageText.setText("gengar stage clear ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
+    this.stageText.setText(I18NManager.translate("gengar_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
   }
 
 
