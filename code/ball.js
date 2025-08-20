@@ -3,21 +3,14 @@ const BALL_DIAMETER = 24; //Diameter of the ball
 const BONUS_SPAWN_BALL_X = 361; //Horizontal pixel for the spawn of a ball on bonus levels
 const BONUS_SPAWN_BALL_Y = 245; //Vertical pixel for the spawn of a ball on bonus levels
 
-
 class Ball {
-    sprite;
-    spawn_x;
-    spawn_x;
 
     constructor(x, y) {
-        this.sprite = new Sprite();
-        this.sprite.layer = 5;
-        this.spawn_x = x;
-        this.spawn_y = y;
-        this.sprite.x = x;
-        this.sprite.y = y;
-        this.sprite.diameter = BALL_DIAMETER;
+        this.sprite = new Sprite(x, y, BALL_DIAMETER, "dynamic");
         this.sprite.debug = DEBUG;
+        this.sprite.layer = BALL_LAYER;
+        this.spawnX = x;
+        this.spawnY = y;
     }
 
     getPosition() {
@@ -31,8 +24,9 @@ class Ball {
     getPositionY() {
         return this.sprite.y;
     }
+
+    static spawnBonusBall() {
+        return new Ball(BONUS_SPAWN_BALL_X, BONUS_SPAWN_BALL_Y);
+    }
 }
 
-function spawnBonusBall() {
-    return new Ball(BONUS_SPAWN_BALL_X, BONUS_SPAWN_BALL_Y);
-}

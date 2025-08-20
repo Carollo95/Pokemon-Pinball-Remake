@@ -4,35 +4,29 @@ DIGLETT_HEIGHT = 24; //Height of the Diglett hitbox
 DIGLETT_TIME_OF_HURT = 500;
 
 class Diglett {
-    timeOfHurt = 0;
-    disabled = false;
-
-    sprite;
-    timeToSpawn = 0
-    creationTime = 0
-
     constructor(x, y, creationTime, timeToSpawn) {
-        this.sprite = new Sprite(x, y, DIGLETT_WIDTH, DIGLETT_HEIGHT, "static");
-        this.sprite.debug = DEBUG;
-
+        this.disabled = false;
+        this.timeToSpawn = 0;
         this.creationTime = creationTime;
-        this.timeToSpawn = timeToSpawn
+        this.timeToSpawn = timeToSpawn;
+        this.timeOfHurt = 0;
 
+        this.sprite = new Sprite(x, y, DIGLETT_WIDTH, DIGLETT_HEIGHT, "static");
         this.sprite.addAnimation("hurt", animDiglettHurt);
         this.sprite.addAnimation("idle", animDiglett);
         this.sprite.addAnimation("down", animDiglettDown);
-
+        this.sprite.debug = DEBUG;
         this.sprite.visible = false;
     }
 
-    spawn(){
+    spawn() {
         this.sprite.visible = true;
         this.sprite.changeAnimation("idle");
     }
 
     update(ballSprite) {
         if (!this.disabled) {
-            if(!this.sprite.visible && ((millis() - this.creationTime) > this.timeToSpawn)){
+            if (!this.sprite.visible && ((millis() - this.creationTime) > this.timeToSpawn)) {
                 this.spawn();
             }
 
@@ -41,12 +35,12 @@ class Diglett {
             } else {
                 if (this.isHurtTimeFinished()) {
                     this.disableSprite();
-                } 
+                }
             }
         }
     }
 
-        checkCollision(ballSprite) {
+    checkCollision(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
             this.sprite.changeAnimation("hurt")
             sfx35.play();

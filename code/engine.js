@@ -9,6 +9,8 @@ const DEFAULT_ANIMATION_DELAY = 12; //Delay between frames of animation
 const GRAVITY = 10; //The gravity applied to the game
 const EPSILON = 0.1; //Marging for physics calculation (Avoids jittering)
 
+const BALL_LAYER = 5; //Layer for the ball sprite
+
 let stage; //The p5 sketch in use
 let canvas;
 

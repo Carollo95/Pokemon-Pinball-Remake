@@ -20,7 +20,7 @@ class BonusStage extends Stage {
 
     constructor() {
         super();
-        this.ball = spawnBonusBall();
+        this.ball = Ball.spawnBonusBall();
         this.flippers = createBonusFlippers();
         this.stageText = createBonusStageStatusBanner();
         this.createFrame();
@@ -105,7 +105,7 @@ class BonusStage extends Stage {
 
     createNewBonusBall(bonusGateBackground) {
         sfx02.play();
-        this.ball = spawnBonusBall();
+        this.ball = Ball.spawnBonusBall();
         this.openBonusGate(bonusGateBackground);
     }
 

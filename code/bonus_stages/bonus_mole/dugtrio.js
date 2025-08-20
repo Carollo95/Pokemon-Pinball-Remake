@@ -4,11 +4,11 @@ DUGTRIO_HEIGHT = 58; //Height of the Dugtrio hitbox
 DUGTRIO_TIME_OF_HURT = 500;
 
 class Dugtrio {
-    timeOfHurt = 0;
-    disabled = false;
-    phase = 1;
-
+    timeOfHurt;
+    disabled;
+    phase;
     sprite;
+    
     constructor(x, y) {
         this.sprite = new Sprite(x, y, DUGTRIO_WIDTH, DUGTRIO_HEIGHT, "static");
         this.sprite.debug = DEBUG;
@@ -24,6 +24,10 @@ class Dugtrio {
 
         this.sprite.visible = false;
         disableSprite(this.sprite);
+
+        this.timeOfHurt = 0;
+        this.disabled = false;
+        this.phase = 1;
     }
 
     spawn() {
