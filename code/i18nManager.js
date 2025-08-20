@@ -18,6 +18,10 @@ const I18NManager = {
     },
 
     translate(key) {
-        return this.translations[this.currentLanguage][key] || key;
+        return (
+            this.translations[this.currentLanguage][key] ||
+            this.translations["en"][key] ||
+            key
+        );
     }
 };
