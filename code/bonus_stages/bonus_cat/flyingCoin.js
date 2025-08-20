@@ -1,8 +1,7 @@
 class FlyingCoin {
-    sprite
-    disabled = false;
 
     constructor(x, y) {
+        this.disabled = false;
         this.sprite = new Sprite(x, y, 10, 10, "dynamic");
         this.sprite.addAnimation("2", animFlyingCoin2);
         this.sprite.addAnimation("1", animFlyingCoin1);
@@ -40,7 +39,7 @@ class FlyingCoin {
     }
 
     disableSprite() {
-        disableSprite(this.sprite);
+        EngineUtils.disableSprite(this.sprite);
         this.sprite.visible = false;
         this.disabled = true;
     }

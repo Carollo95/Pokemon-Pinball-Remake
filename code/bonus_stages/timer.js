@@ -3,17 +3,6 @@ const TIMER_POSITION_BONUS_HIGH_Y = 116;
 const TIMER_POSITION_BONUS_LOW_Y = 320;
 
 class Timer {
-    totalMillis;
-    startingMillis;
-    remainingMillis;
-    timeUp;
-    stopped;
-
-    minutesSprite;
-    colonSprite;
-    second1Sprite;
-    second2Sprite;
-
     constructor(y, totalMillis) {
         this.timeUp = false;
         this.stopped = false;

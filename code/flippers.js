@@ -31,17 +31,6 @@ const FLIPPER_SFX_PLAY_COOLDOWN = 200; //Cooldown betwen flipper sfx plays to av
 
 
 class Flippers {
-    leftFlipper;
-    rightFlipper;
-
-    flippersEnabled;
-
-    hasLeftFlipperBeenLowered;
-    hasrightFlipperBeenLowered;
-
-    leftFlipperButtonPressed;
-    rightFlipperButtonPressed;
-
     constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY) {
         this.flippersEnabled = true;
 

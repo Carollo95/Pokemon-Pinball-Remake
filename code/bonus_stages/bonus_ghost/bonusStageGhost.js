@@ -16,33 +16,16 @@ let GENGAR_SPAWN_X = SCREEN_WIDTH / 2;
 let GENGAR_SPAWN_Y = 120;
 
 class BonusStageGhost extends BonusStage {
-  gastly1;
-  gastly2;
-  gastly3;
-  haunter1;
-  haunter2;
-  gengar;
-
-  scenarioTop;
-  scenarioRight;
-  scenarioLeft;
-  gravestone1;
-  gravestone2;
-  gravestone3;
-  gravestone4;
-
-  extraGastlyLives = 7;
-  extraHaunterLives = 10;
-
-  currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
-
-  wrapUp = false;
-
-  millisSinceStageComplete = 0;
-
   constructor() {
     super();
     this.timer = new Timer(TIMER_POSITION_BONUS_HIGH_Y, GHOST_STAGE_TIME_MILLIS);
+
+    this.extraGastlyLives = 7;
+    this.extraHaunterLives = 10;
+
+    this.wrapUp = false;
+
+    this.millisSinceStageComplete = 0;
   }
 
   setup() {

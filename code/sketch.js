@@ -12,7 +12,7 @@ function setup() {
 }
 
 function draw() {
-  drawStage();
+  EngineUtils.drawStage();
 }
 
 function showFPS() {

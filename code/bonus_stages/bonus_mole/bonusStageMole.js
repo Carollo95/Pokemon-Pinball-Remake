@@ -1,6 +1,5 @@
 class BonusStageMole extends BonusStage {
 
-
   constructor() {
     super();
     

@@ -1,11 +1,6 @@
 const SHAKE_STRENGTH = 4; //Strenght of the screen shake
 
 class Stage {
-    bg;
-    shakeDuration;
-    flippers;
-    ball;
-
     constructor() {
         this.shakeDuration = 0;
         world.gravity.y = GRAVITY;

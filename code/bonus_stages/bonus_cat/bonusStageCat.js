@@ -2,17 +2,12 @@ const CAT_STAGE_TIME_MILLIS = 61000;
 
 class BonusStageCat extends BonusStage {
 
-    highLaneCoins = new Array(8);
-    lowLaneCoins = new Array(6);
-
-    flyingCoins = new Array();
-
-    meowth;
-    coinCounter;
-    timer;
 
     constructor() {
         super();
+        this.highLaneCoins = new Array(8);
+        this.lowLaneCoins = new Array(6);
+        this.flyingCoins = new Array();
     }
 
     setup() {

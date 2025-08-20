@@ -4,19 +4,6 @@ const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310; //Horizontal pixel that when a ball c
 const STAGE_RESULT_SHOW_MILLS = 5000;
 
 class BonusStage extends Stage {
-    gate;
-    timer;
-    stageText;
-
-    gateIsOpen = true;
-    levelCompleted = false;
-
-    isStageLost = false;
-    isStageWon = false;
-
-    scenarioTop;
-    scenarioLeft;
-    scenarioRight;
 
     constructor() {
         super();
@@ -24,6 +11,11 @@ class BonusStage extends Stage {
         this.flippers = createBonusFlippers();
         this.stageText = createBonusStageStatusBanner();
         this.createFrame();
+        this.gateIsOpen = true;
+        this.levelCompleted = false;
+
+        this.isStageLost = false;
+        this.isStageWon = false;
     }
 
     createBonusScenarioGeometry() {
@@ -94,7 +86,7 @@ class BonusStage extends Stage {
         this.gate = new Sprite(341, 254, 10, 39, "static");
         this.gate.debug = DEBUG;
         this.gate.visible = DEBUG;
-        disableSprite(this.gate);
+        EngineUtils.disableSprite(this.gate);
     }
 
     createBonusNewBallIfBallLoss(bonusGateBackground) {
@@ -115,12 +107,12 @@ class BonusStage extends Stage {
 
     openBonusGate(bonusGateBackground) {
         this.gateIsOpen = true;
-        disableSprite(this.gate);
+        EngineUtils.disableSprite(this.gate);
         super.replaceBackground(bonusGateBackground);
     }
 
     closeBonusGate(bonusGateBackground) {
-        enableSprite(this.gate);
+        EngineUtils.enableSprite(this.gate);
         this.gateIsOpen = false;
         sfx3F.play();
         super.replaceBackground(bonusGateBackground);

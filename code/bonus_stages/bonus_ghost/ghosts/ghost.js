@@ -2,17 +2,11 @@ const GHOST_BLINKING_FRAMES = 6; //Frame count between visible and not visible w
 const GHOST_TIME_OF_HURT = 1000; //Frames showing the blinking hurt animation
 
 class Ghost {
-    sprite;
-    start_x;
-    start_y;
-    disabled;
-
-    hurtAnimation;
-    timeOfHurt;
-    respawnThreshHoldTime;
-
-
     constructor(x, y, width, height) {
+        this.hurtAnimation;
+        this.timeOfHurt;
+        this.respawnThreshHoldTime;
+
         this.start_x = x;
         this.start_y = y;
 

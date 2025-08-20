@@ -10,12 +10,6 @@ const GENGAR_SPAWN_THRESHOLD_MILLS = 1000; //Time to spawn after creation
 
 
 class Gengar extends Ghost {
-    hitPoints;
-    keepMovingDown;
-    step_start_y;
-    timeOfLastStep;
-    timeOfDissapearance;
-    walkAnimation;
 
     constructor(x, y) {
         super(x, y, GENGAR_HITBOX_WIDTH, GENGAR_HITBOX_HEIGHT);
@@ -55,7 +49,7 @@ class Gengar extends Ghost {
         if (this.isRecentlyHurt()) {
             this.blink();
         } else {
-            enableSprite(this.sprite);
+            EngineUtils.enableSprite(this.sprite);
             this.sprite.visible = true; //If case blinking stops at an invisible frame
         }
     }
@@ -85,7 +79,7 @@ class Gengar extends Ghost {
     checkCollision(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
             this.hitPoints -= 1;
-            disableSprite(this.sprite);
+            EngineUtils.disableSprite(this.sprite);
             sfx37.play();
             this.sprite.changeAnimation("hurt");
             this.keepMovingDown = false;
@@ -127,7 +121,7 @@ class Gengar extends Ghost {
                 this.keepMovingDown = true;
                 this.timeOfLastStep = millis();
                 this.sprite.changeAnimation("idle");
-                startShake();
+                EngineUtils.startShake();
             }
         }
     }
@@ -141,7 +135,7 @@ class Gengar extends Ghost {
                 this.timeOfLastStep = millis();
                 this.sprite.changeAnimation("idle");
                 sfx2B.play();
-                startShake();
+                EngineUtils.startShake();
             }
 
             if (this.isAtMaxDistanceFromStart()) {
@@ -159,7 +153,7 @@ class Gengar extends Ghost {
     }
 
     disableSprite() {
-        disableSprite(this.sprite);
+        EngineUtils.disableSprite(this.sprite);
         this.disabled = true;
         this.sprite.visible = false;
         this.timeOfLastStep = millis();

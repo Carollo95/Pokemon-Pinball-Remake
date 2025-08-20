@@ -19,37 +19,40 @@ const BALL_LAYER = 5; //Layer for the ball sprite
 let stage; //The p5 sketch in use
 let canvas;
 
-/**
- * Disables physics for a sprite.
- * @param {Sprite} sprite - The sprite to disable.
- */
-function disableSprite(sprite) {
-    sprite.sleeping = true;
-    sprite.physics = "none";
-}
+const EngineUtils = {
+    /**
+     * Disables physics for a sprite.
+     * @param {Sprite} sprite - The sprite to disable.
+     */
+    disableSprite(sprite) {
+        sprite.sleeping = true;
+        sprite.physics = "none";
+    },
 
-/**
- * Enables the physics of a sprite
- * @param {sprite} sprite  the sprite.
- */
-function enableSprite(sprite) {
-    sprite.sleeping = false;
-    sprite.physics = "static";
-}
+    /**
+     * Enables the physics of a sprite
+     * @param {sprite} sprite  the sprite.
+     */
+    enableSprite(sprite) {
+        sprite.sleeping = false;
+        sprite.physics = "static";
+    },
 
-/**
- * Starts a screen shake for the default amount of time.
- */
-function startShake() {
-    stage.startShake();
-}
+    /**
+     * Starts a screen shake for the default amount of time.
+     */
+    startShake() {
+        stage.startShake();
+    },
 
-/**
- * Draws the current stage
- */
-function drawStage() {
-    stage.draw();
-    if (DEBUG) {
-        showFPS();
+    /**
+     * Draws the current stage
+     */
+    drawStage() {
+        stage.draw();
+        if (DEBUG) {
+            showFPS();
+        }
     }
+
 }

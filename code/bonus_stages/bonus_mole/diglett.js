@@ -53,7 +53,7 @@ class Diglett {
     }
 
     disableSprite() {
-        disableSprite(this.sprite);
+        EngineUtils.disableSprite(this.sprite);
         this.sprite.visible = false;
         this.timeOfDissapearance = millis();
         this.disabled = true;

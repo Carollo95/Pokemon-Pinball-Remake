@@ -6,14 +6,16 @@ const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showi
 const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on screen the shown text
 
 class StageStatusBanner {
-    textArray = new Array(MAX_CHARS);
-    lastMovement = 0;
-    textQueue = '';
-    show = false;
-    endTextDisplayMillis = 0;
-    persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS;
+
 
     constructor(x, y) {
+        this.textArray = new Array(MAX_CHARS);
+        this.lastMovement = 0;
+        this.textQueue = '';
+        this.show = false;
+        this.endTextDisplayMillis = 0;
+        this.persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS;
+        
         for (var i = 0; i <= MAX_CHARS; i++) {
             this.textArray[i] = new Sprite(x - (CHAR_SIZE * i + 1), y, CHAR_SIZE, CHAR_SIZE, "none");
             this.textArray[i].layer = 10;

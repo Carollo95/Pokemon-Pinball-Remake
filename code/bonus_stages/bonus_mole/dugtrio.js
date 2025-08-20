@@ -8,7 +8,7 @@ class Dugtrio {
     disabled;
     phase;
     sprite;
-    
+
     constructor(x, y) {
         this.sprite = new Sprite(x, y, DUGTRIO_WIDTH, DUGTRIO_HEIGHT, "static");
         this.sprite.debug = DEBUG;
@@ -23,7 +23,7 @@ class Dugtrio {
         this.sprite.addAnimation("hurt4", animDugtrio4Hurt)
 
         this.sprite.visible = false;
-        disableSprite(this.sprite);
+        EngineUtils.disableSprite(this.sprite);
 
         this.timeOfHurt = 0;
         this.disabled = false;
@@ -31,7 +31,7 @@ class Dugtrio {
     }
 
     spawn() {
-        enableSprite(this.sprite);
+        EngineUtils.enableSprite(this.sprite);
         this.sprite.visible = true;
         this.sprite.changeAnimation("idle1");
     }
@@ -67,7 +67,7 @@ class Dugtrio {
     }
 
     disableSprite() {
-        disableSprite(this.sprite);
+        EngineUtils.disableSprite(this.sprite);
         this.sprite.visible = false;
         this.timeOfDissapearance = millis();
         this.disabled = true;

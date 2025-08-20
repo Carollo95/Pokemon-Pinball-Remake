@@ -30,16 +30,13 @@ let timeOfLastCoinTaken = 0; // Millis of the last coin catch
 let coinMultiplier = 1; //Current multiplier for the coins
 
 class Coin {
-    disabled = false;
-    timeOfLastHit = -10000;
-    localMultiplier = 1;
-
-    dissapearAnimationMillis;
-    sprite;
-    auxiliarySprite;
-    multiplierSprite;
-
     constructor(x, isHighLane) {
+        this.disabled = false;
+        this.timeOfLastHit = -10000;
+        this.localMultiplier = 1;
+
+        this.dissapearAnimationMillis;
+        
         let y = isHighLane ? COIN_HIGH_LANE : COIN_LOW_LANE;
 
         this.sprite = new Sprite(x, y, COIN_WIDTH, COIN_HEIGHT, "static");
@@ -122,7 +119,7 @@ class Coin {
     }
 
     onCoinHit() {
-        disableSprite(this.sprite);
+        EngineUtils.disableSprite(this.sprite);
         sfx32.play();
         this.sprite.changeAnimation("dissapear");
         this.timeOfLastHit = millis();
@@ -142,7 +139,7 @@ class Coin {
     }
 
     disableSprite() {
-        disableSprite(this.sprite);
+        EngineUtils.disableSprite(this.sprite);
         if (this.auxiliarySprite != null) {
             this.auxiliarySprite.remove()
         }
@@ -151,7 +148,7 @@ class Coin {
     }
 
     enableSprite() {
-        enableSprite(this.sprite);
+        EngineUtils.enableSprite(this.sprite);
         if (this.auxiliarySprite != null) {
             this.createAuxiliarySpriteIfNeeded();
         }
