@@ -176,8 +176,7 @@ class BonusStageCat extends BonusStage {
     }
 
     clearStage() {
-        //TODO stop music and restart it
-        sfx2A.play();
+        interruptMusicToPlaySFX(sfx2A);
         this.isStageWon = true;
         this.millisSinceStageComplete = millis();
         this.stageText.setText("meowth stage clear ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize

@@ -13,7 +13,7 @@ let stage; //The p5 sketch in use
 let canvas;
 
 /**
- * Disables the physiics of a sprite.
+ * Disables the physics of a sprite.
  * @param {sprite} sprite  the sprite.
  */
 function disableSprite(sprite) {

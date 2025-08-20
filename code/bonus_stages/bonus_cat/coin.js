@@ -36,11 +36,15 @@ class Coin {
 
     dissapearAnimationMillis;
     sprite;
+    auxiliarySprite;
     multiplierSprite;
 
     constructor(x, isHighLane) {
         let y = isHighLane ? COIN_HIGH_LANE : COIN_LOW_LANE;
+
         this.sprite = new Sprite(x, y, COIN_WIDTH, COIN_HEIGHT, "static");
+        this.createAuxiliarySpriteIfNeeded();
+
         this.sprite.addAnimation("dissapear", animCoinDisappear);
         this.sprite.addAnimation("idle", animCoinIdle);
         this.sprite.debug = DEBUG;
@@ -52,9 +56,37 @@ class Coin {
         this.multiplierSprite.addAnimation("3", animCoinMultiplier3);
         this.multiplierSprite.addAnimation("2", animCoinMultiplier2);
         this.multiplierSprite.visible = false;
+        this.multiplierSprite.debug = DEBUG;
 
         this.disableSprite();
         this.dissapearAnimationMillis = animCoinDisappear.length * animCoinDisappear.frameDelay;
+    }
+
+    /**
+     * The sprites for the coins on the lower coin have a gap on the sides, where a flying coin 
+     * can fall and on top of that the ball can fall, making it unable to touch the coin and 
+     * making it dissapear, softlocking the bonus level. This sprite prevents anything to 
+     * fall there 
+     */
+    createAuxiliarySpriteIfNeeded() {
+        if (this.sprite.pos.y == COIN_LOW_LANE) {
+            if (this.sprite.pos.x == COIN_LOW_SLOT_1) {
+                this.auxiliarySprite = new Sprite([
+                    [40, 268],
+                    [82, 268],
+                    [82, 268 + COIN_HEIGHT],
+                    [40, 268]], "static");
+                this.auxiliarySprite.visible = false;
+            } else if (this.sprite.pos.x == COIN_LOW_SLOT_6) {
+                this.auxiliarySprite = new Sprite([
+                    [290, 268],
+                    [340, 268],
+                    [290, 268 + COIN_HEIGHT],
+                    [290, 268]], "static");
+                this.auxiliarySprite.visible = false;
+            }
+        }
+
     }
 
     update(ballSprite) {
@@ -82,7 +114,7 @@ class Coin {
     }
 
     isCoinHit(ballSprite) {
-        return this.sprite.animation.name == "idle" && this.sprite.collide(ballSprite)
+        return this.sprite.animation.name == "idle" && (this.sprite.collide(ballSprite) || (this.auxiliarySprite != null && this.auxiliarySprite.collide(ballSprite)))
     }
 
     timeToDisappear() {
@@ -111,12 +143,18 @@ class Coin {
 
     disableSprite() {
         disableSprite(this.sprite);
+        if (this.auxiliarySprite != null) {
+            this.auxiliarySprite.remove()
+        }
         this.sprite.visible = false;
         this.disabled = true;
     }
 
     enableSprite() {
         enableSprite(this.sprite);
+        if (this.auxiliarySprite != null) {
+            this.createAuxiliarySpriteIfNeeded();
+        }
         this.sprite.changeAnimation("idle");
         sfx34.play();
         this.sprite.visible = true;

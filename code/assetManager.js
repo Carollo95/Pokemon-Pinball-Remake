@@ -80,7 +80,7 @@ function preloadAudio() {
     sfx2E = getAudio('assets/audio/sfx/SFX-2E'); //Gengar defated
     sfx2F = getAudio('assets/audio/sfx/SFX-2F'); //Hit gravestone
     sfx30 = getAudio('assets/audio/sfx/SFX-30'); //Seel hurt
-    sfx31 = getAudio('assets/audio/sfx/SFX-31'); 
+    sfx31 = getAudio('assets/audio/sfx/SFX-31');
     sfx32 = getAudio('assets/audio/sfx/SFX-32'); //Coin caught
     sfx33 = getAudio('assets/audio/sfx/SFX-33'); //Meowth hurt
     sfx34 = getAudio('assets/audio/sfx/SFX-34'); //Coin fell
@@ -143,6 +143,21 @@ function stopMusic() {
     if (this.currentSong != null && this.currentSong.isPlaying) {
         this.currentSong.stop();
     }
+}
+
+/**
+ * Stops the current song. Plays the sound effect and resumes the song
+ * @param {*} sfx the SFX
+ */
+function interruptMusicToPlaySFX(sfx) {
+    if (this.currentSong.isPlaying()) {
+        this.currentSong.pause();
+    }
+
+    sfx.play();
+    sfx.onended(() => {
+        this.currentSong.play();
+    });
 }
 
 /**
@@ -304,3 +319,5 @@ function getAnimation(name, frameHeight, frameWidth, imageNum, delay) {
 
     return animation;
 }
+
+
