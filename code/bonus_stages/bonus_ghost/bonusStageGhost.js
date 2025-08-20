@@ -62,7 +62,7 @@ class BonusStageGhost extends BonusStage {
     this.currentPhase = GHOST_PHASE.INIT;
     this.state = BONUS_STAGE_STATE.PLAYING;
 
-    this.createBonusNewBallIfBallLoss(this.getOpenGateBackground()); 
+    this.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
   }
 
   createBonusScenarioGeometry() {
@@ -106,26 +106,27 @@ class BonusStageGhost extends BonusStage {
   }
 
   drawStage() {
-    if (this.state === BONUS_STAGE_STATE.PLAYING){
+    if (this.state === BONUS_STAGE_STATE.PLAYING) {
       this.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
       super.closeBonusGateIfBallInsideBoard(this.getBackground());
     }
 
+    if (this.state !== BONUS_STAGE_STATE.WON) {
+      this.updatePhaseSprites();
+      this.updateGravestoneCollisions();
 
-    this.updatePhaseSprites();
-    this.updateGravestoneCollisions();
+      if (this.scenarioTop.collide(this.getBallSprite())) {
+        sfx08.play();
+      }
 
-    if (this.scenarioTop.collide(this.getBallSprite())) {
-      sfx08.play();
+      this.getTimer().update();
+
+      if (this.getTimer().timeIsUp()) {
+        this.getFlippers().disableFlippers();
+      }
+
+      this.changePhaseIfNecessary();
     }
-
-    this.getTimer().update();
-
-    if (this.getTimer().timeIsUp()) {
-      this.getFlippers().disableFlippers();
-    }
-
-    this.changePhaseIfNecessary();
   }
 
   createBonusNewBallIfBallLoss(bonusGateBackground) {
@@ -133,7 +134,8 @@ class BonusStageGhost extends BonusStage {
     if (!this.checkBonusBallLoss()) return;
 
     if (this.getTimer().timeIsUp()) {
-      if (this.millisSinceStageComplete === 0) this.endStage(BONUS_STAGE_STATE.LOST);
+      if (this.millisSinceStageComplete === 0)
+        this.endStage(BONUS_STAGE_STATE.LOST);
       return;
     }
 
