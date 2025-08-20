@@ -1,14 +1,13 @@
-const GASTLY_HITBOX_HEIGHT = 24; //Height of gastly's hitbox
-const GASTLY_HITBOX_WIDTH = 24; //Width of gastly's hitbox
-const GASTLY_HORIZONTAL_SPEED = 0.3; //Horizontal movement speed
-const GASTLY_VERTICAL_SPEED = 0.15; //Vertical movement speed
-const GASTLY_MAX_HORIZONTAL_MOVEMENT = 60; //Max horizontal desplacement pixels
-const GASTLY_MAX_VERTICAL_MOVEMENT = 4; //Max vertical desplacement pixels
+const GASTLY_HITBOX_HEIGHT = 24;
+const GASTLY_HITBOX_WIDTH = 24;
+const GASTLY_HORIZONTAL_SPEED = 0.3;
+const GASTLY_VERTICAL_SPEED = 0.15;
+const GASTLY_MAX_HORIZONTAL_MOVEMENT = 60;
+const GASTLY_MAX_VERTICAL_MOVEMENT = 4;
 
 class Gastly extends SmallGhost {
-
     constructor(x, y) {
-        super(x, y, GASTLY_HITBOX_WIDTH, GASTLY_HITBOX_HEIGHT)
+        super(x, y, GASTLY_HITBOX_WIDTH, GASTLY_HITBOX_HEIGHT);
 
         this.maxHorizontalMovement = GASTLY_MAX_HORIZONTAL_MOVEMENT;
         this.maxVerticalMovement = GASTLY_MAX_VERTICAL_MOVEMENT;
@@ -22,5 +21,4 @@ class Gastly extends SmallGhost {
 
         this.setup();
     }
-
 }

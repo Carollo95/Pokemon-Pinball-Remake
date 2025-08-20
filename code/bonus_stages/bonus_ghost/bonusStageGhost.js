@@ -1,4 +1,4 @@
-const GHOST_STAGE_TIME_MILLIS = 91000; //Duration of the ghost stage
+const GHOST_STAGE_TIME_MILLIS = 201000; //Duration of the ghost stage
 
 const GHOST_GRAVESTONE_HEIGHT = 26;
 const GHOST_GRAVESTONE_WIDTH = 26;
@@ -9,7 +9,6 @@ const GHOST_PHASE = {
   HAUNTER: 2,
   GENGAR: 3
 };
-
 
 const GASTLY1_SPAWN_X = 80;
 const GASTLY1_SPAWN_Y = 140;
@@ -40,8 +39,8 @@ class BonusStageGhost extends BonusStage {
     this.millisSinceStageComplete = 0;
 
     // lives / counters
-    this.extraGastlyLives = 1;//7;
-    this.extraHaunterLives = 3;//10;
+    this.extraGastlyLives = 7;
+    this.extraHaunterLives = 10;
 
     // entities (initialized to null)
     this.gastly1 = null;
@@ -317,6 +316,7 @@ class BonusStageGhost extends BonusStage {
   updateGengar() {
     this.gengar.update(this.getBallSprite());
 
+    //TODO review this condition, why did I do this???
     if (this.gengar.isDefeated && this.gengar.isDefeated()) {
       this.finishStageSuccessfully();
     } else if (this.gengar.readyToRespawn && this.gengar.readyToRespawn()) {

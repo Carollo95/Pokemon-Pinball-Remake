@@ -1,22 +1,24 @@
-const SMALL_GHOST_RESPAWN_THRESHOLD_MILLS = 3000; //Time between instance creation and spawn
-class SmallGhost extends Ghost {
+const SMALL_GHOST_RESPAWN_THRESHOLD_MS = 3000; // ms between creation and respawn
 
+class SmallGhost extends Ghost {
     constructor(x, y, width, height) {
         super(x, y, width, height);
-        
-        this.maxHorizontalMovement;
-        this.maxVerticalMovement;
-        this.horizontalSpeed;
-        this.verticalSpeed;
 
-        this.hurtSfx;
+        // movement parameters (subclasses set sensible defaults)
+        this.maxHorizontalMovement = 0;
+        this.maxVerticalMovement = 0;
+        this.horizontalSpeed = 0;
+        this.verticalSpeed = 0;
+
+        // sound and animations (set by subclass)
+        this.hurtSfx = null;
     }
 
     setup() {
-        this.keepMovinRight = true;
-        this.keepMovinUp = true;
-        this.timeOfDissapearance = 0;
-        this.respawnThreshHoldTime = SMALL_GHOST_RESPAWN_THRESHOLD_MILLS;
+        this.keepMovingRight = true;
+        this.keepMovingUp = true;
+        this.timeOfDisappearance = 0;
+        this.respawnThresholdTime = SMALL_GHOST_RESPAWN_THRESHOLD_MS;
 
         this.sprite.addAnimation("idle", this.idleAnimation);
         this.sprite.addAnimation("hurt", this.hurtAnimation);
@@ -30,53 +32,52 @@ class SmallGhost extends Ghost {
     }
 
     moveXAxis() {
-        if (this.keepMovinRight) {
+        if (this.keepMovingRight) {
             this.sprite.pos.x += this.horizontalSpeed;
             if (this.sprite.pos.x > this.start_x + this.maxHorizontalMovement) {
-                this.keepMovinRight = false;
+                this.keepMovingRight = false;
             }
         } else {
             this.sprite.pos.x -= this.horizontalSpeed;
             if (this.sprite.pos.x < this.start_x) {
-                this.keepMovinRight = true;
+                this.keepMovingRight = true;
             }
         }
     }
 
     moveYAxis() {
-        if (this.keepMovinUp) {
+        if (this.keepMovingUp) {
             this.sprite.pos.y += this.verticalSpeed;
             if (this.sprite.pos.y > this.start_y + this.maxVerticalMovement) {
-                this.keepMovinUp = false;
+                this.keepMovingUp = false;
             }
         } else {
             this.sprite.pos.y -= this.verticalSpeed;
             if (this.sprite.pos.y < this.start_y) {
-                this.keepMovinUp = true;
+                this.keepMovingUp = true;
             }
         }
     }
 
     update(ballSprite) {
-        if (!this.disabled) {
-            if (this.timeOfHurt == 0) {
-                this.checkCollision(ballSprite);
-                this.move();
+        if (this.disabled) return;
+
+        if (this.timeOfHurt === 0) {
+            this.checkCollision(ballSprite);
+            this.move();
+        } else {
+            if (this.isHurtTimeFinished()) {
+                this.disableSprite();
             } else {
-                if (this.isHurtTimeFinished()) {
-                    this.disableSprite();
-                } else {
-                    this.blink();
-                    this.sprite.changeAnimation("hurt");
-                }
+                this.blink();
+                this.sprite.changeAnimation("hurt");
             }
         }
     }
 
-
     checkCollision(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
-            this.sprite.image = this.hurtAnimation
+            this.sprite.image = this.hurtAnimation;
             this.hurtSfx.play();
             EngineUtils.disableSprite(this.sprite);
             this.timeOfHurt = millis();
@@ -86,8 +87,7 @@ class SmallGhost extends Ghost {
     disableSprite() {
         EngineUtils.disableSprite(this.sprite);
         this.sprite.visible = false;
-        this.timeOfDissapearance = millis();
+        this.timeOfDisappearance = millis();
         this.disabled = true;
     }
-
 }
