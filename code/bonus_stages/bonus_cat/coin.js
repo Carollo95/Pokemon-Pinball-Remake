@@ -1,15 +1,14 @@
 const COIN_MULTIPLIER_BLINKING_FRAMES = 6; //Frame count between visible and not visible while blinking
 
-const COIN_WIDTH = 36;
-const COIN_HEIGHT = 36;
+const COIN_WIDTH = 36; //Width of the coin collider
+const COIN_HEIGHT = 36; //Height of the coin collider
 
-const COIN_HIGH_LANE = 244;
-const COIN_LOW_LANE = 286;
+const COIN_HIGH_LANE = 244; //Height for the higher row of coins
+const COIN_LOW_LANE = 286; //Height for the lower row of coins
 
-const COIN_CLOSENESS_COLLIDER_DIAMETER = 38;
+const COIN_MULTIPLIER_THRESHOLD_MILLIS = 1000; //Number of milliseconds between coin catches to get a multiplier
 
-const COIN_MULTIPLIER_THRESHOLD_MILLIS = 1000;
-
+//Horizontal positions for the coins on the higher row
 const COIN_HIGH_SLOT_1 = 62;
 const COIN_HIGH_SLOT_2 = 98;
 const COIN_HIGH_SLOT_3 = 135;
@@ -19,6 +18,7 @@ const COIN_HIGH_SLOT_6 = 244;
 const COIN_HIGH_SLOT_7 = 278;
 const COIN_HIGH_SLOT_8 = 314;
 
+//Horizontal positions for the coins on the lower row
 const COIN_LOW_SLOT_1 = 100;
 const COIN_LOW_SLOT_2 = 135;
 const COIN_LOW_SLOT_3 = 170;
@@ -26,12 +26,14 @@ const COIN_LOW_SLOT_4 = 205;
 const COIN_LOW_SLOT_5 = 240;
 const COIN_LOW_SLOT_6 = 275;
 
-let timeOfLastCoinTaken = 0;
-let coinMultiplier = 1;
+let timeOfLastCoinTaken = 0; // Millis of the last coin catch
+let coinMultiplier = 1; //Current multiplier for the coins
 
 class Coin {
     disabled = false;
     timeOfLastHit = -10000;
+    localMultiplier = 1;
+
     dissapearAnimationMillis;
     sprite;
     multiplierSprite;
@@ -57,21 +59,34 @@ class Coin {
 
     update(ballSprite) {
         if (!this.disabled) {
-            if (this.sprite.animation.name == "idle" && this.sprite.collide(ballSprite)) {
+            if (this.isCoinHit(ballSprite)) {
                 this.onCoinHit();
                 return coinMultiplier;
-            } else if (this.sprite.animation.name == "dissapear" && millis() - this.timeOfLastHit > (this.dissapearAnimationMillis)) {
+            } else if (this.timeToDisappear()) {
                 this.disableSprite();
             }
         }
 
-        if (millis() - this.timeOfLastHit > 1000) {
-            this.multiplierSprite.visible = false;
-        } else if(coinMultiplier > 1){
-            this.blinkMultiplier();
-        }
+        this.blinkMultiplierIfNecessary();
 
         return 0;
+    }
+
+
+    blinkMultiplierIfNecessary() {
+        if (millis() - this.timeOfLastHit > 1000) {
+            this.multiplierSprite.visible = false;
+        } else if (this.localMultiplier > 1) {
+            this.blinkMultiplier();
+        }
+    }
+
+    isCoinHit(ballSprite) {
+        return this.sprite.animation.name == "idle" && this.sprite.collide(ballSprite)
+    }
+
+    timeToDisappear() {
+        return this.sprite.animation.name == "dissapear" && millis() - this.timeOfLastHit > (this.dissapearAnimationMillis)
     }
 
     onCoinHit() {
@@ -84,6 +99,7 @@ class Coin {
             if (coinMultiplier < 6) {
                 coinMultiplier++;
             }
+            this.localMultiplier = coinMultiplier;
             this.multiplierSprite.changeAnimation(coinMultiplier.toString());
             this.multiplierSprite.visible = true;
         } else {

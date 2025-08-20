@@ -25,8 +25,6 @@ class FlyingCoin {
         if (this.sprite.y > 300) {
             this.bounce();
         }
-
-
     }
 
     bounce() {

@@ -1,4 +1,4 @@
-const CAT_STAGE_TIME_MILLIS = 1000;//61000;
+const CAT_STAGE_TIME_MILLIS = 61000;
 
 class BonusStageCat extends BonusStage {
 
@@ -51,8 +51,7 @@ class BonusStageCat extends BonusStage {
         super.draw();
         this.drawStage();
 
-        if (this.isStageLost || this.isStageWon) {
-
+        if (this.isStageLost) {
             this.meowth.stopAndSmug();
             if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
                 //TODO end stage
@@ -107,10 +106,11 @@ class BonusStageCat extends BonusStage {
     updateCoin(coin) {
         let coinsTaken = coin.update(this.ball.sprite);
         if (coinsTaken > 0) {
-            this.coinCounter.addCoins(coinsTaken);
-            if (this.coinCounter.counter == 20) {
+            //Passing the 20 threshold
+            if (this.coinCounter.counter < 20 && this.coinCounter.counter + coinsTaken >= 20) {
                 this.clearStage();
             }
+            this.coinCounter.addCoins(coinsTaken);
         }
     }
 
