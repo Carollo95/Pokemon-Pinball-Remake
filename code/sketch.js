@@ -1,7 +1,3 @@
-p5playConfig = {
-  showIntro: false
-};
-
 function preload() {
   preloadAudio();
   preLoadBackgrounds();
@@ -12,7 +8,7 @@ function setup() {
   let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   cnv.parent("canvas-container");
 
-  startMoleStage();
+  startCatStage();
 }
 
 function draw() {
@@ -39,6 +35,12 @@ function startMoleStage() {
   stage.setup();
 }
 
+function startCatStage() {
+  allSprites.remove();
+  stage = new BonusStageCat();
+  stage.setup();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("ghost-stage").addEventListener("click", startGhostStage);
 });
@@ -47,3 +49,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("mole-stage").addEventListener("click", startMoleStage);
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("cat-stage").addEventListener("click", startCatStage);
+});
+
+
+async function playIntro() {}

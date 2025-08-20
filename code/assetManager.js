@@ -23,8 +23,13 @@ function preloadAudio() {
     songGhostStageHaunter = getAudio('assets/audio/GhostStage_Haunter_In_The_Graveyard');
     songGhostStageGengar = getAudio('assets/audio/GhostStage_Gengar_In_The_Graveyard');
 
+    //The mole stage doesn't have a time limit, so the song must loop in case it takes too much time
     songMoleStageDiglett = getAudio('assets/audio/MoleStage_Whack_the_Digletts');
+    songMoleStageDiglett.loop = true;
     songMoleStageDugtrio = getAudio('assets/audio/MoleStage_Whack_Dugtrio');
+    songMoleStageDugtrio.loop = true;
+
+    songCatStage = getAudio('assets/audio/CatStage_Meowth');
 
     sfx00 = getAudio('assets/audio/sfx/SFX-00');
     sfx01 = getAudio('assets/audio/sfx/SFX-01');
@@ -38,7 +43,7 @@ function preloadAudio() {
     sfx09 = getAudio('assets/audio/sfx/SFX-09');
     sfx0A = getAudio('assets/audio/sfx/SFX-0A');
     sfx0B = getAudio('assets/audio/sfx/SFX-0B');
-    sfx0C = getAudio('assets/audio/sfx/SFX-0C'); //FLipper moved
+    sfx0C = getAudio('assets/audio/sfx/SFX-0C'); //Flipper moved
     sfx0D = getAudio('assets/audio/sfx/SFX-0D');
     sfx0E = getAudio('assets/audio/sfx/SFX-0E');
     sfx0F = getAudio('assets/audio/sfx/SFX-0F');
@@ -74,11 +79,11 @@ function preloadAudio() {
     sfx2D = getAudio('assets/audio/sfx/SFX-2D'); //Haunter hurt
     sfx2E = getAudio('assets/audio/sfx/SFX-2E'); //Gengar defated
     sfx2F = getAudio('assets/audio/sfx/SFX-2F'); //Hit gravestone
-    sfx30 = getAudio('assets/audio/sfx/SFX-30');
+    sfx30 = getAudio('assets/audio/sfx/SFX-30'); //Seel hurt
     sfx31 = getAudio('assets/audio/sfx/SFX-31');
-    sfx32 = getAudio('assets/audio/sfx/SFX-32');
-    sfx33 = getAudio('assets/audio/sfx/SFX-33');
-    sfx34 = getAudio('assets/audio/sfx/SFX-34');
+    sfx32 = getAudio('assets/audio/sfx/SFX-32'); //Coin caught
+    sfx33 = getAudio('assets/audio/sfx/SFX-33'); //Meowth hurt
+    sfx34 = getAudio('assets/audio/sfx/SFX-34'); //Coin fell
     sfx35 = getAudio('assets/audio/sfx/SFX-35'); //Diglett hurt
     sfx36 = getAudio('assets/audio/sfx/SFX-36'); //Dugtrio hurt
     sfx37 = getAudio('assets/audio/sfx/SFX-37'); //Gengar hurt
@@ -115,6 +120,7 @@ function preloadAudio() {
 function getAudio(soundName) {
     sound = loadSound(soundName + ".mp3");
     sound.volume = 0.4;
+    sound.playMode("restart");
     return sound;
 }
 
@@ -124,9 +130,7 @@ function getAudio(soundName) {
  */
 function playSong(song) {
     if (!MUTE_MUSIC) {
-        if (this.currentSong != null) {
-            this.currentSong.stop();
-        }
+        stopMusic();
         this.currentSong = song;
         this.currentSong.play();
     }
@@ -136,9 +140,24 @@ function playSong(song) {
  * Stops the song being playd currently
  */
 function stopMusic() {
-    if (this.currentSong != null) {
+    if (this.currentSong != null && this.currentSong.isPlaying) {
         this.currentSong.stop();
     }
+}
+
+/**
+ * Stops the current song. Plays the sound effect and resumes the song
+ * @param {*} sfx the SFX
+ */
+function interruptMusicToPlaySFX(sfx) {
+    if (this.currentSong.isPlaying()) {
+        this.currentSong.pause();
+    }
+
+    sfx.play();
+    sfx.onended(() => {
+        this.currentSong.play();
+    });
 }
 
 /**
@@ -158,6 +177,7 @@ function getImage(name) {
 let bonusStageFrame;
 let bonusGhostBackgroundOpen, bonusGhostBackgroundClosed, bonusGhostBackgroundP2Open, bonusGhostBackgroundP2Closed;
 let bonusMoleBackgroundOpen, bonusMoleBackgroundClosed;
+let bonusCatBackgroundOpen, bonusCatBackgroundClosed;
 
 let animLeftFlipperUp, animLeftFlipperMiddle, animLeftFlipperDown, animLeftFlipperDownDisabled;
 let animRightFlipperUp, animRightFlipperMiddle, animRightFlipperDown, animRightFlipperDownDisabled;
@@ -176,6 +196,7 @@ let animGengar, animGengarHurt, animGengarWalk;
 
 let animDiglett, animDiglettHurt, animDiglettDown;
 let animDugtrio1, animDugtrio1Hurt, animDugtrio2, animDugtrio2Hurt, animDugtrio3, animDugtrio3Hurt, animDugtrio4;
+let animMeowthWalk, animMeowthHurt;
 
 function preLoadBackgrounds() {
     bonusGhostBackgroundOpen = getImage('assets/img/bonus-ghost/bonus_ghost_background_open');
@@ -185,6 +206,9 @@ function preLoadBackgrounds() {
 
     bonusMoleBackgroundOpen = getImage('assets/img/bonus-mole/bonus_mole_background_open');
     bonusMoleBackgroundClosed = getImage('assets/img/bonus-mole/bonus_mole_background');
+
+    bonusCatBackgroundOpen = getImage('assets/img/bonus-cat/bonus_cat_background_open');
+    bonusCatBackgroundClosed = getImage('assets/img/bonus-cat/bonus_cat_background');
 
     bonusStageFrame = getImage('assets/img/bonus_state_frame');
 }
@@ -229,6 +253,22 @@ function preloadAnimations() {
     animDugtrio3Hurt = getAnimation('assets/img/bonus-mole/dugtrio3_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
     animDugtrio4 = getAnimation('assets/img/bonus-mole/dugtrio4', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
     animDugtrio4Hurt = getAnimation('assets/img/bonus-mole/dugtrio4_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+
+    animMeowthWalk = getAnimation('assets/img/bonus-cat/meowth_walk', 64, 64, 3, DEFAULT_ANIMATION_DELAY);
+    animMeowthHurt = getAnimation('assets/img/bonus-cat/meowth_hurt', 64, 64, 1, DEFAULT_ANIMATION_DELAY);
+    animMeowthSmug = getAnimation('assets/img/bonus-cat/meowth_smug', 64, 64, 2, DEFAULT_ANIMATION_DELAY);
+    animCoinIdle = getAnimation('assets/img/bonus-cat/coin', 32, 32, 2, DEFAULT_ANIMATION_DELAY);
+    animCoinDisappear = getAnimation('assets/img/bonus-cat/coin_disappear', 32, 32, 5, DEFAULT_ANIMATION_DELAY);
+    animFlyingCoin1 = getAnimation('assets/img/bonus-cat/flying_coin_1', 16, 32, 1, DEFAULT_ANIMATION_DELAY);
+    animFlyingCoin2 = getAnimation('assets/img/bonus-cat/flying_coin_2', 32, 32, 1, DEFAULT_ANIMATION_DELAY);
+    animCoinCounter = getAnimation('assets/img/bonus-cat/coin_counter', 16, 16, 1, DEFAULT_ANIMATION_DELAY);
+    animCoinCounterShine = getAnimation('assets/img/bonus-cat/coin_counter_shine', 16, 16, 2, DEFAULT_ANIMATION_DELAY);
+    animCoinMultiplier2 = getAnimation('assets/img/bonus-cat/coin_multiplier_2', 32, 16, 1);
+    animCoinMultiplier3 = getAnimation('assets/img/bonus-cat/coin_multiplier_3', 32, 16, 1);
+    animCoinMultiplier4 = getAnimation('assets/img/bonus-cat/coin_multiplier_4', 32, 16, 1);
+    animCoinMultiplier5 = getAnimation('assets/img/bonus-cat/coin_multiplier_5', 32, 16, 1);
+    animCoinMultiplier6 = getAnimation('assets/img/bonus-cat/coin_multiplier_6', 32, 16, 1);
+
 
     stageTextA = getAnimation('assets/img/stage-text/a', 16, 16, 1);
     stageTextB = getAnimation('assets/img/stage-text/b', 16, 16, 1);
@@ -279,3 +319,5 @@ function getAnimation(name, frameHeight, frameWidth, imageNum, delay) {
 
     return animation;
 }
+
+
