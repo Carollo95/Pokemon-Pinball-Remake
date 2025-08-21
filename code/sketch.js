@@ -13,7 +13,7 @@ function setup() {
 
   EngineUtils.initPhysics();
 
-  startGhostStage();
+  startMoleStage();
 }
 
 function draw() {

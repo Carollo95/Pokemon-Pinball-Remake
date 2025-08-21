@@ -5,7 +5,7 @@ const I18NManager = {
             "end_gengar_stage": " end gengar stage ",
             "meowth_stage_cleared": "meowth stage clear ",
             "end_meowth_stage": " end meowth stage ",
-            "diglett_stage_cleared": "end diglett stage",
+            "diglett_stage_cleared": "diglett stage clear",
             "end_diglett_stage": " end diglett stage "
         }
     },

@@ -16,12 +16,21 @@ const SCENARIO_TOP_PORTION_POINTS = [
   [0, 0]
 ];
 
+const MOLE_PHASE = {
+  DIGLETTS: 0,
+  DUGTRIO: 1,
+  COMPLETE: 2
+};
+
 class BonusStageMole extends BonusStage {
 
   constructor() {
     super();
+    this.phase = MOLE_PHASE.DIGLETTS;
+    this.millisSinceStageComplete = 0;
+
     this.diglettMatrix = [];
-    this.phase = 0;
+    this.dugtrio = null;
   }
 
   setup() {
@@ -73,46 +82,43 @@ class BonusStageMole extends BonusStage {
   }
 
   drawStage() {
-    this.createBonusNewBallIfBallLoss()
-    super.closeBonusGateIfBallInsideBoard(this.getBackground())
-
-    this.updatePhaseSprites();
-    this.changePhaseIfNeeded();
-
-    if (this.scenarioTop.collide(this.ball.sprite)) {
-      sfx08.play();
+    if (this.state === BONUS_STAGE_STATE.PLAYING) {
+      this.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
+      super.closeBonusGateIfBallInsideBoard(this.getBackground());
+      this.changePhaseIfNeeded();
     }
 
+    // update digletts always so animations continue on LOST/WON if desired
+    if (this.phase === MOLE_PHASE.DIGLETTS) {
+      for (let col = 0; col < this.diglettMatrix.length; col++) {
+        for (let row = 0; row < this.diglettMatrix[col].length; row++) {
+          this.diglettMatrix[col][row].update(this.getBall().sprite);
+        }
+      }
+    }
+
+    // dugtrio should update in PLAYING and LOST (so it can finish its exit animation)
+    if (this.phase === MOLE_PHASE.DUGTRIO) {
+      this.dugtrio.update(this.getBall().sprite);
+    }
+
+
+    if (this.scenarioTop.collide(this.getBall().sprite)) {
+      sfx08.play();
+    }
   }
 
   changePhaseIfNeeded() {
-    if (this.phase == 0 && this.isPhaseChange()) {
-      this.phase++;
+    if (this.phase === MOLE_PHASE.DIGLETTS && this.isPhaseChange()) {
+      this.phase = MOLE_PHASE.DUGTRIO;
       playSong(songMoleStageDugtrio);
       this.dugtrio.spawn();
-    } else if (this.dugtrio.disabled && !this.levelCompleted) {
-      this.clearStage();
+      return;
     }
-  }
 
-  clearStage() {
-    stopMusic();
-    sfx2A.play();
-    this.isStageWon = true;
-    this.millisSinceStageComplete = millis();
-    this.levelCompleted = true;
-    this.flippers.disableFlippers();
-    this.stageText.setText(I18NManager.translate("diglett_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
-  }
-
-
-  updatePhaseSprites() {
-    for (let i = 0; i < this.diglettMatrix.length; i++) {
-      for (let j = 0; j < this.diglettMatrix[i].length; j++) {
-        this.diglettMatrix[i][j].update(this.ball.sprite);
-      }
+    if (this.phase === MOLE_PHASE.DUGTRIO && this.dugtrio.disabled) {
+      this.endStage(BONUS_STAGE_STATE.WON, "diglett_stage_cleared");
     }
-    this.dugtrio.update(this.ball.sprite);
   }
 
   isPhaseChange() {
@@ -127,18 +133,11 @@ class BonusStageMole extends BonusStage {
   }
 
   createBonusNewBallIfBallLoss() {
-    if (this.checkBonusBallLoss() && !this.levelCompleted) {
-      if (!this.isStageLost && !this.isStageWon) {
-        this.loseStage();
-      }
-    }
-  }
+    // only when playing (createNewBonusBall already checks state in BonusStage)
+    if (this.state !== BONUS_STAGE_STATE.PLAYING) return;
+    if (!this.checkBonusBallLoss()) return;
 
-  loseStage() {
-    this.stageText.setText(I18NManager.translate("end_diglett_stage"), (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
-    this.isStageLost = true;
-    this.flippers.disableFlippers();
-    this.millisSinceStageComplete = millis();
+    this.endStage(BONUS_STAGE_STATE.LOST, "end_diglett_stage");
   }
 
   getBackground() {

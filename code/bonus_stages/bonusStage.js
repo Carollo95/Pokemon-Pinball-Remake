@@ -147,7 +147,7 @@ class BonusStage extends Stage {
     }
 
     endStage(resultState, i18nKey) {
-        this.timer.disable();
+        if(this.timer)this.timer.disable();
         this.flippers.disableFlippers();
         stopMusic && stopMusic();
 
