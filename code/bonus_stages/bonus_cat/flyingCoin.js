@@ -10,18 +10,16 @@ class FlyingCoin {
 
         this.sprite.velocity.x = random(-8, 8);
         this.sprite.velocity.y = -6;
-
-        this.allSprites = new Group();
     }
 
     update() {
-        if (this.sprite.animation.name == "1" && this.sprite.velocity.y > 0) {
+        if (this.sprite.animation.name === "1" && this.sprite.velocity.y > 0) {
             this.sprite.changeAnimation("2");
         }
 
         this.bounceOnCollision();
 
-        if (this.sprite.y > 300) {
+        if (this.sprite.pos.y > 300) {
             this.bounce();
         }
     }
@@ -31,9 +29,11 @@ class FlyingCoin {
     }
 
     bounceOnCollision() {
-        for (let other of allSprites) {
+        // iterate over global allSprites group (engine provides it)
+        for (const other of allSprites) {
             if (this.sprite.collides(other)) {
                 this.bounce();
+                break;
             }
         }
     }

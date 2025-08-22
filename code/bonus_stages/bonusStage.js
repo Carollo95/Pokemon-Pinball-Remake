@@ -17,13 +17,13 @@ class BonusStage extends Stage {
         this.attachBall(Ball.spawnBonusBall());
         this.attachFlippers(createBonusFlippers());
         this.attachStageText(createBonusStageStatusBanner());
-        this.timer = null;
-        
+
         this.gateIsOpen = true;
-        
+
         this.state = BONUS_STAGE_STATE.PLAYING;
         this.millisSinceStageComplete = 0;
         
+        this.playableStages = [BONUS_STAGE_STATE.PLAYING];
         this.createFrame();
     }
 
@@ -88,8 +88,9 @@ class BonusStage extends Stage {
 
     draw() {
         super.draw();
-        this.flippers.update();
-        this.stageText.draw();
+        // use getters so subclasses that override attachments still work
+        this.getFlippers().update();
+        this.getStageText().draw();
     }
 
     createGate() {
@@ -99,15 +100,15 @@ class BonusStage extends Stage {
         EngineUtils.disableSprite(this.gate);
     }
 
-    createBonusNewBallIfBallLoss(bonusGateBackground) {    
-        if (this.state !== BONUS_STAGE_STATE.PLAYING) return;
-    
+    createBonusNewBallIfBallLoss(bonusGateBackground) {
+        if (!this.playableStages.includes(this.state)) return;
         if (!this.checkBonusBallLoss()) return;
 
-        if (this.timer.timeIsUp()) {
+        //TODO remove if not used
+/*         if (this.getTimer().timeIsUp()) {
             this.endStage(BONUS_STAGE_STATE.LOST);
             return;
-        }
+        } */
 
         this.createNewBonusBall(bonusGateBackground);
     }
@@ -119,7 +120,7 @@ class BonusStage extends Stage {
     }
 
     checkBonusBallLoss() {
-        return this.ball.getPositionY() > HEIGHT_OF_BALL_LOSS;
+        return this.getBall().getPositionY() > HEIGHT_OF_BALL_LOSS;
     }
 
     openBonusGate(bonusGateBackground) {
@@ -141,9 +142,8 @@ class BonusStage extends Stage {
         }
     }
 
-    
     checkBallInsideBonusBoard() {
-        return this.ball.getPositionX() < WIDTH_THRESHOLD_TO_CLOSE_GATE;
+        return this.getBall().getPositionX() < WIDTH_THRESHOLD_TO_CLOSE_GATE;
     }
 
     endStage(resultState, i18nKey) {
