@@ -6,63 +6,81 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Pokémon Pinball Remake</title>
     <link rel="icon" type="image/png" href="./assets/img/favicon.png">
-
     <link rel="stylesheet" href="main.css">
 
-    <!-- p5 and p5 play libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.4/lib/p5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.4/addons/p5.sound.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/planck-js/1.4.2/planck.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5play/3.32.2/p5play.min.js"></script>
+    <!-- p5 and p5 sound (defer to avoid blocking) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.4/lib/p5.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.4/addons/p5.sound.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/planck-js/1.4.2/planck.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/p5play/3.32.2/p5play.min.js"></script>
 </head>
 
 <body>
-    <div id="bonus-stage-selector-buttons">
-        <button id="ghost-stage">
-            <img src="assets\img\pokemon\aquisition\092.png" alt="Start gastly stage">
-        </button>
-        <button id="mole-stage">
-            <img src="assets\img\pokemon\aquisition\050.png" alt="Start diglett stage">
-        </button>
-        <button id="cat-stage">
-            <img src="assets\img\pokemon\aquisition\052.png" alt="Start meowth stage">
-        </button>
-    </div>
-    <div id="canvas-container"></div>
-    <div id="flipper-buttons">
-        <button class="flipper-button" id="leftFlipperButton">L</button>
-        <button class="flipper-button" id="rightFlipperButton">R</button>
-    </div>
-    <div id="keyboard-instructions">
-        <h2>Press 'a' to control the left flipper and 'l' to control the right one</h2>
-    </div>
+    <header id="controls" aria-label="Selector de stages y controles">
+        <div id="bonus-stage-selector-buttons" role="toolbar" aria-label="Seleccionar stage">
+            <button type="button" id="ghost-stage" aria-label="Start Gastly Stage">
+                <img loading="lazy" src="assets/img/pokemon/aquisition/092.png" alt="Gastly">
+            </button>
+            <button type="button" id="mole-stage" aria-label="Start Diglett Stage">
+                <img loading="lazy" src="assets/img/pokemon/aquisition/050.png" alt="Diglett">
+            </button>
+            <button type="button" id="cat-stage" aria-label="Start Meowth Stage">
+                <img loading="lazy" src="assets/img/pokemon/aquisition/052.png" alt="Meowth">
+            </button>
+        </div>
 
+        <main id="canvas-container" role="main" aria-live="polite"></main>
 
-    <script src="code/engine.js"></script>
-    <script src="code/i18nManager.js"></script>
-    <script src="code/assetManager.js"></script>
-    <script src="code/stage.js"></script>
-    <script src="code/stageText.js"></script>
-    <script src="code/bonus_stages/timer.js"></script>
-    <script src="code/bonus_stages/bonus_ghost/ghosts/ghost.js"></script>
-    <script src="code/bonus_stages/bonus_ghost/ghosts/smallGhost.js"></script>
-    <script src="code/bonus_stages/bonus_ghost/ghosts/gastly.js"></script>
-    <script src="code/bonus_stages/bonus_ghost/ghosts/haunter.js"></script>
-    <script src="code/bonus_stages/bonus_ghost/ghosts/gengar.js"></script>
-    <script src="code/bonus_stages/bonusStage.js"></script>
-    <script src="code/bonus_stages/bonus_ghost/bonusStageGhost.js"></script>
-    <script src="code/bonus_stages/bonus_mole/diglett.js"></script>
-    <script src="code/bonus_stages/bonus_mole/dugtrio.js"></script>
-    <script src="code/bonus_stages/bonus_mole/bonusStageMole.js"></script>
-    <script src="code/bonus_stages/bonus_cat/meowth.js"></script>
-    <script src="code/bonus_stages/bonus_cat/coinCounter.js"></script>
-    <script src="code/bonus_stages/bonus_cat/coin.js"></script>
-    <script src="code/bonus_stages/bonus_cat/flyingCoin.js"></script>
-    <script src="code/bonus_stages/bonus_cat/bonusStageCat.js"></script>
-    <script src="code/ball.js"></script>
-    <script src="code/flippers.js"></script>
-    <script src="code/sketch.js"></script>
+        <div id="flipper-buttons" aria-label="Controles de flippers">
+            <button class="flipper-button" id="leftFlipperButton" type="button"
+                aria-label="Flipper izquierdo">L</button>
+            <button class="flipper-button" id="rightFlipperButton" type="button" aria-label="Flipper derecho">R</button>
+        </div>
+    </header>
 
+    <aside id="keyboard-instructions" aria-label="Instrucciones">
+        <p>Presiona 'a' para el flipper izquierdo y 'l' para el derecho</p>
+    </aside>
+
+    <noscript>
+        <div class="noscript-warning">Este juego necesita JavaScript para funcionar. Habilita JavaScript en el
+            navegador.
+        </div>
+    </noscript>
+
+    <!-- App scripts -->
+    <script defer src="code/engine.js"></script>
+    <script defer src="code/i18nManager.js"></script>
+    <script defer src="code/assetManager.js"></script>
+    <script defer src="code/stage.js"></script>
+    <script defer src="code/stageText.js"></script>
+    <script defer src="code/bonus_stages/timer.js"></script>
+
+    <!-- core game pieces -->
+    <script defer src="code/ball.js"></script>
+    <script defer src="code/flippers.js"></script>
+
+    <!-- ghosts (order matters) -->
+    <script defer src="code/bonus_stages/bonus_ghost/ghosts/ghost.js"></script>
+    <script defer src="code/bonus_stages/bonus_ghost/ghosts/smallGhost.js"></script>
+    <script defer src="code/bonus_stages/bonus_ghost/ghosts/gastly.js"></script>
+    <script defer src="code/bonus_stages/bonus_ghost/ghosts/haunter.js"></script>
+    <script defer src="code/bonus_stages/bonus_ghost/ghosts/gengar.js"></script>
+
+    <!-- bonus stages -->
+    <script defer src="code/bonus_stages/bonusStage.js"></script>
+    <script defer src="code/bonus_stages/bonus_ghost/bonusStageGhost.js"></script>
+    <script defer src="code/bonus_stages/bonus_mole/diglett.js"></script>
+    <script defer src="code/bonus_stages/bonus_mole/dugtrio.js"></script>
+    <script defer src="code/bonus_stages/bonus_mole/bonusStageMole.js"></script>
+    <script defer src="code/bonus_stages/bonus_cat/meowth.js"></script>
+    <script defer src="code/bonus_stages/bonus_cat/coinCounter.js"></script>
+    <script defer src="code/bonus_stages/bonus_cat/coin.js"></script>
+    <script defer src="code/bonus_stages/bonus_cat/flyingCoin.js"></script>
+    <script defer src="code/bonus_stages/bonus_cat/bonusStageCat.js"></script>
+
+    <!-- main sketch last so all libs and modules are available -->
+    <script defer src="code/sketch.js"></script>
 </body>
 
 </html>
