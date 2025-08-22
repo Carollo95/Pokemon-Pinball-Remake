@@ -36,31 +36,25 @@ class Dugtrio {
   update(ballSprite) {
     if (this.disabled) return;
 
-    // if currently showing hurt animation, wait until hurt time finishes
-    if (this.timeOfHurt !== 0) {
-      if (this.isHurtTimeFinished()) {
-        // after hurt finishes, if phase exceeded max -> disappear
-        if (this.phase > DUGTRIO_MAX_PHASE) {
-          this.disableSprite();
-        } else {
-          // show idle for current phase and reset hurt timer
-          this.sprite.changeAnimation("idle" + this.phase);
-          this.timeOfHurt = 0;
-        }
+    if (this.isHurtTimeFinished()) {
+      if (this.phase == 4) {
+        this.phase++;
+        this.timeOfHurt = millis();
+        this.sprite.changeAnimation("idle4");
+      } else if (this.phase == 5) {
+        this.disableSprite();
+      } else {
+        this.sprite.changeAnimation("idle" + this.phase);
+        this.checkCollision(ballSprite);
       }
-      return;
     }
-
-    // normal behavior: show idle of current phase and check collision
-    this.sprite.changeAnimation("idle" + this.phase);
-    this.checkCollision(ballSprite);
   }
 
   checkCollision(ballSprite) {
     if (this.sprite.collide(ballSprite)) {
       this.sprite.changeAnimation("hurt" + this.phase);
       this.phase++;
-      sfx36 && sfx36.play();
+      sfx36.play();
       this.timeOfHurt = millis();
     }
   }
