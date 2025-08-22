@@ -74,14 +74,14 @@ class Coin {
                     [82, 268],
                     [82, 268 + COIN_HEIGHT],
                     [40, 268]], "static");
-                //this.auxiliarySprite.visible = false;
+                this.auxiliarySprite.visible = false;
             } else if (this.sprite.pos.x == COIN_LOW_SLOT_6) {
                 this.auxiliarySprite = new Sprite([
                     [290, 268],
                     [340, 268],
                     [290, 268 + COIN_HEIGHT],
                     [290, 268]], "static");
-                //this.auxiliarySprite.visible = false;
+                this.auxiliarySprite.visible = false;
             }
         }
 

@@ -44,7 +44,7 @@ class BonusStageCat extends BonusStage {
         super.draw();
         this.drawStage();
 
-        if (this.state === BONUS_STAGE_STATE.LOST || this.timer.timeIsUp()) {
+        if (this.state === BONUS_STAGE_STATE.LOST || this.getTimer().timeIsUp()) {
             this.meowth.stopAndSmug();
             if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
                 //TODO end stage
@@ -54,7 +54,7 @@ class BonusStageCat extends BonusStage {
 
     drawStage() {
         // gate / new ball only while playing
-        if (this.playableStages.includes(this.state) && !this.timer.timeIsUp()) {
+        if ((this.state === BONUS_STAGE_STATE.PLAYING || this.state === BONUS_STAGE_STATE.WON) && !this.getTimer().timeIsUp()) {
             super.createBonusNewBallIfBallLoss(bonusCatBackgroundOpen);
             super.closeBonusGateIfBallInsideBoard(bonusCatBackgroundClosed);
         }
@@ -74,8 +74,10 @@ class BonusStageCat extends BonusStage {
 
     updateTimer() {
         this.getTimer().update();
+
         if (this.state !== BONUS_STAGE_STATE.LOST && this.getTimer().timeIsUp()) {
             this.getFlippers().disableFlippers();
+
             if (this.state !== BONUS_STAGE_STATE.WON) {
                 this.endStage(BONUS_STAGE_STATE.LOST, "end_meowth_stage");
             } else {
@@ -123,7 +125,6 @@ class BonusStageCat extends BonusStage {
         }
     }
 
-
     createCoinProjectile(startPos) {
         this.flyingCoins.push(new FlyingCoin(startPos.x, startPos.y));
     }
@@ -132,7 +133,7 @@ class BonusStageCat extends BonusStage {
         interruptMusicToPlaySFX(sfx2A);
 
         this.state = BONUS_STAGE_STATE.WON;
-        this.stageText.setText(I18NManager.translate("meowth_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
+        this.getStageText().setText(I18NManager.translate("meowth_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
     }
 
     /**
