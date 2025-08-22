@@ -8,6 +8,17 @@
     <link rel="icon" type="image/png" href="./assets/img/favicon.png">
     <link rel="stylesheet" href="main.css">
 
+    <script>
+        (function () {
+            if (!document.getElementById('made-with-p5play')) {
+                const d = document.createElement('div');
+                d.id = 'made-with-p5play';
+                d.style.display = 'none';
+                (document.head || document.documentElement).appendChild(d);
+            }
+        })();
+    </script>
+
     <!-- p5 and p5 sound (defer to avoid blocking) -->
     <script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.4/lib/p5.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.4/addons/p5.sound.min.js"></script>

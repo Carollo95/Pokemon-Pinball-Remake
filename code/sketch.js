@@ -57,6 +57,3 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("cat-stage").addEventListener("click", startCatStage);
 });
-
-
-async function playIntro() {}

@@ -1,4 +1,4 @@
-const CAT_STAGE_TIME_MILLIS = 21000;
+const CAT_STAGE_TIME_MILLIS = 61000;
 const VICTORY_STAGE_COINS = 20;
 
 class BonusStageCat extends BonusStage {
