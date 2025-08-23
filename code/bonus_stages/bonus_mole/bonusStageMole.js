@@ -40,7 +40,7 @@ class BonusStageMole extends BonusStage {
     this.createDigletts();
     this.dugtrio = new Dugtrio(188, 130);
 
-    playSong(songMoleStageDiglett);
+    Audio.playMusic('moleDiglett');
   }
 
   createDigletts() {
@@ -104,14 +104,14 @@ class BonusStageMole extends BonusStage {
 
 
     if (this.scenarioTop.collide(this.getBall().sprite)) {
-      sfx08.play();
+      Audio.playSFX('sfx08');
     }
   }
 
   changePhaseIfNeeded() {
     if (this.phase === MOLE_PHASE.DIGLETTS && this.isPhaseChange()) {
       this.phase = MOLE_PHASE.DUGTRIO;
-      playSong(songMoleStageDugtrio);
+      Audio.playMusic('moleDugtrio');
       this.dugtrio.spawn();
       return;
     }

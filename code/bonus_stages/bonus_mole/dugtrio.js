@@ -54,7 +54,7 @@ class Dugtrio {
     if (this.sprite.collide(ballSprite)) {
       this.sprite.changeAnimation("hurt" + this.phase);
       this.phase++;
-      sfx36.play();
+      Audio.playSFX('sfx36');
       this.timeOfHurt = millis();
     }
   }

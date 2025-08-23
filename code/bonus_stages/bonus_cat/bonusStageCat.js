@@ -19,7 +19,7 @@ class BonusStageCat extends BonusStage {
 
         this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, CAT_STAGE_TIME_MILLIS));
 
-        playSong(songCatStage);
+        Audio.playMusic('catStage');
 
         this.meowth = new Meowth();
         this.coinCounter = new CoinCounter();
@@ -68,7 +68,7 @@ class BonusStageCat extends BonusStage {
         this.updateTimer();
 
         if (this.scenarioTop.collide(this.getBall().sprite)) {
-            sfx08.play();
+            Audio.playSFX('sfx08');
         }
     }
 
@@ -130,7 +130,7 @@ class BonusStageCat extends BonusStage {
     }
 
     clearStage() {
-        interruptMusicToPlaySFX(sfx2A);
+        Audio.interruptWithSFX('sfx2A');
 
         this.state = BONUS_STAGE_STATE.WON;
         this.getStageText().setText(I18NManager.translate("meowth_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
@@ -142,7 +142,7 @@ class BonusStageCat extends BonusStage {
     finishStage() {
         this.getTimer().disable();
         this.getFlippers().disableFlippers();
-        stopMusic();
+        Audio.stopMusic();
         this.millisSinceStageComplete = millis();
     }
 

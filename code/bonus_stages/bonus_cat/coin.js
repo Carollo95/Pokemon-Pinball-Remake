@@ -121,7 +121,7 @@ class Coin {
 
     onCoinHit() {
         EngineUtils.disableSprite(this.sprite);
-        sfx32.play();
+        Audio.playSFX('sfx32');
         this.sprite.changeAnimation("dissapear");
         this.timeOfLastHit = millis();
 
@@ -152,7 +152,7 @@ class Coin {
             this.createAuxiliarySpriteIfNeeded();
         }
         this.sprite.changeAnimation("idle");
-        sfx34.play();
+        Audio.playSFX('sfx34');
         this.sprite.visible = true;
         this.disabled = false;
     }

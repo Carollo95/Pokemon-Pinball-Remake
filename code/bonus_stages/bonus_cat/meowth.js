@@ -54,7 +54,7 @@ class Meowth {
         if (this.sprite.collide(ballSprite)) {
             this.sprite.changeAnimation("hurt");
             this.timeOfHurt = millis();
-            sfx33.play();
+            Audio.playSFX('sfx33');
             this.createCoin = true;
         }
     }

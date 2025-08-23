@@ -17,7 +17,7 @@ class Haunter extends SmallGhost {
         this.idleAnimation = animHaunter;
         this.hurtAnimation = animHaunterHurt;
 
-        this.hurtSfx = sfx2D;
+        this.hurtSfx = 'sfx2D';
 
         this.setup();
     }

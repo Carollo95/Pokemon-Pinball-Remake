@@ -114,7 +114,7 @@ class BonusStage extends Stage {
     }
 
     createNewBonusBall(bonusGateBackground) {
-        sfx02.play();
+        Audio.playSFX('sfx02');
         this.attachBall(Ball.spawnBonusBall());
         this.openBonusGate(bonusGateBackground);
     }
@@ -132,7 +132,7 @@ class BonusStage extends Stage {
     closeBonusGate(bonusGateBackground) {
         EngineUtils.enableSprite(this.gate);
         this.gateIsOpen = false;
-        sfx3F.play();
+        Audio.playSFX('sfx3F');
         super.replaceBackground(bonusGateBackground);
     }
 
@@ -149,14 +149,14 @@ class BonusStage extends Stage {
     endStage(resultState, i18nKey) {
         if(this.timer)this.timer.disable();
         this.flippers.disableFlippers();
-        stopMusic && stopMusic();
+        Audio.stopMusic();
 
         this.state = resultState;
         this.millisSinceStageComplete = millis();
 
         this.stageText.setText(I18NManager.translate(i18nKey), (STAGE_RESULT_SHOW_MILLS / 2));
 
-        sfx2A.play();
+        Audio.playSFX('sfx2A');
     }
 
 

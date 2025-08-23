@@ -41,7 +41,7 @@ class Diglett {
   checkCollision(ballSprite) {
     if (this.sprite.collide(ballSprite)) {
       this.sprite.changeAnimation("hurt");
-      sfx35 && sfx35.play();
+      Audio.playSFX('sfx35');
       this.timeOfHurt = millis();
     }
   }

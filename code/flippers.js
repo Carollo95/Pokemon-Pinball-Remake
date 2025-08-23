@@ -176,7 +176,7 @@ class Flippers {
 
         } else if (this.hasLeftFlipperBeenLowered == true && this.leftFlipper.rotation > 0) {
             this.hasLeftFlipperBeenLowered = false;
-            sfx0C.play();
+            Audio.playSFX('sfx0C');
         }
     }
 
@@ -237,7 +237,7 @@ class Flippers {
 
         } else if (this.hasRightFlipperBeenLowered == true && this.rightFlipper.rotation < 0) {
             this.hasRightFlipperBeenLowered = false;
-            sfx0C.play();
+            Audio.playSFX('sfx0C');
         }
     }
 

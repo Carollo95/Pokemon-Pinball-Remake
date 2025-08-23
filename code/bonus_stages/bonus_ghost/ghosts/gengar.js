@@ -58,7 +58,7 @@ class Gengar extends Ghost {
 
     gengarIsDefeated() {
         if (this.hitPoints === 0) {
-            sfx2E.play();
+            Audio.playSFX('sfx2E');
             this.hitPoints--;
         }
         this.moonwalkIntoOblivion();
@@ -82,7 +82,7 @@ class Gengar extends Ghost {
         if (this.sprite.collide(ballSprite)) {
             this.hitPoints--;
             EngineUtils.disableSprite(this.sprite);
-            sfx37.play();
+            Audio.playSFX('sfx37');
             this.sprite.changeAnimation("hurt");
             this.keepMovingDown = false;
             this.timeOfHurt = millis();
@@ -136,7 +136,7 @@ class Gengar extends Ghost {
                 this.step_start_y = this.sprite.pos.y;
                 this.timeOfLastStep = millis();
                 this.sprite.changeAnimation("idle");
-                sfx2B.play();
+                Audio.playSFX('sfx2B');
                 EngineUtils.startShake();
             }
 

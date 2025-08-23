@@ -1,5 +1,5 @@
-function preload() {
-  preloadAudio();
+function preload() {;
+  preloadAudioAssets();
   preLoadBackgrounds();
   preloadAnimations();
 }

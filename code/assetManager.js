@@ -2,23 +2,11 @@
 const TIMER_CHAR_HEIGHT = 32;
 const TIMER_CHAR_WIDTH = 16;
 
-let songGhostStageGastly, songGhostStageHaunter, songGhostStageGengar;
-
-let sfx00, sfx01, sfx02, sfx03, sfx04, sfx05, sfx06, sfx07, sfx08, sfx09,
-    sfx0A, sfx0B, sfx0C, sfx0D, sfx0E, sfx0F, sfx10, sfx11, sfx12, sfx13,
-    sfx14, sfx15, sfx16, sfx17, sfx18, sfx19, sfx1A, sfx1B, sfx1C, sfx1D,
-    sfx1E, sfx1F, sfx20, sfx21, sfx22, sfx23, sfx24, sfx25, sfx26, sfx27,
-    sfx28, sfx29, sfx2A, sfx2B, sfx2C, sfx2D, sfx2E, sfx2F, sfx30, sfx31,
-    sfx32, sfx33, sfx34, sfx35, sfx36, sfx37, sfx38, sfx39, sfx3A, sfx3B,
-    sfx3C, sfx3D, sfx3E, sfx3F, sfx40, sfx41, sfx42, sfx43, sfx44, sfx45,
-    sfx46, sfx47, sfx48, sfx49, sfx4A, sfx4B, sfx4C, sfx4D, sfx4E;
-
-let currentSong;
 
 /**
  * Loads in memory all the audio files
  */
-function preloadAudio() {
+function deleteme() {
     songGhostStageGastly = getAudio('assets/audio/GhostStage_Gastly_In_The_Graveyard');
     songGhostStageHaunter = getAudio('assets/audio/GhostStage_Haunter_In_The_Graveyard');
     songGhostStageGengar = getAudio('assets/audio/GhostStage_Gengar_In_The_Graveyard');
@@ -112,53 +100,6 @@ function preloadAudio() {
     sfx4E = getAudio('assets/audio/sfx/SFX-4E');  //Gengar cry
 }
 
-/**
- * Loads an audio file
- * @param {string} soundName the local path of the file without the extension
- * @returns  the audio file
- */
-function getAudio(soundName) {
-    sound = loadSound(soundName + ".mp3");
-    sound.volume = 0.4;
-    sound.playMode("restart");
-    return sound;
-}
-
-/**
- * Plays the provided song. If another song was being played, then that song is replaced instead of playing both at the same time
- *  @param {*} the song to play
- */
-function playSong(song) {
-    if (!MUTE_MUSIC) {
-        stopMusic();
-        this.currentSong = song;
-        this.currentSong.play();
-    }
-}
-
-/**
- * Stops the song being playd currently
- */
-function stopMusic() {
-    if (this.currentSong != null && this.currentSong.isPlaying) {
-        this.currentSong.stop();
-    }
-}
-
-/**
- * Stops the current song. Plays the sound effect and resumes the song
- * @param {*} sfx the SFX
- */
-function interruptMusicToPlaySFX(sfx) {
-    if (this.currentSong.isPlaying()) {
-        this.currentSong.pause();
-    }
-
-    sfx.play();
-    sfx.onended(() => {
-        this.currentSong.play();
-    });
-}
 
 /**
  * Loads a '.png' image. It will be in grayscale if the debug mode is active

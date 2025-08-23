@@ -115,7 +115,7 @@ class BonusStageGhost extends BonusStage {
       this.updateGravestoneCollisions();
 
       if (this.scenarioTop.collide(this.getBallSprite())) {
-        sfx08.play();
+        Audio.playSFX('sfx08');
       }
 
       this.getTimer().update();
@@ -146,7 +146,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   endStage(resultState) {
-    stopMusic();
+    Audio.stopMusic();
     this.getTimer().disable();
     this.getFlippers().disableFlippers();
 
@@ -156,13 +156,13 @@ class BonusStageGhost extends BonusStage {
     const key = resultState === BONUS_STAGE_STATE.WON ? "gengar_stage_cleared" : "end_gengar_stage";
     this.getStageText().setText(I18NManager.translate(key), (STAGE_RESULT_SHOW_MILLS / 2));
 
-    sfx2A.play();
+    Audio.playSFX('sfx2A');
   }
 
   updateGravestoneCollisions() {
     for (const gravestone of this.gravestones) {
       if (gravestone.collide(this.getBallSprite())) {
-        sfx2F.play();
+        Audio.playSFX('sfx2F');
         break;
       }
     }
@@ -225,14 +225,14 @@ class BonusStageGhost extends BonusStage {
     this.gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
     this.gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
 
-    playSong(songGhostStageGastly);
+    Audio.playMusic('ghostGastly');
   }
 
   setupHaunterPhase() {
     this.haunter1 = this.createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
     this.haunter2 = this.createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
 
-    playSong(songGhostStageHaunter);
+    Audio.playMusic('ghostHaunter');
   }
 
   createDisabledGhost(clazz, x, y) {
@@ -249,7 +249,7 @@ class BonusStageGhost extends BonusStage {
     this.gravestones = [];
 
     this.gengar = this.createDisabledGhost(Gengar, GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
-    playSong(songGhostStageGengar);
+    Audio.playMusic('ghostGengar');
   }
 
   checkIfTimeForANewPhase() {
@@ -321,14 +321,14 @@ class BonusStageGhost extends BonusStage {
       this.finishStageSuccessfully();
     } else if (this.gengar.readyToRespawn && this.gengar.readyToRespawn()) {
       this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
-      sfx4E.play();
+      Audio.playSFX('sfx4E');
     }
 
     return this.gengar;
   }
 
   finishStageSuccessfully() {
-    stopMusic();
+    Audio.stopMusic();
     this.getTimer().disable();
     this.getFlippers().disableFlippers();
 
@@ -342,7 +342,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   clearStage() {
-    sfx2A.play();
+    Audio.playSFX('sfx2A');
     this.state = BONUS_STAGE_STATE.WON;
     this.millisSinceStageComplete = millis();
     const stageText = this.getStageText();

@@ -17,7 +17,7 @@ class Gastly extends SmallGhost {
         this.idleAnimation = animGastly;
         this.hurtAnimation = animGastlyHurt;
 
-        this.hurtSfx = sfx2C;
+        this.hurtSfx = 'sfx2C';
 
         this.setup();
     }
