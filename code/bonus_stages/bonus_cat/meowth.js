@@ -11,22 +11,20 @@ const MEOWTH_LOW_POS = 196; //Position on the Y axis for the low lane
 const MEOWTH_HURT_TIME = 500; //time spent on the hurt animation
 
 class Meowth {
-
-    keepMovinRight = true;
-    keepMovingVertically = false;
-    isHighLane = true;
-    createCoin = false;
-
-    sprite;
-    timeOfHurt = 0;
-
     constructor() {
+        this.keepMovinRight = true;
+        this.keepMovingVertically = false;
+        this.isHighLane = true;
+        this.createCoin = false;
+
+        this.timeOfHurt = 0;
+
         this.sprite = new Sprite(MEOWTH_MIN_HORIZONTAL_MOVEMENT, MEOWTH_HIGH_POS, MEOWTH_HITBOX_WIDTH, MEOWTH_HITBOX_HEIGHT, "static");
         this.sprite.debug = DEBUG;
 
-        this.sprite.addAnimation("hurt", animMeowthHurt);
-        this.sprite.addAnimation("smug", animMeowthSmug);
-        this.sprite.addAnimation("walk", animMeowthWalk);
+        this.sprite.addAnimation("hurt", Asset.getAnimation('animMeowthHurt'));
+        this.sprite.addAnimation("smug", Asset.getAnimation('animMeowthSmug'));
+        this.sprite.addAnimation("walk", Asset.getAnimation('animMeowthWalk'));
     }
 
     update(ballSprite) {
@@ -56,7 +54,7 @@ class Meowth {
         if (this.sprite.collide(ballSprite)) {
             this.sprite.changeAnimation("hurt");
             this.timeOfHurt = millis();
-            sfx33.play();
+            Audio.playSFX('sfx33');
             this.createCoin = true;
         }
     }

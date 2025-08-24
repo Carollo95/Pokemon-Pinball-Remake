@@ -1,18 +1,26 @@
-function preload() {
-  preloadAudio();
+function preload() {;
+  preloadAudioAssets();
   preLoadBackgrounds();
   preloadAnimations();
 }
 
 function setup() {
+  //Create canvas and asign it to its div on html
   let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   cnv.parent("canvas-container");
+
+  //Start I18N
+  let userLang = navigator.language || navigator.userLanguage;
+  I18NManager.setLanguage(userLang);
+
+  //Init physics
+  EngineUtils.initPhysics();
 
   startCatStage();
 }
 
 function draw() {
-  drawStage();
+  EngineUtils.drawStage();
 }
 
 function showFPS() {
@@ -52,6 +60,3 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("cat-stage").addEventListener("click", startCatStage);
 });
-
-
-async function playIntro() {}

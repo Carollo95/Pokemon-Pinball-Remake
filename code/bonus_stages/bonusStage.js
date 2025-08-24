@@ -1,28 +1,29 @@
 const HEIGHT_OF_BALL_LOSS = SCREEN_HEIGHT; //Height at which a ball is considered lost
 const WIDTH_THRESHOLD_TO_CLOSE_GATE = 310; //Horizontal pixel that when a ball crosses it, the gate on bonus levels closes
 
-const STAGE_RESULT_SHOW_MILLS = 5000;
+const STAGE_RESULT_SHOW_MILLS = 5000; //Amount of time to show stage result
+
+const BONUS_STAGE_STATE = {
+    PLAYING: "playing",
+    WON: "won",
+    LOST: "lost",
+    WRAP_UP: "wrapUp"
+};
 
 class BonusStage extends Stage {
-    gate;
-    timer;
-    stageText;
-
-    gateIsOpen = true;
-    levelCompleted = false;
-
-    isStageLost = false;
-    isStageWon = false;
-
-    scenarioTop;
-    scenarioLeft;
-    scenarioRight;
-
     constructor() {
         super();
-        this.ball = spawnBonusBall();
-        this.flippers = createBonusFlippers();
-        this.stageText = createBonusStageStatusBanner();
+
+        this.attachBall(Ball.spawnBonusBall());
+        this.attachFlippers(createBonusFlippers());
+        this.attachStageText(createBonusStageStatusBanner());
+
+        this.gateIsOpen = true;
+
+        this.state = BONUS_STAGE_STATE.PLAYING;
+        this.millisSinceStageComplete = 0;
+        
+        this.playableStages = [BONUS_STAGE_STATE.PLAYING];
         this.createFrame();
     }
 
@@ -79,66 +80,84 @@ class BonusStage extends Stage {
     }
 
     createFrame() {
-        var frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
-        frame.addAnimation("", bonusStageFrame);
+        const frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
+        const bg = Asset.getBackground('bonusStageFrame');
+        frame.addAnimation("", bg);
         frame.layer = 11;
+        return frame;
     }
 
     draw() {
         super.draw();
-        this.flippers.update();
-        this.stageText.draw();
+        // use getters so subclasses that override attachments still work
+        this.getFlippers().update();
+        this.getStageText().draw();
     }
 
     createGate() {
         this.gate = new Sprite(341, 254, 10, 39, "static");
         this.gate.debug = DEBUG;
         this.gate.visible = DEBUG;
-        disableSprite(this.gate);
+        EngineUtils.disableSprite(this.gate);
     }
 
     createBonusNewBallIfBallLoss(bonusGateBackground) {
-        if (this.checkBonusBallLoss() && !this.levelCompleted) {
-            this.createNewBonusBall(bonusGateBackground);
-        }
+        if (!this.playableStages.includes(this.state)) return;
+        if (!this.checkBonusBallLoss()) return;
+        this.createNewBonusBall(bonusGateBackground);
     }
 
     createNewBonusBall(bonusGateBackground) {
-        sfx02.play();
-        this.ball = spawnBonusBall();
+        Audio.playSFX('sfx02');
+        this.attachBall(Ball.spawnBonusBall());
         this.openBonusGate(bonusGateBackground);
     }
 
     checkBonusBallLoss() {
-        return this.ball.getPositionY() > HEIGHT_OF_BALL_LOSS;
+        return this.getBall().getPositionY() > HEIGHT_OF_BALL_LOSS;
     }
 
     openBonusGate(bonusGateBackground) {
         this.gateIsOpen = true;
-        disableSprite(this.gate);
+        EngineUtils.disableSprite(this.gate);
         super.replaceBackground(bonusGateBackground);
     }
 
     closeBonusGate(bonusGateBackground) {
-        enableSprite(this.gate);
+        EngineUtils.enableSprite(this.gate);
         this.gateIsOpen = false;
-        sfx3F.play();
+        Audio.playSFX('sfx3F');
         super.replaceBackground(bonusGateBackground);
     }
 
     closeBonusGateIfBallInsideBoard(bonusGateBackground) {
-        if (this.chechBallInsideBonusBoard() && this.gateIsOpen) {
+        if (this.checkBallInsideBonusBoard() && this.gateIsOpen) {
             this.closeBonusGate(bonusGateBackground);
         }
     }
 
-    chechBallInsideBonusBoard() {
-        return this.ball.getPositionX() < WIDTH_THRESHOLD_TO_CLOSE_GATE;
+    checkBallInsideBonusBoard() {
+        return this.getBall().getPositionX() < WIDTH_THRESHOLD_TO_CLOSE_GATE;
     }
+
+    endStage(resultState, i18nKey) {
+        if(this.timer)this.timer.disable();
+        this.flippers.disableFlippers();
+        Audio.stopMusic();
+
+        this.state = resultState;
+        this.millisSinceStageComplete = millis();
+
+        this.stageText.setText(I18NManager.translate(i18nKey), (STAGE_RESULT_SHOW_MILLS / 2));
+
+        Audio.playSFX('sfx2A');
+    }
+
 
     loseBonusStage() {
         this.flippers.disableFlippers();
         this.timer.stop();
+        this.endStage(BONUS_STAGE_STATE.LOST);
     }
 
 }

@@ -1,57 +1,50 @@
 const CAT_STAGE_TIME_MILLIS = 61000;
+const VICTORY_STAGE_COINS = 20;
 
 class BonusStageCat extends BonusStage {
 
-    highLaneCoins = new Array(8);
-    lowLaneCoins = new Array(6);
-
-    flyingCoins = new Array();
-
-    meowth;
-    coinCounter;
-    timer;
-
     constructor() {
         super();
+        this.highLaneCoins = new Array(8);
+        this.lowLaneCoins = new Array(6);
+        this.flyingCoins = [];
+        this.millisSinceStageComplete = 0;
+        this.state = BONUS_STAGE_STATE.PLAYING;
+        this.playableStages = [BONUS_STAGE_STATE.PLAYING, BONUS_STAGE_STATE.WON];
     }
 
     setup() {
-        super.replaceBackground(bonusCatBackgroundOpen);
+        super.replaceBackground(Asset.getBackground('bonusCatBackgroundOpen'));
         super.createBonusScenarioGeometry();
 
-        this.timer = new Timer(TIMER_POSITION_BONUS_LOW_Y, CAT_STAGE_TIME_MILLIS);
+        this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, CAT_STAGE_TIME_MILLIS));
 
-        playSong(songCatStage);
+        Audio.playMusic('catStage');
 
         this.meowth = new Meowth();
         this.coinCounter = new CoinCounter();
         this.createCoins();
-
     }
 
     createCoins() {
-        this.highLaneCoins[0] = new Coin(COIN_HIGH_SLOT_1, true);
-        this.highLaneCoins[1] = new Coin(COIN_HIGH_SLOT_2, true);
-        this.highLaneCoins[2] = new Coin(COIN_HIGH_SLOT_3, true);
-        this.highLaneCoins[3] = new Coin(COIN_HIGH_SLOT_4, true);
-        this.highLaneCoins[4] = new Coin(COIN_HIGH_SLOT_5, true);
-        this.highLaneCoins[5] = new Coin(COIN_HIGH_SLOT_6, true);
-        this.highLaneCoins[6] = new Coin(COIN_HIGH_SLOT_7, true);
-        this.highLaneCoins[7] = new Coin(COIN_HIGH_SLOT_8, true);
+        const highSlots = [COIN_HIGH_SLOT_1, COIN_HIGH_SLOT_2, COIN_HIGH_SLOT_3, COIN_HIGH_SLOT_4,
+            COIN_HIGH_SLOT_5, COIN_HIGH_SLOT_6, COIN_HIGH_SLOT_7, COIN_HIGH_SLOT_8];
+        for (let i = 0; i < highSlots.length; i++) {
+            this.highLaneCoins[i] = new Coin(highSlots[i], true);
+        }
 
-        this.lowLaneCoins[0] = new Coin(COIN_LOW_SLOT_1, false);
-        this.lowLaneCoins[1] = new Coin(COIN_LOW_SLOT_2, false);
-        this.lowLaneCoins[2] = new Coin(COIN_LOW_SLOT_3, false);
-        this.lowLaneCoins[3] = new Coin(COIN_LOW_SLOT_4, false);
-        this.lowLaneCoins[4] = new Coin(COIN_LOW_SLOT_5, false);
-        this.lowLaneCoins[5] = new Coin(COIN_LOW_SLOT_6, false);
+        const lowSlots = [COIN_LOW_SLOT_1, COIN_LOW_SLOT_2, COIN_LOW_SLOT_3, COIN_LOW_SLOT_4,
+            COIN_LOW_SLOT_5, COIN_LOW_SLOT_6];
+        for (let i = 0; i < lowSlots.length; i++) {
+            this.lowLaneCoins[i] = new Coin(lowSlots[i], false);
+        }
     }
 
     draw() {
         super.draw();
         this.drawStage();
 
-        if (this.isStageLost) {
+        if (this.state === BONUS_STAGE_STATE.LOST || this.getTimer().timeIsUp()) {
             this.meowth.stopAndSmug();
             if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
                 //TODO end stage
@@ -60,10 +53,13 @@ class BonusStageCat extends BonusStage {
     }
 
     drawStage() {
-        super.createBonusNewBallIfBallLoss(bonusCatBackgroundOpen);
-        super.closeBonusGateIfBallInsideBoard(bonusCatBackgroundClosed);
+        // gate / new ball only while playing
+        if ((this.state === BONUS_STAGE_STATE.PLAYING || this.state === BONUS_STAGE_STATE.WON) && !this.getTimer().timeIsUp()) {
+            super.createBonusNewBallIfBallLoss(Asset.getBackground('bonusCatBackgroundOpen'));
+            super.closeBonusGateIfBallInsideBoard(Asset.getBackground('bonusCatBackgroundClosed'));
+        }
 
-        this.meowth.update(this.ball.sprite);
+        this.meowth.update(this.getBall().sprite);
         this.checkCreateCoin();
 
         this.updateFlyingCoins();
@@ -71,43 +67,35 @@ class BonusStageCat extends BonusStage {
 
         this.updateTimer();
 
-        if (this.scenarioTop.collide(this.ball.sprite)) {
-            sfx08.play();
+        if (this.scenarioTop.collide(this.getBall().sprite)) {
+            Audio.playSFX('sfx08');
         }
-
     }
 
     updateTimer() {
-        this.timer.update();
-        if (this.timer.timeIsUp()) {
-            this.flippers.disableFlippers();
-            if (!this.levelCompleted) {
-                this.loseStage();
+        this.getTimer().update();
+
+        if (this.state !== BONUS_STAGE_STATE.LOST && this.getTimer().timeIsUp()) {
+            this.getFlippers().disableFlippers();
+
+            if (this.state !== BONUS_STAGE_STATE.WON) {
+                this.endStage(BONUS_STAGE_STATE.LOST, "end_meowth_stage");
+            } else {
+                this.finishStage();
             }
         }
     }
 
-    loseStage() {
-        this.levelCompleted = true;
-        this.millisSinceStageComplete = millis();
-        this.stageText.setText(" end meowth stage ", (STAGE_RESULT_SHOW_MILLS / 2));
-        this.isStageLost = true;
-    }
-
     updateCoins() {
-        for (var i = 0; i < this.highLaneCoins.length; i++) {
-            this.updateCoin(this.highLaneCoins[i]);
-        }
-        for (var i = 0; i < this.lowLaneCoins.length; i++) {
-            this.updateCoin(this.lowLaneCoins[i]);
-        }
+        for (const coin of this.highLaneCoins) this.updateCoin(coin);
+        for (const coin of this.lowLaneCoins) this.updateCoin(coin);
     }
 
     updateCoin(coin) {
-        let coinsTaken = coin.update(this.ball.sprite);
+        const coinsTaken = coin.update(this.getBall().sprite);
         if (coinsTaken > 0) {
-            //Passing the 20 threshold
-            if (this.coinCounter.counter < 20 && this.coinCounter.counter + coinsTaken >= 20) {
+            // Passing the VICTORY_STAGE_COINS threshold
+            if (this.coinCounter.counter < VICTORY_STAGE_COINS && this.coinCounter.counter + coinsTaken >= VICTORY_STAGE_COINS) {
                 this.clearStage();
             }
             this.coinCounter.addCoins(coinsTaken);
@@ -115,28 +103,20 @@ class BonusStageCat extends BonusStage {
     }
 
     updateFlyingCoins() {
-        for (var c = 0; c < this.flyingCoins.length; c++) {
-            if (this.flyingCoins[c]) {
-                this.flyingCoins[c].update();
-                if (this.meowth.isHighLane) {
-                    for (let i = 0; i < 8; i++) {
-                        if (this.highLaneCoins[i].isClose(this.flyingCoins[c].sprite)) {
-                            this.flyingCoins[c].disableSprite();
-                            this.highLaneCoins[i].enableSprite();
-                        }
-                    }
-                } else {
-                    for (let i = 0; i < 6; i++) {
-                        if (this.lowLaneCoins[i].isClose(this.flyingCoins[c].sprite)) {
-                            this.flyingCoins[c].disableSprite();
-                            this.lowLaneCoins[i].enableSprite();
-                        }
-                    }
+        for (const c of this.flyingCoins) {
+            if (!c || c.disabled) continue;
+            c.update();
+            const laneCoins = this.meowth.isHighLane ? this.highLaneCoins : this.lowLaneCoins;
+            for (const slot of laneCoins) {
+                if (slot.isClose(c.sprite)) {
+                    c.disableSprite();
+                    slot.enableSprite();
+                    break;
                 }
             }
         }
 
-        this.flyingCoins = this.flyingCoins.filter(c => !c.disabled)
+        this.flyingCoins = this.flyingCoins.filter(c => !c.disabled);
     }
 
     checkCreateCoin() {
@@ -145,42 +125,25 @@ class BonusStageCat extends BonusStage {
         }
     }
 
-    enableRandomHighCoin() {
-        let ran = int(random(0, 8));
-
-        for (var i = 0; i < 8; i++) {
-            if (!this.highLaneCoins[ran].disabled) {
-                ran = (ran + 1) % 8;
-            } else {
-                this.highLaneCoins[ran].enableSprite();
-                return;
-            }
-        }
-    }
-
-    enableRandomLowCoin() {
-        let ran = int(random(0, 6));
-
-        for (var i = 0; i < 6; i++) {
-            if (!this.lowLaneCoins[ran].disabled) {
-                ran = (ran + 1) % 6;
-            } else {
-                this.lowLaneCoins[ran].enableSprite();
-                return;
-            }
-        }
-    }
-
     createCoinProjectile(startPos) {
         this.flyingCoins.push(new FlyingCoin(startPos.x, startPos.y));
     }
 
     clearStage() {
-        interruptMusicToPlaySFX(sfx2A);
-        this.isStageWon = true;
-        this.millisSinceStageComplete = millis();
-        this.stageText.setText("meowth stage clear ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
+        Audio.interruptWithSFX('sfx2A');
+
+        this.state = BONUS_STAGE_STATE.WON;
+        this.getStageText().setText(I18NManager.translate("meowth_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
     }
 
+    /**
+     * Stage is clear, and time runes out
+     */
+    finishStage() {
+        this.getTimer().disable();
+        this.getFlippers().disableFlippers();
+        Audio.stopMusic();
+        this.millisSinceStageComplete = millis();
+    }
 
 }

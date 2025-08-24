@@ -26,40 +26,41 @@ const COIN_LOW_SLOT_4 = 205;
 const COIN_LOW_SLOT_5 = 240;
 const COIN_LOW_SLOT_6 = 275;
 
-let timeOfLastCoinTaken = 0; // Millis of the last coin catch
-let coinMultiplier = 1; //Current multiplier for the coins
-
 class Coin {
-    disabled = false;
-    timeOfLastHit = -10000;
-    localMultiplier = 1;
-
-    dissapearAnimationMillis;
-    sprite;
-    auxiliarySprite;
-    multiplierSprite;
+    // shared multiplier state (per-level)
+    static timeOfLastCoinTaken = 0;
+    static coinMultiplier = 1;
 
     constructor(x, isHighLane) {
-        let y = isHighLane ? COIN_HIGH_LANE : COIN_LOW_LANE;
+        this.disabled = false;
+        this.timeOfLastHit = -10000;
+        this.localMultiplier = 1;
+
+        this.dissapearAnimationMillis = 0;
+
+        const y = isHighLane ? COIN_HIGH_LANE : COIN_LOW_LANE;
 
         this.sprite = new Sprite(x, y, COIN_WIDTH, COIN_HEIGHT, "static");
         this.createAuxiliarySpriteIfNeeded();
 
-        this.sprite.addAnimation("dissapear", animCoinDisappear);
-        this.sprite.addAnimation("idle", animCoinIdle);
+        this.dissapearAnim = Asset.getAnimation('animCoinDisappear');
+        this.idleAnim = Asset.getAnimation('animCoinIdle');
+        this.sprite.addAnimation("dissapear", this.dissapearAnim);
+        this.sprite.addAnimation("idle", this.idleAnim);
         this.sprite.debug = DEBUG;
 
         this.multiplierSprite = new Sprite(x, y - 16, 32, 16, "none");
-        this.multiplierSprite.addAnimation("6", animCoinMultiplier6);
-        this.multiplierSprite.addAnimation("5", animCoinMultiplier5);
-        this.multiplierSprite.addAnimation("4", animCoinMultiplier4);
-        this.multiplierSprite.addAnimation("3", animCoinMultiplier3);
-        this.multiplierSprite.addAnimation("2", animCoinMultiplier2);
+        this.multiplierSprite.addAnimation("6", Asset.getAnimation('animCoinMultiplier6'));
+        this.multiplierSprite.addAnimation("5", Asset.getAnimation('animCoinMultiplier5'));
+        this.multiplierSprite.addAnimation("4", Asset.getAnimation('animCoinMultiplier4'));
+        this.multiplierSprite.addAnimation("3", Asset.getAnimation('animCoinMultiplier3'));
+        this.multiplierSprite.addAnimation("2", Asset.getAnimation('animCoinMultiplier2'));
         this.multiplierSprite.visible = false;
         this.multiplierSprite.debug = DEBUG;
 
         this.disableSprite();
-        this.dissapearAnimationMillis = animCoinDisappear.length * animCoinDisappear.frameDelay;
+        const framesCount = (this.dissapearAnim.images && this.dissapearAnim.images.length) || (this.dissapearAnim.length || 1);
+        this.dissapearAnimationMillis = framesCount * (this.dissapearAnim.frameDelay || 1);
     }
 
     /**
@@ -93,7 +94,7 @@ class Coin {
         if (!this.disabled) {
             if (this.isCoinHit(ballSprite)) {
                 this.onCoinHit();
-                return coinMultiplier;
+                return Coin.coinMultiplier;
             } else if (this.timeToDisappear()) {
                 this.disableSprite();
             }
@@ -106,7 +107,7 @@ class Coin {
 
 
     blinkMultiplierIfNecessary() {
-        if (millis() - this.timeOfLastHit > 1000) {
+        if (millis() - this.timeOfLastHit > COIN_MULTIPLIER_THRESHOLD_MILLIS) {
             this.multiplierSprite.visible = false;
         } else if (this.localMultiplier > 1) {
             this.blinkMultiplier();
@@ -122,27 +123,25 @@ class Coin {
     }
 
     onCoinHit() {
-        disableSprite(this.sprite);
-        sfx32.play();
+        EngineUtils.disableSprite(this.sprite);
+        Audio.playSFX('sfx32');
         this.sprite.changeAnimation("dissapear");
         this.timeOfLastHit = millis();
 
-        if (millis() - timeOfLastCoinTaken < COIN_MULTIPLIER_THRESHOLD_MILLIS) {
-            if (coinMultiplier < 6) {
-                coinMultiplier++;
-            }
-            this.localMultiplier = coinMultiplier;
-            this.multiplierSprite.changeAnimation(coinMultiplier.toString());
+        if (millis() - Coin.timeOfLastCoinTaken < COIN_MULTIPLIER_THRESHOLD_MILLIS) {
+            if (Coin.coinMultiplier < 6) Coin.coinMultiplier++;
+            this.localMultiplier = Coin.coinMultiplier;
+            this.multiplierSprite.changeAnimation(Coin.coinMultiplier.toString());
             this.multiplierSprite.visible = true;
         } else {
-            coinMultiplier = 1;
+            Coin.coinMultiplier = 1;
             this.multiplierSprite.visible = false;
         }
-        timeOfLastCoinTaken = millis();
+        Coin.timeOfLastCoinTaken = millis();
     }
 
     disableSprite() {
-        disableSprite(this.sprite);
+        EngineUtils.disableSprite(this.sprite);
         if (this.auxiliarySprite != null) {
             this.auxiliarySprite.remove()
         }
@@ -151,12 +150,12 @@ class Coin {
     }
 
     enableSprite() {
-        enableSprite(this.sprite);
+        EngineUtils.enableSprite(this.sprite);
         if (this.auxiliarySprite != null) {
             this.createAuxiliarySpriteIfNeeded();
         }
         this.sprite.changeAnimation("idle");
-        sfx34.play();
+        Audio.playSFX('sfx34');
         this.sprite.visible = true;
         this.disabled = false;
     }

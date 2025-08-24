@@ -1,79 +1,95 @@
 const GHOST_STAGE_TIME_MILLIS = 91000; //Duration of the ghost stage
 
-let GASTLY1_SPAWN_X = 80;
-let GASTLY1_SPAWN_Y = 140;
-let GASTLY2_SPAWN_X = 240;
-let GASTLY2_SPAWN_Y = 203;
-let GASTLY3_SPAWN_X = 159;
-let GASTLY3_SPAWN_Y = 260;
+const GHOST_GRAVESTONE_HEIGHT = 26;
+const GHOST_GRAVESTONE_WIDTH = 26;
 
-let HAUNTER1_SPAWN_X = 90;
-let HAUNTER1_SPAWN_Y = 235;
-let HAUNTER2_SPAWN_X = 220;
-let HAUNTER2_SPAWN_Y = 167;
+const GHOST_PHASE = {
+  INIT: 0,
+  GASTLY: 1,
+  HAUNTER: 2,
+  GENGAR: 3
+};
 
-let GENGAR_SPAWN_X = SCREEN_WIDTH / 2;
-let GENGAR_SPAWN_Y = 120;
+const GASTLY1_SPAWN_X = 80;
+const GASTLY1_SPAWN_Y = 140;
+const GASTLY2_SPAWN_X = 240;
+const GASTLY2_SPAWN_Y = 203;
+const GASTLY3_SPAWN_X = 159;
+const GASTLY3_SPAWN_Y = 260;
+
+const HAUNTER1_SPAWN_X = 90;
+const HAUNTER1_SPAWN_Y = 235;
+const HAUNTER2_SPAWN_X = 220;
+const HAUNTER2_SPAWN_Y = 167;
+
+const GENGAR_SPAWN_X = SCREEN_WIDTH / 2;
+const GENGAR_SPAWN_Y = 120;
 
 class BonusStageGhost extends BonusStage {
-  gastly1;
-  gastly2;
-  gastly3;
-  haunter1;
-  haunter2;
-  gengar;
-
-  scenarioTop;
-  scenarioRight;
-  scenarioLeft;
-  gravestone1;
-  gravestone2;
-  gravestone3;
-  gravestone4;
-
-  extraGastlyLives = 7;
-  extraHaunterLives = 10;
-
-  currentPhase; // 0 setup, 1 gastly, 2 haunter & 3 gengar
-
-  wrapUp = false;
-
-  millisSinceStageComplete = 0;
 
   constructor() {
     super();
-    this.timer = new Timer(TIMER_POSITION_BONUS_HIGH_Y, GHOST_STAGE_TIME_MILLIS);
+
+    // create and attach timer so Stage API exposes it
+    this.attachTimer(new Timer(TIMER_POSITION_BONUS_HIGH_Y, GHOST_STAGE_TIME_MILLIS));
+
+    // canonical state/phase
+    this.state = BONUS_STAGE_STATE.PLAYING;
+    this.currentPhase = GHOST_PHASE.INIT;
+    this.millisSinceStageComplete = 0;
+
+    // lives / counters
+    this.extraGastlyLives = 7;
+    this.extraHaunterLives = 10;
+
+    // entities (initialized to null)
+    this.gastly1 = null;
+    this.gastly2 = null;
+    this.gastly3 = null;
+    this.haunter1 = null;
+    this.haunter2 = null;
+    this.gengar = null;
+
+    // geometry / helpers
+    this.gravestones = [];
   }
 
   setup() {
-    super.replaceBackground(bonusGhostBackgroundClosed);
+    super.replaceBackground(Asset.getBackground('bonusGhostBackgroundOpen'));
     this.createBonusScenarioGeometry();
 
-    this.currentPhase = 0;
+    this.currentPhase = GHOST_PHASE.INIT;
+    this.state = BONUS_STAGE_STATE.PLAYING;
+
+    this.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
   }
 
   createBonusScenarioGeometry() {
     super.createBonusScenarioGeometry();
-
-    this.gravestone1 = this.createGravestone(88, 225);
-    this.gravestone2 = this.createGravestone(152, 176);
-    this.gravestone3 = this.createGravestone(264, 160);
-    this.gravestone4 = this.createGravestone(247, 240);
+    this.gravestones = [
+      this.createGravestone(88, 225),
+      this.createGravestone(152, 176),
+      this.createGravestone(264, 160),
+      this.createGravestone(247, 240)
+    ];
   }
 
   createGravestone(x, y) {
-    let width = 26;
-    let height = 26;
-    let grave = new Sprite([
-      [x, y],
-      [x + width / 2, y - 5],
-      [x + width, y],
-      [x + width, y + height],
-      [x, y + height],
-      [x, y]], "static");
+    const width = GHOST_GRAVESTONE_WIDTH;
+    const height = GHOST_GRAVESTONE_HEIGHT;
+    const grave = new Sprite(
+      [
+        [x, y],
+        [x + width / 2, y - 5],
+        [x + width, y],
+        [x + width, y + height],
+        [x, y + height],
+        [x, y]
+      ],
+      "static"
+    );
     grave.debug = DEBUG;
     grave.visible = DEBUG;
-
     return grave;
   }
 
@@ -81,90 +97,126 @@ class BonusStageGhost extends BonusStage {
     super.draw();
     this.drawStage();
 
-    if (this.isStageLost || this.isStageWon) {
+    if (this.state === BONUS_STAGE_STATE.WON || this.state === BONUS_STAGE_STATE.LOST) {
       if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-        //TODO end stage
+        // TODO: end stage sequence (return to main stage, award points, etc.)
       }
     }
   }
 
   drawStage() {
-    this.createBonusNewBallIfBallLoss(this.getOpenGateBackground())
-    super.closeBonusGateIfBallInsideBoard(this.getBackground())
-
-    this.updatePhaseSprites();
-    this.updateGravestoneCollisions()
-    if (this.scenarioTop.collide(this.ball.sprite)) {
-      sfx08.play();
+    if (this.state === BONUS_STAGE_STATE.PLAYING) {
+      this.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
+      super.closeBonusGateIfBallInsideBoard(this.getBackground());
     }
 
-    this.timer.update();
+    if (this.state !== BONUS_STAGE_STATE.WON) {
+      this.updatePhaseSprites();
+      this.updateGravestoneCollisions();
 
-    if (this.timer.timeIsUp()) {
-      this.flippers.disableFlippers();
+      if (this.scenarioTop.collide(this.getBallSprite())) {
+        Audio.playSFX('sfx08');
+      }
+
+      this.getTimer().update();
+
+      if (this.getTimer().timeIsUp()) {
+        this.getFlippers().disableFlippers();
+      }
+
+      this.changePhaseIfNecessary();
     }
-
-    this.changePhaseIfNecessary();
   }
 
   createBonusNewBallIfBallLoss(bonusGateBackground) {
-    if (this.checkBonusBallLoss() && !this.levelCompleted) {
-      if (!this.timer.timeIsUp()) {
-        this.createNewBonusBall(bonusGateBackground);
-      } else {
-        if (!this.isStageLost && this.millisSinceStageComplete == 0) {
-          this.loseStage();
-        }
+    if (this.state !== BONUS_STAGE_STATE.PLAYING) return;
+    if (!this.checkBonusBallLoss()) return;
+
+    if (this.getTimer().timeIsUp()) {
+      if (this.millisSinceStageComplete === 0)
+        this.endStage(BONUS_STAGE_STATE.LOST);
+      return;
+    }
+
+    this.createNewBonusBall(bonusGateBackground);
+  }
+
+  loseStage() {
+    this.endStage(BONUS_STAGE_STATE.LOST);
+  }
+
+  endStage(resultState) {
+    Audio.stopMusic();
+    this.getTimer().disable();
+    this.getFlippers().disableFlippers();
+
+    this.state = resultState;
+    this.millisSinceStageComplete = millis();
+
+    const key = resultState === BONUS_STAGE_STATE.WON ? "gengar_stage_cleared" : "end_gengar_stage";
+    this.getStageText().setText(I18NManager.translate(key), (STAGE_RESULT_SHOW_MILLS / 2));
+
+    Audio.playSFX('sfx2A');
+  }
+
+  updateGravestoneCollisions() {
+    for (const gravestone of this.gravestones) {
+      if (gravestone.collide(this.getBallSprite())) {
+        Audio.playSFX('sfx2F');
+        break;
       }
     }
   }
 
-  loseStage() {
-    this.millisSinceStageComplete = millis();
-    this.stageText.setText(" end gengar stage ", (STAGE_RESULT_SHOW_MILLS / 2));
-    this.isStageLost = true;
-  }
-
-
-  updateGravestoneCollisions() {
-    this.updateGravestoneCollision(this.gravestone1);
-    this.updateGravestoneCollision(this.gravestone2);
-    this.updateGravestoneCollision(this.gravestone3);
-    this.updateGravestoneCollision(this.gravestone4);
-  }
-
-  updateGravestoneCollision(gravestone) {
-    if (gravestone.collide(this.ball.sprite)) {
-      sfx2F.play();
-    }
-  }
-
-
   updatePhaseSprites() {
-    if (this.currentPhase == 1) {
-      this.gastly1 = this.updateGastly(this.gastly1);
-      this.gastly2 = this.updateGastly(this.gastly2);
-      this.gastly3 = this.updateGastly(this.gastly3);
-    } else if (this.currentPhase == 2) {
-      this.haunter1 = this.updateHaunter(this.haunter1);
-      this.haunter2 = this.updateHaunter(this.haunter2);
-    } else if (this.currentPhase == 3) {
-      this.gengar = this.updateGengar();
+    switch (this.currentPhase) {
+      case GHOST_PHASE.GASTLY: {
+        this.gastly1 = this.updateGastly(this.gastly1);
+        this.gastly2 = this.updateGastly(this.gastly2);
+        this.gastly3 = this.updateGastly(this.gastly3);
+        break;
+      }
+      case GHOST_PHASE.HAUNTER: {
+        this.haunter1 = this.updateHaunter(this.haunter1);
+        this.haunter2 = this.updateHaunter(this.haunter2);
+        break;
+      }
+      case GHOST_PHASE.GENGAR: {
+        this.gengar = this.updateGengar();
+        break;
+      }
     }
   }
 
   changePhaseIfNecessary() {
-    if (this.checkIfTimeForANewPhase()) {
-      if (this.currentPhase == 0) {
+    if (!this.checkIfTimeForANewPhase()) return;
+
+    switch (this.currentPhase) {
+      case GHOST_PHASE.INIT:
+        this.setPhase(GHOST_PHASE.GASTLY);
+        break;
+      case GHOST_PHASE.GASTLY:
+        this.setPhase(GHOST_PHASE.HAUNTER);
+        break;
+      case GHOST_PHASE.HAUNTER:
+        this.setPhase(GHOST_PHASE.GENGAR);
+        break;
+    }
+  }
+
+  setPhase(newPhase) {
+    if (this.currentPhase === newPhase) return;
+    this.currentPhase = newPhase;
+    switch (newPhase) {
+      case GHOST_PHASE.GASTLY:
         this.setupGastlyPhase();
-        this.currentPhase = 1;
-      } else if (this.currentPhase == 1) {
-        this.currentPhase = 2;
+        break;
+      case GHOST_PHASE.HAUNTER:
         this.setupHaunterPhase();
-      } else if (this.currentPhase == 2) {
-        this.currentPhase = 3;
+        break;
+      case GHOST_PHASE.GENGAR:
         this.setupGengarPhase();
-      }
+        break;
     }
   }
 
@@ -173,77 +225,76 @@ class BonusStageGhost extends BonusStage {
     this.gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
     this.gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
 
-    playSong(songGhostStageGastly);
+    Audio.playMusic('ghostGastly');
   }
 
   setupHaunterPhase() {
     this.haunter1 = this.createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
     this.haunter2 = this.createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
 
-    playSong(songGhostStageHaunter);
+    Audio.playMusic('ghostHaunter');
   }
 
   createDisabledGhost(clazz, x, y) {
-    let ghost = new clazz(x, y);
-    ghost.disableSprite();
-
-    playSong(songGhostStageGengar);
-
+    const ghost = new clazz(x, y);
+    ghost.disableSprite && ghost.disableSprite();
     return ghost;
   }
 
   setupGengarPhase() {
-    super.replaceBackground(this.getBackground());
+    super.replaceBackground(Asset.getBackground('bonusGhostBackgroundP2Closed'));
     super.startShake();
-    this.gravestone1.remove();
-    this.gravestone2.remove();
-    this.gravestone3.remove();
-    this.gravestone4.remove();
+
+    this.gravestones.forEach(g => g.remove && g.remove());
+    this.gravestones = [];
 
     this.gengar = this.createDisabledGhost(Gengar, GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
+    Audio.playMusic('ghostGengar');
   }
 
   checkIfTimeForANewPhase() {
-    if (this.currentPhase == 0
-      || (this.currentPhase == 1 && this.gastlyPhaseFinished())
-      || (this.currentPhase == 2 && this.haunterPhaseFinished())
-      || (this.currentPhase == 3 && this.gengarPhaseFinished())) {
-      return true;
-    }
+    if (this.currentPhase === GHOST_PHASE.INIT) return true;
+    if (this.currentPhase === GHOST_PHASE.GASTLY && this.gastlyPhaseFinished()) return true;
+    if (this.currentPhase === GHOST_PHASE.HAUNTER && this.haunterPhaseFinished()) return true;
+    if (this.currentPhase === GHOST_PHASE.GENGAR && this.gengarPhaseFinished()) return true;
     return false;
   }
 
   gastlyPhaseFinished() {
-    return this.extraGastlyLives == 0 && this.gastly1.disabled && this.gastly2.disabled && this.gastly3.disabled;
+    return this.extraGastlyLives === 0 &&
+      this.gastly1 && this.gastly1.disabled &&
+      this.gastly2 && this.gastly2.disabled &&
+      this.gastly3 && this.gastly3.disabled;
   }
 
   haunterPhaseFinished() {
-    return this.extraHaunterLives == 0 && this.haunter1.disabled && this.haunter2.disabled;
+    return this.extraHaunterLives === 0 &&
+      this.haunter1 && this.haunter1.disabled &&
+      this.haunter2 && this.haunter2.disabled;
   }
 
   gengarPhaseFinished() {
-    return this.gengar.hitPoints == 0;
+    return this.gengar && this.gengar.hitPoints === 0;
   }
 
   getBackground() {
-    if (this.currentPhase == 3) {
-      return bonusGhostBackgroundP2Closed;
+    if (this.currentPhase === GHOST_PHASE.GENGAR) {
+      return Asset.getBackground('bonusGhostBackgroundP2Closed');
     }
-
-    return bonusGhostBackgroundClosed;
+    return Asset.getBackground('bonusGhostBackgroundClosed');
   }
 
   getOpenGateBackground() {
-    if (this.currentPhase == 3) {
-      return bonusGhostBackgroundP2Open;
+    if (this.currentPhase === GHOST_PHASE.GENGAR) {
+      return Asset.getBackground('bonusGhostBackgroundP2Open');
     }
-    return bonusGhostBackgroundOpen;
+    return Asset.getBackground('bonusGhostBackgroundOpen');
   }
 
   updateGastly(gastly) {
-    gastly.update(this.ball.sprite);
+    gastly.update(this.getBallSprite());
 
-    if (this.extraGastlyLives > 0 && gastly.readyToRespawn()) {
+    if (this.extraGastlyLives > 0 && gastly.readyToRespawn && gastly.readyToRespawn()) {
       gastly = new Gastly(gastly.start_x, gastly.start_y);
       this.extraGastlyLives -= 1;
     }
@@ -252,9 +303,9 @@ class BonusStageGhost extends BonusStage {
   }
 
   updateHaunter(haunter) {
-    haunter.update(this.ball.sprite);
+    haunter.update(this.getBallSprite());
 
-    if (this.extraHaunterLives > 0 && haunter.readyToRespawn()) {
+    if (this.extraHaunterLives > 0 && haunter.readyToRespawn && haunter.readyToRespawn()) {
       haunter = new Haunter(haunter.start_x, haunter.start_y);
       this.extraHaunterLives -= 1;
     }
@@ -263,34 +314,39 @@ class BonusStageGhost extends BonusStage {
   }
 
   updateGengar() {
-    this.gengar.update(this.ball.sprite);
+    this.gengar.update(this.getBallSprite());
 
-    if (this.gengar.isDefeated()) {
-      this.finishStageSucessfully();
-    } else if (this.gengar.readyToRespawn()) {
+    //TODO review this condition, why did I do this???
+    if (this.gengar.isDefeated && this.gengar.isDefeated()) {
+      this.finishStageSuccessfully();
+    } else if (this.gengar.readyToRespawn && this.gengar.readyToRespawn()) {
       this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
-      sfx4E.play();
+      Audio.playSFX('sfx4E');
     }
 
     return this.gengar;
   }
 
-  finishStageSucessfully() {
-    stopMusic();
-    this.timer.disable();
-    this.flippers.disableFlippers();
-    this.levelCompleted = true;
-    if (this.gengar.disabled && !this.isStageWon) { // Wait until gengar walks backwards out of the stage
-      this.clearStage();
+  finishStageSuccessfully() {
+    Audio.stopMusic();
+    this.getTimer().disable();
+    this.getFlippers().disableFlippers();
+
+    // if gengar already walked out (disabled) finalize immediately
+    if (this.gengar && this.gengar.disabled) {
+      this.endStage(BONUS_STAGE_STATE.WON);
+    } else {
+      // else mark wrap up and wait for gengar to finish its exit animation
+      this.state = BONUS_STAGE_STATE.WRAP_UP;
     }
   }
 
   clearStage() {
-    sfx2A.play();
-    this.isStageWon = true;
+    Audio.playSFX('sfx2A');
+    this.state = BONUS_STAGE_STATE.WON;
     this.millisSinceStageComplete = millis();
-    this.stageText.setText("gengar stage clear ", (STAGE_RESULT_SHOW_MILLS / 2)); //TODO internationalize
+    const stageText = this.getStageText();
+    stageText.setText(I18NManager.translate("gengar_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
   }
-
 
 }
