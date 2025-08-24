@@ -22,10 +22,10 @@ class Gengar extends Ghost {
 
         this.timeOfHurt = 0;
 
-        // animations
-        this.idleAnimation = animGengar;
-        this.hurtAnimation = animGengarHurt;
-        this.walkAnimation = animGengarWalk;
+        // animations (use Asset templates; get fresh clones per sprite)
+        this.idleAnimation = Asset.getAnimationClone('animGengar');
+        this.hurtAnimation = Asset.getAnimationClone('animGengarHurt');
+        this.walkAnimation = Asset.getAnimationClone('animGengarWalk');
 
         this.sprite.addAnimation("idle", this.idleAnimation);
         this.sprite.addAnimation("hurt", this.hurtAnimation);

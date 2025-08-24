@@ -2,6 +2,9 @@ const TIMER_POSITION_BONUS_X = 290;
 const TIMER_POSITION_BONUS_HIGH_Y = 116;
 const TIMER_POSITION_BONUS_LOW_Y = 320;
 
+const TIMER_CHAR_WIDTH = 16;
+const TIMER_CHAR_HEIGHT = 32;
+
 class Timer {
     constructor(y, totalMillis) {
         this.timeUp = false;
@@ -20,14 +23,16 @@ class Timer {
         this.second2Sprite.layer = 10;
 
         for (let i = 0; i < 10; i++) {
-            this.minutesSprite.addAnimation(i.toString(), animTimer[i]);
+            const key = 'animTimer' + i;
+            this.minutesSprite.addAnimation(i.toString(), Asset.getAnimationClone(key));
             this.minutesSprite.debug = DEBUG;
-            this.second1Sprite.addAnimation(i.toString(), animTimer[i]);
+            this.second1Sprite.addAnimation(i.toString(), Asset.getAnimationClone(key));
             this.second1Sprite.debug = DEBUG;
-            this.second2Sprite.addAnimation(i.toString(), animTimer[i]);
+            this.second2Sprite.addAnimation(i.toString(), Asset.getAnimationClone(key));
             this.second2Sprite.debug = DEBUG;
         }
-        this.colonSprite.addAnimation("colon", animTimerColon);
+
+        this.colonSprite.addAnimation("colon", Asset.getAnimationClone('animTimerColon'));
         this.colonSprite.changeAnimation("colon");
 
     }

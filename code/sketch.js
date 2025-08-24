@@ -5,12 +5,15 @@ function preload() {;
 }
 
 function setup() {
+  //Create canvas and asign it to its div on html
   let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   cnv.parent("canvas-container");
 
+  //Start I18N
   let userLang = navigator.language || navigator.userLanguage;
   I18NManager.setLanguage(userLang);
 
+  //Init physics
   EngineUtils.initPhysics();
 
   startCatStage();

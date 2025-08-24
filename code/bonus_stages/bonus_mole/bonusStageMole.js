@@ -34,7 +34,7 @@ class BonusStageMole extends BonusStage {
   }
 
   setup() {
-    super.replaceBackground(bonusMoleBackgroundOpen);
+    super.replaceBackground(Asset.getBackground('bonusMoleBackgroundOpen'));
     super.createBonusScenarioGeometry();
 
     this.createDigletts();
@@ -141,11 +141,11 @@ class BonusStageMole extends BonusStage {
   }
 
   getBackground() {
-    return bonusMoleBackgroundClosed;
+    return Asset.getBackground('bonusMoleBackgroundClosed');
   }
 
   getOpenGateBackground() {
-    return bonusMoleBackgroundOpen;
+    return Asset.getBackground('bonusMoleBackgroundOpen');
   }
 
 }

@@ -14,7 +14,7 @@ class BonusStageCat extends BonusStage {
     }
 
     setup() {
-        super.replaceBackground(bonusCatBackgroundOpen);
+        super.replaceBackground(Asset.getBackground('bonusCatBackgroundOpen'));
         super.createBonusScenarioGeometry();
 
         this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, CAT_STAGE_TIME_MILLIS));
@@ -55,8 +55,8 @@ class BonusStageCat extends BonusStage {
     drawStage() {
         // gate / new ball only while playing
         if ((this.state === BONUS_STAGE_STATE.PLAYING || this.state === BONUS_STAGE_STATE.WON) && !this.getTimer().timeIsUp()) {
-            super.createBonusNewBallIfBallLoss(bonusCatBackgroundOpen);
-            super.closeBonusGateIfBallInsideBoard(bonusCatBackgroundClosed);
+            super.createBonusNewBallIfBallLoss(Asset.getBackground('bonusCatBackgroundOpen'));
+            super.closeBonusGateIfBallInsideBoard(Asset.getBackground('bonusCatBackgroundClosed'));
         }
 
         this.meowth.update(this.getBall().sprite);

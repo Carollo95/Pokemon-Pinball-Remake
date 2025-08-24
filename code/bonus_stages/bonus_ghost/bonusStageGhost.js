@@ -55,7 +55,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   setup() {
-    super.replaceBackground(bonusGhostBackgroundOpen);
+    super.replaceBackground(Asset.getBackground('bonusGhostBackgroundOpen'));
     this.createBonusScenarioGeometry();
 
     this.currentPhase = GHOST_PHASE.INIT;
@@ -242,7 +242,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   setupGengarPhase() {
-    super.replaceBackground(this.getBackground());
+    super.replaceBackground(Asset.getBackground('bonusGhostBackgroundClosed'));
     super.startShake();
 
     this.gravestones.forEach(g => g.remove && g.remove());
@@ -279,16 +279,16 @@ class BonusStageGhost extends BonusStage {
 
   getBackground() {
     if (this.currentPhase === GHOST_PHASE.GENGAR) {
-      return bonusGhostBackgroundP2Closed;
+      return Asset.getBackground('bonusGhostBackgroundP2Closed');
     }
-    return bonusGhostBackgroundClosed;
+    return Asset.getBackground('bonusGhostBackgroundClosed');
   }
 
   getOpenGateBackground() {
     if (this.currentPhase === GHOST_PHASE.GENGAR) {
-      return bonusGhostBackgroundP2Open;
+      return Asset.getBackground('bonusGhostBackgroundP2Open');
     }
-    return bonusGhostBackgroundOpen;
+    return Asset.getBackground('bonusGhostBackgroundOpen');
   }
 
   updateGastly(gastly) {

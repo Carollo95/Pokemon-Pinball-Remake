@@ -16,44 +16,29 @@ class StageStatusBanner {
         this.endTextDisplayMillis = 0;
         this.persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS;
         
+        const letters = 'abcdefghijklmnopqrstuvwxyz';
         for (var i = 0; i <= MAX_CHARS; i++) {
             this.textArray[i] = new Sprite(x - (CHAR_SIZE * i + 1), y, CHAR_SIZE, CHAR_SIZE, "none");
             this.textArray[i].layer = 10;
 
-            this.textArray[i].addAnimation("$a", stageTextA);
-            this.textArray[i].addAnimation("$b", stageTextB);
-            this.textArray[i].addAnimation("$c", stageTextC);
-            this.textArray[i].addAnimation("$d", stageTextD);
-            this.textArray[i].addAnimation("$e", stageTextE);
-            this.textArray[i].addAnimation("$f", stageTextF);
-            this.textArray[i].addAnimation("$g", stageTextG);
-            this.textArray[i].addAnimation("$h", stageTextH);
-            this.textArray[i].addAnimation("$i", stageTextI);
-            this.textArray[i].addAnimation("$j", stageTextJ);
-            this.textArray[i].addAnimation("$k", stageTextK);
-            this.textArray[i].addAnimation("$l", stageTextL);
-            this.textArray[i].addAnimation("$m", stageTextM);
-            this.textArray[i].addAnimation("$n", stageTextN);
-            this.textArray[i].addAnimation("$o", stageTextO);
-            this.textArray[i].addAnimation("$p", stageTextP);
-            this.textArray[i].addAnimation("$q", stageTextQ);
-            this.textArray[i].addAnimation("$r", stageTextR);
-            this.textArray[i].addAnimation("$s", stageTextS);
-            this.textArray[i].addAnimation("$t", stageTextT);
-            this.textArray[i].addAnimation("$u", stageTextU);
-            this.textArray[i].addAnimation("$v", stageTextV);
-            this.textArray[i].addAnimation("$w", stageTextW);
-            this.textArray[i].addAnimation("$x", stageTextX);
-            this.textArray[i].addAnimation("$y", stageTextY);
-            this.textArray[i].addAnimation("$z", stageTextZ);
-            this.textArray[i].addAnimation("$$", stageTextDot); //Calling it $. throws an unexpected error that I don' care about enought to deal with
-            this.textArray[i].addAnimation("$!", stageTextExcl);
-            this.textArray[i].addAnimation("$:", stageTextColon);
+            // add letter animations ($a .. $z)
+            for (const ch of letters) {
+                this.textArray[i].addAnimation('$' + ch, Asset.getAnimationClone('stageText' + ch.toUpperCase()));
+            }
 
-            //Last one so no need to change it on creation
-            this.textArray[i].addAnimation("$ ", stageTextSpace);
-            this.clearText;
+            // punctuation and space
+            this.textArray[i].addAnimation('$$', Asset.getAnimationClone('stageTextDot'));
+            this.textArray[i].addAnimation('$!', Asset.getAnimationClone('stageTextExcl'));
+            this.textArray[i].addAnimation('$:', Asset.getAnimationClone('stageTextColon'));
+
+            // last one so no need to change it on creation
+            this.textArray[i].addAnimation('$ ', Asset.getAnimationClone('stageTextSpace'));
+
+            this.textArray[i].debug = DEBUG;
         }
+
+        // initialize display
+        this.clearText();
     }
 
     setText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {

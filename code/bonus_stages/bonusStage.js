@@ -81,7 +81,8 @@ class BonusStage extends Stage {
 
     createFrame() {
         const frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
-        frame.addAnimation("", bonusStageFrame);
+        const bg = Asset.getBackground('bonusStageFrame');
+        frame.addAnimation("", bg);
         frame.layer = 11;
         return frame;
     }
@@ -103,13 +104,6 @@ class BonusStage extends Stage {
     createBonusNewBallIfBallLoss(bonusGateBackground) {
         if (!this.playableStages.includes(this.state)) return;
         if (!this.checkBonusBallLoss()) return;
-
-        //TODO remove if not used
-/*         if (this.getTimer().timeIsUp()) {
-            this.endStage(BONUS_STAGE_STATE.LOST);
-            return;
-        } */
-
         this.createNewBonusBall(bonusGateBackground);
     }
 

@@ -8,14 +8,14 @@ class Dugtrio {
     this.sprite = new Sprite(x, y, DUGTRIO_WIDTH, DUGTRIO_HEIGHT, "static");
     this.sprite.debug = DEBUG;
 
-    this.sprite.addAnimation("idle1", animDugtrio1);
-    this.sprite.addAnimation("hurt1", animDugtrio1Hurt);
-    this.sprite.addAnimation("idle2", animDugtrio2);
-    this.sprite.addAnimation("hurt2", animDugtrio2Hurt);
-    this.sprite.addAnimation("idle3", animDugtrio3);
-    this.sprite.addAnimation("hurt3", animDugtrio3Hurt);
-    this.sprite.addAnimation("idle4", animDugtrio4);
-    this.sprite.addAnimation("hurt4", animDugtrio4Hurt);
+    this.sprite.addAnimation("idle1", Asset.getAnimationClone('animDugtrio1'));
+    this.sprite.addAnimation("hurt1", Asset.getAnimationClone('animDugtrio1Hurt'));
+    this.sprite.addAnimation("idle2", Asset.getAnimationClone('animDugtrio2'));
+    this.sprite.addAnimation("hurt2", Asset.getAnimationClone('animDugtrio2Hurt'));
+    this.sprite.addAnimation("idle3", Asset.getAnimationClone('animDugtrio3'));
+    this.sprite.addAnimation("hurt3", Asset.getAnimationClone('animDugtrio3Hurt'));
+    this.sprite.addAnimation("idle4", Asset.getAnimationClone('animDugtrio4'));
+    this.sprite.addAnimation("hurt4", Asset.getAnimationClone('animDugtrio4Hurt'));
 
     this.sprite.visible = false;
     EngineUtils.disableSprite(this.sprite);

@@ -6,8 +6,8 @@ class CoinCounter {
         
         for (let i = 0; i < 20; i++) {
             let sprite = new Sprite(35 + i * 16, 106, 16, 16, "none");
-            sprite.addAnimation("coin", animCoinCounter);
-            sprite.addAnimation("coinShine", animCoinCounterShine);
+            sprite.addAnimation("coin", Asset.getAnimationClone('animCoinCounter'));
+            sprite.addAnimation("coinShine", Asset.getAnimationClone('animCoinCounterShine'));
             sprite.mirror.x = i % 2;
             sprite.visible = false;
             sprite.debug = DEBUG;
