@@ -34,7 +34,7 @@ class AssetManager {
     return this.backgrounds.get(key) || null;
   }
 
-  // Register a sprite sheet (path without extension). Does not slice now; slicing is cached on demand.
+  // Register a sprite sheet.
   registerSpriteSheet(sheetKey, path, frameW, frameH, count) {
     if (this.sheetMeta.has(sheetKey)) return;
     this.sheetMeta.set(sheetKey, { path, frameW, frameH, count });
@@ -47,27 +47,11 @@ class AssetManager {
     return `${path}|${frameW}x${frameH}|${count}`;
   }
 
-  // Slice a registered sheet into frames and cache them (horizontal strip assumed)
-  _prepareSheetFrames(path, frameW, frameH, count) {
-    const key = this._sheetLookupKey(path, frameW, frameH, count);
-    if (this.sheetFrames.has(key)) return this.sheetFrames.get(key);
-
-    const img = this.getImage(path);
-    const frames = [];
-    for (let i = 0; i < count; i++) {
-      const x = i * frameW;
-      const frameImg = img.get(x, 0, frameW, frameH); // returns a p5.Image copy
-      frames.push(frameImg);
-    }
-    this.sheetFrames.set(key, frames);
-    return frames;
-  }
 
   // Register an animation template from a registered sheet.
   // animKey: identifier to request with getAnimationClone(animKey)
   // sheetPath: path used when calling registerSpriteSheet
-  // startFrame / endFrame are inclusive indexes (endFrame may be null -> sheet end)
-  registerAnimationTemplate(animKey, sheetPath, frameW, frameH, sheetFrameCount, startFrame = 0, endFrame = null, delay = null) {
+  registerAnimationTemplate(animKey, sheetPath, frameW, frameH, sheetFrameCount, delay = null) {
     if (this.animTemplates.has(animKey)) return;
 
     let sheet = this.getImage(sheetPath);
@@ -76,8 +60,8 @@ class AssetManager {
     this.animTemplates.set(animKey, animation);
   }
 
-  // Return a fresh p5.play.Animation instance built from cached frames (independent runtime state).
-  getAnimationClone(animKey, fallbackFrameH = null, fallbackFrameW = null, fallbackCount = null, fallbackDelay = null) {
+  // Return the p5.play.Animation.
+  getAnimationClone(animKey) {
     if (this.animTemplates.has(animKey)) {
       return this.animTemplates.get(animKey);
     }
