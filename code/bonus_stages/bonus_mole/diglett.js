@@ -11,9 +11,9 @@ class Diglett {
     this.timeOfDisappearance = 0;
 
     this.sprite = new Sprite(x, y, DIGLETT_WIDTH, DIGLETT_HEIGHT, "static");
-    this.sprite.addAnimation("hurt", Asset.getAnimationClone('animDiglettHurt'));
-    this.sprite.addAnimation("idle", Asset.getAnimationClone('animDiglett'));
-    this.sprite.addAnimation("down", Asset.getAnimationClone('animDiglettDown'));
+    this.sprite.addAnimation("hurt", Asset.getAnimation('animDiglettHurt'));
+    this.sprite.addAnimation("idle", Asset.getAnimation('animDiglett'));
+    this.sprite.addAnimation("down", Asset.getAnimation('animDiglettDown'));
     this.sprite.debug = DEBUG;
     this.sprite.visible = false;
     this.sprite.layer = 8;

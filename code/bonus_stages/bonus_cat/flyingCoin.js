@@ -3,8 +3,8 @@ class FlyingCoin {
     constructor(x, y) {
         this.disabled = false;
         this.sprite = new Sprite(x, y, 10, 10, "dynamic");
-        this.sprite.addAnimation("2", Asset.getAnimationClone('animFlyingCoin2'));
-        this.sprite.addAnimation("1", Asset.getAnimationClone('animFlyingCoin1'));
+        this.sprite.addAnimation("2", Asset.getAnimation('animFlyingCoin2'));
+        this.sprite.addAnimation("1", Asset.getAnimation('animFlyingCoin1'));
         this.sprite.rotationLock = true;
         this.sprite.bounciness = 0.4;
     

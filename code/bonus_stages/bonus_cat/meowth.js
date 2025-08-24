@@ -22,9 +22,9 @@ class Meowth {
         this.sprite = new Sprite(MEOWTH_MIN_HORIZONTAL_MOVEMENT, MEOWTH_HIGH_POS, MEOWTH_HITBOX_WIDTH, MEOWTH_HITBOX_HEIGHT, "static");
         this.sprite.debug = DEBUG;
 
-        this.sprite.addAnimation("hurt", Asset.getAnimationClone('animMeowthHurt'));
-        this.sprite.addAnimation("smug", Asset.getAnimationClone('animMeowthSmug'));
-        this.sprite.addAnimation("walk", Asset.getAnimationClone('animMeowthWalk'));
+        this.sprite.addAnimation("hurt", Asset.getAnimation('animMeowthHurt'));
+        this.sprite.addAnimation("smug", Asset.getAnimation('animMeowthSmug'));
+        this.sprite.addAnimation("walk", Asset.getAnimation('animMeowthWalk'));
     }
 
     update(ballSprite) {

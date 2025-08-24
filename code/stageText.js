@@ -23,16 +23,16 @@ class StageStatusBanner {
 
             // add letter animations ($a .. $z)
             for (const ch of letters) {
-                this.textArray[i].addAnimation('$' + ch, Asset.getAnimationClone('stageText' + ch.toUpperCase()));
+                this.textArray[i].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
             }
 
             // punctuation and space
-            this.textArray[i].addAnimation('$$', Asset.getAnimationClone('stageTextDot'));
-            this.textArray[i].addAnimation('$!', Asset.getAnimationClone('stageTextExcl'));
-            this.textArray[i].addAnimation('$:', Asset.getAnimationClone('stageTextColon'));
+            this.textArray[i].addAnimation('$$', Asset.getAnimation('stageTextDot'));
+            this.textArray[i].addAnimation('$!', Asset.getAnimation('stageTextExcl'));
+            this.textArray[i].addAnimation('$:', Asset.getAnimation('stageTextColon'));
 
             // last one so no need to change it on creation
-            this.textArray[i].addAnimation('$ ', Asset.getAnimationClone('stageTextSpace'));
+            this.textArray[i].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
 
             this.textArray[i].debug = DEBUG;
         }

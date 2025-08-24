@@ -1,10 +1,12 @@
+const DEFAULT_ANIMATION_DELAY = 12; //Default delay between frames of animation
+
 /*
   AssetManager for images / spritesheets / animations / backgrounds.
   - load images in preload
   - slice sheets once and cache frames
   - register animation templates (key -> frames + delay)
   - register backgrounds and return cached images
-  - provide getAnimationClone(key) to obtain independent p5.play.Animation instances
+  - provide getAnimatione(key) to obtain independent p5.play.Animation instances
 */
 
 class AssetManager {
@@ -49,19 +51,19 @@ class AssetManager {
 
 
   // Register an animation template from a registered sheet.
-  // animKey: identifier to request with getAnimationClone(animKey)
+  // animKey: identifier to request with getAnimatione(animKey)
   // sheetPath: path used when calling registerSpriteSheet
-  registerAnimationTemplate(animKey, sheetPath, frameW, frameH, sheetFrameCount, delay = null) {
+  registerAnimationTemplate(animKey, sheetPath, frameW, frameH, sheetFrameCount, delay = DEFAULT_ANIMATION_DELAY) {
     if (this.animTemplates.has(animKey)) return;
 
     let sheet = this.getImage(sheetPath);
-    let animation = loadAnimation(sheet, { frameSize: [frameH, frameW], frameCount: sheetFrameCount });
+    let animation = loadAnimation(sheet, { frameSize: [frameW, frameH], frameCount: sheetFrameCount });
     animation.frameDelay = delay;
     this.animTemplates.set(animKey, animation);
   }
 
   // Return the p5.play.Animation.
-  getAnimationClone(animKey) {
+  getAnimation(animKey) {
     if (this.animTemplates.has(animKey)) {
       return this.animTemplates.get(animKey);
     }
@@ -154,63 +156,63 @@ function preloadAnimations() {
   Asset.registerSpriteSheet('stageTextSpace', 'assets/img/stage-text/space', 16, 16, 1);
 
   // Register animation templates (use sheet keys as anim keys for simplicity)
-  Asset.registerAnimationTemplate('animLeftFlipperUp', 'assets/img/left_flipper_up', 48, 48, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animLeftFlipperMiddle', 'assets/img/left_flipper_middle', 48, 48, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animLeftFlipperDown', 'assets/img/left_flipper_down', 48, 48, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animLeftFlipperDownDisabled', 'assets/img/left_flipper_down_disabled', 48, 48, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animRightFlipperUp', 'assets/img/right_flipper_up', 48, 48, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animRightFlipperMiddle', 'assets/img/right_flipper_middle', 48, 48, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animRightFlipperDown', 'assets/img/right_flipper_down', 48, 48, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animRightFlipperDownDisabled', 'assets/img/right_flipper_down_disabled', 48, 48, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
+  Asset.registerAnimationTemplate('animLeftFlipperUp', 'assets/img/left_flipper_up', 48, 48, 1);
+  Asset.registerAnimationTemplate('animLeftFlipperMiddle', 'assets/img/left_flipper_middle', 48, 48, 1);
+  Asset.registerAnimationTemplate('animLeftFlipperDown', 'assets/img/left_flipper_down', 48, 48, 1);
+  Asset.registerAnimationTemplate('animLeftFlipperDownDisabled', 'assets/img/left_flipper_down_disabled', 48, 48, 1);
+  Asset.registerAnimationTemplate('animRightFlipperUp', 'assets/img/right_flipper_up', 48, 48, 1);
+  Asset.registerAnimationTemplate('animRightFlipperMiddle', 'assets/img/right_flipper_middle', 48, 48, 1);
+  Asset.registerAnimationTemplate('animRightFlipperDown', 'assets/img/right_flipper_down', 48, 48, 1);
+  Asset.registerAnimationTemplate('animRightFlipperDownDisabled', 'assets/img/right_flipper_down_disabled', 48, 48, 1);
 
   for (let i = 0; i < 10; i++) {
-    Asset.registerAnimationTemplate('animTimer' + i, 'assets/img/timer/timer_' + i, 32, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
+    Asset.registerAnimationTemplate('animTimer' + i, 'assets/img/timer/timer_' + i, 16, 32, 1);
   }
-  Asset.registerAnimationTemplate('animTimerColon', 'assets/img/timer/timer_colon', 32, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
+  Asset.registerAnimationTemplate('animTimerColon', 'assets/img/timer/timer_colon', 16, 32, 1);
 
-  Asset.registerAnimationTemplate('animGastly', 'assets/img/bonus-ghost/gastly', 64, 64, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animGastlyHurt', 'assets/img/bonus-ghost/gastly_hurt', 64, 64, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animHaunter', 'assets/img/bonus-ghost/haunter', 96, 80, 4, 0, 3, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animHaunterHurt', 'assets/img/bonus-ghost/haunter_hurt', 96, 80, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animGengar', 'assets/img/bonus-ghost/gengar', 96, 128, 4, 0, 3, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animGengarHurt', 'assets/img/bonus-ghost/gengar_hurt', 112, 128, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animGengarWalk', 'assets/img/bonus-ghost/gengar_walk', 96, 128, 4, 0, 3, DEFAULT_ANIMATION_DELAY);
+  Asset.registerAnimationTemplate('animGastly', 'assets/img/bonus-ghost/gastly', 64, 64, 1);
+  Asset.registerAnimationTemplate('animGastlyHurt', 'assets/img/bonus-ghost/gastly_hurt', 64, 64, 1);
+  Asset.registerAnimationTemplate('animHaunter', 'assets/img/bonus-ghost/haunter', 96, 80, 4);
+  Asset.registerAnimationTemplate('animHaunterHurt', 'assets/img/bonus-ghost/haunter_hurt', 96, 80, 1);
+  Asset.registerAnimationTemplate('animGengar', 'assets/img/bonus-ghost/gengar', 96, 128, 4);
+  Asset.registerAnimationTemplate('animGengarHurt', 'assets/img/bonus-ghost/gengar_hurt', 112, 128, 1);
+  Asset.registerAnimationTemplate('animGengarWalk', 'assets/img/bonus-ghost/gengar_walk', 96, 128, 4);
 
-  Asset.registerAnimationTemplate('animDiglett', 'assets/img/bonus-mole/diglett', 32, 32, 4, 0, 3, 8);
-  Asset.registerAnimationTemplate('animDiglettHurt', 'assets/img/bonus-mole/diglett_hurt', 32, 32, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animDiglettDown', 'assets/img/bonus-mole/diglett_down', 32, 32, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animDugtrio1', 'assets/img/bonus-mole/dugtrio1', 64, 64, 3, 0, 2, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animDugtrio1Hurt', 'assets/img/bonus-mole/dugtrio1_hurt', 64, 64, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animDugtrio2', 'assets/img/bonus-mole/dugtrio2', 64, 64, 3, 0, 2, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animDugtrio2Hurt', 'assets/img/bonus-mole/dugtrio2_hurt', 64, 64, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animDugtrio3', 'assets/img/bonus-mole/dugtrio3', 64, 64, 2, 0, 1, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animDugtrio3Hurt', 'assets/img/bonus-mole/dugtrio3_hurt', 64, 64, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animDugtrio4', 'assets/img/bonus-mole/dugtrio4', 64, 64, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animDugtrio4Hurt', 'assets/img/bonus-mole/dugtrio4_hurt', 64, 64, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
+  Asset.registerAnimationTemplate('animDiglett', 'assets/img/bonus-mole/diglett', 32, 32, 4, 8);
+  Asset.registerAnimationTemplate('animDiglettHurt', 'assets/img/bonus-mole/diglett_hurt', 32, 32, 1);
+  Asset.registerAnimationTemplate('animDiglettDown', 'assets/img/bonus-mole/diglett_down', 32, 32, 1);
+  Asset.registerAnimationTemplate('animDugtrio1', 'assets/img/bonus-mole/dugtrio1', 64, 64, 3);
+  Asset.registerAnimationTemplate('animDugtrio1Hurt', 'assets/img/bonus-mole/dugtrio1_hurt', 64, 64, 1);
+  Asset.registerAnimationTemplate('animDugtrio2', 'assets/img/bonus-mole/dugtrio2', 64, 64, 3);
+  Asset.registerAnimationTemplate('animDugtrio2Hurt', 'assets/img/bonus-mole/dugtrio2_hurt', 64, 64, 1);
+  Asset.registerAnimationTemplate('animDugtrio3', 'assets/img/bonus-mole/dugtrio3', 64, 64, 2);
+  Asset.registerAnimationTemplate('animDugtrio3Hurt', 'assets/img/bonus-mole/dugtrio3_hurt', 64, 64, 1);
+  Asset.registerAnimationTemplate('animDugtrio4', 'assets/img/bonus-mole/dugtrio4', 64, 64, 1);
+  Asset.registerAnimationTemplate('animDugtrio4Hurt', 'assets/img/bonus-mole/dugtrio4_hurt', 64, 64, 1);
 
-  Asset.registerAnimationTemplate('animMeowthWalk', 'assets/img/bonus-cat/meowth_walk', 64, 64, 3, 0, 2, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animMeowthHurt', 'assets/img/bonus-cat/meowth_hurt', 64, 64, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animMeowthSmug', 'assets/img/bonus-cat/meowth_smug', 64, 64, 2, 0, 1, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animCoinIdle', 'assets/img/bonus-cat/coin', 32, 32, 2, 0, 1, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animCoinDisappear', 'assets/img/bonus-cat/coin_disappear', 32, 32, 5, 0, 4, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animFlyingCoin1', 'assets/img/bonus-cat/flying_coin_1', 16, 32, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animFlyingCoin2', 'assets/img/bonus-cat/flying_coin_2', 32, 32, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animCoinCounter', 'assets/img/bonus-cat/coin_counter', 16, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animCoinCounterShine', 'assets/img/bonus-cat/coin_counter_shine', 16, 16, 2, 0, 1, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animCoinMultiplier2', 'assets/img/bonus-cat/coin_multiplier_2', 32, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animCoinMultiplier3', 'assets/img/bonus-cat/coin_multiplier_3', 32, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animCoinMultiplier4', 'assets/img/bonus-cat/coin_multiplier_4', 32, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animCoinMultiplier5', 'assets/img/bonus-cat/coin_multiplier_5', 32, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('animCoinMultiplier6', 'assets/img/bonus-cat/coin_multiplier_6', 32, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
+  Asset.registerAnimationTemplate('animMeowthWalk', 'assets/img/bonus-cat/meowth_walk', 64, 64, 3);
+  Asset.registerAnimationTemplate('animMeowthHurt', 'assets/img/bonus-cat/meowth_hurt', 64, 64, 1);
+  Asset.registerAnimationTemplate('animMeowthSmug', 'assets/img/bonus-cat/meowth_smug', 64, 64, 2);
+  Asset.registerAnimationTemplate('animCoinIdle', 'assets/img/bonus-cat/coin', 32, 32, 2);
+  Asset.registerAnimationTemplate('animCoinDisappear', 'assets/img/bonus-cat/coin_disappear', 32, 32, 5);
+  Asset.registerAnimationTemplate('animFlyingCoin1', 'assets/img/bonus-cat/flying_coin_1', 16, 32, 1);
+  Asset.registerAnimationTemplate('animFlyingCoin2', 'assets/img/bonus-cat/flying_coin_2', 32, 32, 1);
+  Asset.registerAnimationTemplate('animCoinCounter', 'assets/img/bonus-cat/coin_counter', 16, 16, 1);
+  Asset.registerAnimationTemplate('animCoinCounterShine', 'assets/img/bonus-cat/coin_counter_shine', 16, 16, 2);
+  Asset.registerAnimationTemplate('animCoinMultiplier2', 'assets/img/bonus-cat/coin_multiplier_2', 32, 16, 1);
+  Asset.registerAnimationTemplate('animCoinMultiplier3', 'assets/img/bonus-cat/coin_multiplier_3', 32, 16, 1);
+  Asset.registerAnimationTemplate('animCoinMultiplier4', 'assets/img/bonus-cat/coin_multiplier_4', 32, 16, 1);
+  Asset.registerAnimationTemplate('animCoinMultiplier5', 'assets/img/bonus-cat/coin_multiplier_5', 32, 16, 1);
+  Asset.registerAnimationTemplate('animCoinMultiplier6', 'assets/img/bonus-cat/coin_multiplier_6', 32, 16, 1);
 
   // stage text templates
   for (const ch of letters) {
-    Asset.registerAnimationTemplate('stageText' + ch, `assets/img/stage-text/${ch.toLowerCase()}`, 16, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
+    Asset.registerAnimationTemplate('stageText' + ch, `assets/img/stage-text/${ch.toLowerCase()}`, 16, 16, 1);
   }
-  Asset.registerAnimationTemplate('stageTextDot', 'assets/img/stage-text/dot', 16, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('stageTextColon', 'assets/img/stage-text/colon', 16, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('stageTextExcl', 'assets/img/stage-text/excl', 16, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
-  Asset.registerAnimationTemplate('stageTextSpace', 'assets/img/stage-text/space', 16, 16, 1, 0, 0, DEFAULT_ANIMATION_DELAY);
+  Asset.registerAnimationTemplate('stageTextDot', 'assets/img/stage-text/dot', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextColon', 'assets/img/stage-text/colon', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextExcl', 'assets/img/stage-text/excl', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextSpace', 'assets/img/stage-text/space', 16, 16, 1);
 }
 
 

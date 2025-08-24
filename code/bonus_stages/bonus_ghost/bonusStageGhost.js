@@ -1,4 +1,4 @@
-const GHOST_STAGE_TIME_MILLIS = 201000; //Duration of the ghost stage
+const GHOST_STAGE_TIME_MILLIS = 91000; //Duration of the ghost stage
 
 const GHOST_GRAVESTONE_HEIGHT = 26;
 const GHOST_GRAVESTONE_WIDTH = 26;
@@ -242,7 +242,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   setupGengarPhase() {
-    super.replaceBackground(Asset.getBackground('bonusGhostBackgroundClosed'));
+    super.replaceBackground(Asset.getBackground('bonusGhostBackgroundP2Closed'));
     super.startShake();
 
     this.gravestones.forEach(g => g.remove && g.remove());

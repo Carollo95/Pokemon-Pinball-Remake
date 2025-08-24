@@ -43,18 +43,18 @@ class Coin {
         this.sprite = new Sprite(x, y, COIN_WIDTH, COIN_HEIGHT, "static");
         this.createAuxiliarySpriteIfNeeded();
 
-        this.dissapearAnim = Asset.getAnimationClone('animCoinDisappear');
-        this.idleAnim = Asset.getAnimationClone('animCoinIdle');
+        this.dissapearAnim = Asset.getAnimation('animCoinDisappear');
+        this.idleAnim = Asset.getAnimation('animCoinIdle');
         this.sprite.addAnimation("dissapear", this.dissapearAnim);
         this.sprite.addAnimation("idle", this.idleAnim);
         this.sprite.debug = DEBUG;
 
         this.multiplierSprite = new Sprite(x, y - 16, 32, 16, "none");
-        this.multiplierSprite.addAnimation("6", Asset.getAnimationClone('animCoinMultiplier6'));
-        this.multiplierSprite.addAnimation("5", Asset.getAnimationClone('animCoinMultiplier5'));
-        this.multiplierSprite.addAnimation("4", Asset.getAnimationClone('animCoinMultiplier4'));
-        this.multiplierSprite.addAnimation("3", Asset.getAnimationClone('animCoinMultiplier3'));
-        this.multiplierSprite.addAnimation("2", Asset.getAnimationClone('animCoinMultiplier2'));
+        this.multiplierSprite.addAnimation("6", Asset.getAnimation('animCoinMultiplier6'));
+        this.multiplierSprite.addAnimation("5", Asset.getAnimation('animCoinMultiplier5'));
+        this.multiplierSprite.addAnimation("4", Asset.getAnimation('animCoinMultiplier4'));
+        this.multiplierSprite.addAnimation("3", Asset.getAnimation('animCoinMultiplier3'));
+        this.multiplierSprite.addAnimation("2", Asset.getAnimation('animCoinMultiplier2'));
         this.multiplierSprite.visible = false;
         this.multiplierSprite.debug = DEBUG;
 

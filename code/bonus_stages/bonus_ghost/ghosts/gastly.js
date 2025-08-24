@@ -14,8 +14,8 @@ class Gastly extends SmallGhost {
         this.horizontalSpeed = GASTLY_HORIZONTAL_SPEED;
         this.verticalSpeed = GASTLY_VERTICAL_SPEED;
 
-        this.idleAnimation = Asset.getAnimationClone('animGastly');
-        this.hurtAnimation = Asset.getAnimationClone('animGastlyHurt');
+        this.idleAnimation = Asset.getAnimation('animGastly');
+        this.hurtAnimation = Asset.getAnimation('animGastlyHurt');
 
         this.hurtSfx = 'sfx2C';
 

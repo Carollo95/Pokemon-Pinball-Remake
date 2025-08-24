@@ -24,15 +24,15 @@ class Timer {
 
         for (let i = 0; i < 10; i++) {
             const key = 'animTimer' + i;
-            this.minutesSprite.addAnimation(i.toString(), Asset.getAnimationClone(key));
+            this.minutesSprite.addAnimation(i.toString(), Asset.getAnimation(key));
             this.minutesSprite.debug = DEBUG;
-            this.second1Sprite.addAnimation(i.toString(), Asset.getAnimationClone(key));
+            this.second1Sprite.addAnimation(i.toString(), Asset.getAnimation(key));
             this.second1Sprite.debug = DEBUG;
-            this.second2Sprite.addAnimation(i.toString(), Asset.getAnimationClone(key));
+            this.second2Sprite.addAnimation(i.toString(), Asset.getAnimation(key));
             this.second2Sprite.debug = DEBUG;
         }
 
-        this.colonSprite.addAnimation("colon", Asset.getAnimationClone('animTimerColon'));
+        this.colonSprite.addAnimation("colon", Asset.getAnimation('animTimerColon'));
         this.colonSprite.changeAnimation("colon");
 
     }

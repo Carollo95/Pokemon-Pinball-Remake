@@ -6,9 +6,6 @@ let MUTE_MUSIC = false; //true to mute the music but not the sfx
 const SCREEN_WIDTH = 384; //Widht of the canvas
 const SCREEN_HEIGHT = 556; //Height of the canvas
 
-// Animation settings
-const DEFAULT_ANIMATION_DELAY = 12; //Delay between frames of animation
-
 // Physics settings
 const GRAVITY = 10; //The gravity applied to the game
 const EPSILON = 0.1; //Marging for physics calculation (Avoids jittering)
