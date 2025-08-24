@@ -1,5 +1,6 @@
-function preload() {;
-  preloadAudioAssets();
+let isAudioReady = false;
+
+function preload() {
   preLoadBackgrounds();
   preloadAnimations();
 }
@@ -16,10 +17,23 @@ function setup() {
   //Init physics
   EngineUtils.initPhysics();
 
-  startCatStage();
+  // Start loading audio. When it's done, set the flag and start the game.
+  preloadAudioAssets().then(() => {
+    isAudioReady = true;
+    startCatStage();
+  });
 }
 
 function draw() {
+  if (!isAudioReady) {
+    // Show a loading message while assets are loading
+    background(0);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text("Loading Audio...", width / 2, height / 2);
+    return; // Don't draw the game yet
+  }
+
   EngineUtils.drawStage();
 }
 
