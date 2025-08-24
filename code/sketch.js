@@ -1,7 +1,9 @@
-function preload() {;
-  preloadAudioAssets();
+function preload() {
   preLoadBackgrounds();
   preloadAnimations();
+  
+  this._incrementPreload();
+  preloadAudioAssets().then(() => this._decrementPreload());
 }
 
 function setup() {
@@ -16,6 +18,7 @@ function setup() {
   //Init physics
   EngineUtils.initPhysics();
 
+  // Start level
   startCatStage();
 }
 
