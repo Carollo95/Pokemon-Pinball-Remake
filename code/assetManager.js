@@ -135,13 +135,14 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animCoinMultiplier6', 'assets/img/bonus-cat/coin_multiplier_6', 32, 16, 1);
 
   Asset.registerAnimationTemplate('animSealSwim', 'assets/img/bonus-seal/seel_swim', 64, 32, 3);
+  Asset.registerAnimationTemplate('animSealTurn', 'assets/img/bonus-seal/seel_turn', 64, 32, 5, 8);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   // stage text templates
   for (const ch of letters) {
     Asset.registerAnimationTemplate('stageText' + ch, `assets/img/stage-text/${ch.toLowerCase()}`, 16, 16, 1);
   }
-  
+
   Asset.registerAnimationTemplate('stageTextDot', 'assets/img/stage-text/dot', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextColon', 'assets/img/stage-text/colon', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextExcl', 'assets/img/stage-text/excl', 16, 16, 1);
