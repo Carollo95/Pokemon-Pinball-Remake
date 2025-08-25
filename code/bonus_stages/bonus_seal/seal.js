@@ -30,6 +30,7 @@ class Seal {
         this.sprite.addAnimation('surface', Asset.getAnimation('animSealSurface'));
         this.sprite.addAnimation('turn', Asset.getAnimation('animSealTurn'));
         this.sprite.addAnimation('dive', Asset.getAnimation('animSealDive'));
+        this.sprite.addAnimation('hurt', Asset.getAnimation('animSealHurt'));
         this.sprite.addAnimation('swim', Asset.getAnimation('animSealSwim'));
 
         EngineUtils.disableSprite(this.sprite);
@@ -46,6 +47,8 @@ class Seal {
             if (this.timeToSwim()) {
                 this.dive();
             }
+
+            this.checkCollision(ballSprite);
         }
     }
 
@@ -93,6 +96,7 @@ class Seal {
         this.sprite.ani.looping = false;
         this.state = SEAL_STATE.SURFACING;
         this.sprite.ani.onComplete = () => {
+            EngineUtils.enableSprite(this.sprite);
             this.sprite.changeAnimation('idle');
             this.state = SEAL_STATE.IDLE;
         };
@@ -103,8 +107,11 @@ class Seal {
     }
 
     dive() {
-        this.sprite.changeAnimation('dive');
         this.state = SEAL_STATE.DIVING;
+        EngineUtils.disableSprite(this.sprite);
+
+        this.sprite.changeAnimation('dive');
+
         this.sprite.ani.frame = 0;
         this.sprite.ani.playing = true;
         this.sprite.ani.looping = false;
@@ -112,6 +119,19 @@ class Seal {
             this.sprite.changeAnimation('swim');
             this.state = SEAL_STATE.SWIMMING;
         };
+    }
+
+    checkCollision(ballSprite) {
+        if (this.sprite.collide(ballSprite)) {
+            this.sprite.changeAnimation('hurt');
+
+            this.sprite.ani.frame = 0;
+            this.sprite.ani.playing = true;
+            this.sprite.ani.looping = false;
+            this.sprite.ani.onComplete = () => {
+                this.dive();
+            };
+        }
     }
 
 }
