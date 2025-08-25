@@ -69,3 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("cat-stage").addEventListener("click", startCatStage);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("seal-stage").addEventListener("click", startSealStage);
+});
