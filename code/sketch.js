@@ -19,7 +19,7 @@ function setup() {
   EngineUtils.initPhysics();
 
   // Start level
-  startCatStage();
+  startSealStage();
 }
 
 function draw() {
@@ -49,6 +49,12 @@ function startMoleStage() {
 function startCatStage() {
   allSprites.remove();
   stage = new BonusStageCat();
+  stage.setup();
+}
+
+function startSealStage() {
+  allSprites.remove();
+  stage = new BonusStageSeal();
   stage.setup();
 }
 
