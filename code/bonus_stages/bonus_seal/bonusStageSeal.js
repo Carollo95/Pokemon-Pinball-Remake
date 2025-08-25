@@ -17,6 +17,7 @@ class BonusStageSeal extends BonusStage {
         this.seal2 = new Seal(SEAL_2_X, SEAL_2_Y, false);
         this.seal3 = new Seal(SEAL_3_X, SEAL_3_Y);
 
+        this.pearlCounter = new PearlCounter();
     }
 
     setup() {
@@ -43,10 +44,14 @@ class BonusStageSeal extends BonusStage {
 
         this.getTimer().update();
 
-        this.seal1.update(this.getBall().sprite);
-        this.seal2.update(this.getBall().sprite);
-        this.seal3.update(this.getBall().sprite);
+        this.seal1.update(this.getBall().sprite, this.onHurtCallback);
+        this.seal2.update(this.getBall().sprite, this.onHurtCallback);
+        this.seal3.update(this.getBall().sprite, this.onHurtCallback);
 
+    }
+
+    onHurtCallback = () => {
+        this.pearlCounter.addPearl();
     }
 
 }

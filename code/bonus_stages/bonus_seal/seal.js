@@ -36,7 +36,7 @@ class Seal {
         EngineUtils.disableSprite(this.sprite);
     }
 
-    update(ballSprite) {
+    update(ballSprite, hurtCallback) {
         if (this.state === SEAL_STATE.SWIMMING) {
             if (this.timeToSurface()) {
                 this.surface();
@@ -48,7 +48,7 @@ class Seal {
                 this.dive();
             }
 
-            this.checkCollision(ballSprite);
+            this.checkCollision(ballSprite, hurtCallback);
         }
     }
 
@@ -121,7 +121,7 @@ class Seal {
         };
     }
 
-    checkCollision(ballSprite) {
+    checkCollision(ballSprite, hurtCallback) {
         if (this.sprite.collide(ballSprite)) {
             this.sprite.changeAnimation('hurt');
 
@@ -131,6 +131,8 @@ class Seal {
             this.sprite.ani.onComplete = () => {
                 this.dive();
             };
+
+            hurtCallback();
         }
     }
 
