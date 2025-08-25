@@ -15,6 +15,10 @@ class Seal {
         this.sprite = new Sprite(x, y, SEAL_HITBOX_WIDTH, SEAL_HITBOX_HEIGHT, "static");
         this.sprite.debug = DEBUG;
         this.sprite.layer = BALL_LAYER -1;
+
+        this.sprite.mirror.x = ! moveRight;
+        this.sprite.addAnimation('swim', Asset.getAnimation('animSealSwim'));
+
         EngineUtils.disableSprite(this.sprite);
     }
 

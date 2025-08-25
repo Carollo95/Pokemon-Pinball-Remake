@@ -147,6 +147,8 @@ function preloadAnimations() {
   Asset.registerSpriteSheet('animCoinMultiplier4', 'assets/img/bonus-cat/coin_multiplier_4', 32, 16, 1);
   Asset.registerSpriteSheet('animCoinMultiplier5', 'assets/img/bonus-cat/coin_multiplier_5', 32, 16, 1);
   Asset.registerSpriteSheet('animCoinMultiplier6', 'assets/img/bonus-cat/coin_multiplier_6', 32, 16, 1);
+  
+  Asset.registerSpriteSheet('animSealSwim', 'assets/img/bonus-seal/seel_swim', 64, 32, 3);
 
   // stage text sheets
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -207,6 +209,8 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animCoinMultiplier4', 'assets/img/bonus-cat/coin_multiplier_4', 32, 16, 1);
   Asset.registerAnimationTemplate('animCoinMultiplier5', 'assets/img/bonus-cat/coin_multiplier_5', 32, 16, 1);
   Asset.registerAnimationTemplate('animCoinMultiplier6', 'assets/img/bonus-cat/coin_multiplier_6', 32, 16, 1);
+
+  Asset.registerAnimationTemplate('animSealSwim', 'assets/img/bonus-seal/seel_swim', 64, 32, 3);
 
   // stage text templates
   for (const ch of letters) {
