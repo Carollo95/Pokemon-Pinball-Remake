@@ -97,11 +97,11 @@ class Meowth {
     }
 
     isRandomChangeOfHorizontalDirection() {
-        return random(0, 1000) > 995;
+        return random(0, 1) < 0.005;
     }
 
     isRandomChangeOfVerticalDirection() {
-        return random(0, 1000) > 995;
+        return random(0, 1) < 0.005;
     }
 
     stopAndSmug() {

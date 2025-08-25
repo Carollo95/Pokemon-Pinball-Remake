@@ -136,6 +136,9 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('animSealSwim', 'assets/img/bonus-seal/seel_swim', 64, 32, 3);
   Asset.registerAnimationTemplate('animSealTurn', 'assets/img/bonus-seal/seel_turn', 64, 32, 5, 8);
+  Asset.registerAnimationTemplate('animSealSurface', 'assets/img/bonus-seal/seel_surface', 64, 32, 5, 8);
+  Asset.registerAnimationTemplate('animSealIdle', 'assets/img/bonus-seal/seel_idle', 64, 48, 4);
+  Asset.registerAnimationTemplate('animSealDive', 'assets/img/bonus-seal/seel_dive', 64, 48, 1);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   // stage text templates
