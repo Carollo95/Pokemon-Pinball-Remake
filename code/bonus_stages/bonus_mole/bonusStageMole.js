@@ -102,10 +102,6 @@ class BonusStageMole extends BonusStage {
       this.dugtrio.update(this.getBall().sprite);
     }
 
-
-    if (this.scenarioTop.collide(this.getBall().sprite)) {
-      Audio.playSFX('sfx08');
-    }
   }
 
   changePhaseIfNeeded() {

@@ -66,10 +66,6 @@ class BonusStageCat extends BonusStage {
         this.updateCoins();
 
         this.updateTimer();
-
-        if (this.scenarioTop.collide(this.getBall().sprite)) {
-            Audio.playSFX('sfx08');
-        }
     }
 
     updateTimer() {

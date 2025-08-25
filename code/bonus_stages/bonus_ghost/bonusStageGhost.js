@@ -113,11 +113,6 @@ class BonusStageGhost extends BonusStage {
     if (this.state !== BONUS_STAGE_STATE.WON) {
       this.updatePhaseSprites();
       this.updateGravestoneCollisions();
-
-      if (this.scenarioTop.collide(this.getBallSprite())) {
-        Audio.playSFX('sfx08');
-      }
-
       this.getTimer().update();
 
       if (this.getTimer().timeIsUp()) {
