@@ -16,6 +16,12 @@ class PearlCounter {
 
     }
 
+    addPearls(pearlNum){
+        for (let i = 0; i < pearlNum; i++) {
+            this.addPearl();
+        }
+    }
+
     addPearl() {
         if (this.counter < SEEL_VISIBLE_PEARLS) {
             this.pearls[this.counter].visible = true;

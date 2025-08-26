@@ -36,11 +36,22 @@ class Seal {
         this.multiplierSprite = new Sprite(x, y - 20, 5, 5, "none");
         this.multiplierSprite.debug = DEBUG;
         this.multiplierSprite.layer = BALL_LAYER - 1;
+        this.multiplierSprite.visible = false;
+
+        this.multiplierSprite.addAnimation("2", Asset.getAnimation('animPearlMultiplier2'));
+        this.multiplierSprite.addAnimation("4", Asset.getAnimation('animPearlMultiplier4'));
+        this.multiplierSprite.addAnimation("8", Asset.getAnimation('animPearlMultiplier8'));
+        this.multiplierSprite.addAnimation("16", Asset.getAnimation('animPearlMultiplier16'));
+        this.multiplierSprite.addAnimation("32", Asset.getAnimation('animPearlMultiplier32'));
+        this.multiplierSprite.addAnimation("64", Asset.getAnimation('animPearlMultiplier64'));
+        this.multiplierSprite.addAnimation("128", Asset.getAnimation('animPearlMultiplier128'));
+        this.multiplierSprite.addAnimation("256", Asset.getAnimation('animPearlMultiplier256'));
+
 
         EngineUtils.disableSprite(this.sprite);
     }
 
-    update(ballSprite, hurtCallback) {
+    update(ballSprite, hurtCallback, pearlMultiplier) {
         if (this.state === SEAL_STATE.SWIMMING) {
             if (this.timeToSurface()) {
                 this.surface();
@@ -52,7 +63,7 @@ class Seal {
                 this.dive();
             }
 
-            this.checkCollision(ballSprite, hurtCallback);
+            this.checkCollision(ballSprite, hurtCallback, pearlMultiplier);
         }
     }
 
@@ -127,8 +138,11 @@ class Seal {
         };
     }
 
-    checkCollision(ballSprite, hurtCallback) {
+    checkCollision(ballSprite, hurtCallback, pearlMultiplier) {
         if (this.sprite.collide(ballSprite)) {
+            EngineUtils.disableSprite(this.sprite);
+            
+            this.updateMultiplier(pearlMultiplier);
             this.sprite.changeAnimation('hurt');
 
             this.sprite.ani.frame = 0;
@@ -139,6 +153,13 @@ class Seal {
             };
 
             hurtCallback();
+        }
+    }
+
+    updateMultiplier(pearlMultiplier) {
+        if (pearlMultiplier > 1) {
+            this.multiplierSprite.changeAnimation(pearlMultiplier.toString());
+            this.multiplierSprite.visible = true;
         }
     }
 
