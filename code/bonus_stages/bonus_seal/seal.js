@@ -23,7 +23,7 @@ class Seal {
 
         this.sprite = new Sprite(x, y, SEAL_HITBOX_WIDTH, SEAL_HITBOX_HEIGHT, "static");
         this.sprite.debug = DEBUG;
-        this.sprite.layer = BALL_LAYER - 1;
+        this.sprite.layer = BALL_LAYER - 2;
 
         this.sprite.mirror.x = !moveRight;
         this.sprite.addAnimation('idle', Asset.getAnimation('animSealIdle'));
@@ -32,6 +32,10 @@ class Seal {
         this.sprite.addAnimation('dive', Asset.getAnimation('animSealDive'));
         this.sprite.addAnimation('hurt', Asset.getAnimation('animSealHurt'));
         this.sprite.addAnimation('swim', Asset.getAnimation('animSealSwim'));
+
+        this.multiplierSprite = new Sprite(x, y - 20, 5, 5, "none");
+        this.multiplierSprite.debug = DEBUG;
+        this.multiplierSprite.layer = BALL_LAYER - 1;
 
         EngineUtils.disableSprite(this.sprite);
     }
@@ -55,11 +59,13 @@ class Seal {
     move() {
         if (this.keepMovinRight) {
             this.sprite.pos.x += SEAL_SPEED;
+            this.multiplierSprite.pos.x += SEAL_SPEED;
             if (this.sprite.pos.x > SEAL_MAX_HORIZONTAL_MOVEMENT) {
                 this.changeHorizontalDirection();
             }
         } else if (!this.keepMovinRight) {
             this.sprite.pos.x -= SEAL_SPEED;
+            this.multiplierSprite.pos.x -= SEAL_SPEED;
             if (this.sprite.pos.x < SEAL_MIN_HORIZONTAL_MOVEMENT) {
                 this.changeHorizontalDirection();
             }

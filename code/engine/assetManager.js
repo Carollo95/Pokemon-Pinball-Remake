@@ -142,6 +142,14 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animSealHurt', 'assets/img/bonus-seal/seel_hurt', 64, 48, 1);
   Asset.registerAnimationTemplate('animPearl', 'assets/img/bonus-seal/pearl', 16, 16, 1);
   Asset.registerAnimationTemplate('animShiningPearl', 'assets/img/bonus-seal/shining_pearl', 16, 16, 2);
+  Asset.registerAnimationTemplate('animPearlMultiplier2', 'assets/img/bonus-seal/pearl_multiplier_2', 32, 16, 1);
+  Asset.registerAnimationTemplate('animPearlMultiplier4', 'assets/img/bonus-seal/pearl_multiplier_4', 32, 16, 1);
+  Asset.registerAnimationTemplate('animPearlMultiplier8', 'assets/img/bonus-seal/pearl_multiplier_8', 32, 16, 1);
+  Asset.registerAnimationTemplate('animPearlMultiplier16', 'assets/img/bonus-seal/pearl_multiplier_16', 48, 16, 1);
+  Asset.registerAnimationTemplate('animPearlMultiplier32', 'assets/img/bonus-seal/pearl_multiplier_32', 48, 16, 1);
+  Asset.registerAnimationTemplate('animPearlMultiplier64', 'assets/img/bonus-seal/pearl_multiplier_64', 48, 16, 1);
+  Asset.registerAnimationTemplate('animPearlMultiplier128', 'assets/img/bonus-seal/pearl_multiplier_128', 64, 16, 1);
+  Asset.registerAnimationTemplate('animPearlMultiplier256', 'assets/img/bonus-seal/pearl_multiplier_256', 64, 16, 1);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   // stage text templates
