@@ -5,6 +5,7 @@ const SEAL_SPEED = 0.3;
 const SEAL_MIN_HORIZONTAL_MOVEMENT = 80;
 const SEAL_MAX_HORIZONTAL_MOVEMENT = 290;
 
+const MULTIPLIER_SHOW_THRESHOLD = 1000;
 
 const SEAL_STATE = {
     SWIMMING: 0,
@@ -65,6 +66,8 @@ class Seal {
 
             this.checkCollision(ballSprite, hurtCallback, pearlMultiplier);
         }
+
+        this.updateMultiplierVisibility(pearlMultiplier);
     }
 
     move() {
@@ -142,17 +145,24 @@ class Seal {
         if (this.sprite.collide(ballSprite)) {
             EngineUtils.disableSprite(this.sprite);
             
-            this.updateMultiplier(pearlMultiplier);
             this.sprite.changeAnimation('hurt');
-
+            
             this.sprite.ani.frame = 0;
             this.sprite.ani.playing = true;
             this.sprite.ani.looping = false;
             this.sprite.ani.onComplete = () => {
                 this.dive();
             };
-
+            
+            this.updateMultiplier(pearlMultiplier);
             hurtCallback();
+        }
+
+    }
+
+    updateMultiplierVisibility() {
+        if (this.multiplierSprite.visible && (millis() - this.timeOfMultiplierActivation) > MULTIPLIER_SHOW_THRESHOLD) {
+            this.multiplierSprite.visible = false;
         }
     }
 
@@ -160,6 +170,7 @@ class Seal {
         if (pearlMultiplier > 1) {
             this.multiplierSprite.changeAnimation(pearlMultiplier.toString());
             this.multiplierSprite.visible = true;
+            this.timeOfMultiplierActivation = millis();
         }
     }
 

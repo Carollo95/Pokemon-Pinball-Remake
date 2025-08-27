@@ -1,4 +1,4 @@
-const SEEL_MULTIPLIER_THRESHOLD_MS = 100000;
+const SEAL_MULTIPLIER_THRESHOLD_MS = 3000;
 const SEAL_STAGE_TIME_MILLIS = 91000;
 const SEAL_1_X = 280;
 const SEAL_1_Y = 160;
@@ -56,7 +56,7 @@ class BonusStageSeal extends BonusStage {
     }
 
     resetPearlMultiplier() {
-        if (millis() - this.timeOfLastPearlTaken > SEEL_MULTIPLIER_THRESHOLD_MS) {
+        if (millis() - this.timeOfLastPearlTaken > SEAL_MULTIPLIER_THRESHOLD_MS) {
             this.pearlMultiplier = 1;
         }
     }
