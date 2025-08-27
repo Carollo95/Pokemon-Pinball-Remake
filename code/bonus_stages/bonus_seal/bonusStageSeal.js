@@ -24,6 +24,19 @@ class BonusStageSeal extends BonusStage {
         this.pearlMultiplier = 1;
     }
 
+    createBonusNewBallIfBallLoss(bonusGateBackground) {
+        if (!this.playableStages.includes(this.state)) return;
+        if (!this.checkBonusBallLoss()) return;
+        
+        this.createNewBonusBall(bonusGateBackground);
+        this.seal1.dive();
+        this.seal2.dive();
+        this.seal3.dive();
+
+        this.pearlCounter.reset();
+    }
+
+
     setup() {
         super.replaceBackground(Asset.getBackground('bonusSealBackgroundOpen'));
         super.createBonusScenarioGeometry();
@@ -42,7 +55,7 @@ class BonusStageSeal extends BonusStage {
 
     drawStage() {
         if (this.state === BONUS_STAGE_STATE.PLAYING) {
-            super.createBonusNewBallIfBallLoss(Asset.getBackground('bonusSealBackgroundOpen'));
+            this.createBonusNewBallIfBallLoss(Asset.getBackground('bonusSealBackgroundOpen'));
             super.closeBonusGateIfBallInsideBoard(Asset.getBackground('bonusSealBackgroundClosed'));
         }
         this.resetPearlMultiplier();

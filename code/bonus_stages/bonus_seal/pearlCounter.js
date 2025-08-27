@@ -37,4 +37,9 @@ class PearlCounter {
     getCount() {
         return this.count;
     }
+
+    reset(){
+        this.pearls.forEach(pearl => pearl.visible = false);
+        this.counter = 0;
+    }
 }
