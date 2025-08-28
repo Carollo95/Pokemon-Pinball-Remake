@@ -34,7 +34,7 @@ class AudioManager {
         }
     }
 
-    registerMusic(id, path, { loop = true, baseVolume = 0.6 } = {}) {
+    registerMusic(id, path, { loop = true, baseVolume = MUSIC_VOLUME } = {}) {
         return this._loadAudio(`${path}.mp3`).then(buffer => {
             if (buffer) {
                 this.musicTracks[id] = { buffer, loop, baseVolume };
@@ -42,7 +42,7 @@ class AudioManager {
         });
     }
 
-    registerSFX(id, path, { baseVolume = 0.5 } = {}) {
+    registerSFX(id, path, { baseVolume = SFX_VOLUME } = {}) {
         return this._loadAudio(`${path}.mp3`).then(buffer => {
             if (buffer) {
                 this.sfx[id] = { buffer, baseVolume };

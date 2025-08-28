@@ -135,25 +135,29 @@ class Seal {
         this.sprite.ani.frame = 0;
         this.sprite.ani.playing = true;
         this.sprite.ani.looping = false;
-        this.sprite.ani.onComplete = () => {
-            this.sprite.changeAnimation('swim');
-            this.state = SEAL_STATE.SWIMMING;
-        };
+        this.sprite.ani.onComplete = () => this.swim();
+    }
+
+    swim() {
+        EngineUtils.disableSprite(this.sprite);
+        this.sprite.changeAnimation('swim');
+        this.state = SEAL_STATE.SWIMMING;
     }
 
     checkCollision(ballSprite, hurtCallback, pearlMultiplier) {
         if (this.sprite.collide(ballSprite)) {
             EngineUtils.disableSprite(this.sprite);
-            
+
             this.sprite.changeAnimation('hurt');
-            
+            Audio.playSFX("sfx30");
+
             this.sprite.ani.frame = 0;
             this.sprite.ani.playing = true;
             this.sprite.ani.looping = false;
             this.sprite.ani.onComplete = () => {
                 this.dive();
             };
-            
+
             this.updateMultiplier(pearlMultiplier);
             hurtCallback();
         }

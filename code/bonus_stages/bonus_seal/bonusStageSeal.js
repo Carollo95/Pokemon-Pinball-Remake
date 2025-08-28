@@ -27,11 +27,14 @@ class BonusStageSeal extends BonusStage {
     createBonusNewBallIfBallLoss(bonusGateBackground) {
         if (!this.playableStages.includes(this.state)) return;
         if (!this.checkBonusBallLoss()) return;
-        
+
         this.createNewBonusBall(bonusGateBackground);
-        this.seal1.dive();
-        this.seal2.dive();
-        this.seal3.dive();
+        
+        //TODO flash screen white
+
+        this.seal1.swim();
+        this.seal2.swim();
+        this.seal3.swim();
 
         this.pearlCounter.reset();
     }
@@ -49,8 +52,6 @@ class BonusStageSeal extends BonusStage {
     draw() {
         super.draw();
         this.drawStage();
-
-
     }
 
     drawStage() {

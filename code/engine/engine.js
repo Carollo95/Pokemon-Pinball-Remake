@@ -1,6 +1,7 @@
 // Debug settings
 let DEBUG = false; //true to start the game on debug mode
-let MUTE_MUSIC = false; //true to mute the music but not the sfx
+let MUSIC_VOLUME = 0.0; //volume of the music
+let SFX_VOLUME = 0.6; //volume of the sfx
 
 // Canvas settings
 const SCREEN_WIDTH = 384; //Widht of the canvas
