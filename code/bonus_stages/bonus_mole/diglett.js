@@ -1,14 +1,11 @@
 const DIGLETT_WIDTH = 24; // Width of the Diglett hitbox
 const DIGLETT_HEIGHT = 24; // Height of the Diglett hitbox
-const DIGLETT_TIME_OF_HURT = 500;
 
 class Diglett {
   constructor(x, y, creationTime, timeToSpawn) {
     this.disabled = false;
     this.timeToSpawn = timeToSpawn || 0;
     this.creationTime = creationTime || millis();
-    this.timeOfHurt = 0;
-    this.timeOfDisappearance = 0;
 
     this.sprite = new Sprite(x, y, DIGLETT_WIDTH, DIGLETT_HEIGHT, "static");
     this.sprite.addAnimation("hurt", Asset.getAnimation('animDiglettHurt'));
@@ -31,29 +28,25 @@ class Diglett {
       this.spawn();
     }
 
-    if (this.timeOfHurt === 0) {
-      this.checkCollision(ballSprite);
-    } else if (this.isHurtTimeFinished()) {
-      this.disableSprite();
-    }
+    this.checkCollision(ballSprite);
   }
 
   checkCollision(ballSprite) {
-    if (this.sprite.collide(ballSprite)) {
+    if (this.sprite.collide(ballSprite) && this.sprite.ani.name !== "hurt") {
       this.sprite.changeAnimation("hurt");
       Audio.playSFX('sfx35');
-      this.timeOfHurt = millis();
+      this.sprite.ani.frame = 0;
+      this.sprite.ani.playing = true;
+      this.sprite.ani.looping = false;
+      this.sprite.ani.onComplete = () => {
+        this.disableSprite();
+      };
     }
-  }
-
-  isHurtTimeFinished() {
-    return (millis() - this.timeOfHurt) > DIGLETT_TIME_OF_HURT;
   }
 
   disableSprite() {
     EngineUtils.disableSprite(this.sprite);
     this.sprite.visible = false;
-    this.timeOfDisappearance = millis();
     this.disabled = true;
   }
 }
