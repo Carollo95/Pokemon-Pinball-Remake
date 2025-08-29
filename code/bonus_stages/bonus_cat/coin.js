@@ -100,17 +100,17 @@ class Coin {
             }
         }
 
-        this.blinkMultiplierIfNecessary();
+        this.updateMultiplierVisibility();
 
         return 0;
     }
 
 
-    blinkMultiplierIfNecessary() {
+    updateMultiplierVisibility() {
         if (millis() - this.timeOfLastHit > COIN_MULTIPLIER_THRESHOLD_MILLIS) {
             this.multiplierSprite.visible = false;
         } else if (this.localMultiplier > 1) {
-            this.blinkMultiplier();
+            EngineUtils.blinkSprite(this.multiplierSprite);
         }
     }
 
@@ -164,10 +164,6 @@ class Coin {
         const dx = this.sprite.pos.x - thrown.pos.x;
         const dy = this.sprite.pos.y - thrown.pos.y;
         return dx * dx + dy * dy < 325;
-    }
-
-    blinkMultiplier() {
-        this.multiplierSprite.visible = (frameCount % (COIN_MULTIPLIER_BLINKING_FRAMES * 2) < COIN_MULTIPLIER_BLINKING_FRAMES);
     }
 
 }

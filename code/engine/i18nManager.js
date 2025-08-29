@@ -6,7 +6,9 @@ const I18NManager = {
             "meowth_stage_cleared": "meowth stage clear ",
             "end_meowth_stage": " end meowth stage ",
             "diglett_stage_cleared": "diglett stage clear",
-            "end_diglett_stage": " end diglett stage "
+            "end_diglett_stage": " end diglett stage ",
+            "seal_stage_cleared": "    seal stage clear ",
+            "end_seal_stage": "   end seal stage  "
         }
     },
 

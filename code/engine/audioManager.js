@@ -1,7 +1,6 @@
 // Centralized audio system using native Web Audio API for performance.
 
 
-
 class AudioManager {
     constructor() {
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -34,7 +33,7 @@ class AudioManager {
         }
     }
 
-    registerMusic(id, path, { loop = true, baseVolume = 0.6 } = {}) {
+    registerMusic(id, path, { loop = true, baseVolume = MUSIC_VOLUME } = {}) {
         return this._loadAudio(`${path}.mp3`).then(buffer => {
             if (buffer) {
                 this.musicTracks[id] = { buffer, loop, baseVolume };
@@ -42,7 +41,7 @@ class AudioManager {
         });
     }
 
-    registerSFX(id, path, { baseVolume = 0.5 } = {}) {
+    registerSFX(id, path, { baseVolume = SFX_VOLUME } = {}) {
         return this._loadAudio(`${path}.mp3`).then(buffer => {
             if (buffer) {
                 this.sfx[id] = { buffer, baseVolume };
@@ -200,6 +199,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('moleDiglett', 'assets/audio/MoleStage_Whack_the_Digletts', { loop: true }));
     promises.push(audio.registerMusic('moleDugtrio', 'assets/audio/MoleStage_Whack_Dugtrio', { loop: true }));
     promises.push(audio.registerMusic('catStage', 'assets/audio/CatStage_Meowth'));
+    promises.push(audio.registerMusic('sealStage', 'assets/audio/SealStage_Seel'));
 
     // SFX
     promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00'));

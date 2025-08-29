@@ -1,10 +1,11 @@
+const MEOWTH_VISIBLE_COINS = 20;
 class CoinCounter {
 
     constructor() {
-        this.coins = new Array(20);
+        this.coins = new Array(MEOWTH_VISIBLE_COINS);
         this.counter = 0;
-        
-        for (let i = 0; i < 20; i++) {
+
+        for (let i = 0; i < MEOWTH_VISIBLE_COINS; i++) {
             let sprite = new Sprite(35 + i * 16, 106, 16, 16, "none");
             sprite.addAnimation("coin", Asset.getAnimation('animCoinCounter'));
             sprite.addAnimation("coinShine", Asset.getAnimation('animCoinCounterShine'));
@@ -22,11 +23,11 @@ class CoinCounter {
     }
 
     addCoin() {
-        if (this.counter < 20) {
+        if (this.counter < MEOWTH_VISIBLE_COINS) {
             this.coins[this.counter].visible = true;
         }
 
-        if (this.counter > 0 && this.counter < 21) {
+        if (this.counter > 0 && this.counter < MEOWTH_VISIBLE_COINS +1) {
             this.coins[this.counter - 1].changeAnimation("coin");
         }
 
