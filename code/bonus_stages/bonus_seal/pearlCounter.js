@@ -35,7 +35,7 @@ class PearlCounter {
     }
 
     getCount() {
-        return this.count;
+        return this.counter;
     }
 
     reset(){
