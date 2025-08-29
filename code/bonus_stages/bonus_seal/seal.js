@@ -34,6 +34,8 @@ class Seal {
         this.sprite.addAnimation('hurt', Asset.getAnimation('animSealHurt'));
         this.sprite.addAnimation('swim', Asset.getAnimation('animSealSwim'));
 
+        this.timeOfMultiplierActivation = 0;
+
         this.multiplierSprite = new Sprite(x, y - 20, 5, 5, "none");
         this.multiplierSprite.debug = DEBUG;
         this.multiplierSprite.layer = BALL_LAYER - 1;
@@ -164,9 +166,11 @@ class Seal {
 
     }
 
-    updateMultiplierVisibility() {
-        if (this.multiplierSprite.visible && (millis() - this.timeOfMultiplierActivation) > MULTIPLIER_SHOW_THRESHOLD) {
+    updateMultiplierVisibility(pearlMultiplier) {
+        if ((millis() - this.timeOfMultiplierActivation) > MULTIPLIER_SHOW_THRESHOLD) {
             this.multiplierSprite.visible = false;
+        } else if (pearlMultiplier > 1) {
+            EngineUtils.blinkSprite(this.multiplierSprite);
         }
     }
 

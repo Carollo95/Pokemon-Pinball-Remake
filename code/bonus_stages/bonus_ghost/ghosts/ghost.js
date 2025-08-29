@@ -23,7 +23,7 @@ class Ghost {
     }
 
     blink() {
-        this.sprite.visible = (frameCount % (GHOST_BLINKING_FRAMES * 2) < GHOST_BLINKING_FRAMES);
+        EngineUtils.blinkSprite(this.sprite, GHOST_BLINKING_FRAMES);
     }
 
     stopBlink() {

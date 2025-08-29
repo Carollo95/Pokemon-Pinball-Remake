@@ -14,6 +14,8 @@ const EPSILON = 0.1; //Marging for physics calculation (Avoids jittering)
 // Layer settings
 const BALL_LAYER = 5; //Layer for the ball sprite
 
+const DEFAULT_BLINKING_FRAMES = 10;
+
 let stage; //The p5 sketch in use
 let canvas;
 
@@ -34,6 +36,14 @@ const EngineUtils = {
     enableSprite(sprite) {
         sprite.sleeping = false;
         sprite.physics = "static";
+    },
+
+     /**
+     * Blinks a psprite
+     * @param {sprite} sprite  the sprite.
+     */
+    blinkSprite(sprite, blinkingFrames = DEFAULT_BLINKING_FRAMES) {
+        sprite.visible = (frameCount % (blinkingFrames * 2) < blinkingFrames);
     },
 
     /**
