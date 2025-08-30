@@ -18,6 +18,7 @@ class Dugtrio {
     this.sprite.addAnimation("hurt4", Asset.getAnimation('animDugtrio4Hurt'));
 
     this.sprite.visible = false;
+    this.sprite.layer = SPRITE_LAYER;
     EngineUtils.disableSprite(this.sprite);
 
     this.timeOfHurt = 0;

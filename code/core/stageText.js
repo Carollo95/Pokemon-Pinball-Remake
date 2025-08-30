@@ -19,7 +19,7 @@ class StageStatusBanner {
         const letters = 'abcdefghijklmnopqrstuvwxyz';
         for (var i = 0; i <= MAX_CHARS; i++) {
             this.textArray[i] = new Sprite(x - (CHAR_SIZE * i + 1), y, CHAR_SIZE, CHAR_SIZE, "none");
-            this.textArray[i].layer = 10;
+            this.textArray[i].layer = HUD_LAYER;
 
             // add letter animations ($a .. $z)
             for (const ch of letters) {

@@ -73,6 +73,7 @@ class BonusStage extends Stage {
 
     createScenarioGeometry(positions) {
         let scenario = new Sprite(positions, "static");
+        scenario.layer = SCENARIO_LAYER;
         scenario.debug = DEBUG;
         scenario.visible = DEBUG;
 
@@ -100,6 +101,7 @@ class BonusStage extends Stage {
 
     createGate() {
         this.gate = new Sprite(341, 254, 10, 39, "static");
+        this.gate.layer = SCENARIO_LAYER;
         this.gate.debug = DEBUG;
         this.gate.visible = DEBUG;
         EngineUtils.disableSprite(this.gate);

@@ -41,6 +41,7 @@ class Coin {
         const y = isHighLane ? COIN_HIGH_LANE : COIN_LOW_LANE;
 
         this.sprite = new Sprite(x, y, COIN_WIDTH, COIN_HEIGHT, "static");
+        this.sprite.layer = SPRITE_LAYER;
         this.createAuxiliarySpriteIfNeeded();
 
         this.dissapearAnim = Asset.getAnimation('animCoinDisappear');
@@ -50,6 +51,7 @@ class Coin {
         this.sprite.debug = DEBUG;
 
         this.multiplierSprite = new Sprite(x, y - 16, 32, 16, "none");
+        this.multiplierSprite.layer = SPRITE_LAYER;
         this.multiplierSprite.addAnimation("6", Asset.getAnimation('animCoinMultiplier6'));
         this.multiplierSprite.addAnimation("5", Asset.getAnimation('animCoinMultiplier5'));
         this.multiplierSprite.addAnimation("4", Asset.getAnimation('animCoinMultiplier4'));
@@ -78,6 +80,8 @@ class Coin {
                     [82, 268 + COIN_HEIGHT],
                     [40, 268]], "static");
                 this.auxiliarySprite.visible = false;
+                this.auxiliarySprite.debug = DEBUG;
+                this.auxiliarySprite.layer = SPRITE_LAYER;
             } else if (this.sprite.pos.x == COIN_LOW_SLOT_6) {
                 this.auxiliarySprite = new Sprite([
                     [290, 268],
@@ -85,6 +89,8 @@ class Coin {
                     [290, 268 + COIN_HEIGHT],
                     [290, 268]], "static");
                 this.auxiliarySprite.visible = false;
+                this.auxiliarySprite.debug = DEBUG;
+                this.auxiliarySprite.layer = SPRITE_LAYER;
             }
         }
 

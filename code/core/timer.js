@@ -14,13 +14,13 @@ class Timer {
         this.remainingMillis = this.totalMillis;
 
         this.minutesSprite = new Sprite(TIMER_POSITION_BONUS_X, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
-        this.minutesSprite.layer = 10;
+        this.minutesSprite.layer = HUD_LAYER;
         this.colonSprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
-        this.colonSprite.layer = 10;
+        this.colonSprite.layer = HUD_LAYER;
         this.second1Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 2, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
-        this.second1Sprite.layer = 10;
+        this.second1Sprite.layer = HUD_LAYER;
         this.second2Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 3, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
-        this.second2Sprite.layer = 10;
+        this.second2Sprite.layer = HUD_LAYER;
 
         for (let i = 0; i < 10; i++) {
             const key = 'animTimer' + i;

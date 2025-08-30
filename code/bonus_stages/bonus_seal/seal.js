@@ -24,7 +24,7 @@ class Seal {
 
         this.sprite = new Sprite(x, y, SEAL_HITBOX_WIDTH, SEAL_HITBOX_HEIGHT, "static");
         this.sprite.debug = DEBUG;
-        this.sprite.layer = BALL_LAYER - 2;
+        this.sprite.layer = SPRITE_LAYER;
 
         this.sprite.mirror.x = !moveRight;
         this.sprite.addAnimation('idle', Asset.getAnimation('animSealIdle'));
@@ -37,8 +37,8 @@ class Seal {
         this.timeOfMultiplierActivation = 0;
 
         this.multiplierSprite = new Sprite(x, y - 20, 5, 5, "none");
+        this.multiplierSprite.layer = SPRITE_LAYER;
         this.multiplierSprite.debug = DEBUG;
-        this.multiplierSprite.layer = BALL_LAYER - 1;
         this.multiplierSprite.visible = false;
 
         this.multiplierSprite.addAnimation("2", Asset.getAnimation('animPearlMultiplier2'));

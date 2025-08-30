@@ -12,7 +12,10 @@ const GRAVITY = 10; //The gravity applied to the game
 const EPSILON = 0.1; //Marging for physics calculation (Avoids jittering)
 
 // Layer settings
+const SCENARIO_LAYER = 0; //Layer for the scenario items
+const SPRITE_LAYER = 2; //Base layer for any sprite
 const BALL_LAYER = 5; //Layer for the ball sprite
+const HUD_LAYER = 9; //Layer for the HUD elements
 const FLASH_LAYER = 10; //Layer for the flash effect
 const FRAME_LAYER = 11 //Layer for the frame on the bonus stages
 
@@ -70,7 +73,8 @@ const EngineUtils = {
         if (fadeInFrames < 1) fadeInFrames = 1;
         if (fadeOutFrames < 1) fadeOutFrames = 1;
 
-        if (!whiteFlashSprite) {
+        // Recreate the flash sprite if it was removed (e.g. after allSprites.remove())
+        if (!whiteFlashSprite || whiteFlashSprite.removed) {
             whiteFlashSprite = new Sprite(
                 SCREEN_WIDTH / 2,
                 SCREEN_HEIGHT / 2,
