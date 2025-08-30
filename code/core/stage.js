@@ -67,6 +67,8 @@ class Stage {
         } else {
             this.drawBackground();
         }
+
+        EngineUtils.drawWhiteFlash();
     }
 
     // --- helpers to attach common per-stage components ---

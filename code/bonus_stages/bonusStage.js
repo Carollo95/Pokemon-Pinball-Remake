@@ -83,7 +83,7 @@ class BonusStage extends Stage {
         const frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
         const bg = Asset.getBackground('bonusStageFrame');
         frame.addAnimation("", bg);
-        frame.layer = 11;
+        frame.layer = FRAME_LAYER;
         return frame;
     }
 
@@ -113,6 +113,7 @@ class BonusStage extends Stage {
 
     createNewBonusBall(bonusGateBackground) {
         Audio.playSFX('sfx02');
+        EngineUtils.flashWhite();
         this.attachBall(Ball.spawnBonusBall());
         this.openBonusGate(bonusGateBackground);
     }
