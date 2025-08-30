@@ -18,6 +18,7 @@ class Ghost {
 
         // collision sprite
         this.sprite = new Sprite(x, y, width, height, "static");
+        this.sprite.layer = SPRITE_LAYER;
         this.sprite.debug = DEBUG;
         this.disabled = false;
     }

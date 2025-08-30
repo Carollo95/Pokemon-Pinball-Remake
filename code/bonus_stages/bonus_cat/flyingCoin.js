@@ -3,6 +3,7 @@ class FlyingCoin {
     constructor(x, y) {
         this.disabled = false;
         this.sprite = new Sprite(x, y, 10, 10, "dynamic");
+        this.sprite.layer = SPRITE_LAYER;
         this.sprite.addAnimation("2", Asset.getAnimation('animFlyingCoin2'));
         this.sprite.addAnimation("1", Asset.getAnimation('animFlyingCoin1'));
         this.sprite.rotationLock = true;

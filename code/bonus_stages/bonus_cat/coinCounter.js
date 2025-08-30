@@ -7,6 +7,7 @@ class CoinCounter {
 
         for (let i = 0; i < MEOWTH_VISIBLE_COINS; i++) {
             let sprite = new Sprite(35 + i * 16, 106, 16, 16, "none");
+            sprite.layer = SPRITE_LAYER;
             sprite.addAnimation("coin", Asset.getAnimation('animCoinCounter'));
             sprite.addAnimation("coinShine", Asset.getAnimation('animCoinCounterShine'));
             sprite.mirror.x = i % 2;

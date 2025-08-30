@@ -85,6 +85,7 @@ class Flippers {
 
     createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY) {
         this.leftFlipper = new Sprite(leftFlipperRotationPointX, leftFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
+        this.leftFlipper.layer = BALL_LAYER;
         this.leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
         this.leftFlipper.debug = DEBUG;
         this.leftFlipper.offset.x = LEFT_FLIPPER_OFFSET;
@@ -101,6 +102,7 @@ class Flippers {
 
     createRightFlipper(rightFlipperRotationPointX, rightFlipperRotationPointY) {
         this.rightFlipper = new Sprite(rightFlipperRotationPointX, rightFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
+        this.rightFlipper.layer = BALL_LAYER;
         this.rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
         this.rightFlipper.debug = DEBUG;
         this.rightFlipper.offset.x = RIGHT_FLIPPER_OFFSET;

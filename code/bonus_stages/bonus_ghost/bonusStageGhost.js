@@ -90,6 +90,7 @@ class BonusStageGhost extends BonusStage {
     );
     grave.debug = DEBUG;
     grave.visible = DEBUG;
+    grave.layer = SCENARIO_LAYER;
     return grave;
   }
 

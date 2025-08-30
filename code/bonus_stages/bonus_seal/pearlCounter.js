@@ -7,6 +7,7 @@ class PearlCounter {
 
         for (let i = 0; i < SEEL_VISIBLE_PEARLS; i++) {
             let sprite = new Sprite(35 + i * 16, 106, 16, 16, "none");
+            sprite.layer = SPRITE_LAYER;
             sprite.addAnimation("pearl", Asset.getAnimation('animPearl'));
             sprite.addAnimation("shiningPearl", Asset.getAnimation('animShiningPearl'));
             sprite.visible = false;

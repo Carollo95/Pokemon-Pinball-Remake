@@ -73,6 +73,7 @@ class BonusStage extends Stage {
 
     createScenarioGeometry(positions) {
         let scenario = new Sprite(positions, "static");
+        scenario.layer = SCENARIO_LAYER;
         scenario.debug = DEBUG;
         scenario.visible = DEBUG;
 
@@ -83,7 +84,7 @@ class BonusStage extends Stage {
         const frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
         const bg = Asset.getBackground('bonusStageFrame');
         frame.addAnimation("", bg);
-        frame.layer = 11;
+        frame.layer = FRAME_LAYER;
         return frame;
     }
 
@@ -100,6 +101,7 @@ class BonusStage extends Stage {
 
     createGate() {
         this.gate = new Sprite(341, 254, 10, 39, "static");
+        this.gate.layer = SCENARIO_LAYER;
         this.gate.debug = DEBUG;
         this.gate.visible = DEBUG;
         EngineUtils.disableSprite(this.gate);
@@ -113,6 +115,7 @@ class BonusStage extends Stage {
 
     createNewBonusBall(bonusGateBackground) {
         Audio.playSFX('sfx02');
+        EngineUtils.flashWhite();
         this.attachBall(Ball.spawnBonusBall());
         this.openBonusGate(bonusGateBackground);
     }
