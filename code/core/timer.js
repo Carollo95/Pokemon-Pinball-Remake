@@ -11,6 +11,7 @@ class Timer {
         this.stopped = false;
         this.totalMillis = totalMillis;
         this.startingMillis = millis();
+        this.timeOfLastSFX = 0;
         this.remainingMillis = this.totalMillis;
 
         this.minutesSprite = new Sprite(TIMER_POSITION_BONUS_X, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
@@ -47,6 +48,7 @@ class Timer {
             }
 
             this.updateSprite();
+            this.soundSFX();
         }
     }
 
@@ -55,6 +57,23 @@ class Timer {
         this.minutesSprite.changeAnimation(time.charAt(0));
         this.second1Sprite.changeAnimation(time.charAt(2));
         this.second2Sprite.changeAnimation(time.charAt(3));
+    }
+
+    soundSFX() {
+        if (!this.stopped
+            && millis() - this.timeOfLastSFX > 1000){
+
+            if(this.getTime() === "0:20"){
+                this.timeOfLastSFX = millis();
+                Audio.playSFX('sfx49');
+            }else if(this.getTime() === "0:10"){
+                this.timeOfLastSFX = millis();
+                Audio.playSFX('sfx4A');
+            }else if(this.getTime() === "0:05") {
+                this.timeOfLastSFX = millis();
+                Audio.playSFX('sfx4B');
+            }
+        }
     }
 
     timeIsUp() {
@@ -72,7 +91,7 @@ class Timer {
         this.stopped = true;
     }
 
-    disable(){
+    disable() {
         this.stop();
         this.minutesSprite.visible = false;
         this.colonSprite.visible = false;

@@ -275,9 +275,9 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx46', 'assets/audio/sfx/SFX-46'));
     promises.push(audio.registerSFX('sfx47', 'assets/audio/sfx/SFX-47'));
     promises.push(audio.registerSFX('sfx48', 'assets/audio/sfx/SFX-48'));
-    promises.push(audio.registerSFX('sfx49', 'assets/audio/sfx/SFX-49'));
-    promises.push(audio.registerSFX('sfx4A', 'assets/audio/sfx/SFX-4A'));
-    promises.push(audio.registerSFX('sfx4B', 'assets/audio/sfx/SFX-4B'));
+    promises.push(audio.registerSFX('sfx49', 'assets/audio/sfx/SFX-49')); //Timer 20s
+    promises.push(audio.registerSFX('sfx4A', 'assets/audio/sfx/SFX-4A')); //Timer 10s
+    promises.push(audio.registerSFX('sfx4B', 'assets/audio/sfx/SFX-4B')); //Timer 5s
     promises.push(audio.registerSFX('sfx4C', 'assets/audio/sfx/SFX-4C'));
     promises.push(audio.registerSFX('sfx4D', 'assets/audio/sfx/SFX-4D'));
     promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4E')); //Gengar cry
