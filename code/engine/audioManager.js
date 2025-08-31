@@ -200,6 +200,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('moleDugtrio', 'assets/audio/MoleStage_Whack_Dugtrio', { loop: true }));
     promises.push(audio.registerMusic('catStage', 'assets/audio/CatStage_Meowth'));
     promises.push(audio.registerMusic('sealStage', 'assets/audio/SealStage_Seel'));
+    promises.push(audio.registerMusic('cloneStage', 'assets/audio/CloneStage_Mewtwo'));
 
     // SFX
     promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00'));

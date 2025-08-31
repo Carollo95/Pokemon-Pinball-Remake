@@ -74,10 +74,8 @@ class BonusStageMole extends BonusStage {
     super.draw();
     this.drawStage();
 
-    if (this.isStageLost || this.isStageWon) {
-      if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-        //TODO end stage
-      }
+    if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
+      //TODO end stage
     }
   }
 

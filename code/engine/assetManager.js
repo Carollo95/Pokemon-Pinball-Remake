@@ -77,6 +77,9 @@ function preLoadBackgrounds() {
   Asset.registerBackground('bonusSealBackgroundOpen', 'assets/img/bonus-seal/bonus_seal_background_open');
   Asset.registerBackground('bonusSealBackgroundClosed', 'assets/img/bonus-seal/bonus_seal_background');
 
+  Asset.registerBackground('bonusCloneBackgroundOpen', 'assets/img/bonus-clone/bonus_clone_background_open');
+  Asset.registerBackground('bonusCloneBackgroundClosed', 'assets/img/bonus-clone/bonus_clone_background');
+
   Asset.registerBackground('bonusStageFrame', 'assets/img/bonus_state_frame');
 }
 
