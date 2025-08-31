@@ -10,6 +10,24 @@ const BONUS_STAGE_STATE = {
     WRAP_UP: "wrapUp"
 };
 
+const SCENARIO_TOP_DOME_POINTS = [
+    [0, 0],
+    [SCREEN_WIDTH, 0],
+    [SCREEN_WIDTH, 212],
+    [373, 212],
+    [336, 236],
+    [336, 122],
+    [222, 122],
+    [216, 110],
+    [188, 100],
+    [162, 110],
+    [156, 122],
+    [40, 122],
+    [40, 275],
+    [0, 275],
+    [0, 0]
+];
+
 class BonusStage extends Stage {
     constructor() {
         super();
@@ -22,31 +40,35 @@ class BonusStage extends Stage {
 
         this.state = BONUS_STAGE_STATE.PLAYING;
         this.millisSinceStageComplete = 0;
-        
+
         this.playableStages = [BONUS_STAGE_STATE.PLAYING];
         this.createFrame();
     }
 
-    createBonusScenarioGeometry() {
-        this.createScenarioTopGeometry();
+    createBonusScenarioGeometry(dome = false) {
+        this.createScenarioTopGeometry(dome);
         this.createScenarioLeftGeometry();
         this.createScenarioRightGeometry();
         this.createGate();
     }
 
 
-    createScenarioTopGeometry() {
-        this.scenarioTop = this.createScenarioGeometry([[0, 0],
-        [SCREEN_WIDTH, 0],
-        [SCREEN_WIDTH, 212],
-        [373, 212],
-        [336, 236],
-        [336, 122],
-        [40, 122],
-        [40, 275],
-        [0, 275],
-        [0, 0]
-        ]);
+    createScenarioTopGeometry(dome) {
+        if (dome) {
+            this.scenarioTop = this.createScenarioGeometry(SCENARIO_TOP_DOME_POINTS);
+        } else {
+            this.scenarioTop = this.createScenarioGeometry([[0, 0],
+            [SCREEN_WIDTH, 0],
+            [SCREEN_WIDTH, 212],
+            [373, 212],
+            [336, 236],
+            [336, 122],
+            [40, 122],
+            [40, 275],
+            [0, 275],
+            [0, 0]
+            ]);
+        }
     }
 
     createScenarioLeftGeometry() {
@@ -93,7 +115,7 @@ class BonusStage extends Stage {
         // use getters so subclasses that override attachments still work
         this.getFlippers().update();
         this.getStageText().draw();
-        
+
         if (this.scenarioTop.collide(this.getBall().sprite)) {
             Audio.playSFX('sfx08');
         }
@@ -148,7 +170,7 @@ class BonusStage extends Stage {
     }
 
     endStage(resultState, i18nKey) {
-        if(this.timer)this.timer.disable();
+        if (this.timer) this.timer.disable();
         this.flippers.disableFlippers();
         Audio.stopMusic();
 

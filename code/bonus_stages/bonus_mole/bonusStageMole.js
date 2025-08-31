@@ -1,21 +1,3 @@
-const SCENARIO_TOP_PORTION_POINTS = [
-  [0, 0],
-  [SCREEN_WIDTH, 0],
-  [SCREEN_WIDTH, 212],
-  [373, 212],
-  [336, 236],
-  [336, 122],
-  [222, 122],
-  [216, 110],
-  [188, 100],
-  [162, 110],
-  [156, 122],
-  [40, 122],
-  [40, 275],
-  [0, 275],
-  [0, 0]
-];
-
 const MOLE_PHASE = {
   DIGLETTS: 0,
   DUGTRIO: 1,
@@ -35,7 +17,7 @@ class BonusStageMole extends BonusStage {
 
   setup() {
     super.replaceBackground(Asset.getBackground('bonusMoleBackgroundOpen'));
-    super.createBonusScenarioGeometry();
+    super.createBonusScenarioGeometry(true);
 
     this.createDigletts();
     this.dugtrio = new Dugtrio(188, 130);
@@ -62,13 +44,6 @@ class BonusStageMole extends BonusStage {
       ys.map((y, i) => new Diglett(x, y, timeOfDiggletCreation, delays[i]))
     );
   }
-
-
-  //Overrided
-  createScenarioTopGeometry() {
-    this.scenarioTop = this.createScenarioGeometry(SCENARIO_TOP_PORTION_POINTS);
-  }
-
 
   draw() {
     super.draw();

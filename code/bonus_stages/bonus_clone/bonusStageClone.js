@@ -1,14 +1,19 @@
+const MEWTWO_POS_X = 189;
+const MEWTWO_POS_Y = 136;
 
 class BonusStageClone extends BonusStage {
 
   constructor() {
     super();
 
+    this.state = BONUS_STAGE_STATE.PLAYING;
+    this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y);
+
   }
 
   setup() {
     super.replaceBackground(Asset.getBackground('bonusCloneBackgroundOpen'));
-    super.createBonusScenarioGeometry();
+    super.createBonusScenarioGeometry(true);
 
     Audio.playMusic('cloneStage');
   }
@@ -18,8 +23,11 @@ class BonusStageClone extends BonusStage {
     this.drawStage();
   }
 
-  drawStage(){
-    
+  drawStage() {
+    if (this.state === BONUS_STAGE_STATE.PLAYING) {
+      super.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
+      super.closeBonusGateIfBallInsideBoard(this.getBackground());
+    }
   }
 
   getBackground() {

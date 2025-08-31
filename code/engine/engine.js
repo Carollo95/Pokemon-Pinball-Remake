@@ -1,6 +1,6 @@
 // Debug settings
-let DEBUG = false; //true to start the game on debug mode
-let MUSIC_VOLUME = 0.4; //volume of the music
+let DEBUG = true; //true to start the game on debug mode
+let MUSIC_VOLUME = 0.0; //volume of the music
 let SFX_VOLUME = 0.6; //volume of the sfx
 
 // Canvas settings
