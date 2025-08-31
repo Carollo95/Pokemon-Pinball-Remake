@@ -79,3 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("seal-stage").addEventListener("click", startSealStage);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("clone-stage").addEventListener("click", startCloneStage);
+});
