@@ -28,6 +28,8 @@ class BonusStageClone extends BonusStage {
       super.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
       super.closeBonusGateIfBallInsideBoard(this.getBackground());
     }
+
+    this.mewtwo.update(this.getBall().sprite);
   }
 
   getBackground() {

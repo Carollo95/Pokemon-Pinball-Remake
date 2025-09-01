@@ -155,6 +155,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animPearlMultiplier256', 'assets/img/bonus-seal/pearl_multiplier_256', 64, 16, 1);
 
   Asset.registerAnimationTemplate('animMewtwoIdle', 'assets/img/bonus-clone/mewtwo', 64, 64, 3, 16);
+  Asset.registerAnimationTemplate('animMewtwoHurt', 'assets/img/bonus-clone/mewtwo_hurt', 64, 64, 1, 16);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   // stage text templates
