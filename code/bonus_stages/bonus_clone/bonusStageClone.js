@@ -36,9 +36,15 @@ class BonusStageClone extends BonusStage {
       super.closeBonusGateIfBallInsideBoard(this.getBackground());
     }
 
-    this.mewtwo.update(this.getBall().sprite);
+    this.mewtwo.update(this.getBall().sprite, onMewtwoHurtCallback);
     for (const shield of this.shields) {
       shield.update(this.getBall().sprite);
+    }
+  }
+
+  onMewtwoHurtCallback = () => {
+    for (const shield of this.shields) {
+      shield.temporaryDisable();
     }
   }
 

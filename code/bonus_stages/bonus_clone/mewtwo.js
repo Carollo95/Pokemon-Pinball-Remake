@@ -14,17 +14,15 @@ class Mewtwo {
         this.sprite.layer = SPRITE_LAYER;
     }
 
-    update(ballSprite) {
+    update(ballSprite, onHitCallback) {
         if (this.hitPoints > 0) {
-            this.checkCollision(ballSprite);
+            this.checkCollision(ballSprite, onHitCallback);
         } else {
             //TODO dissapear?
         }
     }
 
-
-
-    checkCollision(ballSprite) {
+    checkCollision(ballSprite, onHitCallback) {
         if (this.sprite.collide(ballSprite) && this.sprite.ani.name !== "hurt") {
             this.sprite.changeAnimation("hurt");
             this.hitPoints--;
@@ -35,6 +33,11 @@ class Mewtwo {
             this.sprite.ani.onComplete = () => {
                 this.sprite.changeAnimation("idle");
             };
+
+            if (onHitCallback) {
+                onHitCallback();
+            }
+            
         }
     }
 }
