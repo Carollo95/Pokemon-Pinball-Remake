@@ -1,4 +1,4 @@
-const MEWTWO_POS_X = 189;
+const MEWTWO_POS_X = 188;
 const MEWTWO_POS_Y = 136;
 
 class BonusStageClone extends BonusStage {
@@ -9,6 +9,13 @@ class BonusStageClone extends BonusStage {
     this.state = BONUS_STAGE_STATE.PLAYING;
     this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y);
 
+    this.shields = [];
+    this.shields.push(new Shield(134, 136));
+    this.shields.push(new Shield(161, 89));
+    this.shields.push(new Shield(215, 89));
+    this.shields.push(new Shield(242, 136));
+    this.shields.push(new Shield(215, 183));
+    this.shields.push(new Shield(161, 183));
   }
 
   setup() {
@@ -30,6 +37,9 @@ class BonusStageClone extends BonusStage {
     }
 
     this.mewtwo.update(this.getBall().sprite);
+    for (const shield of this.shields) {
+      shield.update(this.getBall().sprite);
+    }
   }
 
   getBackground() {
