@@ -21,13 +21,8 @@ class Stage {
         this.stageText = null;
     }
 
-    replaceBackground(newBackgroundImage) {
-        this.background = newBackgroundImage;
-    }
-
-    getBackground() {
-        return this.background;
-    }
+    replaceBackground(newBackgroundImage) { this.background = newBackgroundImage; }
+    getBackground() { return this.background; }
 
     drawBackground() {
         if (this.background) {
@@ -48,9 +43,7 @@ class Stage {
         this._shakeStrength = strength;
     }
 
-    isShaking() {
-        return millis() < this._shakeEndAt;
-    }
+    isShaking() { return millis() < this._shakeEndAt; }
 
     /**
      * Single entry point to draw stage visuals.
@@ -81,6 +74,5 @@ class Stage {
     getTimer() { return this.timer; }
     getFlippers() { return this.flippers; }
     getStageText() { return this.stageText; }
-
-    getBallSprite(){return this.getBall().sprite;}
+    getBallSprite() { return this.getBall().sprite; }
 }

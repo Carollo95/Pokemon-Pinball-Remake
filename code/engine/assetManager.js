@@ -156,7 +156,8 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('animMewtwoIdle', 'assets/img/bonus-clone/mewtwo', 64, 64, 3, 16);
   Asset.registerAnimationTemplate('animMewtwoHurt', 'assets/img/bonus-clone/mewtwo_hurt', 64, 64, 1, 16);
-  Asset.registerAnimationTemplate('animShieldCreate', 'assets/img/bonus-clone/shield_create', 32, 32, 7);
+  Asset.registerAnimationTemplate('animShieldCreate', 'assets/img/bonus-clone/shield_create', 32, 32, 7, 6);
+  Asset.registerAnimationTemplate('animShieldDestroy', 'assets/img/bonus-clone/shield_destroy', 32, 32, 7, 6);
   Asset.registerAnimationTemplate('animShield', 'assets/img/bonus-clone/shield', 32, 32, 4);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

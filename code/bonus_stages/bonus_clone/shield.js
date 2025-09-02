@@ -7,8 +7,10 @@ class Shield {
         this.sprite = new Sprite(x, y, 32, "static");
 
         this.sprite.addAnimation("create", Asset.getAnimation('animShieldCreate'));
+        this.sprite.addAnimation("destroy", Asset.getAnimation('animShieldDestroy'));
         this.sprite.addAnimation("idle", Asset.getAnimation('animShield'));
         this.sprite.layer = SPRITE_LAYER;
+        this.sprite.debug = DEBUG;
 
 
         this.orbitCenter = { x: 189, y: 136 }; // center point
@@ -20,11 +22,33 @@ class Shield {
     }
 
     update(ballSprite) {
-        if (this.disabled && millis() - this.temporaryDisableTime > TEMPORARY_DISABLE_MS) {
-            this.enable();
+        if (this.sprite.collide(ballSprite)) {
+            this.destroy();
         }
 
         this.move();
+    }
+
+    destroy() {
+        this.disable();
+        this.sprite.changeAnimation('destroy');
+        this.sprite.ani.frame = 0;
+        this.sprite.ani.playing = true;
+        this.sprite.ani.looping = false;
+        this.sprite.ani.onComplete = () => {
+            this.sprite.visible = false;
+        };
+    }
+
+    respawn() {
+        this.sprite.changeAnimation('create');
+        this.sprite.visible = true;
+        this.sprite.ani.frame = 0;
+        this.sprite.ani.playing = true;
+        this.sprite.ani.looping = false;
+        this.sprite.ani.onComplete = () => {
+            this.enable();
+        };
     }
 
     move() {
@@ -36,18 +60,17 @@ class Shield {
     temporaryDisable() {
         this.temporaryDisableTime = millis();
         this.disable();
+        this.sprite.visible = false;
     }
 
     disable() {
+        EngineUtils.disableSprite(this.sprite);
         this.disabled = true;
-        EngineUtil.disableSprite(this.sprite);
-        this.sprite.visible = false;
     }
 
     enable() {
         this.disabled = false;
-        EngineUtil.enableSprite(this.sprite);
-        this.sprite.visible = true;
+        EngineUtils.enableSprite(this.sprite);
     }
 
 }

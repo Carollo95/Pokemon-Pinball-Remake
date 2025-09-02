@@ -12,6 +12,7 @@ class Mewtwo {
         this.sprite.addAnimation("hurt", Asset.getAnimation('animMewtwoHurt'));
         this.sprite.addAnimation("idle", Asset.getAnimation('animMewtwoIdle'));
         this.sprite.layer = SPRITE_LAYER;
+        this.sprite.debug = DEBUG;
     }
 
     update(ballSprite, onHitCallback) {
