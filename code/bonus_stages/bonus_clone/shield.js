@@ -16,7 +16,7 @@ class Shield {
         this.disabled = false;
     }
 
-    createSprite(){
+    createSprite() {
         this.sprite = new Sprite(this.x, this.y, 32, "static");
 
         this.sprite.addAnimation("create", Asset.getAnimation('animShieldCreate'));
@@ -43,6 +43,7 @@ class Shield {
         this.sprite.ani.looping = false;
         this.sprite.ani.onComplete = () => {
             this.sprite.remove();
+            this.disabled = true;
         };
     }
 
@@ -54,8 +55,8 @@ class Shield {
         this.sprite.ani.playing = true;
         this.sprite.ani.looping = false;
         this.sprite.ani.onComplete = () => {
-            EngineUtils.enableSprite(this.sprite);
             this.disabled = false;
+            EngineUtils.enableSprite(this.sprite);
             this.sprite.changeAnimation('idle');
         };
     }
@@ -63,7 +64,7 @@ class Shield {
     move() {
         this.angle += ANGULAR_SPEED;
 
-        this.x =  this.orbitCenter.x + cos(this.angle) * this.radius;
+        this.x = this.orbitCenter.x + cos(this.angle) * this.radius;
         this.y = this.orbitCenter.y + sin(this.angle) * this.radius;
         this.sprite.pos.x = this.x;
         this.sprite.pos.y = this.y;

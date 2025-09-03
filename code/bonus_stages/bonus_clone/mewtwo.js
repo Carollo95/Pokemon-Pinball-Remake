@@ -2,6 +2,8 @@ const MEWTWO_HITBOX_DIAMETER = 52;
 const MEWTWO_INVINCIBILITY_MS = 1000;
 const MEWTWO_BLINKING_RATE = 5;
 
+const MEWTWO_SHIELD_CREATION_COOLDOWN = 1000;
+
 const SHIELD6_POINTS = [
     [134, 136],
     [161, 89],
@@ -43,12 +45,14 @@ const SHIELD1_POINTS = [
 
 class Mewtwo {
 
-    constructor(x, y, onCheckCreateShield) {
+    constructor(x, y, onCheckCreateShield, onCreateShield) {
         this.hitPoints = 25;
 
         this.sprite = new Sprite(x, y, MEWTWO_HITBOX_DIAMETER, "static");
 
         this.sprite.addAnimation("hurt", Asset.getAnimation('animMewtwoHurt'));
+        this.sprite.addAnimation("psychic1", Asset.getAnimation('animMewtwoPsychic1'));
+        this.sprite.addAnimation("psychic2", Asset.getAnimation('animMewtwoPsychic2'));
         this.sprite.addAnimation("idle", Asset.getAnimation('animMewtwoIdle'));
         this.sprite.layer = SPRITE_LAYER;
         this.sprite.debug = DEBUG;
@@ -56,6 +60,8 @@ class Mewtwo {
         this.changeToIdleAnimation();
 
         this.checkCreateShield = onCheckCreateShield;
+
+        this.shieldCreationCooldown = 0;
     }
 
     update(ballSprite, onHitCallback) {
@@ -91,12 +97,28 @@ class Mewtwo {
         this.sprite.ani.playing = true;
         this.sprite.ani.looping = true;
         this.sprite.ani.onComplete = () => {
-            this.checkCreateShield();
+            if (millis() - this.shieldCreationCooldown > MEWTWO_SHIELD_CREATION_COOLDOWN) {
+                this.checkCreateShield();
+            }
         };
     }
 
-    createShieldAnimation(){
-        console.log("NOW");
+    createShieldAnimation(shield) {
+        this.sprite.changeAnimation("psychic1");
+        this.sprite.ani.frame = 0;
+        this.sprite.ani.playing = true;
+        this.sprite.ani.looping = false;
+        this.sprite.ani.onComplete = () => {
+            this.sprite.changeAnimation("psychic2");
+            this.sprite.ani.frame = 0;
+            this.sprite.ani.playing = true;
+            this.sprite.ani.looping = false;
+            this.sprite.ani.onComplete = () => {
+                shield.respawn();
+                this.changeToIdleAnimation();
+                this.shieldCreationCooldown = millis();
+            };
+        };
     }
 
     getShieldPoints() {

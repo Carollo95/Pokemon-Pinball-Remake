@@ -66,10 +66,10 @@ class BonusStageClone extends BonusStage {
   doOnCheckCreateShield = () => {
     for (const shield of this.shields) {
       if (shield.disabled) {
-        this.mewtwo.createShieldAnimation();
-        shield.respawn();
+        this.mewtwo.createShieldAnimation(shield);
         break;
       }
     }
   }
+
 }
