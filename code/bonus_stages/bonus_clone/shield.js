@@ -18,7 +18,6 @@ class Shield {
         this.angle = atan2(y - this.orbitCenter.y, x - this.orbitCenter.x); // initial angle
 
         this.disabled = false;
-        this.temporaryDisableTime = 0;
     }
 
     update(ballSprite) {
@@ -30,13 +29,15 @@ class Shield {
     }
 
     destroy() {
-        this.disable();
+        EngineUtils.disableSprite(this.sprite);
+        this.disabled = true;
         this.sprite.changeAnimation('destroy');
         this.sprite.ani.frame = 0;
         this.sprite.ani.playing = true;
         this.sprite.ani.looping = false;
         this.sprite.ani.onComplete = () => {
             this.sprite.visible = false;
+            this.sprite.remove();
         };
     }
 
@@ -57,15 +58,10 @@ class Shield {
         this.sprite.pos.y = this.orbitCenter.y + sin(this.angle) * this.radius;
     }
 
-    temporaryDisable() {
-        this.temporaryDisableTime = millis();
-        this.disable();
-        this.sprite.visible = false;
-    }
-
     disable() {
         EngineUtils.disableSprite(this.sprite);
         this.disabled = true;
+        this.sprite.remove();
     }
 
     enable() {
