@@ -7,7 +7,7 @@ class BonusStageClone extends BonusStage {
     super();
 
     this.state = BONUS_STAGE_STATE.PLAYING;
-    this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y);
+    this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y, this.doOnCheckCreateShield);
 
     this.shields = [];
     this.createShields();
@@ -19,9 +19,9 @@ class BonusStageClone extends BonusStage {
     }
   }
 
-  destroyShields(){
+  destroyShields() {
     for (const shield of this.shields) {
-      shield.disable();
+      shield.remove();
     }
     this.shields = [];
   }
@@ -63,4 +63,13 @@ class BonusStageClone extends BonusStage {
     return Asset.getBackground('bonusCloneBackgroundOpen');
   }
 
+  doOnCheckCreateShield = () => {
+    for (const shield of this.shields) {
+      if (shield.disabled) {
+        this.mewtwo.createShieldAnimation();
+        shield.respawn();
+        break;
+      }
+    }
+  }
 }
