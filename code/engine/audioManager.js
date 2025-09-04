@@ -259,8 +259,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx35', 'assets/audio/sfx/SFX-35')); //Diglett hurt
     promises.push(audio.registerSFX('sfx36', 'assets/audio/sfx/SFX-36')); //Dugtrio hurt
     promises.push(audio.registerSFX('sfx37', 'assets/audio/sfx/SFX-37')); //Gengar hurt
-    promises.push(audio.registerSFX('sfx38', 'assets/audio/sfx/SFX-38'));
-    promises.push(audio.registerSFX('sfx39', 'assets/audio/sfx/SFX-39'));
+    promises.push(audio.registerSFX('sfx38', 'assets/audio/sfx/SFX-38')); //Mewtwo shield destroyed
+    promises.push(audio.registerSFX('sfx39', 'assets/audio/sfx/SFX-39')); //Mewtwo hurt
     promises.push(audio.registerSFX('sfx3A', 'assets/audio/sfx/SFX-3A'));
     promises.push(audio.registerSFX('sfx3B', 'assets/audio/sfx/SFX-3B'));
     promises.push(audio.registerSFX('sfx3C', 'assets/audio/sfx/SFX-3C'));
