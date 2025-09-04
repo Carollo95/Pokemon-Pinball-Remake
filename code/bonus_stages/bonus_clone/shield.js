@@ -38,6 +38,7 @@ class Shield {
     destroy() {
         EngineUtils.disableSprite(this.sprite);
         this.sprite.changeAnimation('destroy');
+        Audio.playSFX('sfx38');
         this.sprite.ani.frame = 0;
         this.sprite.ani.playing = true;
         this.sprite.ani.looping = false;

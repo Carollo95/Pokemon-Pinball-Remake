@@ -84,7 +84,7 @@ class Mewtwo {
         if (this.sprite.collide(ballSprite) && this.sprite.ani.name !== "hurt") {
             this.hitPoints--;
             this.sprite.changeAnimation("hurt");
-            //Audio.playSFX('sfx35');
+            Audio.playSFX('sfx39');
             this.sprite.ani.frame = 0;
             this.sprite.ani.playing = true;
             this.sprite.ani.looping = false;
