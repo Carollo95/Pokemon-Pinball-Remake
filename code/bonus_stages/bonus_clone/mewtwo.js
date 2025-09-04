@@ -82,26 +82,27 @@ class Mewtwo {
 
     checkCollision(ballSprite, onHitCallback) {
         if (this.sprite.collide(ballSprite) && this.sprite.ani.name !== "hurt") {
-            this.sprite.changeAnimation("hurt");
             this.hitPoints--;
+            this.sprite.changeAnimation("hurt");
             //Audio.playSFX('sfx35');
             this.sprite.ani.frame = 0;
             this.sprite.ani.playing = true;
             this.sprite.ani.looping = false;
-            this.sprite.ani.onComplete = () => {
-                if (this.hitPoints > 0) {
+
+            if (this.hitPoints > 0) {
+                this.sprite.ani.onComplete = () => {
                     this.sprite.changeAnimation("idle");
-                } else {
-                    this.timeOfDefeat = millis();
-                    this.onDefeat();
                 }
-            };
+            } else {
+                this.timeOfDefeat = millis();
+                this.onDefeat();
+            }
 
             if (onHitCallback) {
                 onHitCallback();
             }
+        };
 
-        }
     }
 
     changeToIdleAnimation() {
