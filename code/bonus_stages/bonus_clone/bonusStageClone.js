@@ -8,7 +8,7 @@ class BonusStageClone extends BonusStage {
     super();
 
     this.state = BONUS_STAGE_STATE.PLAYING;
-    this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y, this.doOnCheckCreateShield);
+    this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y, this.doOnCheckCreateShield, this.doOnMewtwoDefeat);
 
     this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, CLONE_STAGE_TIME_MILLIS));
 
@@ -40,7 +40,7 @@ class BonusStageClone extends BonusStage {
     super.draw();
     this.drawStage();
 
-    if (this.state === BONUS_STAGE_STATE.LOST || this.getTimer().timeIsUp()) {
+    if (this.state === BONUS_STAGE_STATE.LOST || this.state === BONUS_STAGE_STATE.WON) {
       if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
         //TODO end stage
         console.log("Finish!");
@@ -95,6 +95,11 @@ class BonusStageClone extends BonusStage {
         break;
       }
     }
+  }
+
+  doOnMewtwoDefeat = () => {
+    this.destroyShields();
+    this.endStage(BONUS_STAGE_STATE.WON, "mewtwo_stage_clear");
   }
 
   finishStage() {

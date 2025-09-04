@@ -3,6 +3,7 @@ const MEWTWO_INVINCIBILITY_MS = 1000;
 const MEWTWO_BLINKING_RATE = 5;
 
 const MEWTWO_SHIELD_CREATION_COOLDOWN = 1000;
+const MEWTWO_BLINKING_MILLIS_AFTER_DEFEAT = 1000;
 
 const SHIELD6_POINTS = [
     [134, 136],
@@ -45,7 +46,7 @@ const SHIELD1_POINTS = [
 
 class Mewtwo {
 
-    constructor(x, y, onCheckCreateShield, onCreateShield) {
+    constructor(x, y, onCheckCreateShield, onDefeat) {
         this.hitPoints = 25;
 
         this.sprite = new Sprite(x, y, MEWTWO_HITBOX_DIAMETER, "static");
@@ -60,15 +61,22 @@ class Mewtwo {
         this.changeToIdleAnimation();
 
         this.checkCreateShield = onCheckCreateShield;
+        this.onDefeat = onDefeat;
 
         this.shieldCreationCooldown = 0;
+        this.timeOfDefeat = 0;
     }
 
     update(ballSprite, onHitCallback) {
         if (this.hitPoints > 0) {
             this.checkCollision(ballSprite, onHitCallback);
         } else {
-            //TODO dissapear?
+            if (millis() - this.timeOfDefeat < MEWTWO_BLINKING_MILLIS_AFTER_DEFEAT) {
+                EngineUtils.blinkSprite(this.sprite, 2);
+            }
+            else {
+                this.sprite.visible = false;
+            }
         }
     }
 
@@ -81,7 +89,12 @@ class Mewtwo {
             this.sprite.ani.playing = true;
             this.sprite.ani.looping = false;
             this.sprite.ani.onComplete = () => {
-                this.sprite.changeAnimation("idle");
+                if (this.hitPoints > 0) {
+                    this.sprite.changeAnimation("idle");
+                } else {
+                    this.timeOfDefeat = millis();
+                    this.onDefeat();
+                }
             };
 
             if (onHitCallback) {
