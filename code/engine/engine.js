@@ -1,4 +1,5 @@
 // Debug settings
+let SHOW_FPS = true; // true to show FPS
 let DEBUG = false; //true to start the game on debug mode
 let MUSIC_VOLUME = 0.0; //volume of the music
 let SFX_VOLUME = 0.6; //volume of the sfx
@@ -17,7 +18,8 @@ const SPRITE_LAYER = 2; //Base layer for any sprite
 const BALL_LAYER = 5; //Layer for the ball sprite
 const HUD_LAYER = 9; //Layer for the HUD elements
 const FLASH_LAYER = 10; //Layer for the flash effect
-const FRAME_LAYER = 11 //Layer for the frame on the bonus stages
+const FRAME_LAYER = 11; //Layer for the frame on the bonus stages
+const DEBUG_LAYER = 12; //Layer for debug elements
 
 const DEFAULT_BLINKING_FRAMES = 10;
 
@@ -27,6 +29,9 @@ let canvas;
 // Flash internal state
 let whiteFlash = null;
 let whiteFlashSprite = null;
+
+// FPS overlay sprite (p5play)
+let fpsSprite = null;
 
 const EngineUtils = {
 
@@ -48,10 +53,10 @@ const EngineUtils = {
         sprite.physics = "static";
     },
 
-     /**
-     * Blinks a psprite
-     * @param {sprite} sprite  the sprite.
-     */
+    /**
+    * Blinks a psprite
+    * @param {sprite} sprite  the sprite.
+    */
     blinkSprite(sprite, blinkingFrames = DEFAULT_BLINKING_FRAMES) {
         sprite.visible = (frameCount % (blinkingFrames * 2) < blinkingFrames);
     },
@@ -130,11 +135,46 @@ const EngineUtils = {
     },
 
     /**
+     * Ensure FPS sprite exists and update its visibility/text.
+     * Renders on its own sprite so it respects p5play layers.
+     */
+    showFPS() {
+        if (!fpsSprite || fpsSprite.removed) {
+            fpsSprite = new Sprite(30, 12, 70, 20, "static");
+            fpsSprite.collider = 'none';
+            fpsSprite.layer = 20; // requested layer
+            fpsSprite.visible = false;
+            fpsSprite.draw = function () {
+                push();
+                rectMode(CENTER);
+                noStroke();
+                fill(0, 120);
+                // background rounded rect
+                rect(this.pos.x, this.pos.y, this.width, this.height, 4);
+
+                // FPS text
+                textSize(12);
+                textAlign(LEFT, TOP);
+                fill(255);
+                stroke(0);
+                strokeWeight(1);
+                text("FPS: " + (isNaN(frameRate()) ? "0.00" : frameRate().toFixed(2)),
+                    this.pos.x - this.width / 2 + 6,
+                    this.pos.y - this.height / 2 + 3);
+                pop();
+            };
+        }
+
+        // Visibility based on SHOW_FPS flag
+        fpsSprite.visible = SHOW_FPS;
+    },
+
+    /**
      * Draws the stage
      */
     drawStage() {
         stage.draw();
-        if (DEBUG) showFPS();
+        this.showFPS();
     },
 
     initPhysics() {
