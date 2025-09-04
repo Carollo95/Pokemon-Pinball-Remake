@@ -77,6 +77,9 @@ function preLoadBackgrounds() {
   Asset.registerBackground('bonusSealBackgroundOpen', 'assets/img/bonus-seal/bonus_seal_background_open');
   Asset.registerBackground('bonusSealBackgroundClosed', 'assets/img/bonus-seal/bonus_seal_background');
 
+  Asset.registerBackground('bonusCloneBackgroundOpen', 'assets/img/bonus-clone/bonus_clone_background_open');
+  Asset.registerBackground('bonusCloneBackgroundClosed', 'assets/img/bonus-clone/bonus_clone_background');
+
   Asset.registerBackground('bonusStageFrame', 'assets/img/bonus_state_frame');
 }
 
@@ -150,6 +153,14 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animPearlMultiplier64', 'assets/img/bonus-seal/pearl_multiplier_64', 48, 16, 1);
   Asset.registerAnimationTemplate('animPearlMultiplier128', 'assets/img/bonus-seal/pearl_multiplier_128', 64, 16, 1);
   Asset.registerAnimationTemplate('animPearlMultiplier256', 'assets/img/bonus-seal/pearl_multiplier_256', 64, 16, 1);
+
+  Asset.registerAnimationTemplate('animMewtwoIdle', 'assets/img/bonus-clone/mewtwo', 64, 64, 3, 16);
+  Asset.registerAnimationTemplate('animMewtwoHurt', 'assets/img/bonus-clone/mewtwo_hurt', 64, 64, 1, 16);
+  Asset.registerAnimationTemplate('animMewtwoPsychic1', 'assets/img/bonus-clone/mewtwo_psychic_1', 64, 64, 8, 4);
+  Asset.registerAnimationTemplate('animMewtwoPsychic2', 'assets/img/bonus-clone/mewtwo_psychic_2', 64, 64, 1, 16);
+  Asset.registerAnimationTemplate('animShieldCreate', 'assets/img/bonus-clone/shield_create', 32, 32, 7, 6);
+  Asset.registerAnimationTemplate('animShieldDestroy', 'assets/img/bonus-clone/shield_destroy', 32, 32, 7, 6);
+  Asset.registerAnimationTemplate('animShield', 'assets/img/bonus-clone/shield', 32, 32, 4);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   // stage text templates

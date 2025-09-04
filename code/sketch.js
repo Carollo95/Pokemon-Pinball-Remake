@@ -19,7 +19,7 @@ function setup() {
   EngineUtils.initPhysics();
 
   // Start level
-  startSealStage();
+  startCloneStage();
 }
 
 function draw() {
@@ -58,6 +58,12 @@ function startSealStage() {
   stage.setup();
 }
 
+function startCloneStage() {
+  allSprites.remove();
+  stage = new BonusStageClone();
+  stage.setup();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("ghost-stage").addEventListener("click", startGhostStage);
 });
@@ -72,4 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("seal-stage").addEventListener("click", startSealStage);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("clone-stage").addEventListener("click", startCloneStage);
 });
