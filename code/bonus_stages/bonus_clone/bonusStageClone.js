@@ -1,3 +1,4 @@
+const CLONE_STAGE_TIME_MILLIS = 121000;
 const MEWTWO_POS_X = 188;
 const MEWTWO_POS_Y = 136;
 
@@ -8,6 +9,8 @@ class BonusStageClone extends BonusStage {
 
     this.state = BONUS_STAGE_STATE.PLAYING;
     this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y, this.doOnCheckCreateShield);
+
+    this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, CLONE_STAGE_TIME_MILLIS));
 
     this.shields = [];
     this.createShields();
@@ -36,6 +39,13 @@ class BonusStageClone extends BonusStage {
   draw() {
     super.draw();
     this.drawStage();
+
+    if (this.state === BONUS_STAGE_STATE.LOST || this.getTimer().timeIsUp()) {
+      if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
+        //TODO end stage
+        console.log("Finish!");
+      }
+    }
   }
 
   drawStage() {
@@ -44,9 +54,24 @@ class BonusStageClone extends BonusStage {
       super.closeBonusGateIfBallInsideBoard(this.getBackground());
     }
 
+    this.updateTimer();
     this.mewtwo.update(this.getBall().sprite, this.onMewtwoHurtCallback);
     for (const shield of this.shields) {
       shield.update(this.getBall().sprite);
+    }
+  }
+
+  updateTimer() {
+    this.getTimer().update();
+
+    if (this.state !== BONUS_STAGE_STATE.LOST && this.getTimer().timeIsUp()) {
+      this.getFlippers().disableFlippers();
+
+      if (this.state !== BONUS_STAGE_STATE.WON) {
+        this.endStage(BONUS_STAGE_STATE.LOST, "end_mewtwo_stage");
+      } else {
+        this.finishStage();
+      }
     }
   }
 
@@ -70,6 +95,13 @@ class BonusStageClone extends BonusStage {
         break;
       }
     }
+  }
+
+  finishStage() {
+    this.getTimer().disable();
+    this.getFlippers().disableFlippers();
+    Audio.stopMusic();
+    this.millisSinceStageComplete = millis();
   }
 
 }

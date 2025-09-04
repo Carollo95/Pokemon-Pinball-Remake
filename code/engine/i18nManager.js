@@ -8,7 +8,9 @@ const I18NManager = {
             "diglett_stage_cleared": "diglett stage clear",
             "end_diglett_stage": " end diglett stage ",
             "seal_stage_cleared": "    seal stage clear ",
-            "end_seal_stage": "   end seal stage  "
+            "end_seal_stage": "   end seal stage  ",
+            "mewtwo_stage_cleared": "mewtwo stage clear ",
+            "end_mewtwo_stage": "end mewtwo stage  "
         }
     },
 
