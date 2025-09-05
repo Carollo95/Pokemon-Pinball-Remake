@@ -62,6 +62,8 @@ class Stage {
         }
 
         EngineUtils.drawWhiteFlash();
+
+        if(this.ball) this.ball.update();
     }
 
     // --- helpers to attach common per-stage components ---
