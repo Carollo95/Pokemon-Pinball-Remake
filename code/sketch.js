@@ -1,7 +1,7 @@
 function preload() {
   preLoadBackgrounds();
   preloadAnimations();
-  
+
   this._incrementPreload();
   preloadAudioAssets().then(() => this._decrementPreload());
 }
@@ -19,67 +19,29 @@ function setup() {
   EngineUtils.initPhysics();
 
   // Start level
-  startCloneStage();
+  CheatEngine.startCloneStage();
 }
 
 function draw() {
   EngineUtils.drawStage();
 }
 
-function showFPS() {
-  let fps = frameRate();
-  fill(255);
-  stroke(0);
-  text("FPS: " + fps.toFixed(2), 10, 10);
-}
-
-
-function startGhostStage() {
-  allSprites.remove();
-  stage = new BonusStageGhost();
-  stage.setup();
-}
-
-function startMoleStage() {
-  allSprites.remove();
-  stage = new BonusStageMole();
-  stage.setup();
-}
-
-function startCatStage() {
-  allSprites.remove();
-  stage = new BonusStageCat();
-  stage.setup();
-}
-
-function startSealStage() {
-  allSprites.remove();
-  stage = new BonusStageSeal();
-  stage.setup();
-}
-
-function startCloneStage() {
-  allSprites.remove();
-  stage = new BonusStageClone();
-  stage.setup();
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("ghost-stage").addEventListener("click", startGhostStage);
+  document.getElementById("ghost-stage").addEventListener("click", CheatEngine.startGhostStage);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("mole-stage").addEventListener("click", startMoleStage);
+  document.getElementById("mole-stage").addEventListener("click", CheatEngine.startMoleStage);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("cat-stage").addEventListener("click", startCatStage);
+  document.getElementById("cat-stage").addEventListener("click", CheatEngine.startCatStage);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("seal-stage").addEventListener("click", startSealStage);
+  document.getElementById("seal-stage").addEventListener("click", CheatEngine.startSealStage);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("clone-stage").addEventListener("click", startCloneStage);
+  document.getElementById("clone-stage").addEventListener("click", CheatEngine.startCloneStage);
 });

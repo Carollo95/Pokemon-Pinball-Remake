@@ -1,6 +1,4 @@
-// Debug settings
-let SHOW_FPS = true; // true to show FPS
-let DEBUG = false; //true to start the game on debug mode
+// Option settings
 let MUSIC_VOLUME = 0.4; //volume of the music
 let SFX_VOLUME = 0.6; //volume of the sfx
 
