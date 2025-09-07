@@ -8,15 +8,15 @@ const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on scree
 class StageStatusBanner {
 
 
-    constructor(x, y) {
+    constructor(x, y, stageStatus) {
         this.textArray = new Array(MAX_CHARS);
         this.lastMovement = 0;
         this.textQueue = '';
         this.show = false;
         this.endTextDisplayMillis = 0;
         this.persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS;
-        
-        const letters = 'abcdefghijklmnopqrstuvwxyz';
+
+        const letters = 'abcdefghijklmnopqrstuvwxyz1234567890';
         for (var i = 0; i <= MAX_CHARS; i++) {
             this.textArray[i] = new Sprite(x - (CHAR_SIZE * i + 1), y, CHAR_SIZE, CHAR_SIZE, "none");
             this.textArray[i].layer = HUD_LAYER;
@@ -31,14 +31,71 @@ class StageStatusBanner {
             this.textArray[i].addAnimation('$!', Asset.getAnimation('stageTextExcl'));
             this.textArray[i].addAnimation('$:', Asset.getAnimation('stageTextColon'));
 
+            this.textArray[i].addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
+            this.textArray[i].addAnimation('$;', Asset.getAnimation('stageTextDotSeparator'));
+
+            this.textArray[i].addAnimation('$º', Asset.getAnimation('stageTextBall'));
+            this.textArray[i].addAnimation('$ª', Asset.getAnimation('stageTextPokemon'));
+            this.textArray[i].addAnimation('$/', Asset.getAnimation('stageTextThunder'));
+
             // last one so no need to change it on creation
             this.textArray[i].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
 
             this.textArray[i].debug = DEBUG;
         }
 
+        this.stageStatus = stageStatus;
+
         // initialize display
         this.clearText();
+    }
+
+    showStatus() {
+        this.setText(this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus(), DEFAULT_TEXT_PERSISTENCE_MILLIS);
+    }
+
+    createCapturedStatus() {
+        let captured;
+        if (this.stageStatus.captured < 10) {
+            captured = this.stageStatus.captured.toString() + "ª ";
+        } else if (this.stageStatus.captured > 999) {
+            captured = "999ª";
+        } else {
+            captured = this.stageStatus.captured.toString() + "ª";
+        }
+
+        return captured;
+    }
+
+    createBallsStatus() {
+        let balls;
+        if (this.stageStatus.balls > 9) {
+            balls = "9º";
+        } else {
+            balls = this.stageStatus.balls.toString() + "º";
+        }
+        return balls;
+    }
+
+    createThunderStatus() {
+        let thunder = " ";
+
+        if (this.stageStatus.activeThunder) {
+            thunder = "/";
+        }
+
+        return thunder;
+    }
+
+    createPointsStatus() {
+        const pts = Math.min(this.stageStatus.points, 99999999999999);
+        let s = String(pts);
+        if (s.length > 14) s = s.slice(-14);
+        return s.padStart(14, ' ');
+    }
+
+    setTextInstantly(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {
+
     }
 
     setText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {
@@ -95,6 +152,6 @@ class StageStatusBanner {
 
 }
 
-function createBonusStageStatusBanner() {
-    return new StageStatusBanner(341, 380);
+function createBonusStageStatusBanner(stateStage) {
+    return new StageStatusBanner(341, 380, stateStage);
 }

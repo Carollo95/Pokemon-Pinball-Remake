@@ -22,7 +22,6 @@ const DEBUG_LAYER = 12; //Layer for debug elements
 const DEFAULT_BLINKING_FRAMES = 10;
 
 let stage; //The p5 sketch in use
-let canvas;
 
 // Flash internal state
 let whiteFlash = null;
