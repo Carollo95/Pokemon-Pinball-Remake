@@ -2,6 +2,8 @@ const CHAR_SIZE = 16;
 const MAX_CHARS = 19;
 const MAX_CHARS_BONUS = 19;
 
+const STATUS_CHARS = 21;
+
 const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showing text
 const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on screen the shown text
 
@@ -10,16 +12,26 @@ class StageStatusBanner {
 
     constructor(x, y, stageStatus) {
         this.textArray = new Array(MAX_CHARS);
+        this.statusArray = new Array(STATUS_CHARS);
         this.lastMovement = 0;
         this.textQueue = '';
         this.show = false;
         this.endTextDisplayMillis = 0;
         this.persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS;
 
-        const letters = 'abcdefghijklmnopqrstuvwxyz1234567890';
+        this.stageStatus = stageStatus;
+
+        this.createTextSprites(x, y);
+        this.createStatusSprites(x, y);
+
+        // initialize display
+        //this.clearText();
+    }
+
+    createTextSprites(x, y) {
+        const letters = 'abcdefghijklmnopqrstuvwxyz';
         for (var i = 0; i <= MAX_CHARS; i++) {
-            this.textArray[i] = new Sprite(x - (CHAR_SIZE * i + 1), y, CHAR_SIZE, CHAR_SIZE, "none");
-            this.textArray[i].layer = HUD_LAYER;
+            this.textArray[i] = this.createCharacterSprite(x, y, (CHAR_SIZE * i));
 
             // add letter animations ($a .. $z)
             for (const ch of letters) {
@@ -31,37 +43,230 @@ class StageStatusBanner {
             this.textArray[i].addAnimation('$!', Asset.getAnimation('stageTextExcl'));
             this.textArray[i].addAnimation('$:', Asset.getAnimation('stageTextColon'));
 
-            this.textArray[i].addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
-            this.textArray[i].addAnimation('$;', Asset.getAnimation('stageTextDotSeparator'));
-
-            this.textArray[i].addAnimation('$º', Asset.getAnimation('stageTextBall'));
-            this.textArray[i].addAnimation('$ª', Asset.getAnimation('stageTextPokemon'));
-            this.textArray[i].addAnimation('$/', Asset.getAnimation('stageTextThunder'));
-
             // last one so no need to change it on creation
             this.textArray[i].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-            this.textArray[i].debug = DEBUG;
         }
+    }
 
-        this.stageStatus = stageStatus;
+    createCharacterSprite(x, y, padding, size = CHAR_SIZE) {
+        let sprite = new Sprite(x - padding, y, size, CHAR_SIZE, "none");
+        sprite.layer = HUD_LAYER;
+        sprite.debug = DEBUG;
 
-        // initialize display
-        this.clearText();
+        return sprite;
+    }
+
+    createStatusSprites(x, y) {
+        const numbers = '1234567890';
+
+        this.statusArray[0] = this.createCharacterSprite(x, y, 0);
+
+        for (const ch of numbers) {
+            this.statusArray[0].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[0].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[1] = this.createCharacterSprite(x, y, 16);
+
+        for (const ch of numbers) {
+            this.statusArray[1].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[1].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[2] = this.createCharacterSprite(x, y, 32);
+
+        for (const ch of numbers) {
+            this.statusArray[2].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[2].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[3] = this.createCharacterSprite(x, y, 42, 4);
+        this.statusArray[3].addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
+        this.statusArray[3].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
+
+        //-------------------
+        this.statusArray[4] = this.createCharacterSprite(x, y, 52);
+
+        for (const ch of numbers) {
+            this.statusArray[4].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[4].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[5] = this.createCharacterSprite(x, y, 68);
+
+        for (const ch of numbers) {
+            this.statusArray[5].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[5].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+
+        //-------------------
+        this.statusArray[6] = this.createCharacterSprite(x, y, 84);
+
+        for (const ch of numbers) {
+            this.statusArray[6].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[6].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+
+        //-------------------
+        this.statusArray[7] = this.createCharacterSprite(x, y, 94, 4);
+        this.statusArray[7].addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
+        this.statusArray[7].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
+
+
+        //-------------------
+        this.statusArray[8] = this.createCharacterSprite(x, y, 104);
+
+        for (const ch of numbers) {
+            this.statusArray[8].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[8].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[9] = this.createCharacterSprite(x, y, 120);
+
+        for (const ch of numbers) {
+            this.statusArray[9].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[9].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+
+        //-------------------
+        this.statusArray[10] = this.createCharacterSprite(x, y, 136);
+
+        for (const ch of numbers) {
+            this.statusArray[10].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[10].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+
+        //-------------------
+        this.statusArray[11] = this.createCharacterSprite(x, y, 146, 4);
+        this.statusArray[11].addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
+        this.statusArray[11].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
+
+        //-------------------
+        this.statusArray[12] = this.createCharacterSprite(x, y, 156);
+
+        for (const ch of numbers) {
+            this.statusArray[12].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[12].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+
+        //-------------------
+        this.statusArray[13] = this.createCharacterSprite(x, y, 172);
+
+        for (const ch of numbers) {
+            this.statusArray[13].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[13].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[14] = this.createCharacterSprite(x, y, 188);
+
+        for (const ch of numbers) {
+            this.statusArray[14].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[14].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+
+        //-------------------
+        this.statusArray[15] = this.createCharacterSprite(x, y, 196, 4);
+        this.statusArray[15].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
+
+                //-------------------
+        this.statusArray[16] = this.createCharacterSprite(x, y, 200, 4);
+        this.statusArray[16].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
+
+        //-------------------
+        this.statusArray[17] = this.createCharacterSprite(x, y, 208);
+        this.statusArray[17].addAnimation('$/', Asset.getAnimation('stageTextThunder'));
+        this.statusArray[17].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+        
+        //-------------------
+        this.statusArray[18] = this.createCharacterSprite(x, y, 224);
+
+        for (const ch of numbers) {
+            this.statusArray[18].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[18].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[19] = this.createCharacterSprite(x, y, 240);
+        this.statusArray[19].addAnimation('$º', Asset.getAnimation('stageTextBall'));
+        this.statusArray[19].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[20] = this.createCharacterSprite(x, y, 256);
+
+        for (const ch of numbers) {
+            this.statusArray[20].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[20].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[21] = this.createCharacterSprite(x, y, 272);
+
+        for (const ch of numbers) {
+            this.statusArray[21].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[21].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+
+        //-------------------
+        this.statusArray[22] = this.createCharacterSprite(x, y, 288);
+
+        for (const ch of numbers) {
+            this.statusArray[22].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        this.statusArray[22].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        //-------------------
+        this.statusArray[23] = this.createCharacterSprite(x, y, 304);
+        this.statusArray[23].addAnimation('$ª', Asset.getAnimation('stageTextPokemon'));
+        this.statusArray[23].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
     }
 
     showStatus() {
-        this.setText(this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus(), DEFAULT_TEXT_PERSISTENCE_MILLIS);
+        this.statusArray.forEach(element => {
+            element.visible = true;
+        });
+
+        this.textArray.forEach(element => {
+            element.visible = false;
+        });
+
+        text = this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus(), DEFAULT_TEXT_PERSISTENCE_MILLIS;
+        text = text.split('').reverse().join('');
+        console.log(text);
+        for (var i = 0; i <= 23; i++) {
+
+            if (this.statusArray[i] === undefined) {
+                return;
+                //TODO remove
+            }
+            console.log(text[i] + "   " + this.statusArray[i]);
+            this.statusArray[i].changeAnimation("$" + text[i]);
+        }
     }
 
     createCapturedStatus() {
         let captured;
         if (this.stageStatus.captured < 10) {
-            captured = this.stageStatus.captured.toString() + "ª ";
+            captured = "ª" + this.stageStatus.captured.toString() + "  ";
+        } else if (this.stageStatus.captured < 100) {
+            captured = "ª" + this.stageStatus.captured.toString() + " ";
         } else if (this.stageStatus.captured > 999) {
-            captured = "999ª";
+            captured = "ª999";
         } else {
-            captured = this.stageStatus.captured.toString() + "ª";
+            captured = "ª" + this.stageStatus.captured.toString();
         }
 
         return captured;
@@ -70,9 +275,9 @@ class StageStatusBanner {
     createBallsStatus() {
         let balls;
         if (this.stageStatus.balls > 9) {
-            balls = "9º";
+            balls = "º9";
         } else {
-            balls = this.stageStatus.balls.toString() + "º";
+            balls = "º" + this.stageStatus.balls.toString();
         }
         return balls;
     }
@@ -88,17 +293,21 @@ class StageStatusBanner {
     }
 
     createPointsStatus() {
-        const pts = Math.min(this.stageStatus.points, 99999999999999);
-        let s = String(pts);
-        if (s.length > 14) s = s.slice(-14);
-        return s.padStart(14, ' ');
+        let points = this.stageStatus.points <= 999999999999 ? this.stageStatus.points.toString() : "999999999999";
+        let withCommas = points.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return withCommas.padStart(17, ' ');
     }
 
-    setTextInstantly(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {
-
-    }
 
     setText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {
+        this.statusArray.forEach(element => {
+            element.visible = false;
+        });
+
+        this.textArray.forEach(element => {
+            element.visible = true;
+        });
+
         text = text.replace(".", "$");
         this.show = true;
         this.clearText();
@@ -130,12 +339,6 @@ class StageStatusBanner {
         }
     }
 
-    drawGameStatus() {
-        //TODO temporary
-        for (var i = MAX_CHARS; i >= 0; i--) {
-            this.textArray[i].changeAnimation("$ ");
-        }
-    }
 
     scrollText() {
         for (var i = MAX_CHARS; i > 0; i--) {
