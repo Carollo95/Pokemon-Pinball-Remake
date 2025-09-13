@@ -1,11 +1,15 @@
 const CHAR_SIZE = 16;
-const MAX_CHARS = 19;
-const MAX_CHARS_BONUS = 19;
+const SEPARATOR_SIZE = 4;
 
-const STATUS_CHARS = 21;
+const MAX_CHARS = 19;
+
+const STATUS_CHARS = 23;
 
 const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showing text
 const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on screen the shown text
+
+const LETTERS = 'abcdefghijklmnopqrstuvwxyz';
+const NUMBERS = '1234567890';
 
 class StageStatusBanner {
 
@@ -29,23 +33,81 @@ class StageStatusBanner {
     }
 
     createTextSprites(x, y) {
-        const letters = 'abcdefghijklmnopqrstuvwxyz';
         for (var i = 0; i <= MAX_CHARS; i++) {
-            this.textArray[i] = this.createCharacterSprite(x, y, (CHAR_SIZE * i));
-
-            // add letter animations ($a .. $z)
-            for (const ch of letters) {
-                this.textArray[i].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-            }
-
-            // punctuation and space
-            this.textArray[i].addAnimation('$$', Asset.getAnimation('stageTextDot'));
-            this.textArray[i].addAnimation('$!', Asset.getAnimation('stageTextExcl'));
-            this.textArray[i].addAnimation('$:', Asset.getAnimation('stageTextColon'));
-
-            // last one so no need to change it on creation
-            this.textArray[i].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+            this.textArray[i] = this.createTextSprite(x, y, i);
         }
+    }
+
+    createStatusSprites(x, y) {
+
+        this.statusArray[0] = this.createStatusNumericSprite(x, y, 0, 0);
+        this.statusArray[1] = this.createStatusNumericSprite(x, y, 1, 0);
+        this.statusArray[2] = this.createStatusNumericSprite(x, y, 2, 0);
+        this.statusArray[3] = this.createStatusSeparatorSprite(x, y, 3, 0);
+
+        this.statusArray[4] = this.createStatusNumericSprite(x, y, 3, 1);
+        this.statusArray[5] = this.createStatusNumericSprite(x, y, 4, 1);
+        this.statusArray[6] = this.createStatusNumericSprite(x, y, 5, 1);
+        this.statusArray[7] = this.createStatusSeparatorSprite(x, y, 6, 1);
+
+        this.statusArray[8] = this.createStatusNumericSprite(x, y, 6, 2);
+        this.statusArray[9] = this.createStatusNumericSprite(x, y, 7, 2);
+        this.statusArray[10] = this.createStatusNumericSprite(x, y, 8, 2);
+        this.statusArray[11] = this.createStatusSeparatorSprite(x, y, 9, 2);
+        
+        this.statusArray[12] = this.createStatusNumericSprite(x, y, 9, 3);
+        this.statusArray[13] = this.createStatusNumericSprite(x, y, 10, 3);
+        this.statusArray[14] = this.createStatusNumericSprite(x, y, 11, 3);
+        this.statusArray[15] = this.createStatusSeparatorSprite(x, y, 12, 3);
+
+        this.statusArray[16] = this.createStatusNumericSprite(x, y, 12, 4);
+        this.statusArray[17] = this.createStatusNumericSprite(x, y, 13, 4);
+        this.statusArray[18] = this.createStatusNumericSprite(x, y, 14, 4);
+        this.statusArray[19] = this.createStatusNumericSprite(x, y, 15, 4);
+        this.statusArray[20] = this.createStatusNumericSprite(x, y, 16, 4);
+        this.statusArray[21] = this.createStatusNumericSprite(x, y, 17, 4);
+        this.statusArray[22] = this.createStatusNumericSprite(x, y, 18, 4);
+
+    }
+
+    createTextSprite(initialX, y, letterPadding) {
+        let sprite = this.createCharacterSprite(initialX, y, (CHAR_SIZE * letterPadding));
+
+
+        for (const ch of LETTERS) {
+            sprite.addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+
+        sprite.addAnimation('$$', Asset.getAnimation('stageTextDot'));
+        sprite.addAnimation('$!', Asset.getAnimation('stageTextExcl'));
+        sprite.addAnimation('$:', Asset.getAnimation('stageTextColon'));
+
+        sprite.addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        return sprite;
+    }
+
+
+    createStatusNumericSprite(initialX, y, numericPadding, separatorPadding) {
+        let sprite = this.createCharacterSprite(initialX, y, numericPadding * CHAR_SIZE + separatorPadding * SEPARATOR_SIZE, CHAR_SIZE);
+
+        for (const ch of NUMBERS) {
+            sprite.addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
+        }
+        sprite.addAnimation('$ª', Asset.getAnimation('stageTextPokemon'));
+        sprite.addAnimation('$º', Asset.getAnimation('stageTextBall'));
+        sprite.addAnimation('$/', Asset.getAnimation('stageTextThunder'));
+        sprite.addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
+
+        return sprite;
+    }
+
+    createStatusSeparatorSprite(initialX, y, numericPadding, separatorPadding) {
+        let sprite = this.createCharacterSprite(initialX, y, numericPadding * CHAR_SIZE + separatorPadding * SEPARATOR_SIZE - 6, SEPARATOR_SIZE, SEPARATOR_SIZE);
+        sprite.addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
+        sprite.addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
+
+        return sprite;
     }
 
     createCharacterSprite(x, y, padding, size = CHAR_SIZE) {
@@ -54,184 +116,6 @@ class StageStatusBanner {
         sprite.debug = DEBUG;
 
         return sprite;
-    }
-
-    createStatusSprites(x, y) {
-        const numbers = '1234567890';
-
-        this.statusArray[0] = this.createCharacterSprite(x, y, 0);
-
-        for (const ch of numbers) {
-            this.statusArray[0].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[0].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[1] = this.createCharacterSprite(x, y, 16);
-
-        for (const ch of numbers) {
-            this.statusArray[1].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[1].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[2] = this.createCharacterSprite(x, y, 32);
-
-        for (const ch of numbers) {
-            this.statusArray[2].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[2].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[3] = this.createCharacterSprite(x, y, 42, 4);
-        this.statusArray[3].addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
-        this.statusArray[3].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
-
-        //-------------------
-        this.statusArray[4] = this.createCharacterSprite(x, y, 52);
-
-        for (const ch of numbers) {
-            this.statusArray[4].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[4].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[5] = this.createCharacterSprite(x, y, 68);
-
-        for (const ch of numbers) {
-            this.statusArray[5].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[5].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-
-        //-------------------
-        this.statusArray[6] = this.createCharacterSprite(x, y, 84);
-
-        for (const ch of numbers) {
-            this.statusArray[6].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[6].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-
-        //-------------------
-        this.statusArray[7] = this.createCharacterSprite(x, y, 94, 4);
-        this.statusArray[7].addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
-        this.statusArray[7].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
-
-
-        //-------------------
-        this.statusArray[8] = this.createCharacterSprite(x, y, 104);
-
-        for (const ch of numbers) {
-            this.statusArray[8].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[8].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[9] = this.createCharacterSprite(x, y, 120);
-
-        for (const ch of numbers) {
-            this.statusArray[9].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[9].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-
-        //-------------------
-        this.statusArray[10] = this.createCharacterSprite(x, y, 136);
-
-        for (const ch of numbers) {
-            this.statusArray[10].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[10].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-
-        //-------------------
-        this.statusArray[11] = this.createCharacterSprite(x, y, 146, 4);
-        this.statusArray[11].addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
-        this.statusArray[11].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
-
-        //-------------------
-        this.statusArray[12] = this.createCharacterSprite(x, y, 156);
-
-        for (const ch of numbers) {
-            this.statusArray[12].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[12].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-
-        //-------------------
-        this.statusArray[13] = this.createCharacterSprite(x, y, 172);
-
-        for (const ch of numbers) {
-            this.statusArray[13].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[13].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[14] = this.createCharacterSprite(x, y, 188);
-
-        for (const ch of numbers) {
-            this.statusArray[14].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[14].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-
-        //-------------------
-        this.statusArray[15] = this.createCharacterSprite(x, y, 196, 4);
-        this.statusArray[15].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
-
-                //-------------------
-        this.statusArray[16] = this.createCharacterSprite(x, y, 200, 4);
-        this.statusArray[16].addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
-
-        //-------------------
-        this.statusArray[17] = this.createCharacterSprite(x, y, 208);
-        this.statusArray[17].addAnimation('$/', Asset.getAnimation('stageTextThunder'));
-        this.statusArray[17].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-        
-        //-------------------
-        this.statusArray[18] = this.createCharacterSprite(x, y, 224);
-
-        for (const ch of numbers) {
-            this.statusArray[18].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[18].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[19] = this.createCharacterSprite(x, y, 240);
-        this.statusArray[19].addAnimation('$º', Asset.getAnimation('stageTextBall'));
-        this.statusArray[19].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[20] = this.createCharacterSprite(x, y, 256);
-
-        for (const ch of numbers) {
-            this.statusArray[20].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[20].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[21] = this.createCharacterSprite(x, y, 272);
-
-        for (const ch of numbers) {
-            this.statusArray[21].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[21].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-
-        //-------------------
-        this.statusArray[22] = this.createCharacterSprite(x, y, 288);
-
-        for (const ch of numbers) {
-            this.statusArray[22].addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        this.statusArray[22].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        //-------------------
-        this.statusArray[23] = this.createCharacterSprite(x, y, 304);
-        this.statusArray[23].addAnimation('$ª', Asset.getAnimation('stageTextPokemon'));
-        this.statusArray[23].addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
     }
 
     showStatus() {
@@ -245,14 +129,7 @@ class StageStatusBanner {
 
         text = this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus(), DEFAULT_TEXT_PERSISTENCE_MILLIS;
         text = text.split('').reverse().join('');
-        console.log(text);
-        for (var i = 0; i <= 23; i++) {
-
-            if (this.statusArray[i] === undefined) {
-                return;
-                //TODO remove
-            }
-            console.log(text[i] + "   " + this.statusArray[i]);
+        for (var i = 0; i < STATUS_CHARS; i++) {
             this.statusArray[i].changeAnimation("$" + text[i]);
         }
     }
@@ -295,7 +172,7 @@ class StageStatusBanner {
     createPointsStatus() {
         let points = this.stageStatus.points <= 999999999999 ? this.stageStatus.points.toString() : "999999999999";
         let withCommas = points.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return withCommas.padStart(17, ' ');
+        return withCommas.padStart(16, ' ');
     }
 
 
