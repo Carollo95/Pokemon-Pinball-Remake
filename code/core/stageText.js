@@ -11,6 +11,13 @@ const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on scree
 const LETTERS = 'abcdefghijklmnopqrstuvwxyz';
 const NUMBERS = '1234567890';
 
+const STAGE_TEXT_STATE = {
+    NONE: 0,
+    STATUS: 1,
+    TEXT: 2
+}
+
+
 class StageStatusBanner {
 
 
@@ -19,17 +26,23 @@ class StageStatusBanner {
         this.statusArray = new Array(STATUS_CHARS);
         this.lastMovement = 0;
         this.textQueue = '';
-        this.show = false;
         this.endTextDisplayMillis = 0;
         this.persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS;
 
         this.stageStatus = stageStatus;
+        this.state = STAGE_TEXT_STATE.STATUS;
 
         this.createTextSprites(x, y);
         this.createStatusSprites(x, y);
 
-        // initialize display
-        //this.clearText();
+        this.showStatus();
+
+    }
+
+    changeState(state) {
+        this.state = state;
+        this.setStatusArrayVisibility(state === STAGE_TEXT_STATE.STATUS);
+        this.setTextArrayVisibility(state === STAGE_TEXT_STATE.TEXT);
     }
 
     createTextSprites(x, y) {
@@ -54,7 +67,7 @@ class StageStatusBanner {
         this.statusArray[9] = this.createStatusNumericSprite(x, y, 7, 2);
         this.statusArray[10] = this.createStatusNumericSprite(x, y, 8, 2);
         this.statusArray[11] = this.createStatusSeparatorSprite(x, y, 9, 2);
-        
+
         this.statusArray[12] = this.createStatusNumericSprite(x, y, 9, 3);
         this.statusArray[13] = this.createStatusNumericSprite(x, y, 10, 3);
         this.statusArray[14] = this.createStatusNumericSprite(x, y, 11, 3);
@@ -104,8 +117,9 @@ class StageStatusBanner {
 
     createStatusSeparatorSprite(initialX, y, numericPadding, separatorPadding) {
         let sprite = this.createCharacterSprite(initialX, y, numericPadding * CHAR_SIZE + separatorPadding * SEPARATOR_SIZE - 6, SEPARATOR_SIZE, SEPARATOR_SIZE);
-        sprite.addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
+
         sprite.addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
+        sprite.addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
 
         return sprite;
     }
@@ -119,14 +133,7 @@ class StageStatusBanner {
     }
 
     showStatus() {
-        this.statusArray.forEach(element => {
-            element.visible = true;
-        });
-
-        this.textArray.forEach(element => {
-            element.visible = false;
-        });
-
+        this.changeState(STAGE_TEXT_STATE.STATUS);
         text = this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus(), DEFAULT_TEXT_PERSISTENCE_MILLIS;
         text = text.split('').reverse().join('');
         for (var i = 0; i < STATUS_CHARS; i++) {
@@ -177,33 +184,32 @@ class StageStatusBanner {
 
 
     setText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {
-        this.statusArray.forEach(element => {
-            element.visible = false;
-        });
-
-        this.textArray.forEach(element => {
-            element.visible = true;
-        });
+        this.changeState(STAGE_TEXT_STATE.TEXT);
 
         text = text.replace(".", "$");
-        this.show = true;
-        this.clearText();
+        this.clearTextImmediately();
         this.persistenceMillis = persistenceMillis;
         this.textQueue += text;
     }
 
     clearText() {
-        for (var i = MAX_CHARS; i >= 0; i--) {
-            this.textArray[i].changeAnimation("$ ");
-        }
+        this.setText('                   ');
     }
+
+    clearTextImmediately() {
+        this.textQueue = '';
+        this.textArray.forEach(element => {
+            element.changeAnimation('$ ');
+        });
+    }
+
 
     hasPassedTextPersistence() {
         return (millis() - this.endTextDisplayMillis) > this.persistenceMillis;
     }
 
     draw() {
-        if (this.show) {
+        if (this.state === STAGE_TEXT_STATE.TEXT) {
             if ((this.textQueue.length > 0)) {
                 if ((millis() - this.lastMovement) > TEXT_SCROLL_THRESHOLD_MILLIS) {
                     this.lastMovement = millis();
@@ -211,11 +217,10 @@ class StageStatusBanner {
                     this.endTextDisplayMillis = millis();
                 }
             } else if (this.hasPassedTextPersistence()) {
-                this.drawGameStatus();
+                this.showStatus();
             }
         }
     }
-
 
     scrollText() {
         for (var i = MAX_CHARS; i > 0; i--) {
@@ -225,11 +230,21 @@ class StageStatusBanner {
         this.textQueue = this.textQueue.substring(1);
     }
 
-    hide() {
-        this.show = false;
+    setTextArrayVisibility(visible) {
+        this.textArray.forEach(element => {
+            element.visible = visible;
+        });
     }
 
+    setStatusArrayVisibility(visible) {
+        this.statusArray.forEach(element => {
+            element.visible = visible;
+        });
+    }
 
+    hide() {
+        this.changeState(STAGE_TEXT_STATE.NONE);
+    }
 }
 
 function createBonusStageStatusBanner(stateStage) {
