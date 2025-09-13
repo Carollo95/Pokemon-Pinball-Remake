@@ -13,31 +13,31 @@ const CheatEngine = {
 
     startGhostStage() {
         allSprites.remove();
-        stage = new BonusStageGhost();
+        stage = new BonusStageGhost(EngineUtils.getGameStatus());
         stage.setup();
     },
 
     startMoleStage() {
         allSprites.remove();
-        stage = new BonusStageMole();
+        stage = new BonusStageMole(EngineUtils.getGameStatus());
         stage.setup();
     },
 
     startCatStage() {
         allSprites.remove();
-        stage = new BonusStageCat();
+        stage = new BonusStageCat(EngineUtils.getGameStatus());
         stage.setup();
     },
 
     startSealStage() {
         allSprites.remove();
-        stage = new BonusStageSeal();
+        stage = new BonusStageSeal(EngineUtils.getGameStatus());
         stage.setup();
     },
 
     startCloneStage() {
         allSprites.remove();
-        stage = new BonusStageClone();
+        stage = new BonusStageClone(EngineUtils.getGameStatus());
         stage.setup();
     }
 

@@ -6,8 +6,8 @@ const MOLE_PHASE = {
 
 class BonusStageMole extends BonusStage {
 
-  constructor() {
-    super();
+  constructor(status) {
+    super(status);
     this.phase = MOLE_PHASE.DIGLETTS;
     this.millisSinceStageComplete = 0;
 

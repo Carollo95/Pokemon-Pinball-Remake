@@ -3,8 +3,8 @@ const VICTORY_STAGE_COINS = 20;
 
 class BonusStageCat extends BonusStage {
 
-    constructor() {
-        super();
+    constructor(status) {
+        super(status);
         this.highLaneCoins = new Array(8);
         this.lowLaneCoins = new Array(6);
         this.flyingCoins = [];

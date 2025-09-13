@@ -178,4 +178,12 @@ const EngineUtils = {
         world.gravity.y = GRAVITY;
     },
 
+    getGameStatus() {
+        if (stage != null && stage.status != null) {
+            return stage.status;
+        } else {
+            return new StageStatus();
+        }
+    },
+
 }

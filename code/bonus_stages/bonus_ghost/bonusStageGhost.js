@@ -27,8 +27,8 @@ const GENGAR_SPAWN_Y = 120;
 
 class BonusStageGhost extends BonusStage {
 
-  constructor() {
-    super();
+  constructor(status) {
+    super(status);
 
     // create and attach timer so Stage API exposes it
     this.attachTimer(new Timer(TIMER_POSITION_BONUS_HIGH_Y, GHOST_STAGE_TIME_MILLIS));

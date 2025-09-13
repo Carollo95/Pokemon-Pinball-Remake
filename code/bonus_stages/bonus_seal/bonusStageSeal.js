@@ -10,8 +10,8 @@ const SEAL_3_Y = 266;
 
 class BonusStageSeal extends BonusStage {
 
-    constructor() {
-        super();
+    constructor(status) {
+        super(status);
         this.millisSinceStageComplete = 0;
         this.state = BONUS_STAGE_STATE.PLAYING;
 
@@ -32,8 +32,6 @@ class BonusStageSeal extends BonusStage {
         if (!this.checkBonusBallLoss()) return;
 
         this.createNewBonusBall(bonusGateBackground);
-
-        //TODO flash screen white
 
         this.seal1.swim();
         this.seal2.swim();
