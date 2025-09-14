@@ -5,7 +5,7 @@ class RedStage extends Stage {
 
         this.background = Asset.getBackground('redStageBackground');
 
-        this.attachBall(Ball.spawnBonusBall());
+        this.attachBall(Ball.spawnStageBall());
         this.attachFlippers(createTableFlippers());
         this.attachStageText(createStageStatusBanner(this.status));
     }
@@ -92,7 +92,7 @@ class RedStage extends Stage {
 
         //Side flippers
         this.createScenarioGeometry([
-            [208, 506],
+            [208, 502],
             [272, 464],
             [272, 414],
             [276, 412],
