@@ -115,7 +115,6 @@ class RedStage extends Stage {
         ]);
 
 
-
     }
 
     draw() {
