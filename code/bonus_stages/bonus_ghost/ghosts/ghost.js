@@ -2,7 +2,7 @@ const GHOST_BLINKING_FRAMES = 6; // frames between visible/invisible while blink
 const GHOST_TIME_OF_HURT_MS = 1000; // milliseconds showing hurt blink
 
 class Ghost {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, onHitCallback) {
         // animations (subclasses set actual animation assets)
         this.hurtAnimation = null;
         this.idleAnimation = null;
@@ -21,6 +21,8 @@ class Ghost {
         this.sprite.layer = SPRITE_LAYER;
         this.sprite.debug = DEBUG;
         this.disabled = false;
+
+        this.onHitCallback = onHitCallback;
     }
 
     blink() {

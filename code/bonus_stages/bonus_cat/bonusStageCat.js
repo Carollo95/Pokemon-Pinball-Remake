@@ -1,3 +1,6 @@
+const MEOWTH_HIT_POINTS = 10000;
+const COIN_CAUGHT_POINTS = 1000000;
+
 const CAT_STAGE_TIME_MILLIS = 61000;
 const VICTORY_STAGE_COINS = 20;
 
@@ -21,7 +24,7 @@ class BonusStageCat extends BonusStage {
 
         Audio.playMusic('catStage');
 
-        this.meowth = new Meowth();
+        this.meowth = new Meowth(() => { this.addPoints(MEOWTH_HIT_POINTS); });
         this.coinCounter = new CoinCounter();
         this.createCoins();
     }
@@ -30,13 +33,13 @@ class BonusStageCat extends BonusStage {
         const highSlots = [COIN_HIGH_SLOT_1, COIN_HIGH_SLOT_2, COIN_HIGH_SLOT_3, COIN_HIGH_SLOT_4,
             COIN_HIGH_SLOT_5, COIN_HIGH_SLOT_6, COIN_HIGH_SLOT_7, COIN_HIGH_SLOT_8];
         for (let i = 0; i < highSlots.length; i++) {
-            this.highLaneCoins[i] = new Coin(highSlots[i], true);
+            this.highLaneCoins[i] = new Coin(highSlots[i], true, (multiplier) => { this.addPoints(multiplier *COIN_CAUGHT_POINTS); });
         }
 
         const lowSlots = [COIN_LOW_SLOT_1, COIN_LOW_SLOT_2, COIN_LOW_SLOT_3, COIN_LOW_SLOT_4,
             COIN_LOW_SLOT_5, COIN_LOW_SLOT_6];
         for (let i = 0; i < lowSlots.length; i++) {
-            this.lowLaneCoins[i] = new Coin(lowSlots[i], false);
+            this.lowLaneCoins[i] = new Coin(lowSlots[i], false, (multiplier) => { this.addPoints(multiplier *COIN_CAUGHT_POINTS); });
         }
     }
 
@@ -129,7 +132,7 @@ class BonusStageCat extends BonusStage {
         Audio.interruptWithSFX('sfx2A');
 
         this.state = BONUS_STAGE_STATE.WON;
-        this.getStageText().setText(I18NManager.translate("meowth_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
+        this.getStageText().setText(I18NManager.translate("meowth_stage_clear"), (STAGE_RESULT_SHOW_MILLS / 2));
     }
 
     /**

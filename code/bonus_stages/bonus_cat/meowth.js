@@ -11,7 +11,7 @@ const MEOWTH_LOW_POS = 196; //Position on the Y axis for the low lane
 const MEOWTH_HURT_TIME = 500; //time spent on the hurt animation
 
 class Meowth {
-    constructor() {
+    constructor(onHitCallback) {
         this.keepMovinRight = true;
         this.keepMovingVertically = false;
         this.isHighLane = true;
@@ -26,6 +26,7 @@ class Meowth {
         this.sprite.addAnimation("hurt", Asset.getAnimation('animMeowthHurt'));
         this.sprite.addAnimation("smug", Asset.getAnimation('animMeowthSmug'));
         this.sprite.addAnimation("walk", Asset.getAnimation('animMeowthWalk'));
+        this.onHitCallback = onHitCallback;
     }
 
     update(ballSprite) {
@@ -53,6 +54,7 @@ class Meowth {
 
     checkCollision(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
+            this.onHitCallback();
             this.sprite.changeAnimation("hurt");
             this.timeOfHurt = millis();
             Audio.playSFX('sfx33');

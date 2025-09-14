@@ -11,8 +11,8 @@ class StageStatus {
         this.balls--;
     }
 
-    addPoints(pts) {
-        this.points += pts;
+    addPoints(pts, ball) {
+        this.points += ball.multiplyPoints(pts);
     }
 
 }

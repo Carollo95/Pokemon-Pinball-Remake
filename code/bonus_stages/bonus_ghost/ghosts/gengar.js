@@ -9,8 +9,8 @@ const GENGAR_INVINCIBILITY_MS = 1500;
 const GENGAR_SPAWN_THRESHOLD_MS = 1000;
 
 class Gengar extends Ghost {
-    constructor(x, y) {
-        super(x, y, GENGAR_HITBOX_WIDTH, GENGAR_HITBOX_HEIGHT);
+    constructor(x, y, onHitCallback) {
+        super(x, y, GENGAR_HITBOX_WIDTH, GENGAR_HITBOX_HEIGHT, onHitCallback);
 
         this.step_start_y = y;
         this.keepMovingDown = true;
@@ -81,6 +81,7 @@ class Gengar extends Ghost {
     checkCollision(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
             this.hitPoints--;
+            this.onHitCallback();
             EngineUtils.disableSprite(this.sprite);
             Audio.playSFX('sfx37');
             this.sprite.changeAnimation("hurt");

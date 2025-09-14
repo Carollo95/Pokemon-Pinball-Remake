@@ -1,3 +1,9 @@
+const GRAVESTONE_HIT_POINTS = 1000;
+const GASTLY_DEFEATED_POINTS = 1000000;
+const HAUNTER_DEFEATED_POINTS = 5000000;
+const GENGAR_HIT_POINTS = 50000000;
+
+
 const GHOST_STAGE_TIME_MILLIS = 91000; //Duration of the ghost stage
 
 const GHOST_GRAVESTONE_HEIGHT = 26;
@@ -149,7 +155,7 @@ class BonusStageGhost extends BonusStage {
     this.state = resultState;
     this.millisSinceStageComplete = millis();
 
-    const key = resultState === BONUS_STAGE_STATE.WON ? "gengar_stage_cleared" : "end_gengar_stage";
+    const key = resultState === BONUS_STAGE_STATE.WON ? "gengar_stage_clear" : "end_gengar_stage";
     this.getStageText().setText(I18NManager.translate(key), (STAGE_RESULT_SHOW_MILLS / 2));
 
     Audio.playSFX('sfx2A');
@@ -159,6 +165,7 @@ class BonusStageGhost extends BonusStage {
     for (const gravestone of this.gravestones) {
       if (gravestone.collide(this.getBallSprite())) {
         Audio.playSFX('sfx2F');
+        this.addPoints(GRAVESTONE_HIT_POINTS);
         break;
       }
     }
@@ -217,18 +224,26 @@ class BonusStageGhost extends BonusStage {
   }
 
   setupGastlyPhase() {
-    this.gastly1 = new Gastly(GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y);
-    this.gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y);
-    this.gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y);
+    this.gastly1 = new Gastly(GASTLY1_SPAWN_X, GASTLY1_SPAWN_Y, this.doOnGastlyHitCallback);
+    this.gastly2 = new Gastly(GASTLY2_SPAWN_X, GASTLY2_SPAWN_Y, this.doOnGastlyHitCallback);
+    this.gastly3 = new Gastly(GASTLY3_SPAWN_X, GASTLY3_SPAWN_Y, this.doOnGastlyHitCallback);
 
     Audio.playMusic('ghostGastly');
   }
 
+  doOnGastlyHitCallback = () => {
+    this.addPoints(GASTLY_DEFEATED_POINTS);
+  }
+
   setupHaunterPhase() {
-    this.haunter1 = this.createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y);
-    this.haunter2 = this.createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y);
+    this.haunter1 = this.createDisabledGhost(Haunter, HAUNTER1_SPAWN_X, HAUNTER1_SPAWN_Y, this.doOnHaunterHitCallback);
+    this.haunter2 = this.createDisabledGhost(Haunter, HAUNTER2_SPAWN_X, HAUNTER2_SPAWN_Y, this.doOnHaunterHitCallback);
 
     Audio.playMusic('ghostHaunter');
+  }
+
+  doOnHaunterHitCallback = () => {
+    this.addPoints(HAUNTER_DEFEATED_POINTS);
   }
 
   createDisabledGhost(clazz, x, y) {
@@ -291,7 +306,7 @@ class BonusStageGhost extends BonusStage {
     gastly.update(this.getBallSprite());
 
     if (this.extraGastlyLives > 0 && gastly.readyToRespawn && gastly.readyToRespawn()) {
-      gastly = new Gastly(gastly.start_x, gastly.start_y);
+      gastly = new Gastly(gastly.start_x, gastly.start_y, this.doOnGastlyHitCallback);
       this.extraGastlyLives -= 1;
     }
 
@@ -302,7 +317,7 @@ class BonusStageGhost extends BonusStage {
     haunter.update(this.getBallSprite());
 
     if (this.extraHaunterLives > 0 && haunter.readyToRespawn && haunter.readyToRespawn()) {
-      haunter = new Haunter(haunter.start_x, haunter.start_y);
+      haunter = new Haunter(haunter.start_x, haunter.start_y, this.doOnHaunterHitCallback);
       this.extraHaunterLives -= 1;
     }
 
@@ -316,7 +331,7 @@ class BonusStageGhost extends BonusStage {
     if (this.gengar.isDefeated && this.gengar.isDefeated()) {
       this.finishStageSuccessfully();
     } else if (this.gengar.readyToRespawn && this.gengar.readyToRespawn()) {
-      this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y);
+      this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y, () => {this.addPoints(GENGAR_HIT_POINTS);});
       Audio.playSFX('sfx4E');
     }
 
@@ -342,7 +357,7 @@ class BonusStageGhost extends BonusStage {
     this.state = BONUS_STAGE_STATE.WON;
     this.millisSinceStageComplete = millis();
     const stageText = this.getStageText();
-    stageText.setText(I18NManager.translate("gengar_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
+    stageText.setText(I18NManager.translate("gengar_stage_clear"), (STAGE_RESULT_SHOW_MILLS / 2));
   }
 
 }

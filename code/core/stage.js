@@ -69,6 +69,14 @@ class Stage {
         if (this.ball) this.ball.update();
     }
 
+    addPoints(pts) {
+        if (this.status && this.ball) {
+            this.status.addPoints(pts, this.ball);
+        }else{
+            console.log("Unable to add points, missing status or ball reference.");
+        }
+    }
+
     // --- helpers to attach common per-stage components ---
     attachBall(ballInstance) { this.ball = ballInstance; }
     attachTimer(timerInstance) { this.timer = timerInstance; }

@@ -4,7 +4,7 @@ const DUGTRIO_TIME_OF_HURT = 500;
 const DUGTRIO_MAX_PHASE = 4;
 
 class Dugtrio {
-  constructor(x, y) {
+  constructor(x, y, onHitCallback) {
     this.sprite = new Sprite(x, y, DUGTRIO_WIDTH, DUGTRIO_HEIGHT, "static");
     this.sprite.debug = DEBUG;
 
@@ -26,6 +26,8 @@ class Dugtrio {
     this.disabled = false;
     this.phase = 1;
     this.sprite.layer = 9;
+
+    this.onHitCallback = onHitCallback;
   }
 
   spawn() {
@@ -55,6 +57,7 @@ class Dugtrio {
     if (this.sprite.collide(ballSprite)) {
       this.sprite.changeAnimation("hurt" + this.phase);
       this.phase++;
+      this.onHitCallback();
       Audio.playSFX('sfx36');
       this.timeOfHurt = millis();
     }

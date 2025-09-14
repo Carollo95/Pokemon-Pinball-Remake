@@ -245,7 +245,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx27', 'assets/audio/sfx/SFX-27'));
     promises.push(audio.registerSFX('sfx28', 'assets/audio/sfx/SFX-28'));
     promises.push(audio.registerSFX('sfx29', 'assets/audio/sfx/SFX-29'));
-    promises.push(audio.registerSFX('sfx2A', 'assets/audio/sfx/SFX-2A')); //Bonus stage cleared
+    promises.push(audio.registerSFX('sfx2A', 'assets/audio/sfx/SFX-2A')); //Bonus stage clear
     promises.push(audio.registerSFX('sfx2B', 'assets/audio/sfx/SFX-2B')); //Gengar step
     promises.push(audio.registerSFX('sfx2C', 'assets/audio/sfx/SFX-2C')); //Gastly hurt
     promises.push(audio.registerSFX('sfx2D', 'assets/audio/sfx/SFX-2D')); //Haunter hurt

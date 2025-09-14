@@ -219,6 +219,8 @@ class StageStatusBanner {
             } else if (this.hasPassedTextPersistence()) {
                 this.showStatus();
             }
+        }else if(this.state === STAGE_TEXT_STATE.STATUS){
+            this.showStatus();
         }
     }
 
