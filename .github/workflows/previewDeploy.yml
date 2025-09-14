@@ -1,0 +1,40 @@
+name: Deploy Preview Branch to GitHub Pages
+
+on:
+  push:
+    branches:
+      - preview 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout preview branch
+        uses: actions/checkout@v3
+
+      
+      - name: Copy preview to subfolder
+        run: |
+          mkdir -p preview
+          cp -r * preview/
+          rm -rf preview/.git preview/.github
+
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Copy preview folder to gh-pages
+        run: |
+          rm -rf gh-pages/preview
+          mv preview gh-pages/preview
+
+      - name: Commit and push changes
+        run: |
+          cd gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add preview
+          git commit -m "Update preview from preview branch" || echo "No changes to commit"
+          git push origin gh-pages
