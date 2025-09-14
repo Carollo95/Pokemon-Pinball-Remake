@@ -45,3 +45,4 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("clone-stage").addEventListener("click", CheatEngine.startCloneStage);
 });
+

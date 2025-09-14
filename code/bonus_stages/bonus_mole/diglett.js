@@ -2,7 +2,7 @@ const DIGLETT_WIDTH = 24; // Width of the Diglett hitbox
 const DIGLETT_HEIGHT = 24; // Height of the Diglett hitbox
 
 class Diglett {
-  constructor(x, y, creationTime, timeToSpawn) {
+  constructor(x, y, creationTime, timeToSpawn, onHitCallback) {
     this.disabled = false;
     this.timeToSpawn = timeToSpawn || 0;
     this.creationTime = creationTime || millis();
@@ -15,6 +15,7 @@ class Diglett {
     this.sprite.layer = SPRITE_LAYER;
     this.sprite.visible = false;
     this.sprite.layer = 8;
+    this.onHitCallback = onHitCallback;
   }
 
   spawn() {
@@ -34,6 +35,7 @@ class Diglett {
 
   checkCollision(ballSprite) {
     if (this.sprite.collide(ballSprite) && this.sprite.ani.name !== "hurt") {
+      this.onHitCallback();
       this.sprite.changeAnimation("hurt");
       Audio.playSFX('sfx35');
       this.sprite.ani.frame = 0;

@@ -55,6 +55,11 @@ class Ball {
         return this.sprite.y;
     }
 
+    multiplyPoints(points) {
+        //TODO add other types of balls
+        return points;
+    }
+
     /** Creates and returns a new ball for a bonus level. */
     static spawnBonusBall() {
         return new Ball(BONUS_SPAWN_BALL_X, BONUS_SPAWN_BALL_Y);

@@ -6,8 +6,8 @@ const GASTLY_MAX_HORIZONTAL_MOVEMENT = 60;
 const GASTLY_MAX_VERTICAL_MOVEMENT = 4;
 
 class Gastly extends SmallGhost {
-    constructor(x, y) {
-        super(x, y, GASTLY_HITBOX_WIDTH, GASTLY_HITBOX_HEIGHT);
+    constructor(x, y, onHitCallback) {
+        super(x, y, GASTLY_HITBOX_WIDTH, GASTLY_HITBOX_HEIGHT, onHitCallback);
 
         this.maxHorizontalMovement = GASTLY_MAX_HORIZONTAL_MOVEMENT;
         this.maxVerticalMovement = GASTLY_MAX_VERTICAL_MOVEMENT;

@@ -1,3 +1,5 @@
+const SEAL_HIT_POINTS = 1000000;
+
 const VICTORY_STAGE_PEARLS = 20;
 const SEAL_MULTIPLIER_THRESHOLD_MS = 3000;
 const SEAL_STAGE_TIME_MILLIS = 91000;
@@ -10,8 +12,8 @@ const SEAL_3_Y = 266;
 
 class BonusStageSeal extends BonusStage {
 
-    constructor() {
-        super();
+    constructor(status) {
+        super(status);
         this.millisSinceStageComplete = 0;
         this.state = BONUS_STAGE_STATE.PLAYING;
 
@@ -32,8 +34,6 @@ class BonusStageSeal extends BonusStage {
         if (!this.checkBonusBallLoss()) return;
 
         this.createNewBonusBall(bonusGateBackground);
-
-        //TODO flash screen white
 
         this.seal1.swim();
         this.seal2.swim();
@@ -56,7 +56,7 @@ class BonusStageSeal extends BonusStage {
         super.draw();
         this.drawStage();
 
-        if (this.state === BONUS_STAGE_STATE.LOST ||(this.state === BONUS_STAGE_STATE.WON && super.checkBonusBallLoss())) {
+        if (this.state === BONUS_STAGE_STATE.LOST || (this.state === BONUS_STAGE_STATE.WON && super.checkBonusBallLoss())) {
             if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
                 //TODO end stage
                 console.log("LEVEL COMPLETE");
@@ -104,6 +104,7 @@ class BonusStageSeal extends BonusStage {
 
     onHurtCallback = () => {
         this.pearlCounter.addPearls(this.pearlMultiplier);
+        this.addPoints(this.pearlMultiplier * SEAL_HIT_POINTS);
         this.upgradePearlMultiplier();
         if (this.state === BONUS_STAGE_STATE.PLAYING && this.pearlCounter.getCount() >= VICTORY_STAGE_PEARLS) {
             this.clearStage();
@@ -114,7 +115,7 @@ class BonusStageSeal extends BonusStage {
         Audio.interruptWithSFX('sfx2A');
 
         this.state = BONUS_STAGE_STATE.WON;
-        this.getStageText().setText(I18NManager.translate("seal_stage_cleared"), (STAGE_RESULT_SHOW_MILLS / 2));
+        this.getStageText().setText(I18NManager.translate("seal_stage_clear"), (STAGE_RESULT_SHOW_MILLS / 2));
     }
 
     upgradePearlMultiplier() {

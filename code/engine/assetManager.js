@@ -164,7 +164,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animShieldDestroy', 'assets/img/bonus-clone/shield_destroy', 32, 32, 7, 6);
   Asset.registerAnimationTemplate('animShield', 'assets/img/bonus-clone/shield', 32, 32, 4);
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
   // stage text templates
   for (const ch of letters) {
     Asset.registerAnimationTemplate('stageText' + ch, `assets/img/stage-text/${ch.toLowerCase()}`, 16, 16, 1);
@@ -174,6 +174,18 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('stageTextColon', 'assets/img/stage-text/colon', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextExcl', 'assets/img/stage-text/excl', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextSpace', 'assets/img/stage-text/space', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextBall', 'assets/img/stage-text/pokeball', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextCross', 'assets/img/stage-text/cross', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextThunder', 'assets/img/stage-text/thunder', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextUp', 'assets/img/stage-text/up', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextDown', 'assets/img/stage-text/down', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextRight', 'assets/img/stage-text/right', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextStar', 'assets/img/stage-text/star', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextPokemon', 'assets/img/stage-text/pokemon', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextCommaSeparator', 'assets/img/stage-text/comma_separator', 4, 16, 1);
+  Asset.registerAnimationTemplate('stageTextDotSeparator', 'assets/img/stage-text/dot_separator', 4, 16, 1);
+   Asset.registerAnimationTemplate('stageTextSeparator', 'assets/img/stage-text/separator', 4, 16, 1);
+
 }
 
 

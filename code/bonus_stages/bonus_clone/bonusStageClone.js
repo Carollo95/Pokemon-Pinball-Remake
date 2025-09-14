@@ -1,11 +1,14 @@
+const SHIELD_HIT_POINTS = 1000000;
+const MEWTWO_HIT_POINTS = 50000000;
+
 const CLONE_STAGE_TIME_MILLIS = 121000;
 const MEWTWO_POS_X = 188;
 const MEWTWO_POS_Y = 136;
 
 class BonusStageClone extends BonusStage {
 
-  constructor() {
-    super();
+  constructor(status) {
+    super(status);
 
     this.state = BONUS_STAGE_STATE.PLAYING;
     this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y, this.doOnCheckCreateShield, this.doOnMewtwoDefeat);
@@ -18,7 +21,7 @@ class BonusStageClone extends BonusStage {
 
   createShields() {
     for (const point of this.mewtwo.getShieldPoints()) {
-      this.shields.push(new Shield(point[0], point[1]));
+      this.shields.push(new Shield(point[0], point[1], () => { this.addPoints(SHIELD_HIT_POINTS); }));
     }
   }
 
@@ -78,6 +81,7 @@ class BonusStageClone extends BonusStage {
   onMewtwoHurtCallback = () => {
     this.destroyShields();
     this.createShields();
+    this.addPoints(MEWTWO_HIT_POINTS);
   }
 
   getBackground() {

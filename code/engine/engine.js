@@ -22,7 +22,6 @@ const DEBUG_LAYER = 12; //Layer for debug elements
 const DEFAULT_BLINKING_FRAMES = 10;
 
 let stage; //The p5 sketch in use
-let canvas;
 
 // Flash internal state
 let whiteFlash = null;
@@ -177,6 +176,14 @@ const EngineUtils = {
 
     initPhysics() {
         world.gravity.y = GRAVITY;
+    },
+
+    getGameStatus() {
+        if (stage != null && stage.status != null) {
+            return stage.status;
+        } else {
+            return new StageStatus();
+        }
     },
 
 }

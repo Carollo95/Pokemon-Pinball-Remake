@@ -1,8 +1,8 @@
 const SMALL_GHOST_RESPAWN_THRESHOLD_MS = 3000; // ms between creation and respawn
 
 class SmallGhost extends Ghost {
-    constructor(x, y, width, height) {
-        super(x, y, width, height);
+    constructor(x, y, width, height, onHitCallback) {
+        super(x, y, width, height, onHitCallback);
 
         // movement parameters (subclasses set sensible defaults)
         this.maxHorizontalMovement = 0;
@@ -78,6 +78,7 @@ class SmallGhost extends Ghost {
     checkCollision(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
             this.sprite.image = this.hurtAnimation;
+            this.onHitCallback();
             Audio.playSFX(this.hurtSfx);
             EngineUtils.disableSprite(this.sprite);
             this.timeOfHurt = millis();

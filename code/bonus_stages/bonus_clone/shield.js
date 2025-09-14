@@ -3,9 +3,11 @@ const TEMPORARY_DISABLE_MS = 1000;
 
 class Shield {
 
-    constructor(x, y) {
+    constructor(x, y, onDestroyCallback) {
         this.x = x;
         this.y = y;
+
+        this.onDestroyCallback = onDestroyCallback;
 
         this.createSprite();
 
@@ -30,6 +32,7 @@ class Shield {
     update(ballSprite) {
         if (this.sprite.collide(ballSprite)) {
             this.destroy();
+            this.onDestroyCallback();
         }
 
         this.move();

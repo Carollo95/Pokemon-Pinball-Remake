@@ -2,7 +2,10 @@ const SHAKE_STRENGTH = 4; // Strength of the screen shake
 const DEFAULT_SHAKE_DURATION_MS = 300; // default shake duration in milliseconds
 
 class Stage {
-    constructor() {
+
+    constructor(status = new StageStatus()) {
+        this.status = status;
+
         // background image
         this.background = null;
 
@@ -63,7 +66,15 @@ class Stage {
 
         EngineUtils.drawWhiteFlash();
 
-        if(this.ball) this.ball.update();
+        if (this.ball) this.ball.update();
+    }
+
+    addPoints(pts) {
+        if (this.status && this.ball) {
+            this.status.addPoints(pts, this.ball);
+        }else{
+            console.log("Unable to add points, missing status or ball reference.");
+        }
     }
 
     // --- helpers to attach common per-stage components ---

@@ -6,8 +6,8 @@ const HAUNTER_MAX_HORIZONTAL_MOVEMENT = 72;
 const HAUNTER_MAX_VERTICAL_MOVEMENT = 4;
 
 class Haunter extends SmallGhost {
-    constructor(x, y) {
-        super(x, y, HAUNTER_HITBOX_WIDTH, HAUNTER_HITBOX_HEIGHT);
+    constructor(x, y, onHitCallback) {
+        super(x, y, HAUNTER_HITBOX_WIDTH, HAUNTER_HITBOX_HEIGHT, onHitCallback);
 
         this.maxHorizontalMovement = HAUNTER_MAX_HORIZONTAL_MOVEMENT;
         this.maxVerticalMovement = HAUNTER_MAX_VERTICAL_MOVEMENT;

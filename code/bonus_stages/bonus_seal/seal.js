@@ -161,6 +161,7 @@ class Seal {
             };
 
             this.updateMultiplier(pearlMultiplier);
+            
             hurtCallback();
         }
 

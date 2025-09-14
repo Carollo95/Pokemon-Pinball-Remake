@@ -31,12 +31,14 @@ class Coin {
     static timeOfLastCoinTaken = 0;
     static coinMultiplier = 1;
 
-    constructor(x, isHighLane) {
+    constructor(x, isHighLane, onHitCallback) {
         this.disabled = false;
         this.timeOfLastHit = -10000;
         this.localMultiplier = 1;
 
         this.dissapearAnimationMillis = 0;
+
+        this.onHitCallback = onHitCallback;
 
         const y = isHighLane ? COIN_HIGH_LANE : COIN_LOW_LANE;
 
@@ -143,6 +145,7 @@ class Coin {
             Coin.coinMultiplier = 1;
             this.multiplierSprite.visible = false;
         }
+        this.onHitCallback(Coin.coinMultiplier);
         Coin.timeOfLastCoinTaken = millis();
     }
 

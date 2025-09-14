@@ -29,12 +29,12 @@ const SCENARIO_TOP_DOME_POINTS = [
 ];
 
 class BonusStage extends Stage {
-    constructor() {
-        super();
+    constructor(status) {
+        super(status);
 
         this.attachBall(Ball.spawnBonusBall());
         this.attachFlippers(createBonusFlippers());
-        this.attachStageText(createBonusStageStatusBanner());
+        this.attachStageText(createBonusStageStatusBanner(this.status));
 
         this.gateIsOpen = true;
 
