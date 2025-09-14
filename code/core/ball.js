@@ -68,7 +68,7 @@ class Ball {
     static spawnBonusBall() {
         return new Ball(BONUS_SPAWN_BALL_X, BONUS_SPAWN_BALL_Y);
     }
-    static spawnBonusBall() {
+    static spawnStageBall() {
         return new Ball(334, 542);
     }
 }
