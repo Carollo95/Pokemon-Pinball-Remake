@@ -3,11 +3,11 @@ let DEBUG = false; //true to start the game on debug mode
 
 const CheatEngine = {
 
-    showFPS(){
+    showFPS() {
         SHOW_FPS = true;
     },
 
-    hideFPS(){
+    hideFPS() {
         SHOW_FPS = false;
     },
 
@@ -39,6 +39,12 @@ const CheatEngine = {
         allSprites.remove();
         stage = new BonusStageClone(EngineUtils.getGameStatus());
         stage.setup();
-    }
+    },
+
+    startRedStage() {
+        allSprites.remove();
+        stage = new RedStage(EngineUtils.getGameStatus());
+        stage.setup();
+    },
 
 }

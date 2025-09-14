@@ -19,7 +19,7 @@ function setup() {
   EngineUtils.initPhysics();
 
   // Start level
-  CheatEngine.startCloneStage();
+  CheatEngine.startRedStage();
 }
 
 function draw() {

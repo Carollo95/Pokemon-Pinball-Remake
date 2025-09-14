@@ -252,3 +252,7 @@ class StageStatusBanner {
 function createBonusStageStatusBanner(stateStage) {
     return new StageStatusBanner(341, 380, stateStage);
 }
+
+function createStageStatusBanner(stateStage) {
+    return new StageStatusBanner(316, 564, stateStage);
+}

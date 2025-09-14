@@ -81,6 +81,8 @@ function preLoadBackgrounds() {
   Asset.registerBackground('bonusCloneBackgroundClosed', 'assets/img/bonus-clone/bonus_clone_background');
 
   Asset.registerBackground('bonusStageFrame', 'assets/img/bonus_state_frame');
+
+  Asset.registerBackground('redStageBackground', 'assets/img/red-stage/background');
 }
 
 
