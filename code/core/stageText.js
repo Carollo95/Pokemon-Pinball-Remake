@@ -1,9 +1,11 @@
 const CHAR_SIZE = 16;
 const SEPARATOR_SIZE = 4;
 
-const MAX_CHARS = 19;
+const BONUS_MAX_CHARS = 19;
+const BONUS_STATUS_CHARS = 23;
 
-const STATUS_CHARS = 23;
+const STAGE_MAX_CHARS = 23;
+const STAGE_STATUS_CHARS = 27;
 
 const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showing text
 const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on screen the shown text
@@ -17,13 +19,18 @@ const STAGE_TEXT_STATE = {
     TEXT: 2
 }
 
+const BANNER_TYPE = {
+    STAGE: 0,
+    BONUS_STAGE: 1
+}
 
 class StageStatusBanner {
 
 
-    constructor(x, y, stageStatus) {
-        this.textArray = new Array(MAX_CHARS);
-        this.statusArray = new Array(STATUS_CHARS);
+    constructor(x, y, type, stageStatus) {
+        this.type = type;
+        this.textArray = new Array(this.getTextChars());
+        this.statusArray = new Array(this.getStateChars());
         this.lastMovement = 0;
         this.textQueue = '';
         this.endTextDisplayMillis = 0;
@@ -39,6 +46,14 @@ class StageStatusBanner {
 
     }
 
+    getTextChars() {
+        return this.type === BANNER_TYPE.BONUS_STAGE ? BONUS_MAX_CHARS : STAGE_MAX_CHARS;
+    }
+
+    getStateChars() {
+        return this.type === BANNER_TYPE.BONUS_STAGE ? BONUS_STATUS_CHARS : STAGE_STATUS_CHARS;
+    }
+
     changeState(state) {
         this.state = state;
         this.setStatusArrayVisibility(state === STAGE_TEXT_STATE.STATUS);
@@ -46,7 +61,7 @@ class StageStatusBanner {
     }
 
     createTextSprites(x, y) {
-        for (var i = 0; i <= MAX_CHARS; i++) {
+        for (var i = 0; i <= this.getTextChars(); i++) {
             this.textArray[i] = this.createTextSprite(x, y, i);
         }
     }
@@ -80,6 +95,13 @@ class StageStatusBanner {
         this.statusArray[20] = this.createStatusNumericSprite(x, y, 16, 4);
         this.statusArray[21] = this.createStatusNumericSprite(x, y, 17, 4);
         this.statusArray[22] = this.createStatusNumericSprite(x, y, 18, 4);
+
+        if (this.type === BANNER_TYPE.STAGE) {
+            this.statusArray[23] = this.createStatusNumericSprite(x, y, 19, 4);
+            this.statusArray[24] = this.createStatusNumericSprite(x, y, 20, 4);
+            this.statusArray[25] = this.createStatusNumericSprite(x, y, 21, 4);
+            this.statusArray[26] = this.createStatusNumericSprite(x, y, 22, 4);
+        }
 
     }
 
@@ -136,7 +158,7 @@ class StageStatusBanner {
         this.changeState(STAGE_TEXT_STATE.STATUS);
         text = this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus(), DEFAULT_TEXT_PERSISTENCE_MILLIS;
         text = text.split('').reverse().join('');
-        for (var i = 0; i < STATUS_CHARS; i++) {
+        for (var i = 0; i < this.getStateChars(); i++) {
             this.statusArray[i].changeAnimation("$" + text[i]);
         }
     }
@@ -179,7 +201,7 @@ class StageStatusBanner {
     createPointsStatus() {
         let points = this.stageStatus.points <= 999999999999 ? this.stageStatus.points.toString() : "999999999999";
         let withCommas = points.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return withCommas.padStart(16, ' ');
+        return withCommas.padStart(this.getStateChars() - 7, ' ');
     }
 
 
@@ -219,13 +241,13 @@ class StageStatusBanner {
             } else if (this.hasPassedTextPersistence()) {
                 this.showStatus();
             }
-        }else if(this.state === STAGE_TEXT_STATE.STATUS){
+        } else if (this.state === STAGE_TEXT_STATE.STATUS) {
             this.showStatus();
         }
     }
 
     scrollText() {
-        for (var i = MAX_CHARS; i > 0; i--) {
+        for (var i = this.getTextChars(); i > 0; i--) {
             this.textArray[i].changeAnimation(this.textArray[i - 1].ani.name);
         }
         this.textArray[0].changeAnimation('$' + this.textQueue[0]);
@@ -250,9 +272,9 @@ class StageStatusBanner {
 }
 
 function createBonusStageStatusBanner(stateStage) {
-    return new StageStatusBanner(341, 380, stateStage);
+    return new StageStatusBanner(341, 380, BANNER_TYPE.BONUS_STAGE, stateStage);
 }
 
 function createStageStatusBanner(stateStage) {
-    return new StageStatusBanner(316, 564, stateStage);
+    return new StageStatusBanner(376, 564, BANNER_TYPE.STAGE, stateStage);
 }

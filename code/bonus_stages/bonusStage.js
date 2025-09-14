@@ -112,10 +112,6 @@ class BonusStage extends Stage {
 
     draw() {
         super.draw();
-        // use getters so subclasses that override attachments still work
-        this.getFlippers().update();
-        this.getStageText().draw();
-
         if (this.scenarioTop.collide(this.getBall().sprite)) {
             Audio.playSFX('sfx08');
         }
