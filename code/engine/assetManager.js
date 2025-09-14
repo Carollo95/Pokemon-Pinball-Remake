@@ -19,7 +19,11 @@ class AssetManager {
   // Load and cache a PNG image (path without extension)
   getImage(path) {
     if (this.imageCache.has(path)) return this.imageCache.get(path);
-    const img = loadImage(path + '.png');
+    const img = loadImage(path + '.png', (loadedImg) => {
+      if (DEBUG) {
+      img.filter(GRAY);
+      }
+    });
     this.imageCache.set(path, img);
     return img;
   }
