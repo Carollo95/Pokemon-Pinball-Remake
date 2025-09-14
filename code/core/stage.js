@@ -79,6 +79,16 @@ class Stage {
         }
     }
 
+    createScenarioGeometry(positions) {
+        let scenario = new Sprite(positions, "static");
+        scenario.layer = SCENARIO_LAYER;
+        scenario.debug = DEBUG;
+        scenario.visible = DEBUG;
+
+        return scenario;
+    }
+
+
     // --- helpers to attach common per-stage components ---
     attachBall(ballInstance) { this.ball = ballInstance; }
     attachTimer(timerInstance) { this.timer = timerInstance; }

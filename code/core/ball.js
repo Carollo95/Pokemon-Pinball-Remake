@@ -60,9 +60,16 @@ class Ball {
         return points;
     }
 
+    launchFromSpawn() {
+        this.sprite.applyForce(0, -1000);
+    }
+
     /** Creates and returns a new ball for a bonus level. */
     static spawnBonusBall() {
         return new Ball(BONUS_SPAWN_BALL_X, BONUS_SPAWN_BALL_Y);
+    }
+    static spawnBonusBall() {
+        return new Ball(334, 542);
     }
 }
 
