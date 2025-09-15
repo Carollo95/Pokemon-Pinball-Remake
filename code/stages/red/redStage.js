@@ -11,6 +11,7 @@ class RedStage extends Stage {
     }
 
 
+    //Left pikachu well and diglett
     setup() {
         this.createScenarioGeometry([
             [0, 555],
@@ -25,6 +26,7 @@ class RedStage extends Stage {
             [0, 555]
         ]);
 
+        //Left top borders
         this.createScenarioGeometry([
             [0, 336],
             [58, 336],
@@ -39,6 +41,7 @@ class RedStage extends Stage {
             [0, 336]
         ]);
 
+        //Top and right borders
         this.createScenarioGeometry([
             [34, 0],
             [34, 24],
@@ -48,8 +51,9 @@ class RedStage extends Stage {
             [56, 66],
             [74, 52],
             [94, 40],
-            [128, 28],
-            [143, 22],
+            [118, 28],
+            [128, 24],
+            [142, 22],
             [200, 22],
             [234, 30],
             [258, 42],
@@ -65,8 +69,10 @@ class RedStage extends Stage {
             [34, 0]
         ]);
 
+        //Right pikachu well and diglett
         this.createScenarioGeometry([
             [346, 556],
+            [320, 556],
             [206, 556],
             [304, 494],
             [304, 494],
@@ -74,7 +80,15 @@ class RedStage extends Stage {
             [294, 398],
             [272, 392],
             [272, 352],
-            [262, 335],
+            [262, 334],
+            [320, 334],
+            [320, 556],
+            [346, 556]]);
+
+
+        //Right scenario border
+        this.createScenarioGeometry([
+            [262, 334],
             [276, 312],
             [286, 280],
             [296, 265],
@@ -85,12 +99,31 @@ class RedStage extends Stage {
             [290, 92],
             [310, 124],
             [320, 166],
-            [320, 556],
-            [346, 556]
+            [320, 334],
+            [262, 334]
         ]);
 
+        //Top thingy
+        this.createScenarioGeometry([
+            [234, 78],
+            [210, 58],
+            [189, 48],
+            [174, 48],
+            [152, 48],
+            [134, 48],
+            [113, 58],
+            [90, 72],
+            [78, 85],
+            [105, 74],
+            [136, 64],
+            [144, 62],
+            [168, 62],
+            [192, 64],
+            [216, 72],
+            [234, 78]
+        ]);
 
-        //Side flippers
+        //Left side flippers
         this.createScenarioGeometry([
             [208, 502],
             [272, 464],
@@ -102,6 +135,7 @@ class RedStage extends Stage {
             [208, 506]
         ]);
 
+        //Right side flippers
         this.createScenarioGeometry([
             [108, 502],
             [48, 464],
@@ -114,6 +148,48 @@ class RedStage extends Stage {
             [108, 506]
         ]);
 
+        //Left thingy
+        this.createScenarioGeometry([
+            [60, 169],
+            [52, 192],
+            [52, 229],
+            [56, 250],
+            [60, 268],
+            [78, 302],
+            [90, 288],
+            [76, 270],
+            [64, 238],
+            [58, 222],
+            [56, 210],
+            [56, 192],
+            [60, 169]
+        ]);
+
+        //staryu ball upgrade 
+        this.createScenarioGeometry([
+            [112, 256],
+            [94, 240],
+            [90, 214],
+            [90, 166],
+            [98, 134],
+            [98, 154],
+            [92, 164],
+            [92, 178],
+            [104, 202],
+            [128, 226],
+            [130, 236],
+            [112, 256]
+        ]);
+
+        this.createScenarioGeometry([
+            [134, 100],
+            [138,94],
+            [142,100],
+            [142,126],
+            [138,128],
+            [134,126],
+            [134, 100]
+        ]);
 
     }
 
