@@ -1,0 +1,60 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#canvas-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px;
+}
+
+#flipper-buttons {
+    margin-top: 5px;
+    display: none;
+    gap: 10px;
+    justify-content: center;
+}
+
+#bonus-stage-selector-buttons {
+    margin-top: 5px;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.flipper-button {
+    width: 150px;
+    height: 60px;
+    font-size: 24px;
+    padding: 10px 20px;
+}
+
+#keyboard-instructions{
+    margin-top: 10px;
+    display: none;
+    gap: 10px;
+    justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+  #flipper-buttons{
+    display: flex;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #keyboard-instructions{
+    display: block;
+  }
+}
