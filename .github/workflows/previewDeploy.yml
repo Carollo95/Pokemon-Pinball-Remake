@@ -15,8 +15,7 @@ jobs:
       - name: Prepare preview folder
         run: |
           mkdir preview
-          cp -r * preview/
-          rm -rf preview/.git preview/.github
+          rsync -av --exclude='preview' --exclude='.git' --exclude='.github' ./ preview/
 
       - name: Checkout gh-pages branch
         uses: actions/checkout@v3
