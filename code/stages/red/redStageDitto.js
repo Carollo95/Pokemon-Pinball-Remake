@@ -1,13 +1,9 @@
 class RedStageDitto {
 
-    constructor() {
-        this.close();
-    }
-
-
     open() {
 
         if (this.closeSprite) { this.closeSprite.remove(); }
+        if (this.fullyOpenSprite) { this.fullyOpenSprite.remove(); }
 
         this.openSprite = new Sprite([
             [18, 142],
@@ -28,6 +24,7 @@ class RedStageDitto {
 
     close() {
         if (this.openSprite) { this.openSprite.remove(); }
+        if (this.fullyOpenSprite) { this.fullyOpenSprite.remove(); }
 
 
         this.closeSprite = new Sprite([
@@ -41,7 +38,7 @@ class RedStageDitto {
             [90, 70],
             [20, 44],
             [18, 160],
-            [18, 190], 
+            [18, 190],
             [20, 188],
         ], 'static');
         this.closeSprite.addAnimation(Asset.getAnimation('redStageDittoClosed'));
@@ -50,6 +47,12 @@ class RedStageDitto {
     }
 
     fullyOpen() {
+        if (this.closeSprite) { this.closeSprite.remove(); }
+        if (this.openSprite) { this.openSprite.remove(); }
+
+        this.fullyOpenSprite = new Sprite(8, 106, 16, 44, 'static');
+        this.fullyOpenSprite.addAnimation(Asset.getAnimation('redStageDittoFullyOpen'));
+        this.fullyOpenSprite.debug = DEBUG;
 
     }
 
