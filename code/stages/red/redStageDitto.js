@@ -40,8 +40,8 @@ class RedStageDitto {
             [80, 84],
             [90, 70],
             [20, 44],
-            [18, 190],
-            [18, 160], //This is just to move the centroid
+            [18, 160],
+            [18, 190], 
             [20, 188],
         ], 'static');
         this.closeSprite.addAnimation(Asset.getAnimation('redStageDittoClosed'));
