@@ -21,7 +21,7 @@ class AssetManager {
     if (this.imageCache.has(path)) return this.imageCache.get(path);
     const img = loadImage(path + '.png', (loadedImg) => {
       if (DEBUG) {
-      img.filter(GRAY);
+        img.filter(GRAY);
       }
     });
     this.imageCache.set(path, img);
@@ -190,8 +190,10 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('stageTextPokemon', 'assets/img/stage-text/pokemon', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextCommaSeparator', 'assets/img/stage-text/comma_separator', 4, 16, 1);
   Asset.registerAnimationTemplate('stageTextDotSeparator', 'assets/img/stage-text/dot_separator', 4, 16, 1);
-   Asset.registerAnimationTemplate('stageTextSeparator', 'assets/img/stage-text/separator', 4, 16, 1);
+  Asset.registerAnimationTemplate('stageTextSeparator', 'assets/img/stage-text/separator', 4, 16, 1);
 
+
+    Asset.registerAnimationTemplate('redStageDittoOpen', 'assets/img/red-stage/ditto-open', 53, 106, 1);
 }
 
 

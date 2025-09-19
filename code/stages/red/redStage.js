@@ -7,13 +7,13 @@ class RedStage extends Stage {
 
         this.attachBall(Ball.spawnStageBall());
         this.attachFlippers(createTableFlippers());
-        this.attachStageText(createStageStatusBanner(this.status));
+        this.attachStageText(createStageStatusBanner(this.status));        
     }
 
-
-   
     setup() {
         RED_STAGE_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
+
+        this.ditto = new RedStageDitto();
     }
 
     draw() {
