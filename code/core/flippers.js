@@ -188,6 +188,13 @@ class Flippers {
         if (this.flippersEnabled) {
             if (this.isRightFlipperActive()) {
                 this.liftRightFlipper();
+
+                //FIXME this is crap and should be remove from here
+                if (stage.ball.sprite.pos.x > 320 && stage.ball.sprite.vel.y == 0) {
+                    stage.ball.launchFromSpawn();
+                }
+
+
             } else {
                 this.lowerRightFlipper();
             }
