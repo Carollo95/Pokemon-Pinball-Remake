@@ -194,6 +194,7 @@ function preloadAnimations() {
 
 
     Asset.registerAnimationTemplate('redStageDittoOpen', 'assets/img/red-stage/ditto-open', 53, 106, 1);
+    Asset.registerAnimationTemplate('redStageDittoClosed', 'assets/img/red-stage/ditto-closed', 78, 140, 1);
 }
 
 
