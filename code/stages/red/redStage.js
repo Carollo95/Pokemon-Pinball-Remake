@@ -7,7 +7,7 @@ class RedStage extends Stage {
 
         this.attachBall(Ball.spawnStageBall());
         this.attachFlippers(createTableFlippers());
-        this.attachStageText(createStageStatusBanner(this.status));        
+        this.attachStageText(createStageStatusBanner(this.status));
     }
 
     setup() {
@@ -18,7 +18,15 @@ class RedStage extends Stage {
     }
 
     draw() {
+        this.updateDitto();
+
         super.draw();
+    }
+
+    updateDitto() {
+        if (this.ditto.isOpen() && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
+            this.ditto.close();
+        }
     }
 
 }

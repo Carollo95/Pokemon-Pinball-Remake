@@ -1,8 +1,8 @@
-const RED_STAGE_DITTO_STATE = [
-    OPEN = 0,
-    CLOSE = 1,
-    FULLY_OPEN = 2
-]
+const RED_STAGE_DITTO_STATE = {
+    OPEN: 0,
+    CLOSE: 1,
+    FULLY_OPEN: 2
+};
 
 class RedStageDitto {
     constructor() {
@@ -10,9 +10,9 @@ class RedStageDitto {
     }
 
     open() {
-
-        if (this.closeSprite) { this.closeSprite.remove(); }
-        if (this.fullyOpenSprite) { this.fullyOpenSprite.remove(); }
+        this.openSprite && this.openSprite.remove();
+        this.closeSprite && this.closeSprite.remove();
+        this.fullyOpenSprite && this.fullyOpenSprite.remove();
 
         this.openSprite = new Sprite([
             [18, 142],
@@ -33,9 +33,14 @@ class RedStageDitto {
         this.status = RED_STAGE_DITTO_STATE.OPEN;
     }
 
+    isOpen() {
+        return this.status === RED_STAGE_DITTO_STATE.OPEN;
+    }
+
     close() {
-        if (this.openSprite) { this.openSprite.remove(); }
-        if (this.fullyOpenSprite) { this.fullyOpenSprite.remove(); }
+        this.openSprite && this.openSprite.remove();
+        this.closeSprite && this.closeSprite.remove();
+        this.fullyOpenSprite && this.fullyOpenSprite.remove();
 
 
         this.closeSprite = new Sprite([
@@ -58,15 +63,24 @@ class RedStageDitto {
         this.status = RED_STAGE_DITTO_STATE.CLOSE;
     }
 
+    isClosed() {
+        return this.status === RED_STAGE_DITTO_STATE.CLOSE;
+    }
+
     fullyOpen() {
-        if (this.closeSprite) { this.closeSprite.remove(); }
-        if (this.openSprite) { this.openSprite.remove(); }
+        this.openSprite && this.openSprite.remove();
+        this.closeSprite && this.closeSprite.remove();
+        this.fullyOpenSprite && this.fullyOpenSprite.remove();
 
         this.fullyOpenSprite = new Sprite(8, 106, 16, 44, 'static');
         this.fullyOpenSprite.addAnimation(Asset.getAnimation('redStageDittoFullyOpen'));
         this.fullyOpenSprite.debug = DEBUG;
 
         this.status = RED_STAGE_DITTO_STATE.FULLY_OPEN;
+    }
+
+    isFullyOpen() {
+        return this.status === RED_STAGE_DITTO_STATE.FULLY_OPEN;
     }
 
 
