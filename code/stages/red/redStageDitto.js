@@ -1,4 +1,13 @@
+const RED_STAGE_DITTO_STATE = [
+    OPEN = 0,
+    CLOSE = 1,
+    FULLY_OPEN = 2
+]
+
 class RedStageDitto {
+    constructor() {
+        this.open();
+    }
 
     open() {
 
@@ -20,6 +29,8 @@ class RedStageDitto {
 
         this.openSprite.addAnimation(Asset.getAnimation('redStageDittoOpen'));
         this.openSprite.debug = DEBUG;
+
+        this.status = RED_STAGE_DITTO_STATE.OPEN;
     }
 
     close() {
@@ -44,6 +55,7 @@ class RedStageDitto {
         this.closeSprite.addAnimation(Asset.getAnimation('redStageDittoClosed'));
         this.closeSprite.debug = DEBUG;
 
+        this.status = RED_STAGE_DITTO_STATE.CLOSE;
     }
 
     fullyOpen() {
@@ -54,6 +66,7 @@ class RedStageDitto {
         this.fullyOpenSprite.addAnimation(Asset.getAnimation('redStageDittoFullyOpen'));
         this.fullyOpenSprite.debug = DEBUG;
 
+        this.status = RED_STAGE_DITTO_STATE.FULLY_OPEN;
     }
 
 
