@@ -1,3 +1,5 @@
+
+
 class RedStage extends Stage {
 
     constructor(status) {
@@ -14,7 +16,6 @@ class RedStage extends Stage {
         RED_STAGE_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
         this.ditto = new RedStageDitto();
-        this.ditto.open();
     }
 
     draw() {
