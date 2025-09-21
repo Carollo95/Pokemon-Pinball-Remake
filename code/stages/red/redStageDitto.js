@@ -6,14 +6,24 @@ const RED_STAGE_DITTO_STATE = {
 
 class RedStageDitto {
     constructor() {
-        this.open();
+        this.createOpenSprite();
+        this.status = RED_STAGE_DITTO_STATE.OPEN;
     }
 
-    open() {
+    removeSprites() {
         this.openSprite && this.openSprite.remove();
         this.closeSprite && this.closeSprite.remove();
         this.fullyOpenSprite && this.fullyOpenSprite.remove();
+    }
 
+    open() {
+        this.removeSprites();
+        Audio.playSFX('sfx00');
+        this.createOpenSprite();
+        this.status = RED_STAGE_DITTO_STATE.OPEN;
+    }
+
+    createOpenSprite() {
         this.openSprite = new Sprite([
             [18, 142],
             [24, 116],
@@ -29,8 +39,6 @@ class RedStageDitto {
 
         this.openSprite.addAnimation(Asset.getAnimation('redStageDittoOpen'));
         this.openSprite.debug = DEBUG;
-
-        this.status = RED_STAGE_DITTO_STATE.OPEN;
     }
 
     isOpen() {
@@ -38,10 +46,8 @@ class RedStageDitto {
     }
 
     close() {
-        this.openSprite && this.openSprite.remove();
-        this.closeSprite && this.closeSprite.remove();
-        this.fullyOpenSprite && this.fullyOpenSprite.remove();
-
+        this.removeSprites();
+        Audio.playSFX('sfx00');
 
         this.closeSprite = new Sprite([
             [20, 188],
@@ -68,9 +74,8 @@ class RedStageDitto {
     }
 
     fullyOpen() {
-        this.openSprite && this.openSprite.remove();
-        this.closeSprite && this.closeSprite.remove();
-        this.fullyOpenSprite && this.fullyOpenSprite.remove();
+        this.removeSprites();
+        Audio.playSFX('sfx00');
 
         this.fullyOpenSprite = new Sprite(8, 106, 16, 44, 'static');
         this.fullyOpenSprite.addAnimation(Asset.getAnimation('redStageDittoFullyOpen'));

@@ -203,7 +203,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('cloneStage', 'assets/audio/CloneStage_Mewtwo', { loop: true }));
 
     // SFX
-    promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00'));
+    promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red stage ditto close
     promises.push(audio.registerSFX('sfx01', 'assets/audio/sfx/SFX-01'));
     promises.push(audio.registerSFX('sfx02', 'assets/audio/sfx/SFX-02'));
     promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03'));
