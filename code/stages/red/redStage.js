@@ -16,10 +16,17 @@ class RedStage extends Stage {
         RED_STAGE_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
         this.ditto = new RedStageDitto();
+
+        this.speedPad = [];
+        this.speedPad.push(new SpeedPad(265, 293));
+        this.speedPad.push(new SpeedPad(53, 293));
+        this.speedPad.push(new SpeedPad(89, 259));
     }
 
     draw() {
         this.updateDitto();
+
+        this.speedPad.forEach(pad => pad.update(this.getBall()));
 
         super.draw();
     }
