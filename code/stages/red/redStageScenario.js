@@ -1,8 +1,8 @@
 
 const RED_STAGE_LEFT_PIKACHU_WELL_AND_DIGLETT = [
     [0, 555],
-    [114, 555],
-    [12, 493],
+    [106, 555],
+    [12, 496],
     [12, 414],
     [14, 402],
     [24, 394],
@@ -55,11 +55,10 @@ const RED_STAGE_TOP_AND_RIGHT_BORDERS = [
 ];
 
 const RED_STAGE_RIGHT_PIKACHU_WELL_AND_DIGLETT = [
-    [346, 556],
+    [350, 556],
     [320, 556],
-    [206, 556],
-    [308, 494],
-    [308, 494],
+    [214, 556],
+    [308, 498],
     [308, 416],
     [302, 400],
     [296, 392],
@@ -69,7 +68,7 @@ const RED_STAGE_RIGHT_PIKACHU_WELL_AND_DIGLETT = [
     [266, 334],
     [320, 334],
     [320, 556],
-    [346, 556]];
+    [350, 556]];
 
 
 const RED_STAGE_RIGHT_SCENARIO_BORDER = [
