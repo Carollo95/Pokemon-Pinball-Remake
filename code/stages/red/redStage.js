@@ -15,6 +15,26 @@ class RedStage extends Stage {
     setup() {
         RED_STAGE_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
+        this.createScenarioGeometry([
+            [198, 50],
+            [220, 54],
+            [242, 62],
+            [268, 78],
+            [278, 88],
+            [288, 108],
+            [290, 118],
+            [296, 132],
+            [300, 158],
+
+            [290, 134],
+            [272, 108],
+            [256, 92],
+            [240, 80],
+            [234, 76],
+            [198, 50]
+        ]);
+
+
         this.ditto = new RedStageDitto();
 
         this.speedPad = [];
