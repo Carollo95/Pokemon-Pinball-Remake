@@ -10,7 +10,6 @@ class SpeedPad {
     update(ball) {
         if (this.sprite.overlap(ball.sprite) && ball.sprite.velocity.y < 0) {
             ball.sprite.velocity.y *= SPEED_PUSH_MULTIPLIER;
-            console.log("PUSH");
         }
     }
 

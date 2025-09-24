@@ -275,7 +275,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx45', 'assets/audio/sfx/SFX-45'));
     promises.push(audio.registerSFX('sfx46', 'assets/audio/sfx/SFX-46'));
     promises.push(audio.registerSFX('sfx47', 'assets/audio/sfx/SFX-47'));
-    promises.push(audio.registerSFX('sfx48', 'assets/audio/sfx/SFX-48'));
+    promises.push(audio.registerSFX('sfx48', 'assets/audio/sfx/SFX-48')); //Landscape spinner
     promises.push(audio.registerSFX('sfx49', 'assets/audio/sfx/SFX-49')); //Timer 20s
     promises.push(audio.registerSFX('sfx4A', 'assets/audio/sfx/SFX-4A')); //Timer 10s
     promises.push(audio.registerSFX('sfx4B', 'assets/audio/sfx/SFX-4B')); //Timer 5s

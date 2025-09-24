@@ -1,16 +1,16 @@
 const RED_LANDMARKS = {
-    PALLET: 0,
-    VIRIDIAN: 1,
-    PEWTER: 2,
-    CERULEAN: 3,
-    VERMILION_PORT: 4,
-    ROCK_TUNNEL: 5,
-    LAVENDER: 6,
-    BIKE_ROAD:7,
-    SAFARI: 8,
-    SEAFOAM: 9,
-    CINNABAR: 10,
-    INDIGO_PLATEAU: 11    
+    PALLET: { index: 0 },
+    VIRIDIAN: { index: 1 },
+    PEWTER: { index: 2 },
+    CERULEAN: { index: 3 },
+    VERMILION_PORT: { index: 4 },
+    ROCK_TUNNEL: { index: 5 },
+    LAVENDER: { index: 6 },
+    BIKE_ROAD: { index: 7 },
+    SAFARI: { index: 8 },
+    SEAFOAM: { index: 9 },
+    CINNABAR: { index: 10 },
+    INDIGO_PLATEAU: { index: 11 }
 }
 
 class Screen {
@@ -19,24 +19,42 @@ class Screen {
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
 
-    this.sprite.addAnimation('redLandmarks', Asset.getAnimation('redLandmarks'));
-    this.sprite.addAnimation('redLandmarksBW', Asset.getAnimation('redLandmarksBW'));
+        this.sprite.addAnimation('redLandmarks', Asset.getAnimation('redLandmarks'));
+        this.sprite.addAnimation('redLandmarksBW', Asset.getAnimation('redLandmarksBW'));
+
+        this.spinBW();
     }
 
     update() {
-
+        this.playSpinSound();
     }
 
-    spinBW(){
+    playSpinSound() {
+        if (this._lastFrame !== this.sprite.ani.frame) {
+            Audio.playSFX('sfx48');
+            this._lastFrame = this.sprite.ani.frame;
+        }
+    }
+
+    spinBW() {
         this.sprite.changeAnimation('redLandmarksBW');
     }
 
-    stopSpin(){
+    stopSpin() {
         let currentFrame = this.sprite.animation.frame;
         this.sprite.changeAnimation('redLandmarks');
         this.sprite.animation.stop();
         this.sprite.animation.frame = currentFrame;
-        
+        this.currentLandmark = this.landmarkFromIndex(currentFrame);
+    }
+
+    landmarkFromIndex(i) {
+        for (const key in RED_LANDMARKS) {
+            if (RED_LANDMARKS[key].index === i) {
+                return RED_LANDMARKS[key];
+            }
+        }
+        return undefined;
     }
 
 }
