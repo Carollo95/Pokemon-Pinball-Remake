@@ -18,6 +18,7 @@ class Ball {
         this.sprite = new Sprite(x, y, BALL_DIAMETER, "dynamic");
         this.sprite.debug = DEBUG;
         this.sprite.layer = BALL_LAYER;
+        this.sprite.friction = 0.1;
         this.spawnX = x;
         this.spawnY = y;
 
