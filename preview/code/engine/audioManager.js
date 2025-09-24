@@ -213,7 +213,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx07', 'assets/audio/sfx/SFX-07'));
     promises.push(audio.registerSFX('sfx08', 'assets/audio/sfx/SFX-08')); //Bonus scenario hit
     promises.push(audio.registerSFX('sfx09', 'assets/audio/sfx/SFX-09'));
-    promises.push(audio.registerSFX('sfx0A', 'assets/audio/sfx/SFX-0A'));
+    promises.push(audio.registerSFX('sfx0A', 'assets/audio/sfx/SFX-0A')); //Ball launch
     promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B'));
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
     promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D'));
@@ -275,7 +275,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx45', 'assets/audio/sfx/SFX-45'));
     promises.push(audio.registerSFX('sfx46', 'assets/audio/sfx/SFX-46'));
     promises.push(audio.registerSFX('sfx47', 'assets/audio/sfx/SFX-47'));
-    promises.push(audio.registerSFX('sfx48', 'assets/audio/sfx/SFX-48'));
+    promises.push(audio.registerSFX('sfx48', 'assets/audio/sfx/SFX-48')); //Landscape spinner
     promises.push(audio.registerSFX('sfx49', 'assets/audio/sfx/SFX-49')); //Timer 20s
     promises.push(audio.registerSFX('sfx4A', 'assets/audio/sfx/SFX-4A')); //Timer 10s
     promises.push(audio.registerSFX('sfx4B', 'assets/audio/sfx/SFX-4B')); //Timer 5s

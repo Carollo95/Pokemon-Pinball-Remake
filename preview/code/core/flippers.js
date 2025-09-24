@@ -31,13 +31,15 @@ const FLIPPER_SFX_PLAY_COOLDOWN = 200; //Cooldown betwen flipper sfx plays to av
 
 
 class Flippers {
-    constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY) {
+    constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY, rightFlipperCallback = function () { }) {
         this.flippersEnabled = true;
 
         this.createHtmlButtonControls();
 
         this.createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY);
         this.createRightFlipper(rightFlipperRotationPointX, rightFlipperRotationPointY);
+
+        this.rightFlipperCallback = rightFlipperCallback;
 
     }
 
@@ -189,12 +191,7 @@ class Flippers {
             if (this.isRightFlipperActive()) {
                 this.liftRightFlipper();
 
-                //FIXME this is crap and should be remove from here
-                if (stage.ball.sprite.pos.x > 320 && stage.ball.sprite.vel.y == 0) {
-                    stage.ball.launchFromSpawn();
-                }
-
-
+                this.rightFlipperCallback();
             } else {
                 this.lowerRightFlipper();
             }
@@ -265,8 +262,8 @@ class Flippers {
     }
 }
 
-function createTableFlippers() {
-    return new Flippers(LEFT_FLIPPER_ROTATION_POINT_X, LEFT_FLIPPER_ROTATION_POINT_Y, RIGHT_FLIPPER_ROTATION_POINT_X, RIGHT_FLIPPER_ROTATION_POINT_Y);
+function createTableFlippers(rightFlipperCallback) {
+    return new Flippers(LEFT_FLIPPER_ROTATION_POINT_X, LEFT_FLIPPER_ROTATION_POINT_Y, RIGHT_FLIPPER_ROTATION_POINT_X, RIGHT_FLIPPER_ROTATION_POINT_Y, rightFlipperCallback);
 }
 
 function createBonusFlippers() {
