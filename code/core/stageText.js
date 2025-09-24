@@ -180,10 +180,12 @@ class StageStatusBanner {
 
     createBallsStatus() {
         let balls;
-        if (this.stageStatus.balls > 9) {
+        if (this.stageStatus.balls <= 0) {
+            balls = "º0";
+        } else if (this.stageStatus.balls > 9) {
             balls = "º9";
         } else {
-            balls = "º" + this.stageStatus.balls.toString();
+            balls = "º" + (this.stageStatus.balls - 1).toString();
         }
         return balls;
     }

@@ -1,6 +1,9 @@
 const RED_STAGE_STATUS = {
     PLAYING: 0,
-    NEW_BALL_WAITING: 1
+    GAME_START: 1,
+    BALL_LOST: 2,
+    GAME_OVER: 3,
+    NEW_BALL_WAITING: 4
 }
 
 class RedStage extends Stage {
@@ -16,18 +19,20 @@ class RedStage extends Stage {
     }
 
     rightFlipperCallback = () => {
-        if (this.state === RED_STAGE_STATUS.NEW_BALL_WAITING) {
-            this.ball.launchFromSpawn();
+        if (this.state === RED_STAGE_STATUS.GAME_START || this.state === RED_STAGE_STATUS.NEW_BALL_WAITING) {
+            if (this.state === RED_STAGE_STATUS.GAME_START) {
+                this.screen.stopSpin();
+                this.stageText.setText(I18NManager.translate("start_from") + this.screen.getLandmarkText());
+            }
+            this.getBall().launchFromSpawn();
             this.state = RED_STAGE_STATUS.PLAYING;
-            this.screen.stopSpin();
-
-            this.stageText.setText(I18NManager.translate("start_from") + this.screen.getLandmarkText());
         }
     }
 
     setup() {
         RED_STAGE_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
+        //TODO move to geometry
         this.createScenarioGeometry([
             [198, 50],
             [220, 54],
@@ -55,18 +60,39 @@ class RedStage extends Stage {
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
 
-        this.state = RED_STAGE_STATUS.NEW_BALL_WAITING;
+        this.state = RED_STAGE_STATUS.GAME_START;
 
         this.screen = new Screen();
     }
 
     draw() {
-        this.updateScreen();
-        this.updateDitto();
-
-        this.speedPad.forEach(pad => pad.update(this.getBall()));
-
         super.draw();
+        if (this.state === RED_STAGE_STATUS.PLAYING) {
+            this.checkForBallLoss();
+            this.updateScreen();
+            this.updateDitto();
+
+            this.speedPad.forEach(pad => pad.update(this.getBall()));
+
+        }
+    }
+
+    checkForBallLoss() {
+        if (this.ball.getPositionY() > SCREEN_HEIGHT) {
+            this.status.balls--;
+            this.createNewBallOrEndStage();
+        }
+    }
+
+    createNewBallOrEndStage() {
+        if (this.status.balls > 0) {
+            this.attachBall(Ball.spawnStageBall());
+            this.ditto.open();
+            this.state = RED_STAGE_STATUS.NEW_BALL_WAITING
+        } else {
+            this.state = RED_STAGE_STATUS.GAME_OVER;
+            console.log("GAME OVER");
+        }
     }
 
     updateDitto() {
