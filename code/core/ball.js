@@ -63,6 +63,7 @@ class Ball {
 
     launchFromSpawn() {
         this.sprite.applyForce(0, -1000);
+        Audio.playSFX('sfx0A');
     }
 
     /** Creates and returns a new ball for a bonus level. */

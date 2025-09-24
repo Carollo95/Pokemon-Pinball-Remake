@@ -1,4 +1,7 @@
-
+const RED_STAGE_STATUS = {
+    PLAYING: 0,
+    NEW_BALL_WAITING: 1
+}
 
 class RedStage extends Stage {
 
@@ -8,8 +11,16 @@ class RedStage extends Stage {
         this.background = Asset.getBackground('redStageBackground');
 
         this.attachBall(Ball.spawnStageBall());
-        this.attachFlippers(createTableFlippers());
+        this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
         this.attachStageText(createStageStatusBanner(this.status));
+    }
+
+    rightFlipperCallback = () => {
+        if (this.state === RED_STAGE_STATUS.NEW_BALL_WAITING) {
+            this.ball.launchFromSpawn();
+            this.state = RED_STAGE_STATUS.PLAYING;
+            this.screen.stopSpin();
+        }
     }
 
     setup() {
@@ -41,9 +52,14 @@ class RedStage extends Stage {
         this.speedPad.push(new SpeedPad(265, 293));
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
+
+        this.state = RED_STAGE_STATUS.NEW_BALL_WAITING;
+
+        this.screen = new Screen();
     }
 
     draw() {
+        this.updateScreen();
         this.updateDitto();
 
         this.speedPad.forEach(pad => pad.update(this.getBall()));
@@ -55,6 +71,10 @@ class RedStage extends Stage {
         if (this.ditto.isOpen() && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
             this.ditto.close();
         }
+    }
+
+    updateScreen() {
+        this.screen.update();
     }
 
 }
