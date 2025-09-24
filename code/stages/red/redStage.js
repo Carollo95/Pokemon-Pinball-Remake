@@ -20,6 +20,8 @@ class RedStage extends Stage {
             this.ball.launchFromSpawn();
             this.state = RED_STAGE_STATUS.PLAYING;
             this.screen.stopSpin();
+
+            this.stageText.setText(I18NManager.translate("start_from") + this.screen.getLandmarkText());
         }
     }
 

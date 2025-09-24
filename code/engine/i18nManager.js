@@ -10,7 +10,21 @@ const I18NManager = {
             "seal_stage_clear": "  seal stage cleared ",
             "end_seal_stage": "   end seal stage  ",
             "mewtwo_stage_clear": "mewtwo stage cleared",
-            "end_mewtwo_stage": "end mewtwo stage  "
+            "end_mewtwo_stage": "end mewtwo stage  ",
+
+            "start_from": "start from: ",
+            "pallet_town": "pallet town",
+            "viridian_forest": "viridian forest",
+            "pewter_city": "pewter city",
+            "cerulean_city": "cerulean city",
+            "vermilion_city_port": "vermilion city: port",
+            "rock_tunnel": "rock tunnel",
+            "lavender_town": "lavender town",
+            "bike_road": "bike road",
+            "safari_zone": "safari zone",
+            "seafoam_islands": "seafoam islands",
+            "cinnabar_island": "cinnabar island",
+            "indigo_plateau": "indigo plateau"
         }
     },
 

@@ -1,16 +1,16 @@
 const RED_LANDMARKS = {
-    PALLET: { index: 0 },
-    VIRIDIAN: { index: 1 },
-    PEWTER: { index: 2 },
-    CERULEAN: { index: 3 },
-    VERMILION_PORT: { index: 4 },
-    ROCK_TUNNEL: { index: 5 },
-    LAVENDER: { index: 6 },
-    BIKE_ROAD: { index: 7 },
-    SAFARI: { index: 8 },
-    SEAFOAM: { index: 9 },
-    CINNABAR: { index: 10 },
-    INDIGO_PLATEAU: { index: 11 }
+    PALLET: { index: 0, text: "pallet_town" },
+    VIRIDIAN: { index: 1, text: "viridian_forest" },
+    PEWTER: { index: 2, text: "pewter_city" },
+    CERULEAN: { index: 3, text: "cerulean_city" },
+    VERMILION_PORT: { index: 4, text: "vermilion_city_port" },
+    ROCK_TUNNEL: { index: 5, text: "rock_tunnel" },
+    LAVENDER: { index: 6, text: "lavender_town" },
+    BIKE_ROAD: { index: 7, text: "bike_road" },
+    SAFARI: { index: 8, text: "safari_zone" },
+    SEAFOAM: { index: 9, text: "seafoam_islands" },
+    CINNABAR: { index: 10, text: "cinnabar_island" },
+    INDIGO_PLATEAU: { index: 11, text: "indigo_plateau" }
 }
 
 class Screen {
@@ -55,6 +55,10 @@ class Screen {
             }
         }
         return undefined;
+    }
+
+    getLandmarkText() {
+        return this.currentLandmark ? I18NManager.translate(this.currentLandmark.text) : "";
     }
 
 }

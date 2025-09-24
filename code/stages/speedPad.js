@@ -5,6 +5,8 @@ class SpeedPad {
 
     constructor(x, y) {
         this.sprite = new Sprite(x, y, 1, 1, "none");
+        this.sprite.debug = DEBUG;
+        this.sprite.visible = false;
     }
 
     update(ball) {

@@ -193,8 +193,8 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('stageTextSeparator', 'assets/img/stage-text/separator', 4, 16, 1);
 
 
-  Asset.registerAnimationTemplate('redLandmarks', 'assets/img/landmarks/landmarks', 96, 64, 12);
-  Asset.registerAnimationTemplate('redLandmarksBW', 'assets/img/landmarks/landmarks_bw', 96, 64, 12);
+  Asset.registerAnimationTemplate('redLandmarks', 'assets/img/landmarks/red_landmarks', 96, 64, 12);
+  Asset.registerAnimationTemplate('redLandmarksBW', 'assets/img/landmarks/red_landmarks_bw', 96, 64, 12);
 
   Asset.registerAnimationTemplate('redStageDittoOpen', 'assets/img/red-stage/ditto-open', 53, 106, 1);
   Asset.registerAnimationTemplate('redStageDittoClosed', 'assets/img/red-stage/ditto-closed', 78, 140, 1);
