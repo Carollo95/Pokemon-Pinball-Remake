@@ -24,7 +24,11 @@ const I18NManager = {
             "safari_zone": "safari zone",
             "seafoam_islands": "seafoam islands",
             "cinnabar_island": "cinnabar island",
-            "indigo_plateau": "indigo plateau"
+            "indigo_plateau": "indigo plateau",
+
+            "end_of_ball_bonus": " end of ball bonus   ",
+            "bonus": " bonus     ",
+            "subtotal": " subtotal  "
         }
     },
 

@@ -5,10 +5,46 @@ class StageStatus {
         this.captured = 0;
         this.activeThunder = false;
         this.balls = 4;
+
+        this.pokemonCaughtOnBall = 0;
+        this.pokemonEvolvedOnBall = 0;
+        this.caughtStartedOnBall = 0;
+        this.travelOnBall = 0;
+        this.caveShotsOnBall = 0;
+        this.spinnerTurnsOnBall = 0;
+    }
+    
+    getBonusForCaughtPokemonOnBall() {
+
+    }
+    getBonusForEvolvedPokemonOnBall() {
+
+    }
+    getBonusForCaughtStartedOnBall() {
+
+    }
+    getBonusForTravelOnBall() {
+
+    }
+    getBonusForCaveShotsOnBall() {
+
+    }
+    getBonusForSpinnerTurnsOnBall() {
+
+    }
+    getTotalPointsForBall() {
+
     }
 
-    decreaseBall() {
+    startNewBall() {
         this.balls--;
+
+        this.pokemonCaughtOnBall = 0;
+        this.pokemonEvolvedOnBall = 0;
+        this.caughtStartedOnBall = 0;
+        this.travelOnBall = 0;
+        this.caveShotsOnBall = 0;
+        this.spinnerTurnsOnBall = 0;
     }
 
     addPoints(pts, ball) {
