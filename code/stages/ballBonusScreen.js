@@ -69,7 +69,6 @@ class BallBonusScreen {
 
 
     showPage(lines) {
-        console.log(lines);
         this.remove()
         for (let i = 0; i < 5; i++) {
             let line = this.createLine(BALL_BONUS_SCREEN_YS[i], lines[i][1]);
