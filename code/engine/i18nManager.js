@@ -27,8 +27,11 @@ const I18NManager = {
             "indigo_plateau": "indigo plateau",
 
             "end_of_ball_bonus": " end of ball bonus   ",
-            "bonus": " bonus     ",
-            "subtotal": " subtotal  "
+            "bonus": " bonus        ",
+            "subtotal": " subtotal     ",
+            "total": " total    ",
+            "score": " score    ",
+            "multiplier": " multiplier     ",
         }
     },
 

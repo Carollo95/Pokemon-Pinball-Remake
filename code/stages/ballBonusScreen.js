@@ -1,12 +1,12 @@
 const BALL_BONUS_SCREEN_YS = [484, 500, 516, 532, 548, 564];
 //All characters
-const BALL_BONUS_SCREEN_TEXT_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
+const BALL_BONUS_SCREEN_TEXT_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
 //Numbers up to 999,999
-const BALL_BONUS_SCREEN_SHORT_NUMERIC_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
+const BALL_BONUS_SCREEN_SHORT_NUMERIC_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
 //Numbers up to 999,999,999
-const BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
+const BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
 //Numbers up to 999,999,999,999
-const BALL_BONUS_SCREEN_BIG_NUMERIC_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
+const BALL_BONUS_SCREEN_BIG_NUMERIC_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
 
 const BONUS_BALL_SCREEN_LINES = {
     POKEMON_CAUGHT: 0,
@@ -44,9 +44,11 @@ class BallBonusScreen {
 
     createLine(y, xs) {
         let line = [];
-        let offsetX = 32;
+        let offsetX = 24;
         for (let i = 0; i < xs.length; i++) {
-            line.push(new StageCharacter(offsetX, y, xs[i]));
+            //FIXME, this crap is also on the stageText, should be on the stageCharacter, but I don't feel like doing math today
+            let correctedX = xs[i] === CHAR_TYPE.SEPARATOR ? offsetX - 6 : offsetX;
+            line.push(new StageCharacter(correctedX, y, xs[i]));
             offsetX += xs[i];
         }
         return line;
@@ -79,10 +81,14 @@ class BallBonusScreen {
     }
 
 
-    createProperFormatNumber(number, maxSize) {
-        let clampedNumber = number.toString().length <= maxSize ? number.toString() : "9".repeat(maxSize);
-        let withCommas = clampedNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return withCommas.padStart(maxSize, ' ');
+    createProperFormatNumber(number, maxSize, addCommas = true) {
+        let clampedNumber = Math.min(parseInt("9".repeat(maxSize), 10), number).toString();
+        if (addCommas) {
+            let withCommas = clampedNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return withCommas.padStart(maxSize, ' ');
+        } else {
+            return clampedNumber.padStart(maxSize, ' ');
+        }
     }
 
     createPokemonCaughtLine() {
@@ -90,13 +96,24 @@ class BallBonusScreen {
     }
 
     createBonusLine() {
-        return I18NManager.translate("bonus") + this.createProperFormatNumber(30000, 9) + " ";
+        return I18NManager.translate("bonus") + this.createProperFormatNumber(999999999999999999999, 9) + " ";
     }
 
     createSubtotalLine() {
-        return I18NManager.translate("subtotal") + this.createProperFormatNumber(30000, 9)+ " ";
+        return I18NManager.translate("subtotal") + this.createProperFormatNumber(999999999999999999999, 9) + " ";
     }
 
+    createMultiplierLine() {
+        return I18NManager.translate("multiplier") + this.createProperFormatNumber(99999999999999999999, 6, false) + " ";
+    }
+
+    createTotalLine() {
+        return I18NManager.translate("total") + this.createProperFormatNumber(99999999999999999999, 12) + " ";
+    }
+
+    createScoreLine() {
+        return I18NManager.translate("score") + this.createProperFormatNumber(99999999999999999999, 12) + " ";
+    }
 
     showCurrentPage() {
         switch (this.state) {
@@ -115,9 +132,9 @@ class BallBonusScreen {
                     ([
                         ["  3  pokemon evolved", BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" bonus       30,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
+                        [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" subtotal    60,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
+                        [this.createSubtotalLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
                     ]);
                 break;
             case BONUS_BALL_SCREEN_LINES.CAUGHT_STARTED:
@@ -125,9 +142,9 @@ class BallBonusScreen {
                     ([
                         ["  3  bellsprout    ", BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" bonus       3,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
+                        [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" subtotal    63,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
+                        [this.createSubtotalLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
                     ]);
                 break;
             case BONUS_BALL_SCREEN_LINES.TRAVEL:
@@ -135,9 +152,9 @@ class BallBonusScreen {
                     ([
                         ["  3  dugtrio    ", BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" bonus       3,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
+                        [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" subtotal    63,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
+                        [this.createSubtotalLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
                     ]);
                 break;
             case BONUS_BALL_SCREEN_LINES.CAVE_SHOTS:
@@ -145,9 +162,9 @@ class BallBonusScreen {
                     ([
                         ["  3  cave shots ", BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" bonus       3,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
+                        [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" subtotal    63,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
+                        [this.createSubtotalLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
                     ]);
                 break;
             case BONUS_BALL_SCREEN_LINES.SPINNER_TURNS:
@@ -155,19 +172,19 @@ class BallBonusScreen {
                     ([
                         ["  3  spinner turns ", BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" bonus       3,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
+                        [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" subtotal    63,000 ", BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
+                        [this.createSubtotalLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
                     ]);
                 break;
             case BONUS_BALL_SCREEN_LINES.TOTAL:
                 this.showPage
                     ([
-                        ["  multiplier  3  ", BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createMultiplierLine(), BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" total       3,000 ", BALL_BONUS_SCREEN_BIG_NUMERIC_XS],
+                        [this.createTotalLine(), BALL_BONUS_SCREEN_BIG_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
-                        [" score    63,000 ", BALL_BONUS_SCREEN_BIG_NUMERIC_XS]
+                        [this.createScoreLine(), BALL_BONUS_SCREEN_BIG_NUMERIC_XS]
                     ]);
                 break;
         }
