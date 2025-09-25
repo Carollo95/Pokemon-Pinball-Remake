@@ -170,7 +170,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animShieldDestroy', 'assets/img/bonus-clone/shield_destroy', 32, 32, 7, 6);
   Asset.registerAnimationTemplate('animShield', 'assets/img/bonus-clone/shield', 32, 32, 4);
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890É";
   // stage text templates
   for (const ch of letters) {
     Asset.registerAnimationTemplate('stageText' + ch, `assets/img/stage-text/${ch.toLowerCase()}`, 16, 16, 1);

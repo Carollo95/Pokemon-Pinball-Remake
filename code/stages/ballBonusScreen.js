@@ -120,7 +120,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.POKEMON_CAUGHT:
                 this.showPage
                     ([
-                        ["  3    pokemon caught", BALL_BONUS_SCREEN_TEXT_XS],
+                        ["  3    pokémon caught", BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
@@ -130,7 +130,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.POKEMON_EVOLVED:
                 this.showPage
                     ([
-                        ["  3  pokemon evolved", BALL_BONUS_SCREEN_TEXT_XS],
+                        ["  3  pokémon evolved", BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],

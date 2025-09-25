@@ -1,7 +1,7 @@
 const CHAR_SIZE = 16;
 const SEPARATOR_SIZE = 4;
 
-const LETTERS = 'abcdefghijklmnopqrstuvwxyz';
+const LETTERS = 'abcdefghijklmnopqrstuvwxyzé';
 const NUMBERS = '1234567890';
 
 const CHAR_TYPE ={
