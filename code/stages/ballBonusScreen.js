@@ -19,28 +19,11 @@ const BONUS_BALL_SCREEN_LINES = {
 }
 
 class BallBonusScreen {
-    constructor(state) {
-        this.state = state;
+    constructor(ball, status) {
+        this.ball = ball;
+        this.status = status;
         this.currentLines = [];
     }
-
-    createText() {
-        console.log(this.state.pokemonCaughtOnBall + I18NManager.translate("pokemon_caught"));
-        console.log(I18NManager.translate("bonus") + this.state.getBonusForCaughtPokemonOnBall());
-        console.log(this.state.pokemonEvolvedOnBall + I18NManager.translate("pokemon_evolved"));
-        console.log(I18NManager.translate("bonus") + this.state.getBonusForEvolvedPokemonOnBall());
-        console.log(this.state.caughtStartedOnBall + I18NManager.translate("bellsprout"));
-        console.log(I18NManager.translate("bonus") + this.state.getBonusForCaughtStartedOnBall());
-        console.log(this.state.travelOnBall + I18NManager.translate("dugtrio"));
-        console.log(I18NManager.translate("bonus") + this.state.getBonusForTravelOnBall());
-        console.log(this.state.caveShotsOnBall + I18NManager.translate("cave_shots"));
-        console.log(I18NManager.translate("bonus") + this.state.getBonusForCaveShotsOnBall());
-        console.log(this.state.spinnerTurnsOnBall + I18NManager.translate("spinner_turns"));
-        console.log(I18NManager.translate("bonus") + this.state.getBonusForSpinnerTurnsOnBall());
-        console.log(I18NManager.translate("multiplier") + this.state.ballMultiplier);
-        console.log(I18NManager.translate("total") + this.state.getTotalPointsForBall());
-    }
-
 
     createLine(y, xs) {
         let line = [];
@@ -80,38 +63,139 @@ class BallBonusScreen {
     }
 
 
+    /*     createProperFormatNumber(number, maxSize, addCommas = true) {
+            let clampedNumber = Math.min(parseInt("9".repeat(maxSize), 10), number).toString();
+            if (addCommas) {
+                let withCommas = clampedNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return withCommas.padStart(maxSize, ' ');
+            } else {
+                return clampedNumber.padStart(maxSize, ' ');
+            }
+        } */
+
     createProperFormatNumber(number, maxSize, addCommas = true) {
-        let clampedNumber = Math.min(parseInt("9".repeat(maxSize), 10), number).toString();
-        if (addCommas) {
-            let withCommas = clampedNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            return withCommas.padStart(maxSize, ' ');
-        } else {
-            return clampedNumber.padStart(maxSize, ' ');
+        let plainStr = typeof number === "bigint" ? number.toString() : String(number);
+
+        if (plainStr.length > maxSize) {
+            plainStr = plainStr.slice(-maxSize);
         }
+        if (addCommas) {
+            let withCommas = plainStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            if (withCommas.length > maxSize) {
+                withCommas = withCommas.slice(-maxSize);
+            }
+            return withCommas.padStart(maxSize, ' ');
+        }
+        return plainStr.padStart(maxSize, ' ');
     }
 
     createPokemonCaughtLine() {
-        return this.state.pokemonCaughtOnBall + I18NManager.translate("pokemon_caught");
+        return this.status.pokemonCaughtOnBall + I18NManager.translate("pokemon_caught");
     }
 
     createBonusLine() {
-        return I18NManager.translate("bonus") + this.createProperFormatNumber(999999999999999999999, 9) + " ";
+        let bonus = 0;
+
+        switch (this.state) {
+            case BONUS_BALL_SCREEN_LINES.POKEMON_CAUGHT:
+                bonus = this.status.getBonusForCaughtPokemonOnBall();
+                break;
+            case BONUS_BALL_SCREEN_LINES.POKEMON_EVOLVED:
+                bonus = this.status.getBonusForEvolvedPokemonOnBall();
+                break;
+            case BONUS_BALL_SCREEN_LINES.CAUGHT_STARTED:
+                bonus = this.status.getBonusForCaughtStartedOnBall();
+                break;
+            case BONUS_BALL_SCREEN_LINES.TRAVEL:
+                bonus = this.status.getBonusForTravelOnBall();
+                break;
+            case BONUS_BALL_SCREEN_LINES.CAVE_SHOTS:
+                bonus = this.status.getBonusForCaveShotsOnBall();
+                break;
+            case BONUS_BALL_SCREEN_LINES.SPINNER_TURNS:
+                bonus = this.status.getBonusForSpinnerTurnsOnBall();
+                break;
+        }
+
+        return I18NManager.translate("bonus") + this.createProperFormatNumber(bonus, 11) + " ";
+    }
+
+
+    calculateSubtotal() {
+        let subtotal = 0;
+
+        switch (this.state) {
+            case BONUS_BALL_SCREEN_LINES.TOTAL:
+            case BONUS_BALL_SCREEN_LINES.SPINNER_TURNS:
+                subtotal += this.status.getBonusForSpinnerTurnsOnBall();
+            case BONUS_BALL_SCREEN_LINES.CAVE_SHOTS:
+                subtotal += this.status.getBonusForCaveShotsOnBall();
+            case BONUS_BALL_SCREEN_LINES.TRAVEL:
+                subtotal += this.status.getBonusForTravelOnBall();
+            case BONUS_BALL_SCREEN_LINES.CAUGHT_STARTED:
+                subtotal += this.status.getBonusForCaughtStartedOnBall();
+            case BONUS_BALL_SCREEN_LINES.POKEMON_EVOLVED:
+                subtotal += this.status.getBonusForEvolvedPokemonOnBall();
+            case BONUS_BALL_SCREEN_LINES.POKEMON_CAUGHT:
+                subtotal += this.status.getBonusForCaughtPokemonOnBall();
+                break;
+        }
+
+        return subtotal;
     }
 
     createSubtotalLine() {
-        return I18NManager.translate("subtotal") + this.createProperFormatNumber(999999999999999999999, 9) + " ";
+        let subtotal = this.calculateSubtotal(this.state);
+        return I18NManager.translate("subtotal") + this.createProperFormatNumber(subtotal, 11) + " ";
     }
 
     createMultiplierLine() {
-        return I18NManager.translate("multiplier") + this.createProperFormatNumber(99999999999999999999, 6, false) + " ";
+        return I18NManager.translate("multiplier") + this.createProperFormatNumber(this.ball.getBallMultiplier(), 7, false) + " ";
     }
 
     createTotalLine() {
-        return I18NManager.translate("total") + this.createProperFormatNumber(99999999999999999999, 12) + " ";
+        let total = this.calculateSubtotal() * this.ball.getBallMultiplier();
+        return I18NManager.translate("total") + this.createProperFormatNumber(total, 15) + " ";
     }
 
     createScoreLine() {
-        return I18NManager.translate("score") + this.createProperFormatNumber(99999999999999999999, 12) + " ";
+        let total = this.calculateSubtotal() * this.ball.getBallMultiplier();
+        return I18NManager.translate("score") + this.createProperFormatNumber(this.status.points + total, 15) + " ";
+    }
+
+    centerTextForTextRow(text) {
+        let totalLength = BALL_BONUS_SCREEN_TEXT_XS.length;
+
+        if (text.length >= totalLength) return text.slice(0, totalLength);
+
+        const pad = totalLength - text.length;
+        const left = Math.floor(pad / 2);
+        const right = pad - left;
+        return " ".repeat(left) + text + " ".repeat(right);
+    }
+
+    createPokemonCaughtLine() {
+        return this.centerTextForTextRow(this.status.pokemonCaughtOnBall + " " + I18NManager.translate("pokemon_caught"));
+    }
+
+    createPokemonEvolvedLine() {
+        return this.centerTextForTextRow(this.status.pokemonEvolvedOnBall + " " + I18NManager.translate("pokemon_evolved"));
+    }
+
+    createCaughtStartedLine() {
+        return this.centerTextForTextRow(this.status.caughtStartedOnBall + " " + I18NManager.translate("bellsprout"));
+    }
+
+    createTravelLine() {
+        return this.centerTextForTextRow(this.status.travelOnBall + " " + I18NManager.translate("dugtrio"));
+    }
+
+    createCaveShotsLine() {
+        return this.centerTextForTextRow(this.status.caveShotsOnBall + " " + I18NManager.translate("cave_shots"));
+    }
+
+    createSpinnerTurnsLine() {
+        return this.centerTextForTextRow(this.status.spinnerTurnsOnBall + " " + I18NManager.translate("spinner_turns"));
     }
 
     showCurrentPage() {
@@ -119,7 +203,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.POKEMON_CAUGHT:
                 this.showPage
                     ([
-                        ["  3    pokémon caught", BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createPokemonCaughtLine(), BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
@@ -129,7 +213,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.POKEMON_EVOLVED:
                 this.showPage
                     ([
-                        ["  3  pokémon evolved", BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createPokemonEvolvedLine(), BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
@@ -139,7 +223,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.CAUGHT_STARTED:
                 this.showPage
                     ([
-                        ["  3  bellsprout    ", BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createCaughtStartedLine(), BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
@@ -149,7 +233,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.TRAVEL:
                 this.showPage
                     ([
-                        ["  3  dugtrio    ", BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createTravelLine(), BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
@@ -159,7 +243,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.CAVE_SHOTS:
                 this.showPage
                     ([
-                        ["  3  cave shots ", BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createCaveShotsLine(), BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
@@ -169,7 +253,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.SPINNER_TURNS:
                 this.showPage
                     ([
-                        ["  3  spinner turns ", BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createSpinnerTurnsLine(), BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
@@ -185,6 +269,7 @@ class BallBonusScreen {
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createScoreLine(), BALL_BONUS_SCREEN_BIG_NUMERIC_XS]
                     ]);
+                    this.status.addPoints(this.calculateSubtotal(), this.ball);
                 break;
         }
     }

@@ -1,3 +1,10 @@
+const BONUS_FOR_POKEMON_CAUGHT_ON_BALL = 10;
+const BONUS_FOR_POKEMON_EVOLVED_ON_BALL = 20;
+const BONUS_FOR_CAVE_SHOTS_ON_BALL = 30;
+const BONUS_FOR_CAUGHT_STARTED_ON_BALL = 50;
+const BONUS_FOR_SPINNER_TURNS_ON_BALL  =10;
+const BONUS_FOR_TRAVEL_ON_BALL = 1;
+
 class StageStatus {
 
     constructor() {
@@ -13,27 +20,29 @@ class StageStatus {
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
     }
-    
+
     getBonusForCaughtPokemonOnBall() {
-
+        return this.pokemonCaughtOnBall * BONUS_FOR_POKEMON_CAUGHT_ON_BALL;
     }
+    
     getBonusForEvolvedPokemonOnBall() {
-
+        return this.pokemonEvolvedOnBall * BONUS_FOR_POKEMON_EVOLVED_ON_BALL;
     }
+    
     getBonusForCaughtStartedOnBall() {
-
+        return this.caughtStartedOnBall * BONUS_FOR_CAUGHT_STARTED_ON_BALL;
     }
+    
     getBonusForTravelOnBall() {
-
+        return this.travelOnBall * BONUS_FOR_TRAVEL_ON_BALL;
     }
+    
     getBonusForCaveShotsOnBall() {
-
+        return this.caveShotsOnBall * BONUS_FOR_CAVE_SHOTS_ON_BALL;
     }
+    
     getBonusForSpinnerTurnsOnBall() {
-
-    }
-    getTotalPointsForBall() {
-
+        return this.spinnerTurnsOnBall * BONUS_FOR_SPINNER_TURNS_ON_BALL;
     }
 
     startNewBall() {

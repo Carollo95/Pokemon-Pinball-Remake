@@ -76,7 +76,7 @@ class RedStage extends Stage {
         this.state = RED_STAGE_STATUS.GAME_START;
 
         this.screen = new Screen();
-        this.ballBonusScreen = new BallBonusScreen(this.status);
+        this.ballBonusScreen = new BallBonusScreen(this.ball, this.status);
     }
 
     draw() {
