@@ -4,6 +4,8 @@ const COIN_CAUGHT_POINTS = 1000000;
 const CAT_STAGE_TIME_MILLIS = 61000;
 const VICTORY_STAGE_COINS = 20;
 
+const MAX_COINS_ON_SCREEN = 6;
+
 class BonusStageCat extends BonusStage {
 
     constructor(status) {
@@ -24,9 +26,21 @@ class BonusStageCat extends BonusStage {
 
         Audio.playMusic('catStage');
 
-        this.meowth = new Meowth(() => { this.addPoints(MEOWTH_HIT_POINTS); });
+        this.meowth = new Meowth(this.onMeowthHitCallback);
         this.coinCounter = new CoinCounter();
         this.createCoins();
+    }
+
+    onMeowthHitCallback = () => {
+        this.addPoints(MEOWTH_HIT_POINTS);
+        console.log(this.currentActiveCoins())
+        if(this.currentActiveCoins() < MAX_COINS_ON_SCREEN) {
+            this.createCoinProjectile(this.meowth.sprite.pos);
+        }
+    }
+
+    currentActiveCoins(){
+        return this.highLaneCoins.filter(c => !c.disabled).length + this.lowLaneCoins.filter(c => !c.disabled).length +this.flyingCoins.length;
     }
 
     createCoins() {
@@ -63,7 +77,6 @@ class BonusStageCat extends BonusStage {
         }
 
         this.meowth.update(this.getBall().sprite);
-        this.checkCreateCoin();
 
         this.updateFlyingCoins();
         this.updateCoins();
@@ -118,11 +131,6 @@ class BonusStageCat extends BonusStage {
         this.flyingCoins = this.flyingCoins.filter(c => !c.disabled);
     }
 
-    checkCreateCoin() {
-        if (this.meowth.createCoin) {
-            this.createCoinProjectile(this.meowth.sprite.pos);
-        }
-    }
 
     createCoinProjectile(startPos) {
         this.flyingCoins.push(new FlyingCoin(startPos.x, startPos.y));
