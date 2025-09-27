@@ -1,4 +1,4 @@
-const RED_STAGE_STATUS = {
+const RED_FIELD_STATUS = {
     PLAYING: 0,
     GAME_START: 1,
     BALL_LOST: 2,
@@ -8,13 +8,13 @@ const RED_STAGE_STATUS = {
 
 const CALLBACK_DELAY_MS = 500;
 
-class RedStage extends Stage {
+class RedField extends Stage {
 
     constructor(status) {
         super(status);
         this._lastCallbackCall = 0;
 
-        this.background = Asset.getBackground('redStageBackground');
+        this.background = Asset.getBackground('redFieldBackground');
 
         this.attachBall(Ball.spawnStageBall());
         this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
@@ -25,17 +25,25 @@ class RedStage extends Stage {
 
         if (millis() > this._lastCallbackCall + CALLBACK_DELAY_MS) {
             this._lastCallbackCall = millis();
-            if (this.state === RED_STAGE_STATUS.GAME_START || this.state === RED_STAGE_STATUS.NEW_BALL_WAITING) {
-                if (this.state === RED_STAGE_STATUS.GAME_START) {
-                    this.screen.stopSpin();
-                    this.stageText.setText(I18NManager.translate("start_from") + this.screen.getLandmarkText());
-                }
-                this.getBall().launchFromSpawn();
-                this.state = RED_STAGE_STATUS.PLAYING;
-            } else if (this.state === RED_STAGE_STATUS.BALL_LOST) {
-                this.ballBonusScreen.progress(this.onBonusScreenCompleteCallback);
+            if (this.state === RED_FIELD_STATUS.GAME_START || this.state === RED_FIELD_STATUS.NEW_BALL_WAITING) {
+                this.launchNewBallWaiting();
+                this.state = RED_FIELD_STATUS.PLAYING;
+            } else if (this.state === RED_FIELD_STATUS.BALL_LOST) {
+                this.progressBonusBallScreen();
             }
         }
+    }
+
+    launchNewBallWaiting() {
+        if (this.state === RED_FIELD_STATUS.GAME_START) {
+            this.screen.stopSpin();
+            this.stageText.setText(I18NManager.translate("start_from") + this.screen.getLandmarkText());
+        }
+        this.getBall().launchFromSpawn();
+    }
+
+    progressBonusBallScreen() {
+        this.ballBonusScreen.progress(this.onBonusScreenCompleteCallback);
     }
 
     onBonusScreenCompleteCallback = () => {
@@ -44,7 +52,7 @@ class RedStage extends Stage {
     }
 
     setup() {
-        RED_STAGE_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
+        RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
         //TODO move to geometry
         this.createScenarioGeometry([
@@ -67,54 +75,34 @@ class RedStage extends Stage {
         ]);
 
 
-        this.ditto = new RedStageDitto();
+        this.ditto = new RedFieldDitto();
 
         this.speedPad = [];
         this.speedPad.push(new SpeedPad(265, 293));
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
 
-        this.state = RED_STAGE_STATUS.GAME_START;
+        this.state = RED_FIELD_STATUS.GAME_START;
 
         this.screen = new Screen();
-        this.ballBonusScreen = new BallBonusScreen(this.ball, this.status);
+        this.ballBonusScreen = new BallBonusScreen(this.status);
     }
 
     draw() {
         super.draw();
         this.updateScreen();
-        if (this.state === RED_STAGE_STATUS.PLAYING) {
+        if (this.state === RED_FIELD_STATUS.PLAYING) {
             this.checkForBallLoss();
             this.updateDitto();
 
             this.speedPad.forEach(pad => pad.update(this.getBall()));
 
-        } else if (this.state === RED_STAGE_STATUS.BALL_LOST) {
+        } else if (this.state === RED_FIELD_STATUS.BALL_LOST) {
             {
                 this.ballBonusScreen.update();
             }
         }
 
-    }
-    checkForBallLoss() {
-        if (this.ball.getPositionY() > SCREEN_HEIGHT) {
-            this.status.balls--;
-            this.state = RED_STAGE_STATUS.BALL_LOST;
-            this.stageText.setText(I18NManager.translate("end_of_ball_bonus"), 3000, () => { this.ballBonusScreen.show(); });
-        }
-    }
-
-
-
-    createNewBallOrEndStage() {
-        if (this.status.balls > 0) {
-            this.attachBall(Ball.spawnStageBall());
-            this.ditto.open();
-            this.state = RED_STAGE_STATUS.NEW_BALL_WAITING
-        } else {
-            this.state = RED_STAGE_STATUS.GAME_OVER;
-            console.log("GAME OVER");
-        }
     }
 
     updateDitto() {
@@ -127,4 +115,22 @@ class RedStage extends Stage {
         this.screen.update();
     }
 
+    checkForBallLoss() {
+        if (this.ball.getPositionY() > SCREEN_HEIGHT) {
+            this.status.balls--;
+            this.state = RED_FIELD_STATUS.BALL_LOST;
+            this.stageText.setText(I18NManager.translate("end_of_ball_bonus"), 3000, () => { this.ballBonusScreen.show(); });
+        }
+    }
+
+    createNewBallOrEndStage() {
+        if (this.status.balls > 0) {
+            this.attachBall(Ball.spawnStageBall());
+            this.ditto.open();
+            this.state = RED_FIELD_STATUS.NEW_BALL_WAITING
+        } else {
+            this.state = RED_FIELD_STATUS.GAME_OVER;
+            console.log("GAME OVER");
+        }
+    }
 }

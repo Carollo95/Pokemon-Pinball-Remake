@@ -19,6 +19,7 @@ class StageStatus {
         this.travelOnBall = 0;
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
+        this.fieldMultiplier = 0;
     }
 
     getBonusForCaughtPokemonOnBall() {
@@ -54,10 +55,15 @@ class StageStatus {
         this.travelOnBall = 0;
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
+        this.fieldMultiplier = 0;
     }
 
     addPoints(pts, ball) {
         this.points += ball.multiplyPoints(pts);
+    }
+
+    addPoints(pts){
+        this.points += pts;
     }
 
 }

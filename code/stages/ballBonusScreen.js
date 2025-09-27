@@ -22,8 +22,7 @@ const BONUS_BALL_SCREEN_LINES = {
 }
 
 class BallBonusScreen {
-    constructor(ball, status) {
-        this.ball = ball;
+    constructor(status) {
         this.status = status;
         this.currentLines = [];
 
@@ -154,16 +153,16 @@ class BallBonusScreen {
     }
 
     createMultiplierLine() {
-        return I18NManager.translate("multiplier") + this.createProperFormatNumber(this.ball.getBallMultiplier(), 7, false) + " ";
+        return I18NManager.translate("multiplier") + this.createProperFormatNumber(this.status.fieldMultiplier, 2, false) + " ";
     }
 
     createTotalLine() {
-        let total = this.calculateSubtotal() * this.ball.getBallMultiplier();
+        let total = this.calculateSubtotal() * this.status.fieldMultiplier;
         return I18NManager.translate("total") + this.createProperFormatNumber(total, 15) + " ";
     }
 
     createScoreLine() {
-        let total = this.calculateSubtotal() * this.ball.getBallMultiplier();
+        let total = this.calculateSubtotal() * this.status.fieldMultiplier;
         return I18NManager.translate("score") + this.createProperFormatNumber(this.status.points + total, 15) + " ";
     }
 
@@ -273,7 +272,7 @@ class BallBonusScreen {
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createScoreLine(), BALL_BONUS_SCREEN_BIG_NUMERIC_XS]
                     ]);
-                this.status.addPoints(this.calculateSubtotal(), this.ball);
+                this.status.addPoints(this.calculateSubtotal());
                 break;
         }
     }

@@ -31,7 +31,7 @@ const I18NManager = {
             "subtotal": " subtotal     ",
             "total": " total    ",
             "score": " score    ",
-            "multiplier": " multiplier    ",
+            "multiplier": " multiplier         ",
             "pokemon_caught": "pokémon caught",
             "pokemon_evolved": "pokémon evolved",
             "cave_shots": "cave shots",

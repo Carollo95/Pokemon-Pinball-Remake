@@ -41,9 +41,9 @@ const CheatEngine = {
         stage.setup();
     },
 
-    startRedStage() {
+    startRedField() {
         allSprites.remove();
-        stage = new RedStage(EngineUtils.getGameStatus());
+        stage = new RedField(EngineUtils.getGameStatus());
         stage.setup();
     },
 
