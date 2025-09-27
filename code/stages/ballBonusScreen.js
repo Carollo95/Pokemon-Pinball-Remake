@@ -1,3 +1,5 @@
+const PROGRESS_DELAY_MS = 1000;
+
 const BALL_BONUS_SCREEN_YS = [484, 500, 516, 532, 548, 564];
 //All characters
 const BALL_BONUS_SCREEN_TEXT_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
@@ -9,10 +11,11 @@ const BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHA
 const BALL_BONUS_SCREEN_BIG_NUMERIC_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.SEPARATOR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
 
 const BONUS_BALL_SCREEN_LINES = {
+    NONE: -1,
     POKEMON_CAUGHT: 0,
     POKEMON_EVOLVED: 1,
-    CAUGHT_STARTED: 2,
-    TRAVEL: 3,
+    BELLSPROUT: 2,
+    DUGTRIO: 3,
     CAVE_SHOTS: 4,
     SPINNER_TURNS: 5,
     TOTAL: 6
@@ -23,6 +26,8 @@ class BallBonusScreen {
         this.ball = ball;
         this.status = status;
         this.currentLines = [];
+
+        this._lastProgress = 0;
     }
 
     createLine(y, xs) {
@@ -35,6 +40,13 @@ class BallBonusScreen {
             offsetX += xs[i];
         }
         return line;
+    }
+
+    update(){
+        if(this.state !== BONUS_BALL_SCREEN_LINES.NONE && millis() > this._lastProgress + PROGRESS_DELAY_MS){
+            this._lastProgress = millis();
+            this.progress();
+        }
     }
 
 
@@ -63,21 +75,13 @@ class BallBonusScreen {
     }
 
 
-    /*     createProperFormatNumber(number, maxSize, addCommas = true) {
-            let clampedNumber = Math.min(parseInt("9".repeat(maxSize), 10), number).toString();
-            if (addCommas) {
-                let withCommas = clampedNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                return withCommas.padStart(maxSize, ' ');
-            } else {
-                return clampedNumber.padStart(maxSize, ' ');
-            }
-        } */
-
     createProperFormatNumber(number, maxSize, addCommas = true) {
         let plainStr = typeof number === "bigint" ? number.toString() : String(number);
 
         if (plainStr.length > maxSize) {
             plainStr = plainStr.slice(-maxSize);
+        } else if (plainStr === "0") {
+            plainStr = "00";// Double zero for aesthetic reasons
         }
         if (addCommas) {
             let withCommas = plainStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -103,10 +107,10 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.POKEMON_EVOLVED:
                 bonus = this.status.getBonusForEvolvedPokemonOnBall();
                 break;
-            case BONUS_BALL_SCREEN_LINES.CAUGHT_STARTED:
+            case BONUS_BALL_SCREEN_LINES.BELLSPROUT:
                 bonus = this.status.getBonusForCaughtStartedOnBall();
                 break;
-            case BONUS_BALL_SCREEN_LINES.TRAVEL:
+            case BONUS_BALL_SCREEN_LINES.DUGTRIO:
                 bonus = this.status.getBonusForTravelOnBall();
                 break;
             case BONUS_BALL_SCREEN_LINES.CAVE_SHOTS:
@@ -130,9 +134,9 @@ class BallBonusScreen {
                 subtotal += this.status.getBonusForSpinnerTurnsOnBall();
             case BONUS_BALL_SCREEN_LINES.CAVE_SHOTS:
                 subtotal += this.status.getBonusForCaveShotsOnBall();
-            case BONUS_BALL_SCREEN_LINES.TRAVEL:
+            case BONUS_BALL_SCREEN_LINES.DUGTRIO:
                 subtotal += this.status.getBonusForTravelOnBall();
-            case BONUS_BALL_SCREEN_LINES.CAUGHT_STARTED:
+            case BONUS_BALL_SCREEN_LINES.BELLSPROUT:
                 subtotal += this.status.getBonusForCaughtStartedOnBall();
             case BONUS_BALL_SCREEN_LINES.POKEMON_EVOLVED:
                 subtotal += this.status.getBonusForEvolvedPokemonOnBall();
@@ -220,7 +224,7 @@ class BallBonusScreen {
                         [this.createSubtotalLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
                     ]);
                 break;
-            case BONUS_BALL_SCREEN_LINES.CAUGHT_STARTED:
+            case BONUS_BALL_SCREEN_LINES.BELLSPROUT:
                 this.showPage
                     ([
                         [this.createCaughtStartedLine(), BALL_BONUS_SCREEN_TEXT_XS],
@@ -230,7 +234,7 @@ class BallBonusScreen {
                         [this.createSubtotalLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS]
                     ]);
                 break;
-            case BONUS_BALL_SCREEN_LINES.TRAVEL:
+            case BONUS_BALL_SCREEN_LINES.DUGTRIO:
                 this.showPage
                     ([
                         [this.createTravelLine(), BALL_BONUS_SCREEN_TEXT_XS],
@@ -269,13 +273,13 @@ class BallBonusScreen {
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createScoreLine(), BALL_BONUS_SCREEN_BIG_NUMERIC_XS]
                     ]);
-                    this.status.addPoints(this.calculateSubtotal(), this.ball);
+                this.status.addPoints(this.calculateSubtotal(), this.ball);
                 break;
         }
     }
 
 
-    progress(onScreenEndCallback = () => { }) {
+    progress(onScreenEndCallback = () => { this.remove(); }) {
 
         if (this.state === BONUS_BALL_SCREEN_LINES.TOTAL) {
             this.remove();

@@ -39,6 +39,7 @@ class RedStage extends Stage {
     }
 
     onBonusScreenCompleteCallback = () => {
+        //TODO Shoot again text
         this.createNewBallOrEndStage();
     }
 
@@ -88,16 +89,18 @@ class RedStage extends Stage {
 
             this.speedPad.forEach(pad => pad.update(this.getBall()));
 
+        } else if (this.state === RED_STAGE_STATUS.BALL_LOST) {
+            {
+                this.ballBonusScreen.update();
+            }
         }
-    }
 
+    }
     checkForBallLoss() {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
             this.status.balls--;
             this.state = RED_STAGE_STATUS.BALL_LOST;
             this.stageText.setText(I18NManager.translate("end_of_ball_bonus"), 3000, () => { this.ballBonusScreen.show(); });
-
-            //this.createNewBallOrEndStage();
         }
     }
 
