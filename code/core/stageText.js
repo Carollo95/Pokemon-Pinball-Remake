@@ -1,6 +1,3 @@
-const CHAR_SIZE = 16;
-const SEPARATOR_SIZE = 4;
-
 const BONUS_MAX_CHARS = 19;
 const BONUS_STATUS_CHARS = 23;
 
@@ -9,9 +6,6 @@ const STAGE_STATUS_CHARS = 27;
 
 const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showing text
 const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on screen the shown text
-
-const LETTERS = 'abcdefghijklmnopqrstuvwxyz';
-const NUMBERS = '1234567890';
 
 const STAGE_TEXT_STATE = {
     NONE: 0,
@@ -106,52 +100,21 @@ class StageStatusBanner {
     }
 
     createTextSprite(initialX, y, letterPadding) {
-        let sprite = this.createCharacterSprite(initialX, y, (CHAR_SIZE * letterPadding));
-
-
-        for (const ch of LETTERS) {
-            sprite.addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-
-        sprite.addAnimation('$$', Asset.getAnimation('stageTextDot'));
-        sprite.addAnimation('$!', Asset.getAnimation('stageTextExcl'));
-        sprite.addAnimation('$:', Asset.getAnimation('stageTextColon'));
-
-        sprite.addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        return sprite;
+        return this.createCharacterSprite(initialX, y, (CHAR_SIZE * letterPadding));
     }
 
 
     createStatusNumericSprite(initialX, y, numericPadding, separatorPadding) {
-        let sprite = this.createCharacterSprite(initialX, y, numericPadding * CHAR_SIZE + separatorPadding * SEPARATOR_SIZE, CHAR_SIZE);
-
-        for (const ch of NUMBERS) {
-            sprite.addAnimation('$' + ch, Asset.getAnimation('stageText' + ch.toUpperCase()));
-        }
-        sprite.addAnimation('$ª', Asset.getAnimation('stageTextPokemon'));
-        sprite.addAnimation('$º', Asset.getAnimation('stageTextBall'));
-        sprite.addAnimation('$/', Asset.getAnimation('stageTextThunder'));
-        sprite.addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
-
-        return sprite;
+        return this.createCharacterSprite(initialX, y, numericPadding * CHAR_SIZE + separatorPadding * SEPARATOR_SIZE, CHAR_SIZE);
     }
 
     createStatusSeparatorSprite(initialX, y, numericPadding, separatorPadding) {
-        let sprite = this.createCharacterSprite(initialX, y, numericPadding * CHAR_SIZE + separatorPadding * SEPARATOR_SIZE - 6, SEPARATOR_SIZE, SEPARATOR_SIZE);
+        return this.createCharacterSprite(initialX, y, numericPadding * CHAR_SIZE + separatorPadding * SEPARATOR_SIZE - 6, SEPARATOR_SIZE, SEPARATOR_SIZE);
 
-        sprite.addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));
-        sprite.addAnimation('$ ', Asset.getAnimation('stageTextSeparator'));
-
-        return sprite;
     }
 
     createCharacterSprite(x, y, padding, size = CHAR_SIZE) {
-        let sprite = new Sprite(x - padding, y, size, CHAR_SIZE, "none");
-        sprite.layer = HUD_LAYER;
-        sprite.debug = DEBUG;
-
-        return sprite;
+        return new StageCharacter(x - padding, y, size, CHAR_SIZE);
     }
 
     showStatus() {
@@ -180,10 +143,12 @@ class StageStatusBanner {
 
     createBallsStatus() {
         let balls;
-        if (this.stageStatus.balls > 9) {
+        if (this.stageStatus.balls <= 0) {
+            balls = "º0";
+        } else if (this.stageStatus.balls > 9) {
             balls = "º9";
         } else {
-            balls = "º" + this.stageStatus.balls.toString();
+            balls = "º" + (this.stageStatus.balls - 1).toString();
         }
         return balls;
     }
@@ -205,13 +170,14 @@ class StageStatusBanner {
     }
 
 
-    setText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {
+    setText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
 
         text = text.replace(".", "$");
         this.clearTextImmediately();
         this.persistenceMillis = persistenceMillis;
         this.textQueue += text;
+        this.callback = callback;
     }
 
     clearText() {
@@ -239,6 +205,7 @@ class StageStatusBanner {
                     this.endTextDisplayMillis = millis();
                 }
             } else if (this.hasPassedTextPersistence()) {
+                if (this.callback) this.callback();
                 this.showStatus();
             }
         } else if (this.state === STAGE_TEXT_STATE.STATUS) {
@@ -248,7 +215,7 @@ class StageStatusBanner {
 
     scrollText() {
         for (var i = this.getTextChars(); i > 0; i--) {
-            this.textArray[i].changeAnimation(this.textArray[i - 1].ani.name);
+            this.textArray[i].changeAnimation(this.textArray[i - 1].getAni().name);
         }
         this.textArray[0].changeAnimation('$' + this.textQueue[0]);
         this.textQueue = this.textQueue.substring(1);
@@ -256,13 +223,13 @@ class StageStatusBanner {
 
     setTextArrayVisibility(visible) {
         this.textArray.forEach(element => {
-            element.visible = visible;
+            element.setVisible(visible);
         });
     }
 
     setStatusArrayVisibility(visible) {
         this.statusArray.forEach(element => {
-            element.visible = visible;
+            element.setVisible(visible);
         });
     }
 
@@ -272,7 +239,7 @@ class StageStatusBanner {
 }
 
 function createBonusStageStatusBanner(stateStage) {
-    return new StageStatusBanner(341, 380, BANNER_TYPE.BONUS_STAGE, stateStage);
+    return new StageStatusBanner(341, 372, BANNER_TYPE.BONUS_STAGE, stateStage);
 }
 
 function createStageStatusBanner(stateStage) {

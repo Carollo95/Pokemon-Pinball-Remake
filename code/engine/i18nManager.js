@@ -24,7 +24,20 @@ const I18NManager = {
             "safari_zone": "safari zone",
             "seafoam_islands": "seafoam islands",
             "cinnabar_island": "cinnabar island",
-            "indigo_plateau": "indigo plateau"
+            "indigo_plateau": "indigo plateau",
+
+            "end_of_ball_bonus": " end of ball bonus   ",
+            "bonus": " bonus        ",
+            "subtotal": " subtotal     ",
+            "total": " total    ",
+            "score": " score    ",
+            "multiplier": " multiplier         ",
+            "pokemon_caught": "pokémon caught",
+            "pokemon_evolved": "pokémon evolved",
+            "cave_shots": "cave shots",
+            "spinner_turns": "spinner turns",
+            "bellsprout": "bellsprout",
+            "dugtrio": "dugtrio",
         }
     },
 
