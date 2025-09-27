@@ -57,13 +57,17 @@ class Ball {
     }
 
     multiplyPoints(points) {
-        //TODO add other types of balls
-        return points;
+        return this.getBallMultiplier() * points;
     }
 
     launchFromSpawn() {
         this.sprite.applyForce(0, -1000);
         Audio.playSFX('sfx0A');
+    }
+
+    getBallMultiplier(){
+        //TODO add other types of balls
+        return 1;
     }
 
     /** Creates and returns a new ball for a bonus level. */

@@ -4,7 +4,7 @@ const RED_STAGE_DITTO_STATE = {
     FULLY_OPEN: 2
 };
 
-class RedStageDitto {
+class RedFieldDitto {
     constructor() {
         this.createOpenSprite();
         this.status = RED_STAGE_DITTO_STATE.OPEN;
@@ -37,7 +37,7 @@ class RedStageDitto {
             [18, 142]
         ], 'static');
 
-        this.openSprite.addAnimation(Asset.getAnimation('redStageDittoOpen'));
+        this.openSprite.addAnimation(Asset.getAnimation('redFieldDittoOpen'));
         this.openSprite.debug = DEBUG;
         this.openSprite.layer = SPRITE_LAYER;
     }
@@ -64,7 +64,7 @@ class RedStageDitto {
             [18, 190],
             [20, 188],
         ], 'static');
-        this.closeSprite.addAnimation(Asset.getAnimation('redStageDittoClosed'));
+        this.closeSprite.addAnimation(Asset.getAnimation('redFieldDittoClosed'));
         this.closeSprite.debug = DEBUG;
         this.closeSprite.layer = SPRITE_LAYER;
 
@@ -80,7 +80,7 @@ class RedStageDitto {
         Audio.playSFX('sfx00');
 
         this.fullyOpenSprite = new Sprite(8, 106, 16, 44, 'static');
-        this.fullyOpenSprite.addAnimation(Asset.getAnimation('redStageDittoFullyOpen'));
+        this.fullyOpenSprite.addAnimation(Asset.getAnimation('redFieldDittoFullyOpen'));
         this.fullyOpenSprite.debug = DEBUG;
         this.fullyOpenSprite.layer = SPRITE_LAYER;
 

@@ -86,7 +86,7 @@ function preLoadBackgrounds() {
 
   Asset.registerBackground('bonusStageFrame', 'assets/img/bonus_state_frame');
 
-  Asset.registerBackground('redStageBackground', 'assets/img/red-stage/background');
+  Asset.registerBackground('redFieldBackground', 'assets/img/red-field/background');
 }
 
 
@@ -170,7 +170,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animShieldDestroy', 'assets/img/bonus-clone/shield_destroy', 32, 32, 7, 6);
   Asset.registerAnimationTemplate('animShield', 'assets/img/bonus-clone/shield', 32, 32, 4);
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890É";
   // stage text templates
   for (const ch of letters) {
     Asset.registerAnimationTemplate('stageText' + ch, `assets/img/stage-text/${ch.toLowerCase()}`, 16, 16, 1);
@@ -196,9 +196,9 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redLandmarks', 'assets/img/landmarks/red_landmarks', 96, 64, 12);
   Asset.registerAnimationTemplate('redLandmarksBW', 'assets/img/landmarks/red_landmarks_bw', 96, 64, 12);
 
-  Asset.registerAnimationTemplate('redStageDittoOpen', 'assets/img/red-stage/ditto-open', 53, 106, 1);
-  Asset.registerAnimationTemplate('redStageDittoClosed', 'assets/img/red-stage/ditto-closed', 78, 140, 1);
-  Asset.registerAnimationTemplate('redStageDittoFullyOpen', 'assets/img/red-stage/ditto-fully-open', 16, 44, 1);
+  Asset.registerAnimationTemplate('redFieldDittoOpen', 'assets/img/red-field/ditto-open', 53, 106, 1);
+  Asset.registerAnimationTemplate('redFieldDittoClosed', 'assets/img/red-field/ditto-closed', 78, 140, 1);
+  Asset.registerAnimationTemplate('redFieldDittoFullyOpen', 'assets/img/red-field/ditto-fully-open', 16, 44, 1);
 }
 
 
