@@ -39,7 +39,7 @@ class BonusStageSeal extends BonusStage {
         this.seal2.swim();
         this.seal3.swim();
 
-        this.pearlCounter.reset();
+        this.pearlCounter.applyPenalty(4);
     }
 
 
