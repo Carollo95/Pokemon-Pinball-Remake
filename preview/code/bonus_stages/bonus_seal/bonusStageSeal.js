@@ -10,6 +10,11 @@ const SEAL_2_Y = 212;
 const SEAL_3_X = 216;
 const SEAL_3_Y = 266;
 
+const SEAL_LAST_ACTION = {
+    SEAL_HIT: "hit",
+    SEAL_DIVE: "dive"
+}
+
 class BonusStageSeal extends BonusStage {
 
     constructor(status) {
@@ -17,15 +22,16 @@ class BonusStageSeal extends BonusStage {
         this.millisSinceStageComplete = 0;
         this.state = BONUS_STAGE_STATE.PLAYING;
 
+        this.lastAction = SEAL_LAST_ACTION.SEAL_DIVE;
+
         this.playableStages = [BONUS_STAGE_STATE.PLAYING, BONUS_STAGE_STATE.WON];
 
-        this.seal1 = new Seal(SEAL_1_X, SEAL_1_Y);
-        this.seal2 = new Seal(SEAL_2_X, SEAL_2_Y, false);
-        this.seal3 = new Seal(SEAL_3_X, SEAL_3_Y);
+        this.seal1 = new Seal(SEAL_1_X, SEAL_1_Y, this.onDiveCallback);
+        this.seal2 = new Seal(SEAL_2_X, SEAL_2_Y, this.onDiveCallback, false);
+        this.seal3 = new Seal(SEAL_3_X, SEAL_3_Y, this.onDiveCallback);
 
         this.pearlCounter = new PearlCounter();
 
-        this.timeOfLastPearlTaken = 0;
         this.pearlMultiplier = 1;
     }
 
@@ -34,14 +40,18 @@ class BonusStageSeal extends BonusStage {
         if (!this.checkBonusBallLoss()) return;
 
         this.createNewBonusBall(bonusGateBackground);
-
+        this.applyBallLossPenalty();
+    }
+    
+    applyBallLossPenalty() {
         this.seal1.swim();
         this.seal2.swim();
         this.seal3.swim();
 
-        this.pearlCounter.reset();
+        this.pearlMultiplier = 1;
+        this.lastAction = SEAL_LAST_ACTION.SEAL_DIVE;
+        this.pearlCounter.applyPenalty(4);
     }
-
 
     setup() {
         super.replaceBackground(Asset.getBackground('bonusSealBackgroundOpen'));
@@ -70,8 +80,6 @@ class BonusStageSeal extends BonusStage {
             super.closeBonusGateIfBallInsideBoard(Asset.getBackground('bonusSealBackgroundClosed'));
         }
 
-        this.resetPearlMultiplier();
-
         this.updateTimer();
 
         this.seal1.update(this.getBall().sprite, this.onHurtCallback, this.pearlMultiplier);
@@ -96,13 +104,14 @@ class BonusStageSeal extends BonusStage {
         }
     }
 
-    resetPearlMultiplier() {
-        if (millis() - this.timeOfLastPearlTaken > SEAL_MULTIPLIER_THRESHOLD_MS) {
-            this.pearlMultiplier = 1;
-        }
+    onDiveCallback = () => {
+        this.lastAction = SEAL_LAST_ACTION.SEAL_DIVE;
+        this.pearlMultiplier = 1;
     }
 
+
     onHurtCallback = () => {
+        this.lastAction = SEAL_LAST_ACTION.SEAL_HIT;
         this.pearlCounter.addPearls(this.pearlMultiplier);
         this.addPoints(this.pearlMultiplier * SEAL_HIT_POINTS);
         this.upgradePearlMultiplier();
@@ -119,10 +128,11 @@ class BonusStageSeal extends BonusStage {
     }
 
     upgradePearlMultiplier() {
-        this.timeOfLastPearlTaken = millis();
-        this.pearlMultiplier *= 2;
-        if (this.pearlMultiplier >= 512) {
-            this.pearlMultiplier = 1;
+        if (this.lastAction === SEAL_LAST_ACTION.SEAL_HIT) {
+            this.pearlMultiplier *= 2;
+            if (this.pearlMultiplier >= 512) {
+                this.pearlMultiplier = 1;
+            }
         }
     }
 

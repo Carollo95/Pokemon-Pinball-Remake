@@ -166,6 +166,19 @@ const EngineUtils = {
         fpsSprite.visible = SHOW_FPS;
     },
 
+    /** Checks if a certain time has passed since the last recorded time, if so, resets the timer
+     * @param {number} lastTime  The last recorded time in millis()
+     * @param {number} timeAmount The amount of time to check in millis()
+     * @returns {boolean} true if the time has passed, false otherwise
+     */
+    checkTimePassedAndReset(lastTime, timeAmount) {
+        if (millis() > lastTime + timeAmount) {
+            lastTime = millis();
+            return true;
+        }
+        return false;
+    },
+
     /**
      * Draws the stage
      */

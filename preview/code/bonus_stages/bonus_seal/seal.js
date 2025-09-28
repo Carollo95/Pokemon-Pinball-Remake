@@ -7,6 +7,9 @@ const SEAL_MAX_HORIZONTAL_MOVEMENT = 290;
 
 const MULTIPLIER_SHOW_THRESHOLD = 1000;
 
+const SEAL_LOWER_BOUND_MS_FOR_SURFACING = 3000;
+const SEAL_UPPER_BOUND_MS_FOR_SURFACING = 10000;
+
 const SEAL_STATE = {
     SWIMMING: 0,
     TURNING: 1,
@@ -16,9 +19,11 @@ const SEAL_STATE = {
 };
 
 class Seal {
-    constructor(x, y, moveRight = true) {
+    constructor(x, y, onDiveCallback, moveRight = true) {
         this.x = x;
         this.y = y;
+        this.onDiveCallback = onDiveCallback;
+        this.timeOfSurfacing = 0;
         this.keepMovinRight = moveRight;
         this.state = SEAL_STATE.SWIMMING;
 
@@ -64,6 +69,7 @@ class Seal {
         } else if (this.state === SEAL_STATE.IDLE) {
             if (this.timeToSwim()) {
                 this.dive();
+                this.onDiveCallback();
             }
 
             this.checkCollision(ballSprite, hurtCallback, pearlMultiplier);
@@ -121,11 +127,13 @@ class Seal {
             EngineUtils.enableSprite(this.sprite);
             this.sprite.changeAnimation('idle');
             this.state = SEAL_STATE.IDLE;
+            this.timeOfSurfacing = millis();
+            this.surfacingTime = Math.floor(random() * (SEAL_UPPER_BOUND_MS_FOR_SURFACING - SEAL_LOWER_BOUND_MS_FOR_SURFACING + 1)) + SEAL_LOWER_BOUND_MS_FOR_SURFACING;
         };
     }
 
     timeToSwim() {
-        return random(0, 1) < 0.005;
+        return millis() > this.surfacingTime + this.timeOfSurfacing;
     }
 
     dive() {
@@ -161,7 +169,7 @@ class Seal {
             };
 
             this.updateMultiplier(pearlMultiplier);
-            
+
             hurtCallback();
         }
 

@@ -4,10 +4,18 @@ const COIN_CAUGHT_POINTS = 1000000;
 const CAT_STAGE_TIME_MILLIS = 61000;
 const VICTORY_STAGE_COINS = 20;
 
+const CAT_STAGE_MAX_COINS_ON_SCREEN = 6;
+
+const CAT_STAGE_LAST_HIT ={
+    CAT: 0,
+    COIN: 1
+}
+
 class BonusStageCat extends BonusStage {
 
     constructor(status) {
         super(status);
+        this.lastElementHit = CAT_STAGE_LAST_HIT.CAT;
         this.highLaneCoins = new Array(8);
         this.lowLaneCoins = new Array(6);
         this.flyingCoins = [];
@@ -24,23 +32,40 @@ class BonusStageCat extends BonusStage {
 
         Audio.playMusic('catStage');
 
-        this.meowth = new Meowth(() => { this.addPoints(MEOWTH_HIT_POINTS); });
+        this.meowth = new Meowth(this.onMeowthHitCallback);
         this.coinCounter = new CoinCounter();
         this.createCoins();
+    }
+
+    onMeowthHitCallback = () => {
+        this.addPoints(MEOWTH_HIT_POINTS);
+        this.lastElementHit = CAT_STAGE_LAST_HIT.CAT;
+        if(this.currentActiveCoins() < CAT_STAGE_MAX_COINS_ON_SCREEN) {
+            this.createCoinProjectile(this.meowth.sprite.pos);
+        }
+    }
+
+    currentActiveCoins(){
+        return this.highLaneCoins.filter(c => !c.disabled).length + this.lowLaneCoins.filter(c => !c.disabled).length +this.flyingCoins.length;
     }
 
     createCoins() {
         const highSlots = [COIN_HIGH_SLOT_1, COIN_HIGH_SLOT_2, COIN_HIGH_SLOT_3, COIN_HIGH_SLOT_4,
             COIN_HIGH_SLOT_5, COIN_HIGH_SLOT_6, COIN_HIGH_SLOT_7, COIN_HIGH_SLOT_8];
         for (let i = 0; i < highSlots.length; i++) {
-            this.highLaneCoins[i] = new Coin(highSlots[i], true, (multiplier) => { this.addPoints(multiplier *COIN_CAUGHT_POINTS); });
+            this.highLaneCoins[i] = new Coin(highSlots[i], true, this.onCoinHitCallback);
         }
 
         const lowSlots = [COIN_LOW_SLOT_1, COIN_LOW_SLOT_2, COIN_LOW_SLOT_3, COIN_LOW_SLOT_4,
             COIN_LOW_SLOT_5, COIN_LOW_SLOT_6];
         for (let i = 0; i < lowSlots.length; i++) {
-            this.lowLaneCoins[i] = new Coin(lowSlots[i], false, (multiplier) => { this.addPoints(multiplier *COIN_CAUGHT_POINTS); });
+            this.lowLaneCoins[i] = new Coin(lowSlots[i], false, this.onCoinHitCallback);
         }
+    }
+
+    onCoinHitCallback = (multiplier) => {
+        this.addPoints(multiplier *COIN_CAUGHT_POINTS);
+        this.lastElementHit = CAT_STAGE_LAST_HIT.COIN;
     }
 
     draw() {
@@ -63,7 +88,6 @@ class BonusStageCat extends BonusStage {
         }
 
         this.meowth.update(this.getBall().sprite);
-        this.checkCreateCoin();
 
         this.updateFlyingCoins();
         this.updateCoins();
@@ -91,7 +115,7 @@ class BonusStageCat extends BonusStage {
     }
 
     updateCoin(coin) {
-        const coinsTaken = coin.update(this.getBall().sprite);
+        const coinsTaken = coin.update(this.getBall().sprite, this.lastElementHit);
         if (coinsTaken > 0) {
             // Passing the VICTORY_STAGE_COINS threshold
             if (this.coinCounter.counter < VICTORY_STAGE_COINS && this.coinCounter.counter + coinsTaken >= VICTORY_STAGE_COINS) {
@@ -118,11 +142,6 @@ class BonusStageCat extends BonusStage {
         this.flyingCoins = this.flyingCoins.filter(c => !c.disabled);
     }
 
-    checkCreateCoin() {
-        if (this.meowth.createCoin) {
-            this.createCoinProjectile(this.meowth.sprite.pos);
-        }
-    }
 
     createCoinProjectile(startPos) {
         this.flyingCoins.push(new FlyingCoin(startPos.x, startPos.y));
