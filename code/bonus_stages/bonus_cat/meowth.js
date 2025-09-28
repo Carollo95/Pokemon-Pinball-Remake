@@ -15,7 +15,6 @@ class Meowth {
         this.keepMovinRight = true;
         this.keepMovingVertically = false;
         this.isHighLane = true;
-        this.createCoin = false;
 
         this.timeOfHurt = 0;
 
@@ -43,8 +42,6 @@ class Meowth {
             }
 
             this.checkCollision(ballSprite);
-        } else {
-            this.createCoin = false;
         }
     }
 
@@ -58,7 +55,6 @@ class Meowth {
             this.sprite.changeAnimation("hurt");
             this.timeOfHurt = millis();
             Audio.playSFX('sfx33');
-            this.createCoin = true;
         }
     }
 
