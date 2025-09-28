@@ -40,14 +40,18 @@ class BonusStageSeal extends BonusStage {
         if (!this.checkBonusBallLoss()) return;
 
         this.createNewBonusBall(bonusGateBackground);
-
+        this.applyBallLossPenalty();
+    }
+    
+    applyBallLossPenalty() {
         this.seal1.swim();
         this.seal2.swim();
         this.seal3.swim();
 
+        this.pearlMultiplier = 1;
+        this.lastAction = SEAL_LAST_ACTION.SEAL_DIVE;
         this.pearlCounter.applyPenalty(4);
     }
-
 
     setup() {
         super.replaceBackground(Asset.getBackground('bonusSealBackgroundOpen'));
