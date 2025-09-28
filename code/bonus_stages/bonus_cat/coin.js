@@ -135,7 +135,6 @@ class Coin {
         Audio.playSFX('sfx32');
         this.sprite.changeAnimation("dissapear");
 
-        console.log(lastElementHit)
         if (lastElementHit === CAT_STAGE_LAST_HIT.COIN) {
             if (Coin.coinMultiplier < 6) Coin.coinMultiplier++;
             this.localMultiplier = Coin.coinMultiplier;

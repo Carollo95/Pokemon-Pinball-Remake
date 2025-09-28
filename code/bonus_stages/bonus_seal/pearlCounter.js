@@ -43,4 +43,12 @@ class PearlCounter {
         this.pearls.forEach(pearl => pearl.visible = false);
         this.counter = 0;
     }
+
+    applyPenalty(num){
+        this.counter = Math.max(0, this.counter - num);
+        for (let i = 0; i < SEEL_VISIBLE_PEARLS; i++) {
+            this.pearls[i].visible = i < this.counter;
+        }   
+    }
+
 }
