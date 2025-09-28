@@ -19,9 +19,10 @@ const SEAL_STATE = {
 };
 
 class Seal {
-    constructor(x, y, moveRight = true) {
+    constructor(x, y, onDiveCallback, moveRight = true) {
         this.x = x;
         this.y = y;
+        this.onDiveCallback = onDiveCallback;
         this.timeOfSurfacing = 0;
         this.keepMovinRight = moveRight;
         this.state = SEAL_STATE.SWIMMING;
@@ -68,6 +69,7 @@ class Seal {
         } else if (this.state === SEAL_STATE.IDLE) {
             if (this.timeToSwim()) {
                 this.dive();
+                this.onDiveCallback();
             }
 
             this.checkCollision(ballSprite, hurtCallback, pearlMultiplier);
