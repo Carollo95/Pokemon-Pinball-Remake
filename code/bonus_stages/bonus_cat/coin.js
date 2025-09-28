@@ -6,7 +6,7 @@ const COIN_HEIGHT = 36; //Height of the coin collider
 const COIN_HIGH_LANE = 244; //Height for the higher row of coins
 const COIN_LOW_LANE = 286; //Height for the lower row of coins
 
-const COIN_MULTIPLIER_THRESHOLD_MILLIS = 1000; //Number of milliseconds between coin catches to get a multiplier
+const COIN_MULTIPLIER_THRESHOLD_MILLIS = 1000; //Number of milliseconds for the multiplier to show on screen
 
 //Horizontal positions for the coins on the higher row
 const COIN_HIGH_SLOT_1 = 62;
@@ -98,24 +98,24 @@ class Coin {
 
     }
 
-    update(ballSprite) {
+    update(ballSprite, lastElementHit) {
         if (!this.disabled) {
             if (this.isCoinHit(ballSprite)) {
-                this.onCoinHit();
+                this.onCoinHit(lastElementHit);
                 return Coin.coinMultiplier;
             } else if (this.timeToDisappear()) {
                 this.disableSprite();
             }
         }
 
-        this.updateMultiplierVisibility();
+        this.updateMultiplierVisibility(lastElementHit);
 
         return 0;
     }
 
 
     updateMultiplierVisibility() {
-        if (millis() - this.timeOfLastHit > COIN_MULTIPLIER_THRESHOLD_MILLIS) {
+        if (millis() > this.timeOfLastHit + COIN_MULTIPLIER_THRESHOLD_MILLIS) {
             this.multiplierSprite.visible = false;
         } else if (this.localMultiplier > 1) {
             EngineUtils.blinkSprite(this.multiplierSprite);
@@ -130,13 +130,12 @@ class Coin {
         return this.sprite.animation.name == "dissapear" && millis() - this.timeOfLastHit > (this.dissapearAnimationMillis)
     }
 
-    onCoinHit() {
+    onCoinHit(lastElementHit) {
         EngineUtils.disableSprite(this.sprite);
         Audio.playSFX('sfx32');
         this.sprite.changeAnimation("dissapear");
-        this.timeOfLastHit = millis();
 
-        if (millis() - Coin.timeOfLastCoinTaken < COIN_MULTIPLIER_THRESHOLD_MILLIS) {
+        if (lastElementHit === CAT_STAGE_LAST_HIT.COIN) {
             if (Coin.coinMultiplier < 6) Coin.coinMultiplier++;
             this.localMultiplier = Coin.coinMultiplier;
             this.multiplierSprite.changeAnimation(Coin.coinMultiplier.toString());
@@ -146,7 +145,7 @@ class Coin {
             this.multiplierSprite.visible = false;
         }
         this.onHitCallback(Coin.coinMultiplier);
-        Coin.timeOfLastCoinTaken = millis();
+        this.timeOfLastHit = millis();
     }
 
     disableSprite() {
