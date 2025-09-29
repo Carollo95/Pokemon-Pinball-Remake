@@ -41,6 +41,7 @@ class TravelDiglett {
         if (this.collider.collide(ball)) {
             this.upgradeDugtrio();
             this.diglettSprite.changeAnimation('hurt');
+            Audio.playSFX('sfx0F');
 
             this.diglettSprite.ani.frame = 0;
             this.diglettSprite.ani.playing = true;
@@ -62,6 +63,9 @@ class TravelDiglett {
             this.dugtrioLevel++;
             this.dugtrioSprite.ani.frame = this.dugtrioLevel;
             this.timeOfLasDugtrioUpgrade = millis();
+            if(this.dugtrioLevel === 3) {
+                console.log("TODO Start map move mode");
+            }
         }
     }
 

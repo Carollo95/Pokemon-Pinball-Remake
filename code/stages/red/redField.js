@@ -126,7 +126,8 @@ class RedField extends Stage {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
             this.status.balls--;
             this.state = RED_FIELD_STATUS.BALL_LOST;
-            this.stageText.setText(I18NManager.translate("end_of_ball_bonus"), 3000, () => { this.ballBonusScreen.show(); });
+            Audio.playSFX('sfx24');
+            this.stageText.setText(I18NManager.translate("end_of_ball_bonus"), 1000, () => { this.ballBonusScreen.show(); });
         }
     }
 
