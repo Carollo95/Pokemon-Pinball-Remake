@@ -31,7 +31,7 @@ class BallBonusScreen {
 
     createLine(y, xs) {
         let line = [];
-        let offsetX = 24;
+        let offsetX = 16;
         for (let i = 0; i < xs.length; i++) {
             //FIXME, this crap is also on the stageText, should be on the stageCharacter, but I don't feel like doing math today
             let correctedX = xs[i] === CHAR_TYPE.SEPARATOR ? offsetX - 6 : offsetX;
@@ -279,7 +279,6 @@ class BallBonusScreen {
 
 
     progress(onScreenEndCallback = () => { this.remove(); }) {
-
         if (this.state === BONUS_BALL_SCREEN_LINES.TOTAL) {
             this.remove();
             onScreenEndCallback();

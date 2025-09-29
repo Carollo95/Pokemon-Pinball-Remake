@@ -239,7 +239,7 @@ class StageStatusBanner {
 }
 
 function createBonusStageStatusBanner(stateStage) {
-    return new StageStatusBanner(341, 372, BANNER_TYPE.BONUS_STAGE, stateStage);
+    return new StageStatusBanner(341, 380, BANNER_TYPE.BONUS_STAGE, stateStage);
 }
 
 function createStageStatusBanner(stateStage) {
