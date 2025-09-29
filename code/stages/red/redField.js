@@ -94,6 +94,10 @@ class RedField extends Stage {
     draw() {
         super.draw();
         this.updateScreen();
+
+        this.leftTravelDiglett.update(this.getBall().sprite);
+        this.rightTravelDiglett.update(this.getBall().sprite);
+
         if (this.state === RED_FIELD_STATUS.PLAYING) {
             this.checkForBallLoss();
             this.updateDitto();
