@@ -1,9 +1,9 @@
 const BONUS_FOR_POKEMON_CAUGHT_ON_BALL = 500000;
 const BONUS_FOR_POKEMON_EVOLVED_ON_BALL = 750000;
 const BONUS_FOR_CAVE_SHOTS_ON_BALL = 25000;
-const BONUS_FOR_CAUGHT_STARTED_ON_BALL = 75000;
+const BONUS_FOR_BELLSPROUT_ON_BALL = 75000;
 const BONUS_FOR_SPINNER_TURNS_ON_BALL  =100000;
-const BONUS_FOR_TRAVEL_ON_BALL = 50000;
+const BONUS_FOR_DUGTRIO_ON_BALL = 50000;
 
 class StageStatus {
 
@@ -15,8 +15,8 @@ class StageStatus {
 
         this.pokemonCaughtOnBall = 0;
         this.pokemonEvolvedOnBall = 0;
-        this.caughtStartedOnBall = 0;
-        this.travelOnBall = 0;
+        this.bellsproutOnBall = 0;
+        this.dugtrioOnBall = 0;
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
         this.fieldMultiplier = 0;
@@ -30,12 +30,12 @@ class StageStatus {
         return this.pokemonEvolvedOnBall * BONUS_FOR_POKEMON_EVOLVED_ON_BALL;
     }
     
-    getBonusForCaughtStartedOnBall() {
-        return this.caughtStartedOnBall * BONUS_FOR_CAUGHT_STARTED_ON_BALL;
+    getBonusForBellsproutOnBall() {
+        return this.bellsproutOnBall * BONUS_FOR_BELLSPROUT_ON_BALL;
     }
     
-    getBonusForTravelOnBall() {
-        return this.travelOnBall * BONUS_FOR_TRAVEL_ON_BALL;
+    getBonusForDugtrioOnBall() {
+        return this.dugtrioOnBall * BONUS_FOR_DUGTRIO_ON_BALL;
     }
     
     getBonusForCaveShotsOnBall() {
@@ -51,8 +51,8 @@ class StageStatus {
 
         this.pokemonCaughtOnBall = 0;
         this.pokemonEvolvedOnBall = 0;
-        this.caughtStartedOnBall = 0;
-        this.travelOnBall = 0;
+        this.bellsproutOnBall = 0;
+        this.dugtrioOnBall = 0;
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
         this.fieldMultiplier = 0;

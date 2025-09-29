@@ -1,3 +1,5 @@
+const DIGLETT_POINTS = 5000;
+
 const RED_FIELD_STATUS = {
     PLAYING: 0,
     GAME_START: 1,
@@ -86,11 +88,18 @@ class RedField extends Stage {
 
         this.screen = new Screen();
         this.ballBonusScreen = new BallBonusScreen(this.status);
+
+        this.leftTravelDiglett = new TravelDiglett(() => {this.status.addPoints(DIGLETT_POINTS)}, () => {this.status.dugtrioOnBall++}, false);
+        this.rightTravelDiglett = new TravelDiglett(() => {this.status.addPoints(DIGLETT_POINTS)}, () => {this.status.dugtrioOnBall++}, true);
     }
 
     draw() {
         super.draw();
         this.updateScreen();
+
+        this.leftTravelDiglett.update(this.getBall().sprite);
+        this.rightTravelDiglett.update(this.getBall().sprite);
+
         if (this.state === RED_FIELD_STATUS.PLAYING) {
             this.checkForBallLoss();
             this.updateDitto();
@@ -119,7 +128,8 @@ class RedField extends Stage {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
             this.status.balls--;
             this.state = RED_FIELD_STATUS.BALL_LOST;
-            this.stageText.setText(I18NManager.translate("end_of_ball_bonus"), 3000, () => { this.ballBonusScreen.show(); });
+            Audio.playSFX('sfx24');
+            this.stageText.setText(I18NManager.translate("end_of_ball_bonus"), 1000, () => { this.ballBonusScreen.show(); });
         }
     }
 
