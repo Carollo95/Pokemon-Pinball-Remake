@@ -218,7 +218,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
     promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D'));
     promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E'));
-    promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F'));
+    promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //Travel Digeltt hit
     promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10'));
     promises.push(audio.registerSFX('sfx11', 'assets/audio/sfx/SFX-11'));
     promises.push(audio.registerSFX('sfx12', 'assets/audio/sfx/SFX-12'));
@@ -239,7 +239,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx21', 'assets/audio/sfx/SFX-21'));
     promises.push(audio.registerSFX('sfx22', 'assets/audio/sfx/SFX-22'));
     promises.push(audio.registerSFX('sfx23', 'assets/audio/sfx/SFX-23'));
-    promises.push(audio.registerSFX('sfx24', 'assets/audio/sfx/SFX-24'));
+    promises.push(audio.registerSFX('sfx24', 'assets/audio/sfx/SFX-24')); //Field ball loss
     promises.push(audio.registerSFX('sfx25', 'assets/audio/sfx/SFX-25'));
     promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26'));
     promises.push(audio.registerSFX('sfx27', 'assets/audio/sfx/SFX-27'));
