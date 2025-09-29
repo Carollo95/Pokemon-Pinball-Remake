@@ -1,7 +1,9 @@
 const TIME_FOR_DUGTRIO_UP = 10000;
 
 class TravelDiglett {
-    constructor(mirror = false) {
+    constructor(onDiglettHitCallback, onFullDugtrioCallback, mirror = false) {
+        this.oneFullDugtrioCallback = onFullDugtrioCallback;
+        this.onDiglettHitCallback = onDiglettHitCallback;
         if (mirror) {
             this.diglettX = 262;
             this.dugtrioX = 296;
@@ -42,6 +44,7 @@ class TravelDiglett {
     update(ball) {
         if (this.collider.collide(ball)) {
             this.upgradeDugtrio();
+            this.onDiglettHitCallback();
             this.diglettSprite.changeAnimation('hurt');
             Audio.playSFX('sfx0F');
 
@@ -66,6 +69,7 @@ class TravelDiglett {
             this.dugtrioSprite.ani.frame = this.dugtrioLevel;
             this.timeOfLasDugtrioUpgrade = millis();
             if(this.dugtrioLevel === 3) {
+                this.onFullDugtrioCallback();
                 console.log("TODO Start map move mode");
             }
         }

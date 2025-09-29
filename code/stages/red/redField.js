@@ -1,3 +1,5 @@
+const DIGLETT_POINTS = 5000;
+
 const RED_FIELD_STATUS = {
     PLAYING: 0,
     GAME_START: 1,
@@ -87,8 +89,8 @@ class RedField extends Stage {
         this.screen = new Screen();
         this.ballBonusScreen = new BallBonusScreen(this.status);
 
-        this.leftTravelDiglett = new TravelDiglett(false);
-        this.rightTravelDiglett = new TravelDiglett(true);
+        this.leftTravelDiglett = new TravelDiglett(() => {this.status.addPoints(DIGLETT_POINTS)}, () => {this.status.dugtrioOnBall++}, false);
+        this.rightTravelDiglett = new TravelDiglett(() => {this.status.addPoints(DIGLETT_POINTS)}, () => {this.status.dugtrioOnBall++}, true);
     }
 
     draw() {
