@@ -3,11 +3,11 @@ const TIME_FOR_DUGTRIO_UP = 10000;
 class TravelDiglett {
     constructor(mirror = false) {
         if (mirror) {
-            this.diglettX = 261;
+            this.diglettX = 262;
             this.dugtrioX = 296;
             this.colliderX = 268;
         } else {
-            this.diglettX = 59;
+            this.diglettX = 58;
             this.dugtrioX = 24;
             this.colliderX = 54;
         }
@@ -20,9 +20,11 @@ class TravelDiglett {
         this.diglettSprite.debug = DEBUG;
         this.diglettSprite.layer = SCENARIO_LAYER;
         this.diglettSprite.mirror.x = mirror;
+        this.diglettSprite.anis.cutFrames = true;
 
-        this.diglettSprite.addAnimation('hurt', Asset.getAnimation('redFieldDiglettHurt'));
-        this.diglettSprite.addAnimation('idle', Asset.getAnimation('redFieldDiglettIdle'));
+        
+        this.diglettSprite.addAni('hurt', Asset.getAnimation('redFieldDiglettHurt'));
+        this.diglettSprite.addAni('idle', Asset.getAnimation('redFieldDiglettIdle'));
 
 
         this.timeOfLasDugtrioUpgrade = 0;
@@ -30,7 +32,7 @@ class TravelDiglett {
         this.dugtrioSprite.debug = DEBUG;
         this.dugtrioSprite.layer = SCENARIO_LAYER;
         this.dugtrioSprite.mirror.x = mirror;
-        this.dugtrioSprite.addAnimation('idle', Asset.getAnimation('redFieldDugtrio'));
+        this.dugtrioSprite.addAni('idle', Asset.getAnimation('redFieldDugtrio'));
         this.dugtrioLevel = 0;
         this.dugtrioSprite.ani.frame = this.dugtrioLevel;
         this.dugtrioSprite.ani.playing = false;
