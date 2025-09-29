@@ -86,6 +86,9 @@ class RedField extends Stage {
 
         this.screen = new Screen();
         this.ballBonusScreen = new BallBonusScreen(this.status);
+
+        this.leftTravelDiglett = new TravelDiglett(false);
+        this.rightTravelDiglett = new TravelDiglett(true);
     }
 
     draw() {

@@ -199,6 +199,10 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldDittoOpen', 'assets/img/red-field/ditto-open', 53, 106, 1);
   Asset.registerAnimationTemplate('redFieldDittoClosed', 'assets/img/red-field/ditto-closed', 78, 140, 1);
   Asset.registerAnimationTemplate('redFieldDittoFullyOpen', 'assets/img/red-field/ditto-fully-open', 16, 44, 1);
+
+  Asset.registerAnimationTemplate('redFieldDiglettIdle', 'assets/img/red-field/diglett_idle', 22, 32, 2);
+  Asset.registerAnimationTemplate('redFieldDiglettHurt', 'assets/img/red-field/diglett_hurt', 22, 32, 1);
+
 }
 
 
