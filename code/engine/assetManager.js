@@ -202,6 +202,7 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('redFieldDiglettIdle', 'assets/img/red-field/diglett_idle', 22, 32, 2);
   Asset.registerAnimationTemplate('redFieldDiglettHurt', 'assets/img/red-field/diglett_hurt', 22, 32, 1);
+  Asset.registerAnimationTemplate('redFieldDugtrio', 'assets/img/red-field/dugtrio', 48, 64, 4);
 
 }
 

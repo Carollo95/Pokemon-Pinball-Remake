@@ -1,10 +1,14 @@
+const TIME_FOR_DUGTRIO_UP = 10000;
+
 class TravelDiglett {
     constructor(mirror = false) {
-        if(mirror){
+        if (mirror) {
             this.diglettX = 261;
+            this.dugtrioX = 296;
             this.colliderX = 268;
-        }else{
+        } else {
             this.diglettX = 59;
+            this.dugtrioX = 24;
             this.colliderX = 54;
         }
 
@@ -19,10 +23,23 @@ class TravelDiglett {
 
         this.diglettSprite.addAnimation('hurt', Asset.getAnimation('redFieldDiglettHurt'));
         this.diglettSprite.addAnimation('idle', Asset.getAnimation('redFieldDiglettIdle'));
+
+
+        this.timeOfLasDugtrioUpgrade = 0;
+        this.dugtrioSprite = new Sprite(this.dugtrioX, 364, 48, 32, "none");
+        this.dugtrioSprite.debug = DEBUG;
+        this.dugtrioSprite.layer = SCENARIO_LAYER;
+        this.dugtrioSprite.mirror.x = mirror;
+        this.dugtrioSprite.addAnimation('idle', Asset.getAnimation('redFieldDugtrio'));
+        this.dugtrioLevel = 0;
+        this.dugtrioSprite.ani.frame = this.dugtrioLevel;
+        this.dugtrioSprite.ani.playing = false;
+
     }
 
-    update(ball){
+    update(ball) {
         if (this.collider.collide(ball)) {
+            this.upgradeDugtrio();
             this.diglettSprite.changeAnimation('hurt');
 
             this.diglettSprite.ani.frame = 0;
@@ -31,6 +48,28 @@ class TravelDiglett {
             this.diglettSprite.ani.onComplete = () => {
                 this.diglettSprite.changeAnimation('idle');
             };
+
+        }
+
+        if (millis() > this.timeOfLasDugtrioUpgrade + TIME_FOR_DUGTRIO_UP) {
+            this.degradeDugtrio();
+        }
+
+    }
+
+    upgradeDugtrio() {
+        if (this.diglettSprite.ani.name === 'idle' && this.dugtrioLevel < 3) {
+            this.dugtrioLevel++;
+            this.dugtrioSprite.ani.frame = this.dugtrioLevel;
+            this.timeOfLasDugtrioUpgrade = millis();
+        }
+    }
+
+    degradeDugtrio() {
+        if (this.dugtrioLevel > 0) {
+            this.dugtrioLevel--;
+            this.dugtrioSprite.ani.frame = this.dugtrioLevel;
+            this.timeOfLasDugtrioUpgrade = millis();
         }
     }
 
