@@ -265,7 +265,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx3B', 'assets/audio/sfx/SFX-3B'));
     promises.push(audio.registerSFX('sfx3C', 'assets/audio/sfx/SFX-3C'));
     promises.push(audio.registerSFX('sfx3D', 'assets/audio/sfx/SFX-3D'));
-    promises.push(audio.registerSFX('sfx3E', 'assets/audio/sfx/SFX-3E'));
+    promises.push(audio.registerSFX('sfx3E', 'assets/audio/sfx/SFX-3E')); //Bonus ball screen progress
     promises.push(audio.registerSFX('sfx3F', 'assets/audio/sfx/SFX-3F')); //Close gate on bonus level
     promises.push(audio.registerSFX('sfx40', 'assets/audio/sfx/SFX-40'));
     promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41'));

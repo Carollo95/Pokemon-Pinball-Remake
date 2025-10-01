@@ -22,7 +22,8 @@ const BONUS_BALL_SCREEN_LINES = {
 }
 
 class BallBonusScreen {
-    constructor(status) {
+    constructor(status, onScreenEndCallback) {
+        this.onScreenEndCallback = onScreenEndCallback;
         this.status = status;
         this.currentLines = [];
 
@@ -64,6 +65,7 @@ class BallBonusScreen {
 
     showPage(lines) {
         this.remove()
+        Audio.playSFX('sfx3E');
         for (let i = 0; i < 5; i++) {
             let line = this.createLine(BALL_BONUS_SCREEN_YS[i], lines[i][1]);
             for (let j = 0; j < Math.min(lines[i][0].length, lines[i][1].length); j++) {
@@ -278,15 +280,20 @@ class BallBonusScreen {
     }
 
 
-    progress(onScreenEndCallback = () => { this.remove(); }) {
+    progress() {
         if (this.state === BONUS_BALL_SCREEN_LINES.TOTAL) {
             this.remove();
-            onScreenEndCallback();
+            console.log("DOES IT")
+            this.onScreenEndCallback();
         }
         this.state++;
         this.showCurrentPage();
     }
 
+
+    isVisible(){
+        return this.currentLines.length > 0;
+    }
 
 
 }

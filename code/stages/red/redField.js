@@ -45,7 +45,9 @@ class RedField extends Stage {
     }
 
     progressBonusBallScreen() {
-        this.ballBonusScreen.progress(this.onBonusScreenCompleteCallback);
+        if (this.ballBonusScreen.isVisible()) {
+            this.ballBonusScreen.progress();
+        }
     }
 
     onBonusScreenCompleteCallback = () => {
@@ -87,10 +89,10 @@ class RedField extends Stage {
         this.state = RED_FIELD_STATUS.GAME_START;
 
         this.screen = new Screen();
-        this.ballBonusScreen = new BallBonusScreen(this.status);
+        this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
 
-        this.leftTravelDiglett = new TravelDiglett(() => {this.status.addPoints(DIGLETT_POINTS)}, () => {this.status.dugtrioOnBall++}, false);
-        this.rightTravelDiglett = new TravelDiglett(() => {this.status.addPoints(DIGLETT_POINTS)}, () => {this.status.dugtrioOnBall++}, true);
+        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, false);
+        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, true);
 
         this.voltorbs = [];
         this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
@@ -99,7 +101,7 @@ class RedField extends Stage {
     }
 
     onVoltorbHitCallback = () => {
-        
+
     }
 
     draw() {
