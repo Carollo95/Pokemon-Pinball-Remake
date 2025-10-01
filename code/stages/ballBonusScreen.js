@@ -283,7 +283,6 @@ class BallBonusScreen {
     progress() {
         if (this.state === BONUS_BALL_SCREEN_LINES.TOTAL) {
             this.remove();
-            console.log("DOES IT")
             this.onScreenEndCallback();
         }
         this.state++;

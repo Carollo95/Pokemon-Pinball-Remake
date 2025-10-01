@@ -30,9 +30,11 @@ class RedField extends Stage {
             if (this.state === RED_FIELD_STATUS.GAME_START || this.state === RED_FIELD_STATUS.NEW_BALL_WAITING) {
                 this.launchNewBallWaiting();
                 this.state = RED_FIELD_STATUS.PLAYING;
-            } else if (this.state === RED_FIELD_STATUS.BALL_LOST) {
-                this.progressBonusBallScreen();
             }
+        }
+
+        if (this.state === RED_FIELD_STATUS.BALL_LOST) {
+            this.progressBonusBallScreen();
         }
     }
 
