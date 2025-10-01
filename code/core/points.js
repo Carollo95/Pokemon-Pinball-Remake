@@ -1,0 +1,3 @@
+const POINTS = {
+    VOLTORB_BUMPER: 5000
+}

@@ -93,15 +93,6 @@ class BonusStage extends Stage {
             [SCREEN_WIDTH, 212]]);
     }
 
-    createScenarioGeometry(positions) {
-        let scenario = new Sprite(positions, "static");
-        scenario.layer = SCENARIO_LAYER;
-        scenario.debug = DEBUG;
-        scenario.visible = DEBUG;
-
-        return scenario;
-    }
-
     createFrame() {
         const frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
         const bg = Asset.getBackground('bonusStageFrame');
@@ -112,10 +103,6 @@ class BonusStage extends Stage {
 
     draw() {
         super.draw();
-        // use getters so subclasses that override attachments still work
-        this.getFlippers().update();
-        this.getStageText().draw();
-
         if (this.scenarioTop.collide(this.getBall().sprite)) {
             Audio.playSFX('sfx08');
         }

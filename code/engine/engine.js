@@ -4,10 +4,10 @@ let SFX_VOLUME = 0.6; //volume of the sfx
 
 // Canvas settings
 const SCREEN_WIDTH = 384; //Widht of the canvas
-const SCREEN_HEIGHT = 556; //Height of the canvas
+const SCREEN_HEIGHT = 572; //Height of the canvas
 
 // Physics settings
-const GRAVITY = 10; //The gravity applied to the game
+const GRAVITY = 7; //The gravity applied to the game
 const EPSILON = 0.1; //Marging for physics calculation (Avoids jittering)
 
 // Layer settings

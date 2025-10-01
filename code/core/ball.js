@@ -18,6 +18,7 @@ class Ball {
         this.sprite = new Sprite(x, y, BALL_DIAMETER, "dynamic");
         this.sprite.debug = DEBUG;
         this.sprite.layer = BALL_LAYER;
+        this.sprite.friction = 0.1;
         this.spawnX = x;
         this.spawnY = y;
 
@@ -56,13 +57,25 @@ class Ball {
     }
 
     multiplyPoints(points) {
+        return this.getBallMultiplier() * points;
+    }
+
+    launchFromSpawn() {
+        this.sprite.applyForce(0, -1000);
+        Audio.playSFX('sfx0A');
+    }
+
+    getBallMultiplier(){
         //TODO add other types of balls
-        return points;
+        return 1;
     }
 
     /** Creates and returns a new ball for a bonus level. */
     static spawnBonusBall() {
         return new Ball(BONUS_SPAWN_BALL_X, BONUS_SPAWN_BALL_Y);
+    }
+    static spawnStageBall() {
+        return new Ball(334, 542);
     }
 }
 

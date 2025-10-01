@@ -19,7 +19,11 @@ class AssetManager {
   // Load and cache a PNG image (path without extension)
   getImage(path) {
     if (this.imageCache.has(path)) return this.imageCache.get(path);
-    const img = loadImage(path + '.png');
+    const img = loadImage(path + '.png', (loadedImg) => {
+      if (DEBUG) {
+        img.filter(GRAY);
+      }
+    });
     this.imageCache.set(path, img);
     return img;
   }
@@ -81,6 +85,8 @@ function preLoadBackgrounds() {
   Asset.registerBackground('bonusCloneBackgroundClosed', 'assets/img/bonus-clone/bonus_clone_background');
 
   Asset.registerBackground('bonusStageFrame', 'assets/img/bonus_state_frame');
+
+  Asset.registerBackground('redFieldBackground', 'assets/img/red-field/background');
 }
 
 
@@ -164,7 +170,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animShieldDestroy', 'assets/img/bonus-clone/shield_destroy', 32, 32, 7, 6);
   Asset.registerAnimationTemplate('animShield', 'assets/img/bonus-clone/shield', 32, 32, 4);
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890É";
   // stage text templates
   for (const ch of letters) {
     Asset.registerAnimationTemplate('stageText' + ch, `assets/img/stage-text/${ch.toLowerCase()}`, 16, 16, 1);
@@ -184,7 +190,25 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('stageTextPokemon', 'assets/img/stage-text/pokemon', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextCommaSeparator', 'assets/img/stage-text/comma_separator', 4, 16, 1);
   Asset.registerAnimationTemplate('stageTextDotSeparator', 'assets/img/stage-text/dot_separator', 4, 16, 1);
-   Asset.registerAnimationTemplate('stageTextSeparator', 'assets/img/stage-text/separator', 4, 16, 1);
+  Asset.registerAnimationTemplate('stageTextSeparator', 'assets/img/stage-text/separator', 4, 16, 1);
+
+
+  Asset.registerAnimationTemplate('redArea1Landmarks', 'assets/img/landmarks/red_landmarks_area_1', 96, 64, 7);
+  Asset.registerAnimationTemplate('redArea1LandmarksBW', 'assets/img/landmarks/red_landmarks_area_1_bw', 96, 64, 7);
+  Asset.registerAnimationTemplate('redArea2Landmarks', 'assets/img/landmarks/red_landmarks_area_2', 96, 64, 4);
+  Asset.registerAnimationTemplate('redArea2LandmarksBW', 'assets/img/landmarks/red_landmarks_area_2_bw', 96, 64, 4);
+  Asset.registerAnimationTemplate('Area3Landmarks', 'assets/img/landmarks/landmarks_area_3', 96, 64, 1);
+  Asset.registerAnimationTemplate('Area3LandmarksBW', 'assets/img/landmarks/landmarks_area_3_bw', 96, 64, 1);
+
+  Asset.registerAnimationTemplate('redFieldDittoOpen', 'assets/img/red-field/ditto-open', 53, 106, 1);
+  Asset.registerAnimationTemplate('redFieldDittoClosed', 'assets/img/red-field/ditto-closed', 78, 140, 1);
+  Asset.registerAnimationTemplate('redFieldDittoFullyOpen', 'assets/img/red-field/ditto-fully-open', 16, 44, 1);
+
+  Asset.registerAnimationTemplate('redFieldDiglettIdle', 'assets/img/red-field/diglett_idle', 24, 32, 2);
+  Asset.registerAnimationTemplate('redFieldDiglettHurt', 'assets/img/red-field/diglett_hurt', 24, 32, 1);
+  Asset.registerAnimationTemplate('redFieldDugtrio', 'assets/img/red-field/dugtrio', 48, 64, 4);
+  Asset.registerAnimationTemplate('redFieldVoltorbIdle', 'assets/img/red-field/voltorb_idle', 32, 32, 1);
+  Asset.registerAnimationTemplate('redFieldVoltorbHurt', 'assets/img/red-field/voltorb_hurt', 32, 32, 1, 16);
 
 }
 

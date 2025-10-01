@@ -1,23 +1,21 @@
-name: Deploy Preview Branch to GitHub Pages
+name: Deploy Preview Environment to GitHub Pages
 
 on:
   push:
     branches:
-      - preview 
+      - feature/red-stage
 
 jobs:
-  deploy:
+  deploy-preview:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout preview branch
         uses: actions/checkout@v3
 
-      
-      - name: Copy preview to subfolder
+      - name: Prepare preview folder
         run: |
-          mkdir -p preview
-          cp -r * preview/
-          rm -rf preview/.git preview/.github
+          mkdir preview
+          rsync -av --exclude='preview' --exclude='.git' --exclude='.github' ./ preview/
 
       - name: Checkout gh-pages branch
         uses: actions/checkout@v3
@@ -25,7 +23,7 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
-      - name: Copy preview folder to gh-pages
+      - name: Copy preview to gh-pages/preview
         run: |
           rm -rf gh-pages/preview
           mv preview gh-pages/preview
@@ -36,5 +34,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add preview
-          git commit -m "Update preview from preview branch" || echo "No changes to commit"
-          git push origin gh-pages
+          git commit -m "Update preview environment" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:gh-pages

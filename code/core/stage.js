@@ -66,16 +66,28 @@ class Stage {
 
         EngineUtils.drawWhiteFlash();
 
-        if (this.ball) this.ball.update();
+        if (this.getBall()) this.getBall().update();
+        if (this.getFlippers()) this.getFlippers().update();
+        if (this.getStageText()) this.getStageText().draw();
     }
 
     addPoints(pts) {
         if (this.status && this.ball) {
             this.status.addPoints(pts, this.ball);
-        }else{
+        } else {
             console.log("Unable to add points, missing status or ball reference.");
         }
     }
+
+    createScenarioGeometry(positions) {
+        let scenario = new Sprite(positions, "static");
+        scenario.layer = SCENARIO_LAYER;
+        scenario.debug = DEBUG;
+        scenario.visible = DEBUG;
+
+        return scenario;
+    }
+
 
     // --- helpers to attach common per-stage components ---
     attachBall(ballInstance) { this.ball = ballInstance; }
