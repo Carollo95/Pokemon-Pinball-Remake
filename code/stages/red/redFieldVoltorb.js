@@ -35,7 +35,7 @@ class RedFieldVoltorb {
             this.bounceBall(ball);
             this.onHitCallback();
             this.sprite.changeAnimation("hurt");
-            //Audio.playSFX('');
+            Audio.playSFX('sfx0E');
 
             this.nextShakeTime = millis();
 
@@ -62,7 +62,6 @@ class RedFieldVoltorb {
             this.shakeStartTime = now;
             this.lastShakeTime = now;
             this.nextShakeTime = this.getNextShakeTime();
-            console.log("Start shake");
         }
         // shaking
         if ((now - this.shakeStartTime) < VOLTORB_SHAKE_DURATION) {

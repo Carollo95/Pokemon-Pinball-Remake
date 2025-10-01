@@ -217,7 +217,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B'));
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
     promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D'));
-    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E'));
+    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //Voltorb Bumper hit
     promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //Travel Digeltt hit
     promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10'));
     promises.push(audio.registerSFX('sfx11', 'assets/audio/sfx/SFX-11'));
