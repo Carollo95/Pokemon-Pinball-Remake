@@ -22,7 +22,8 @@ const BONUS_BALL_SCREEN_LINES = {
 }
 
 class BallBonusScreen {
-    constructor(status) {
+    constructor(status, onScreenEndCallback) {
+        this.onScreenEndCallback = onScreenEndCallback;
         this.status = status;
         this.currentLines = [];
 
@@ -64,6 +65,7 @@ class BallBonusScreen {
 
     showPage(lines) {
         this.remove()
+        Audio.playSFX('sfx3E');
         for (let i = 0; i < 5; i++) {
             let line = this.createLine(BALL_BONUS_SCREEN_YS[i], lines[i][1]);
             for (let j = 0; j < Math.min(lines[i][0].length, lines[i][1].length); j++) {
@@ -107,10 +109,10 @@ class BallBonusScreen {
                 bonus = this.status.getBonusForEvolvedPokemonOnBall();
                 break;
             case BONUS_BALL_SCREEN_LINES.BELLSPROUT:
-                bonus = this.status.getBonusForCaughtStartedOnBall();
+                bonus = this.status.getBonusForBellsproutOnBall();
                 break;
             case BONUS_BALL_SCREEN_LINES.DUGTRIO:
-                bonus = this.status.getBonusForTravelOnBall();
+                bonus = this.status.getBonusForDugtrioOnBall();
                 break;
             case BONUS_BALL_SCREEN_LINES.CAVE_SHOTS:
                 bonus = this.status.getBonusForCaveShotsOnBall();
@@ -134,9 +136,9 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.CAVE_SHOTS:
                 subtotal += this.status.getBonusForCaveShotsOnBall();
             case BONUS_BALL_SCREEN_LINES.DUGTRIO:
-                subtotal += this.status.getBonusForTravelOnBall();
+                subtotal += this.status.getBonusForDugtrioOnBall();
             case BONUS_BALL_SCREEN_LINES.BELLSPROUT:
-                subtotal += this.status.getBonusForCaughtStartedOnBall();
+                subtotal += this.status.getBonusForBellsproutOnBall();
             case BONUS_BALL_SCREEN_LINES.POKEMON_EVOLVED:
                 subtotal += this.status.getBonusForEvolvedPokemonOnBall();
             case BONUS_BALL_SCREEN_LINES.POKEMON_CAUGHT:
@@ -185,12 +187,12 @@ class BallBonusScreen {
         return this.centerTextForTextRow(this.status.pokemonEvolvedOnBall + " " + I18NManager.translate("pokemon_evolved"));
     }
 
-    createCaughtStartedLine() {
-        return this.centerTextForTextRow(this.status.caughtStartedOnBall + " " + I18NManager.translate("bellsprout"));
+    createBellsproutLine() {
+        return this.centerTextForTextRow(this.status.bellsproutOnBall + " " + I18NManager.translate("bellsprout"));
     }
 
-    createTravelLine() {
-        return this.centerTextForTextRow(this.status.travelOnBall + " " + I18NManager.translate("dugtrio"));
+    createDugtrioLine() {
+        return this.centerTextForTextRow(this.status.dugtrioOnBall + " " + I18NManager.translate("dugtrio"));
     }
 
     createCaveShotsLine() {
@@ -226,7 +228,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.BELLSPROUT:
                 this.showPage
                     ([
-                        [this.createCaughtStartedLine(), BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createBellsproutLine(), BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
@@ -236,7 +238,7 @@ class BallBonusScreen {
             case BONUS_BALL_SCREEN_LINES.DUGTRIO:
                 this.showPage
                     ([
-                        [this.createTravelLine(), BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createDugtrioLine(), BALL_BONUS_SCREEN_TEXT_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
                         [this.createBonusLine(), BALL_BONUS_SCREEN_MEDIUM_NUMERIC_XS],
                         [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
@@ -278,15 +280,19 @@ class BallBonusScreen {
     }
 
 
-    progress(onScreenEndCallback = () => { this.remove(); }) {
+    progress() {
         if (this.state === BONUS_BALL_SCREEN_LINES.TOTAL) {
             this.remove();
-            onScreenEndCallback();
+            this.onScreenEndCallback();
         }
         this.state++;
         this.showCurrentPage();
     }
 
+
+    isVisible(){
+        return this.currentLines.length > 0;
+    }
 
 
 }

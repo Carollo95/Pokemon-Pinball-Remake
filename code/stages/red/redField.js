@@ -30,9 +30,11 @@ class RedField extends Stage {
             if (this.state === RED_FIELD_STATUS.GAME_START || this.state === RED_FIELD_STATUS.NEW_BALL_WAITING) {
                 this.launchNewBallWaiting();
                 this.state = RED_FIELD_STATUS.PLAYING;
-            } else if (this.state === RED_FIELD_STATUS.BALL_LOST) {
-                this.progressBonusBallScreen();
             }
+        }
+
+        if (this.state === RED_FIELD_STATUS.BALL_LOST) {
+            this.progressBonusBallScreen();
         }
     }
 
@@ -45,7 +47,9 @@ class RedField extends Stage {
     }
 
     progressBonusBallScreen() {
-        this.ballBonusScreen.progress(this.onBonusScreenCompleteCallback);
+        if (this.ballBonusScreen.isVisible()) {
+            this.ballBonusScreen.progress();
+        }
     }
 
     onBonusScreenCompleteCallback = () => {
@@ -87,10 +91,19 @@ class RedField extends Stage {
         this.state = RED_FIELD_STATUS.GAME_START;
 
         this.screen = new Screen();
-        this.ballBonusScreen = new BallBonusScreen(this.status);
+        this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
 
-        this.leftTravelDiglett = new TravelDiglett(() => {this.status.addPoints(DIGLETT_POINTS)}, () => {this.status.dugtrioOnBall++}, false);
-        this.rightTravelDiglett = new TravelDiglett(() => {this.status.addPoints(DIGLETT_POINTS)}, () => {this.status.dugtrioOnBall++}, true);
+        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, false);
+        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, true);
+
+        this.voltorbs = [];
+        this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
+        this.voltorbs.push(new RedFieldVoltorb(182, 152, this.onVoltorbHitCallback));
+        this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
+    }
+
+    onVoltorbHitCallback = () => {
+        this.status.addPoints(POINTS.VOLTORB_BUMPER);
     }
 
     draw() {
@@ -99,6 +112,8 @@ class RedField extends Stage {
 
         this.leftTravelDiglett.update(this.getBall().sprite);
         this.rightTravelDiglett.update(this.getBall().sprite);
+
+        this.voltorbs.forEach(v => v.update(this.getBall().sprite));
 
         if (this.state === RED_FIELD_STATUS.PLAYING) {
             this.checkForBallLoss();

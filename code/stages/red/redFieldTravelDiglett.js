@@ -2,7 +2,7 @@ const TIME_FOR_DUGTRIO_UP = 10000;
 
 class TravelDiglett {
     constructor(onDiglettHitCallback, onFullDugtrioCallback, mirror = false) {
-        this.oneFullDugtrioCallback = onFullDugtrioCallback;
+        this.onFullDugtrioCallback = onFullDugtrioCallback;
         this.onDiglettHitCallback = onDiglettHitCallback;
         if (mirror) {
             this.diglettX = 262;

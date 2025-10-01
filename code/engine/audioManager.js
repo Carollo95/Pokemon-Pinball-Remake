@@ -217,7 +217,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B'));
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
     promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D'));
-    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E'));
+    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //Voltorb Bumper hit
     promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //Travel Digeltt hit
     promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10'));
     promises.push(audio.registerSFX('sfx11', 'assets/audio/sfx/SFX-11'));
@@ -265,7 +265,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx3B', 'assets/audio/sfx/SFX-3B'));
     promises.push(audio.registerSFX('sfx3C', 'assets/audio/sfx/SFX-3C'));
     promises.push(audio.registerSFX('sfx3D', 'assets/audio/sfx/SFX-3D'));
-    promises.push(audio.registerSFX('sfx3E', 'assets/audio/sfx/SFX-3E'));
+    promises.push(audio.registerSFX('sfx3E', 'assets/audio/sfx/SFX-3E')); //Bonus ball screen progress
     promises.push(audio.registerSFX('sfx3F', 'assets/audio/sfx/SFX-3F')); //Close gate on bonus level
     promises.push(audio.registerSFX('sfx40', 'assets/audio/sfx/SFX-40'));
     promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41'));
