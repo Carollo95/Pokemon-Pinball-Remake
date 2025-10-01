@@ -103,7 +103,7 @@ class RedField extends Stage {
     }
 
     onVoltorbHitCallback = () => {
-
+        this.status.addPoints(POINTS.VOLTORB_BUMPER);
     }
 
     draw() {
