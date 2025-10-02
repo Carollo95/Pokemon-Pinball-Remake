@@ -1,12 +1,12 @@
 class RedFieldArrows {
     constructor() {
-
         this.captureArrows = new Sprite(244, 324, 44, 64, "none");
         this.captureArrows.debug = DEBUG;
         this.captureArrows.layer = SCENARIO_LAYER;
         this.captureArrows.addAni("captureAnimation", Asset.getAnimation("redFieldCaptureArrows"));
         this.captureArrows.ani.playing = false;
-        this.captureArrowsLevel = 0;
+        this.captureArrowsLevel = 2;
+        this.captureArrows.ani.frame = this.captureArrowsLevel;
     }
 
     update() {
