@@ -1,5 +1,6 @@
 const DIGLETT_POINTS = 5000;
 
+
 const RED_FIELD_STATUS = {
     PLAYING: 0,
     GAME_START: 1,
@@ -102,6 +103,20 @@ class RedField extends Stage {
         this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
 
         this.arrows = new RedFieldArrows();
+
+        this.lastSensor;
+        this.rightLowerSensor = new Sensor(284, 214, () => {
+            if (this.state === RED_FIELD_STATUS.PLAYING) {
+                this.lastSensor = this.rightLowerSensor;
+            }
+        });
+        this.rightInnerUpperSensor = new Sensor(248, 106, () => {
+            if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.rightLowerSensor) {
+                this.arrows.upgradeCaptureArrows();
+                this.lastSensor = this.rightInnerUpperSensor;
+            }
+        });
+
     }
 
     onVoltorbHitCallback = () => {
@@ -111,6 +126,9 @@ class RedField extends Stage {
     draw() {
         super.draw();
         this.updateScreen();
+
+        this.updateSensors();
+
 
         this.leftTravelDiglett.update(this.getBall().sprite);
         this.rightTravelDiglett.update(this.getBall().sprite);
@@ -130,6 +148,11 @@ class RedField extends Stage {
             }
         }
 
+    }
+
+    updateSensors(){
+        this.rightLowerSensor.update(this.getBall().sprite);
+        this.rightInnerUpperSensor.update(this.getBall().sprite);
     }
 
     updateDitto() {
@@ -155,6 +178,7 @@ class RedField extends Stage {
         if (this.status.balls > 0) {
             this.attachBall(Ball.spawnStageBall());
             this.ditto.open();
+            this.arrows.setCaptureArrowsLevel(2);
             this.state = RED_FIELD_STATUS.NEW_BALL_WAITING
         } else {
             this.state = RED_FIELD_STATUS.GAME_OVER;

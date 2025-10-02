@@ -5,16 +5,23 @@ class RedFieldArrows {
         this.captureArrows.layer = SCENARIO_LAYER;
         this.captureArrows.addAni("captureAnimation", Asset.getAnimation("redFieldCaptureArrows"));
         this.captureArrows.ani.playing = false;
-        this.captureArrowsLevel = 2;
-        this.captureArrows.ani.frame = this.captureArrowsLevel;
+        this.setCaptureArrowsLevel(2);
     }
 
     update() {
-
+        if(this.captureArrowsLevel <3){
+            let rate = 30;
+            let halfRate = rate / 2;
+            frameCount % rate > halfRate ? this.captureArrows.ani.frame = this.captureArrowsLevel : this.captureArrows.ani.frame = this.captureArrowsLevel + 1;
+        }
     }
 
     resetCaptureArrows() {
-        this.captureArrowsLevel = 0;
+        this.setCaptureArrowsLevel(0);
+    }
+
+    setCaptureArrowsLevel(level) {
+        this.captureArrowsLevel = level;
         this.captureArrows.ani.frame = this.captureArrowsLevel;
     }
 
