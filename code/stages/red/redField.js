@@ -100,6 +100,8 @@ class RedField extends Stage {
         this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
         this.voltorbs.push(new RedFieldVoltorb(182, 152, this.onVoltorbHitCallback));
         this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
+
+        this.arrows = new RedFieldArrows();
     }
 
     onVoltorbHitCallback = () => {
@@ -114,6 +116,7 @@ class RedField extends Stage {
         this.rightTravelDiglett.update(this.getBall().sprite);
 
         this.voltorbs.forEach(v => v.update(this.getBall().sprite));
+        this.arrows.update();
 
         if (this.state === RED_FIELD_STATUS.PLAYING) {
             this.checkForBallLoss();

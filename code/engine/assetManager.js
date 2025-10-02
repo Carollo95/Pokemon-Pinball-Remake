@@ -210,6 +210,8 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldVoltorbIdle', 'assets/img/red-field/voltorb_idle', 32, 32, 1);
   Asset.registerAnimationTemplate('redFieldVoltorbHurt', 'assets/img/red-field/voltorb_hurt', 32, 32, 1, 16);
 
+  Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 44, 64, 4);
+
 }
 
 
