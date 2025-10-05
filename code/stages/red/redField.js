@@ -102,6 +102,8 @@ class RedField extends Stage {
         this.voltorbs.push(new RedFieldVoltorb(182, 152, this.onVoltorbHitCallback));
         this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
 
+        this.bellsprout = new RedFieldBellsprout();
+
         this.arrows = new RedFieldArrows();
 
         this.lastSensor;
@@ -135,6 +137,7 @@ class RedField extends Stage {
 
         this.voltorbs.forEach(v => v.update(this.getBall().sprite));
         this.arrows.update();
+        this.bellsprout.update();
 
         if (this.state === RED_FIELD_STATUS.PLAYING) {
             this.checkForBallLoss();

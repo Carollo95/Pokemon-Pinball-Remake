@@ -14,6 +14,7 @@ const EPSILON = 0.1; //Marging for physics calculation (Avoids jittering)
 const SCENARIO_LAYER = 0; //Layer for the scenario items
 const SPRITE_LAYER = 2; //Base layer for any sprite
 const BALL_LAYER = 5; //Layer for the ball sprite
+const FIELD_ELEMENTS_LAYER = 7; //Layer for the field elements
 const HUD_LAYER = 9; //Layer for the HUD elements
 const FLASH_LAYER = 10; //Layer for the flash effect
 const FRAME_LAYER = 11; //Layer for the frame on the bonus stages
