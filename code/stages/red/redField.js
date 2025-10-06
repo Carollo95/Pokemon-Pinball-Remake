@@ -137,7 +137,7 @@ class RedField extends Stage {
 
         this.voltorbs.forEach(v => v.update(this.getBall().sprite));
         this.arrows.update();
-        this.bellsprout.update();
+        this.bellsprout.update(this.getBall().sprite);
 
         if (this.state === RED_FIELD_STATUS.PLAYING) {
             this.checkForBallLoss();
