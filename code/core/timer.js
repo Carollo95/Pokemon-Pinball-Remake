@@ -1,17 +1,19 @@
 const TIMER_POSITION_BONUS_X = 290;
 const TIMER_POSITION_BONUS_HIGH_Y = 116;
 const TIMER_POSITION_BONUS_LOW_Y = 320;
+const TIMER_POSITION_FIELD = 30;
 
 const TIMER_CHAR_WIDTH = 16;
 const TIMER_CHAR_HEIGHT = 32;
 
 class Timer {
-    constructor(y, totalMillis) {
+    constructor(y, totalMillis, onTimeUpCallback = () => { }) {
         this.timeUp = false;
         this.stopped = false;
         this.totalMillis = totalMillis;
         this.startingMillis = millis();
         this.timeOfLastSFX = 0;
+        this.onTimeUpCallback = onTimeUpCallback;
         this.remainingMillis = this.totalMillis;
 
         this.minutesSprite = new Sprite(TIMER_POSITION_BONUS_X, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
@@ -43,6 +45,7 @@ class Timer {
             let newTime = this.totalMillis - (millis() - this.startingMillis);
             if (newTime <= 0) {
                 this.timeUp = true;
+                this.onTimeUpCallback();
             } else {
                 this.remainingMillis = newTime;
             }

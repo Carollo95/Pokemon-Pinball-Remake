@@ -1,6 +1,3 @@
-const MEOWTH_HIT_POINTS = 10000;
-const COIN_CAUGHT_POINTS = 1000000;
-
 const CAT_STAGE_TIME_MILLIS = 61000;
 const VICTORY_STAGE_COINS = 20;
 
@@ -38,7 +35,7 @@ class BonusStageCat extends BonusStage {
     }
 
     onMeowthHitCallback = () => {
-        this.addPoints(MEOWTH_HIT_POINTS);
+        this.addPoints(POINTS.MEOWTH_HIT_POINTS);
         this.lastElementHit = CAT_STAGE_LAST_HIT.CAT;
         if(this.currentActiveCoins() < CAT_STAGE_MAX_COINS_ON_SCREEN) {
             this.createCoinProjectile(this.meowth.sprite.pos);
@@ -64,7 +61,7 @@ class BonusStageCat extends BonusStage {
     }
 
     onCoinHitCallback = (multiplier) => {
-        this.addPoints(multiplier *COIN_CAUGHT_POINTS);
+        this.addPoints(multiplier * POINTS.COIN_CAUGHT_POINTS);
         this.lastElementHit = CAT_STAGE_LAST_HIT.COIN;
     }
 

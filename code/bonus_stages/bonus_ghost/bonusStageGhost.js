@@ -1,9 +1,3 @@
-const GRAVESTONE_HIT_POINTS = 1000;
-const GASTLY_DEFEATED_POINTS = 1000000;
-const HAUNTER_DEFEATED_POINTS = 5000000;
-const GENGAR_HIT_POINTS = 50000000;
-
-
 const GHOST_STAGE_TIME_MILLIS = 91000; //Duration of the ghost stage
 
 const GHOST_GRAVESTONE_HEIGHT = 26;
@@ -165,7 +159,7 @@ class BonusStageGhost extends BonusStage {
     for (const gravestone of this.gravestones) {
       if (gravestone.collide(this.getBallSprite())) {
         Audio.playSFX('sfx2F');
-        this.addPoints(GRAVESTONE_HIT_POINTS);
+        this.addPoints(POINTS.GRAVESTONE_HIT_POINTS);
         break;
       }
     }
@@ -232,7 +226,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   doOnGastlyHitCallback = () => {
-    this.addPoints(GASTLY_DEFEATED_POINTS);
+    this.addPoints(POINTS.GASTLY_DEFEATED_POINTS);
   }
 
   setupHaunterPhase() {
@@ -243,7 +237,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   doOnHaunterHitCallback = () => {
-    this.addPoints(HAUNTER_DEFEATED_POINTS);
+    this.addPoints(POINTS.HAUNTER_DEFEATED_POINTS);
   }
 
   createDisabledGhost(clazz, x, y) {
@@ -331,7 +325,7 @@ class BonusStageGhost extends BonusStage {
     if (this.gengar.isDefeated && this.gengar.isDefeated()) {
       this.finishStageSuccessfully();
     } else if (this.gengar.readyToRespawn && this.gengar.readyToRespawn()) {
-      this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y, () => {this.addPoints(GENGAR_HIT_POINTS);});
+      this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y, () => {this.addPoints(POINTS.GENGAR_HIT_POINTS);});
       Audio.playSFX('sfx4E');
     }
 

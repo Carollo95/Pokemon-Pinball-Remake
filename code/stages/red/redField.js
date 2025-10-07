@@ -1,6 +1,3 @@
-const DIGLETT_POINTS = 5000;
-
-
 const RED_FIELD_STATUS = {
     PLAYING: 0,
     GAME_START: 1,
@@ -94,15 +91,15 @@ class RedField extends Stage {
         this.screen = new Screen();
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
 
-        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, false);
-        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, true);
+        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, false);
+        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, true);
 
         this.voltorbs = [];
         this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
         this.voltorbs.push(new RedFieldVoltorb(182, 152, this.onVoltorbHitCallback));
         this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
 
-        this.bellsprout = new RedFieldBellsprout();
+        this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
         this.arrows = new RedFieldArrows();
 
@@ -119,6 +116,18 @@ class RedField extends Stage {
             }
         });
 
+    }
+
+    onBellsproutEatCallback = () => {
+        this.status.bellsproutOnBall++;
+        this.status.addPoints(POINTS.BELLSPROUT_POINTS);
+        if(this.arrows.captureArrowsLevel >= 2){
+            this.startCaptureSequence();
+        }
+    }
+
+    startCaptureSequence() {
+        this.attachTimer(new Timer(TIMER_POSITION_FIELD, 61000));
     }
 
     onVoltorbHitCallback = () => {
