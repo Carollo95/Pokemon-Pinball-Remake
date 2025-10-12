@@ -177,6 +177,7 @@ function preloadAnimations() {
   }
 
   Asset.registerAnimationTemplate('stageTextDot', 'assets/img/stage-text/dot', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextApostrophe', 'assets/img/stage-text/apostrophe', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextColon', 'assets/img/stage-text/colon', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextExcl', 'assets/img/stage-text/excl', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextSpace', 'assets/img/stage-text/space', 16, 16, 1);

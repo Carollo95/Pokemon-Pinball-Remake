@@ -130,6 +130,7 @@ class RedField extends Stage {
 
     startCaptureSequence() {
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS));
+        this.stageText.setText(I18NManager.translate("lets_get_pokemon"));
     }
 
     onVoltorbHitCallback = () => {

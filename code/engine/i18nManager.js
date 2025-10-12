@@ -38,6 +38,8 @@ const I18NManager = {
             "spinner_turns": "spinner turns",
             "bellsprout": "bellsprout",
             "dugtrio": "dugtrio",
+
+            "lets_get_pokemon": "let`s get pokémon     ",
         }
     },
 

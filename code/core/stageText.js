@@ -169,8 +169,19 @@ class StageStatusBanner {
         return withCommas.padStart(this.getStateChars() - 7, ' ');
     }
 
+    showText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
+        this.changeState(STAGE_TEXT_STATE.TEXT);
 
-    setText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
+        text = text.replace(".", "$");
+        this.clearTextImmediately();
+
+        this.persistenceMillis = persistenceMillis;
+        for (var i = 0; i < this.getStateChars(); i++) {
+            this.statusArray[i].changeAnimation("$" + text[i]);
+        }
+    }
+
+    setScrollText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
 
         text = text.replace(".", "$");
@@ -181,7 +192,7 @@ class StageStatusBanner {
     }
 
     clearText() {
-        this.setText('                   ');
+        this.setScrollText('                   ');
     }
 
     clearTextImmediately() {
@@ -201,7 +212,7 @@ class StageStatusBanner {
             if ((this.textQueue.length > 0)) {
                 if ((millis() - this.lastMovement) > TEXT_SCROLL_THRESHOLD_MILLIS) {
                     this.lastMovement = millis();
-                    this.scrollText();
+                    this.setScrollText();
                     this.endTextDisplayMillis = millis();
                 }
             } else if (this.hasPassedTextPersistence()) {
@@ -213,13 +224,15 @@ class StageStatusBanner {
         }
     }
 
-    scrollText() {
+    setScrollText() {
         for (var i = this.getTextChars(); i > 0; i--) {
             this.textArray[i].changeAnimation(this.textArray[i - 1].getAni().name);
         }
         this.textArray[0].changeAnimation('$' + this.textQueue[0]);
         this.textQueue = this.textQueue.substring(1);
     }
+
+
 
     setTextArrayVisibility(visible) {
         this.textArray.forEach(element => {
