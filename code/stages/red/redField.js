@@ -41,7 +41,7 @@ class RedField extends Stage {
     launchNewBallWaiting() {
         if (this.state === RED_FIELD_STATUS.GAME_START) {
             this.screen.stopSpin();
-            this.stageText.setText(I18NManager.translate("start_from") + this.screen.getLandmarkText());
+            this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText());
         }
         this.getBall().launchFromSpawn();
     }
@@ -130,7 +130,9 @@ class RedField extends Stage {
 
     startCaptureSequence() {
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS));
-        this.stageText.setText(I18NManager.translate("lets_get_pokemon"));
+        this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"));
+
+        this.screen.startCapture("001");
     }
 
     onVoltorbHitCallback = () => {
@@ -185,7 +187,7 @@ class RedField extends Stage {
             this.status.balls--;
             this.state = RED_FIELD_STATUS.BALL_LOST;
             Audio.playSFX('sfx24');
-            this.stageText.setText(I18NManager.translate("end_of_ball_bonus"), 1000, () => { this.ballBonusScreen.show(); });
+            this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), 1000, () => { this.ballBonusScreen.show(); });
         }
     }
 

@@ -216,6 +216,9 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY*2);
   Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY*2);
 
+
+  //TODO loop this shit
+  Asset.registerAnimationTemplate('001-bw', 'assets/img/dex/001-bw', 96, 64, 1);
 }
 
 

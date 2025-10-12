@@ -164,7 +164,7 @@ class BonusStage extends Stage {
         this.state = resultState;
         this.millisSinceStageComplete = millis();
 
-        this.stageText.setText(I18NManager.translate(i18nKey), (STAGE_RESULT_SHOW_MILLS / 2));
+        this.stageText.setScrollText(I18NManager.translate(i18nKey), (STAGE_RESULT_SHOW_MILLS / 2));
 
         Audio.playSFX('sfx2A');
     }

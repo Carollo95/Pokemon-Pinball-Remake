@@ -1,3 +1,8 @@
+const SCREEN_STATE = {
+    LANDSCAPE: "landscape",
+    CAPTURE: "capture"
+}
+
 const RED_LANDMARKS = {
     PALLET: { index: "Area1-0", text: "pallet_town" },
     VIRIDIAN: { index: "Area1-1", text: "viridian_forest" },
@@ -29,12 +34,21 @@ class Screen {
         this.sprite.layer = SCENARIO_LAYER;
         this.area = 0;
 
+        this.state = SCREEN_STATE.LANDSCAPE;
+
         this.sprite.addAnimation('Area1', Asset.getAnimation('redArea1Landmarks'));
         this.sprite.addAnimation('Area1BW', Asset.getAnimation('redArea1LandmarksBW'));
-         this.sprite.addAnimation('Area2', Asset.getAnimation('redArea2Landmarks'));
+        this.sprite.addAnimation('Area2', Asset.getAnimation('redArea2Landmarks'));
         this.sprite.addAnimation('Area2BW', Asset.getAnimation('redArea2LandmarksBW'));
         this.sprite.addAnimation('Area3', Asset.getAnimation('Area3Landmarks'));
         this.sprite.addAnimation('Area3BW', Asset.getAnimation('Area3LandmarksBW'));
+
+
+        //TODO loop this shit
+        this.hideSprite = new Sprite(160, 364, 96, 64, "none");
+        this.hideSprite.addAnimation('001-bw', Asset.getAnimation('001-bw'));
+        this.hideSprite.layer = SCENARIO_LAYER + 1;
+        this.hideSprite.visible = false;
 
         this.spinBW();
     }
@@ -51,7 +65,7 @@ class Screen {
     }
 
     spinBW() {
-        this.sprite.changeAnimation(AREA_MAP[this.area]+'BW');
+        this.sprite.changeAnimation(AREA_MAP[this.area] + 'BW');
     }
 
     stopSpin() {
@@ -75,8 +89,36 @@ class Screen {
         return this.currentLandmark ? I18NManager.translate(this.currentLandmark.text) : "";
     }
 
-    progressArea(){
+    progressArea() {
         this.area = (this.area + 1) % 6;
+    }
+
+    startCapture(num) {
+        this.state = SCREEN_STATE.CAPTURE;
+        this.hideSprite.changeAnimation(num + '-bw');
+        this.hideSprite.visible = true;
+    }
+
+    flipCapture() {
+        if (this.state !== SCREEN_STATE.CAPTURE) return;
+        const spr = this.hideSprite;
+
+        this.hideSprite.draw = function () {
+            push();
+
+
+            
+            drawingContext.save();
+            drawingContext.beginPath();
+            drawingContext.rect(-this.width / 2, -this.height / 2, this.width / 2, this.height);
+            drawingContext.clip();
+
+            this.ani.draw(0, 0);
+
+            drawingContext.restore();
+
+            pop();
+        }
     }
 
 }

@@ -183,7 +183,7 @@ class StageStatusBanner {
 
     setScrollText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
-
+                
         text = text.replace(".", "$");
         this.clearTextImmediately();
         this.persistenceMillis = persistenceMillis;
@@ -212,7 +212,7 @@ class StageStatusBanner {
             if ((this.textQueue.length > 0)) {
                 if ((millis() - this.lastMovement) > TEXT_SCROLL_THRESHOLD_MILLIS) {
                     this.lastMovement = millis();
-                    this.setScrollText();
+                    this.scrollText();
                     this.endTextDisplayMillis = millis();
                 }
             } else if (this.hasPassedTextPersistence()) {
@@ -224,7 +224,7 @@ class StageStatusBanner {
         }
     }
 
-    setScrollText() {
+    scrollText() {
         for (var i = this.getTextChars(); i > 0; i--) {
             this.textArray[i].changeAnimation(this.textArray[i - 1].getAni().name);
         }

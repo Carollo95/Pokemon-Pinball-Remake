@@ -122,7 +122,7 @@ class BonusStageSeal extends BonusStage {
         Audio.interruptWithSFX('sfx2A');
 
         this.state = BONUS_STAGE_STATE.WON;
-        this.getStageText().setText(I18NManager.translate("seal_stage_clear"), (STAGE_RESULT_SHOW_MILLS / 2));
+        this.getStageText().setScrollText(I18NManager.translate("seal_stage_clear"), (STAGE_RESULT_SHOW_MILLS / 2));
     }
 
     upgradePearlMultiplier() {
