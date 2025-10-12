@@ -10,7 +10,7 @@ class BonusStageClone extends BonusStage {
     this.state = BONUS_STAGE_STATE.PLAYING;
     this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y, this.doOnCheckCreateShield, this.doOnMewtwoDefeat);
 
-    this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, CLONE_STAGE_TIME_MILLIS));
+    this.attachTimer(Timer.createBonusLowTimer(CLONE_STAGE_TIME_MILLIS));
 
     this.shields = [];
     this.createShields();

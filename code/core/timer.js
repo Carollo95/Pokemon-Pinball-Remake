@@ -1,13 +1,14 @@
 const TIMER_POSITION_BONUS_X = 290;
 const TIMER_POSITION_BONUS_HIGH_Y = 116;
 const TIMER_POSITION_BONUS_LOW_Y = 320;
-const TIMER_POSITION_FIELD = 30;
+const TIMER_POSITION_FIELD_Y = 16;
+const TIMER_POSITION_FIELD_X = 320;
 
 const TIMER_CHAR_WIDTH = 16;
 const TIMER_CHAR_HEIGHT = 32;
 
 class Timer {
-    constructor(y, totalMillis, onTimeUpCallback = () => { }) {
+    constructor(x, y, totalMillis, onTimeUpCallback = () => { }) {
         this.timeUp = false;
         this.stopped = false;
         this.totalMillis = totalMillis;
@@ -16,13 +17,13 @@ class Timer {
         this.onTimeUpCallback = onTimeUpCallback;
         this.remainingMillis = this.totalMillis;
 
-        this.minutesSprite = new Sprite(TIMER_POSITION_BONUS_X, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
+        this.minutesSprite = new Sprite(x, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
         this.minutesSprite.layer = HUD_LAYER;
-        this.colonSprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
+        this.colonSprite = new Sprite(x + TIMER_CHAR_WIDTH, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
         this.colonSprite.layer = HUD_LAYER;
-        this.second1Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 2, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
+        this.second1Sprite = new Sprite(x + TIMER_CHAR_WIDTH * 2, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
         this.second1Sprite.layer = HUD_LAYER;
-        this.second2Sprite = new Sprite(TIMER_POSITION_BONUS_X + TIMER_CHAR_WIDTH * 3, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
+        this.second2Sprite = new Sprite(x + TIMER_CHAR_WIDTH * 3, y, TIMER_CHAR_WIDTH, TIMER_CHAR_HEIGHT, "none");
         this.second2Sprite.layer = HUD_LAYER;
 
         for (let i = 0; i < 10; i++) {
@@ -64,15 +65,15 @@ class Timer {
 
     soundSFX() {
         if (!this.stopped
-            && millis() - this.timeOfLastSFX > 1000){
+            && millis() - this.timeOfLastSFX > 1000) {
 
-            if(this.getTime() === "0:20"){
+            if (this.getTime() === "0:20") {
                 this.timeOfLastSFX = millis();
                 Audio.playSFX('sfx49');
-            }else if(this.getTime() === "0:10"){
+            } else if (this.getTime() === "0:10") {
                 this.timeOfLastSFX = millis();
                 Audio.playSFX('sfx4A');
-            }else if(this.getTime() === "0:05") {
+            } else if (this.getTime() === "0:05") {
                 this.timeOfLastSFX = millis();
                 Audio.playSFX('sfx4B');
             }
@@ -102,4 +103,16 @@ class Timer {
         this.second2Sprite.visible = false;
     }
 
+
+    static createBonusLowTimer(timer) {
+        return new Timer(TIMER_POSITION_BONUS_X, TIMER_POSITION_BONUS_LOW_Y, timer);
+    }
+
+    static createBonusHighTimer(timer) {
+        return new Timer(TIMER_POSITION_BONUS_X, TIMER_POSITION_BONUS_HIGH_Y, timer);
+    }
+
+    static createFieldTimer(timer) {
+        return new Timer(TIMER_POSITION_FIELD_X, TIMER_POSITION_FIELD_Y, timer);
+    }
 }

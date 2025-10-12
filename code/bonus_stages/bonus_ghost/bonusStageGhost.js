@@ -31,7 +31,7 @@ class BonusStageGhost extends BonusStage {
     super(status);
 
     // create and attach timer so Stage API exposes it
-    this.attachTimer(new Timer(TIMER_POSITION_BONUS_HIGH_Y, GHOST_STAGE_TIME_MILLIS));
+    this.attachTimer(Timer.createBonusHighTimer(GHOST_STAGE_TIME_MILLIS));
 
     // canonical state/phase
     this.state = BONUS_STAGE_STATE.PLAYING;

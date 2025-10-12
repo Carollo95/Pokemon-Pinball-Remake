@@ -203,13 +203,13 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('cloneStage', 'assets/audio/CloneStage_Mewtwo', { loop: true }));
 
     // SFX
-    promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red stage ditto close
+    promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red field ditto close
     promises.push(audio.registerSFX('sfx01', 'assets/audio/sfx/SFX-01'));
     promises.push(audio.registerSFX('sfx02', 'assets/audio/sfx/SFX-02'));
     promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03'));
-    promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04'));
+    promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); //Red field Bellsprout eat
     promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05'));
-    promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06'));
+    promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //Red field Bellsprout spit
     promises.push(audio.registerSFX('sfx07', 'assets/audio/sfx/SFX-07'));
     promises.push(audio.registerSFX('sfx08', 'assets/audio/sfx/SFX-08')); //Bonus scenario hit
     promises.push(audio.registerSFX('sfx09', 'assets/audio/sfx/SFX-09'));
@@ -217,8 +217,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B'));
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
     promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D'));
-    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //Voltorb Bumper hit
-    promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //Travel Digeltt hit
+    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //red field Voltorb Bumper hit
+    promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //red field Travel Diglett hit
     promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10'));
     promises.push(audio.registerSFX('sfx11', 'assets/audio/sfx/SFX-11'));
     promises.push(audio.registerSFX('sfx12', 'assets/audio/sfx/SFX-12'));
@@ -281,6 +281,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx4B', 'assets/audio/sfx/SFX-4B')); //Timer 5s
     promises.push(audio.registerSFX('sfx4C', 'assets/audio/sfx/SFX-4C'));
     promises.push(audio.registerSFX('sfx4D', 'assets/audio/sfx/SFX-4D'));
+
+    //TODO add all cries
     promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4E')); //Gengar cry
 
     return Promise.all(promises);

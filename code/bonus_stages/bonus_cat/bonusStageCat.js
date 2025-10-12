@@ -25,7 +25,7 @@ class BonusStageCat extends BonusStage {
         super.replaceBackground(Asset.getBackground('bonusCatBackgroundOpen'));
         super.createBonusScenarioGeometry();
 
-        this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, CAT_STAGE_TIME_MILLIS));
+        this.attachTimer(Timer.createBonusLowTimer(CAT_STAGE_TIME_MILLIS));
 
         Audio.playMusic('catStage');
 

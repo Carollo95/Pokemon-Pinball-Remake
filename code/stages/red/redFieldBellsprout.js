@@ -22,13 +22,15 @@ class RedFieldBellsprout {
         if (this.gravityActive) {
             this.well.applyGravity(ballSprite)
         }
-        if (this.well.capturedBall(ballSprite)) {
+        if (this.sprite.ani.name === 'idle' && this.well.capturedBall(ballSprite)) {
             this.sprite.changeAni('eat');
-            this.eatCallback();
+            Audio.playSFX('sfx04'); //TODO is this the correct audio???
             ballSprite.visible = false;
             this.sprite.ani.onComplete = () => {
-                this.gravityActive = false; 
+                this.eatCallback();
+                this.gravityActive = false;
                 this.sprite.changeAni('spit');
+                Audio.playSFX('sfx06');
                 ballSprite.visible = true;
                 this.sprite.ani.onComplete = () => {
                     this.sprite.changeAni('idle');

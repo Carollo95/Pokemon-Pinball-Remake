@@ -68,6 +68,7 @@ class Stage {
 
         if (this.getBall()) this.getBall().update();
         if (this.getFlippers()) this.getFlippers().update();
+        if (this.getTimer()) this.getTimer().update();
         if (this.getStageText()) this.getStageText().draw();
     }
 

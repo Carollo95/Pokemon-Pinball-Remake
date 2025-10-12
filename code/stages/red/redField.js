@@ -1,3 +1,5 @@
+const RED_FIELD_CAPTURE_TIMER_MS = 121000;
+
 const RED_FIELD_STATUS = {
     PLAYING: 0,
     GAME_START: 1,
@@ -127,7 +129,7 @@ class RedField extends Stage {
     }
 
     startCaptureSequence() {
-        this.attachTimer(new Timer(TIMER_POSITION_FIELD, 61000));
+        this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS));
     }
 
     onVoltorbHitCallback = () => {

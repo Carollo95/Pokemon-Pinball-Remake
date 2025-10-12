@@ -55,7 +55,7 @@ class BonusStageSeal extends BonusStage {
         super.replaceBackground(Asset.getBackground('bonusSealBackgroundOpen'));
         super.createBonusScenarioGeometry();
 
-        this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, SEAL_STAGE_TIME_MILLIS));
+        this.attachTimer(Timer.createBonusLowTimer(SEAL_STAGE_TIME_MILLIS));
 
         Audio.playMusic('sealStage');
     }
