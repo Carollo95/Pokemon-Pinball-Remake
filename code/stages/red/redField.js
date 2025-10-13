@@ -101,6 +101,10 @@ class RedField extends Stage {
         this.voltorbs.push(new RedFieldVoltorb(182, 152, this.onVoltorbHitCallback));
         this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
 
+        this.targetArrows = [];
+        this.voltorbsTargetArrow = new TargetArrow(130, 210, 6);
+        this.targetArrows.push(this.voltorbsTargetArrow);
+
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
         this.arrows = new RedFieldArrows();
@@ -123,7 +127,7 @@ class RedField extends Stage {
     onBellsproutEatCallback = () => {
         this.status.bellsproutOnBall++;
         this.status.addPoints(POINTS.BELLSPROUT_POINTS);
-        if(this.arrows.captureArrowsLevel >= 2){
+        if(this.state === RED_FIELD_STATUS.PLAYING && this.arrows.captureArrowsLevel >= 2){
             this.startCaptureSequence();
         }
     }
@@ -133,6 +137,7 @@ class RedField extends Stage {
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"));
 
         this.screen.startCapture("001");
+        this.voltorbsTargetArrow.setVisible(true);
     }
 
     onVoltorbHitCallback = () => {
@@ -145,7 +150,7 @@ class RedField extends Stage {
         this.updateScreen();
 
         this.updateSensors();
-
+        this.targetArrows.forEach(ta => ta.update());
 
         this.leftTravelDiglett.update(this.getBall().sprite);
         this.rightTravelDiglett.update(this.getBall().sprite);
