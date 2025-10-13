@@ -50,6 +50,7 @@ class Screen {
 
     flipCapture() {
         if (this.state !== SCREEN_STATE.CAPTURE) return;
+        
         this.screenCapture.flipCapture();
     }
 

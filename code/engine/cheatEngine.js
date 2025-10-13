@@ -47,4 +47,10 @@ const CheatEngine = {
         stage.setup();
     },
 
+    startCapture() {
+        if ((stage instanceof RedField)) {
+            stage.onBellsproutEatCallback();
+        }
+    }
+
 }
