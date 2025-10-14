@@ -3,6 +3,7 @@ const BONUS_STATUS_CHARS = 23;
 
 const STAGE_MAX_CHARS = 23;
 const STAGE_STATUS_CHARS = 27;
+const STAGE_TEXT_POINTS_CHARS = 24;
 
 const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showing text
 const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on screen the shown text
@@ -10,7 +11,8 @@ const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on scree
 const STAGE_TEXT_STATE = {
     NONE: 0,
     STATUS: 1,
-    TEXT: 2
+    TEXT: 2,
+    TEXT_WITH_POINTS: 3
 }
 
 const BANNER_TYPE = {
@@ -25,6 +27,7 @@ class StageStatusBanner {
         this.type = type;
         this.textArray = new Array(this.getTextChars());
         this.statusArray = new Array(this.getStateChars());
+        this.textWithPointsArray = new Array(this.getTextWithPointsChars());
         this.lastMovement = 0;
         this.textQueue = '';
         this.endTextDisplayMillis = 0;
@@ -35,6 +38,7 @@ class StageStatusBanner {
 
         this.createTextSprites(x, y);
         this.createStatusSprites(x, y);
+        this.createTextWithPointsSprites(x, y);
 
         this.showStatus();
 
@@ -48,15 +52,41 @@ class StageStatusBanner {
         return this.type === BANNER_TYPE.BONUS_STAGE ? BONUS_STATUS_CHARS : STAGE_STATUS_CHARS;
     }
 
+    getTextWithPointsChars() {
+        return STAGE_TEXT_POINTS_CHARS;
+    }
+
     changeState(state) {
         this.state = state;
         this.setStatusArrayVisibility(state === STAGE_TEXT_STATE.STATUS);
+        this.setTextWithPointsArrayVisibility(state === STAGE_TEXT_STATE.TEXT_WITH_POINTS);
         this.setTextArrayVisibility(state === STAGE_TEXT_STATE.TEXT);
     }
 
     createTextSprites(x, y) {
         for (var i = 0; i <= this.getTextChars(); i++) {
             this.textArray[i] = this.createTextSprite(x, y, i);
+        }
+    }
+
+    createTextWithPointsSprites(x, y) {
+
+        for (let i = 0; i <= 5; i++) {
+            this.textWithPointsArray[i] = this.createStatusNumericSprite(x, y, i, 0);
+        }
+
+        this.textWithPointsArray[6] = this.createStatusNumericSprite(x, y, 5, 0);
+        this.textWithPointsArray[7] = this.createStatusNumericSprite(x, y, 6, 0);
+        this.textWithPointsArray[8] = this.createStatusNumericSprite(x, y, 7, 0);
+        this.textWithPointsArray[9] = this.createStatusSeparatorSprite(x, y, 8, 0);
+
+        this.textWithPointsArray[10] = this.createStatusNumericSprite(x, y, 8, 1);
+        this.textWithPointsArray[11] = this.createStatusNumericSprite(x, y, 9, 1);
+        this.textWithPointsArray[12] = this.createStatusNumericSprite(x, y, 10, 1);
+        this.textWithPointsArray[13] = this.createStatusSeparatorSprite(x, y, 11, 1);
+
+        for (let i = 0; i <= 11; i++) {
+            this.textWithPointsArray[i + 14] = this.createStatusNumericSprite(x, y, i + 11, 2);
         }
     }
 
@@ -117,6 +147,9 @@ class StageStatusBanner {
         return new StageCharacter(x - padding, y, size, CHAR_SIZE);
     }
 
+    /**
+     * Show the status of the game
+     */
     showStatus() {
         this.changeState(STAGE_TEXT_STATE.STATUS);
         text = this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus(), DEFAULT_TEXT_PERSISTENCE_MILLIS;
@@ -169,6 +202,12 @@ class StageStatusBanner {
         return withCommas.padStart(this.getStateChars() - 7, ' ');
     }
 
+    /**
+     * Shows an alfanumeric text immediatly
+     * @param {*} text 
+     * @param {*} persistenceMillis 
+     * @param {*} callback 
+     */
     showText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
 
@@ -181,9 +220,52 @@ class StageStatusBanner {
         }
     }
 
+    /**
+     * Shows a centered text with points
+     * @param {*} text 
+     * @param {*} points 
+     * @param {*} persistenceMillis 
+     * @param {*} callback 
+     */
+    showTextWithPoints(text, points, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
+        this.changeState(STAGE_TEXT_STATE.TEXT_WITH_POINTS);
+
+        this.callback = callback;
+        this.persistenceMillis = persistenceMillis;
+        this.endTextDisplayMillis = millis();
+
+        // Left part
+        let left = (text ?? '').toString();
+        if (left.length > 9) left = left.substring(0, 9);
+        left = left.padStart(9, ' ');
+
+        // Right part
+        let p = (typeof points === 'number') ? points : parseInt(points || '0', 10);
+        if (isNaN(p)) p = 0;
+        let pointsStr = p <= 99999999 ? p.toString() : "99999999";
+        let withCommas = pointsStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        let right = withCommas.padStart(10, ' ');
+
+        let full = left + right + '      ';
+        console.log(full);
+        full = full.split('').reverse().join('');
+        for (var i = 0; i < this.getTextWithPointsChars(); i++) {
+            this.textWithPointsArray[i].changeAnimation("$ ");
+        }
+        for (var i = 0; i < this.getTextWithPointsChars(); i++) {
+            this.textWithPointsArray[i].changeAnimation("$" + full[i]);
+        }
+    }
+
+    /**
+     * Sets the text to be scrolled
+     * @param {*} text 
+     * @param {*} persistenceMillis 
+     * @param {*} callback 
+     */
     setScrollText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
-                
+
         text = text.replace(".", "$");
         this.clearTextImmediately();
         this.persistenceMillis = persistenceMillis;
@@ -221,6 +303,11 @@ class StageStatusBanner {
             }
         } else if (this.state === STAGE_TEXT_STATE.STATUS) {
             this.showStatus();
+        } else if (this.state === STAGE_TEXT_STATE.TEXT_WITH_POINTS) {
+            if (this.hasPassedTextPersistence()) {
+                if (this.callback) this.callback();
+                this.showStatus();
+            }
         }
     }
 
@@ -242,6 +329,12 @@ class StageStatusBanner {
 
     setStatusArrayVisibility(visible) {
         this.statusArray.forEach(element => {
+            element.setVisible(visible);
+        });
+    }
+
+    setTextWithPointsArrayVisibility(visible) {
+        this.textWithPointsArray.forEach(element => {
             element.setVisible(visible);
         });
     }
