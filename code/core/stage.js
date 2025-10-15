@@ -80,6 +80,11 @@ class Stage {
         }
     }
 
+    addPointsAndShowText(text, pts) {
+        if(this.getStageText()) this.stageText.showTextWithPoints(text, pts);
+        this.addPoints(pts);
+    }
+
     createScenarioGeometry(positions) {
         let scenario = new Sprite(positions, "static");
         scenario.layer = SCENARIO_LAYER;

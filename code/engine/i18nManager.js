@@ -39,7 +39,8 @@ const I18NManager = {
             "bellsprout": "bellsprout",
             "dugtrio": "dugtrio",
 
-            "lets_get_pokemon": "let`s get pokémon     ",
+            "lets_get_pokemon": "let`s get pokémon    ",
+            "flipped": "flipped",
         }
     },
 

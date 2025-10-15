@@ -7,6 +7,7 @@ const STAGE_TEXT_POINTS_CHARS = 24;
 
 const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showing text
 const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on screen the shown text
+const DEFAULT_SHOW_TEXT_WITH_POINTS_PERSISTENCE_MILLIS = 1000; //Default millis to keep on screen the shown text with points
 
 const STAGE_TEXT_STATE = {
     NONE: 0,
@@ -208,7 +209,7 @@ class StageStatusBanner {
      * @param {*} persistenceMillis 
      * @param {*} callback 
      */
-    showText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
+    showText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
 
         text = text.replace(".", "$");
@@ -227,7 +228,7 @@ class StageStatusBanner {
      * @param {*} persistenceMillis 
      * @param {*} callback 
      */
-    showTextWithPoints(text, points, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
+    showTextWithPoints(text, points, persistenceMillis = DEFAULT_SHOW_TEXT_WITH_POINTS_PERSISTENCE_MILLIS, callback = () => { }) {
         this.changeState(STAGE_TEXT_STATE.TEXT_WITH_POINTS);
 
         this.callback = callback;
@@ -247,7 +248,6 @@ class StageStatusBanner {
         let right = withCommas.padStart(10, ' ');
 
         let full = left + right + '      ';
-        console.log(full);
         full = full.split('').reverse().join('');
         for (var i = 0; i < this.getTextWithPointsChars(); i++) {
             this.textWithPointsArray[i].changeAnimation("$ ");

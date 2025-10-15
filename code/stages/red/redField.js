@@ -5,7 +5,8 @@ const RED_FIELD_STATUS = {
     GAME_START: 1,
     BALL_LOST: 2,
     GAME_OVER: 3,
-    NEW_BALL_WAITING: 4
+    NEW_BALL_WAITING: 4,
+    CAPTURE: 5
 }
 
 const CALLBACK_DELAY_MS = 500;
@@ -133,6 +134,7 @@ class RedField extends Stage {
     }
 
     startCaptureSequence() {
+        this.state = RED_FIELD_STATUS.CAPTURE;
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"));
 
@@ -142,7 +144,10 @@ class RedField extends Stage {
 
     onVoltorbHitCallback = () => {
         this.status.addPoints(POINTS.VOLTORB_BUMPER);
+        if (this.state === RED_FIELD_STATUS.CAPTURE) {
         this.screen.flipCapture();
+        this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
+        }
     }
 
     draw() {
