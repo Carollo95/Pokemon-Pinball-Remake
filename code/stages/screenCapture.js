@@ -1,3 +1,14 @@
+const HIDE_DISAPPEAR_ANIMATION_UPDATE_MS = 100;
+
+const HIDE_DISAPPEAR_ANIMATION_STATES = [6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 1, 2, 3, 4, 5,6];
+
+const SCREEN_CAPTURE_STATE = {
+    HIDDEN: "hidden",
+    ANIMATION: "animation",
+    SPRITE: "sprite"
+}
+
+
 class ScreenCapture {
     constructor() {
 
@@ -6,7 +17,6 @@ class ScreenCapture {
         this.sprite.addAnimation('001', Asset.getAnimation('001'));
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.visible = false;
-        this.sprite.draw = this.hideSpriteDraw;
         this.sprite.hideLevel = 0;
 
         this.hideSprite = new Sprite(160, 364, 96, 64, "none");
@@ -16,21 +26,61 @@ class ScreenCapture {
         this.hideSprite.draw = this.hideSpriteDraw;
         this.hideSprite.hideLevel = 0;
 
+
+        this.hideSprite.hideHL = this.hideHL;
+        this.hideSprite.hideHM = this.hideHM;
+        this.hideSprite.hideHR = this.hideHR;
+        this.hideSprite.hideLL = this.hideLL;
+        this.hideSprite.hideLM = this.hideLM;
+        this.hideSprite.hideLR = this.hideLR;
+
+        this.state = SCREEN_CAPTURE_STATE.HIDDEN;
     }
 
-    show(visible){
+    update() {
+        if (this.state === SCREEN_CAPTURE_STATE.ANIMATION) {
+            //TODO trigger end of animation
+            if (this.timeToUpdateAnimation()) {
+                this.hideSprite.hideLevel = HIDE_DISAPPEAR_ANIMATION_STATES[this.hideSpriteAnimationFrame];
+                this.hideSpriteAnimationFrame++;
+                this.timeOfLastAnimationUpdate = millis();
+
+                if (this.hideSpriteAnimationFrame === HIDE_DISAPPEAR_ANIMATION_STATES.length) {
+                    this.state = SCREEN_CAPTURE_STATE.SPRITE;
+                }
+            }
+        }
+    }
+
+    timeToUpdateAnimation() {
+        return millis() > this.timeOfLastAnimationUpdate + HIDE_DISAPPEAR_ANIMATION_UPDATE_MS;
+    }
+
+    show(visible) {
         this.sprite.visible = visible;
     }
 
     startCapture(num) {
-        this.state = SCREEN_STATE.CAPTURE;
         this.hideSprite.changeAnimation(num + '-bw');
         this.hideSprite.visible = true;
+        this.state = SCREEN_CAPTURE_STATE.HIDDEN;
     }
 
     flipCapture() {
-        this.hideSprite.hideLevel++;
+        if (this.state === SCREEN_CAPTURE_STATE.HIDDEN) {
+            this.hideSprite.hideLevel++;
+            if (this.hideSprite.hideLevel === 6) {
+                this.beginHideDisappearAnimation();
+            }
+        }
     }
+
+    beginHideDisappearAnimation() {
+        this.timeOfLastAnimationUpdate = millis();
+        this.state = SCREEN_CAPTURE_STATE.ANIMATION;
+        this.hideSpriteAnimationFrame = 0;
+    }
+
 
     hideSpriteDraw() {
         push();
@@ -38,28 +88,67 @@ class ScreenCapture {
         drawingContext.save();
         drawingContext.beginPath();
 
-        if (this.hideLevel < 6) {
-            drawingContext.rect(this.width / 6, 0, this.width / 3, this.height / 2);
-        }
-
-        if (this.hideLevel < 5) {
-            drawingContext.rect(-this.width / 6, -this.height / 2, this.width / 3, this.height / 2);
-        }
-
-        if (this.hideLevel < 4) {
-            drawingContext.rect(-this.width / 2, 0, this.width / 3, this.height / 2);
-        }
-
-        if (this.hideLevel < 3) {
-            drawingContext.rect(this.width / 6, -this.height / 2, this.width / 3, this.height / 2);
-        }
-
-        if (this.hideLevel < 2) {
-            drawingContext.rect(-this.width / 6, 0, this.width / 3, this.height / 2);
-        }
-
-        if (this.hideLevel < 1) {
-            drawingContext.rect(-this.width / 2, -this.height / 2, this.width / 3, this.height / 2);
+        switch (this.hideLevel) {
+            case 0:
+                this.hideHL();
+                this.hideLM();
+                this.hideHR();
+                this.hideLL();
+                this.hideHM();
+                this.hideLR();
+                break;
+            case 1:
+                this.hideLM();
+                this.hideHR();
+                this.hideLL();
+                this.hideHM();
+                this.hideLR();
+                break;
+            case 2:
+                this.hideHR();
+                this.hideLL();
+                this.hideHM();
+                this.hideLR();
+                break;
+            case 3:
+                this.hideLL();
+                this.hideHM();
+                this.hideLR();
+                break;
+            case 4:
+                this.hideHM();
+                this.hideLR();
+                break;
+            case 5:
+                this.hideLR();
+                break;
+            case 6:
+                break;
+            case 7:
+                this.hideHL();
+                break;
+            case 8:
+                this.hideHL();
+                this.hideLM();
+                break;
+            case 9:
+                this.hideHL();
+                this.hideLM();
+                this.hideHR();
+                break;
+            case 10:
+                this.hideHL();
+                this.hideLM();
+                this.hideHR();
+                this.hideLL();
+                break;
+            case 11:
+                this.hideHL();
+                this.hideLM();
+                this.hideHR();
+                this.hideLL();
+                this.hideHM();
+                break;
         }
 
         drawingContext.clip();
@@ -70,5 +159,32 @@ class ScreenCapture {
 
         pop();
     }
+
+
+    hideHL() {
+        drawingContext.rect(-this.width / 2, -this.height / 2, this.width / 3, this.height / 2);
+    }
+
+    hideHM() {
+        drawingContext.rect(-this.width / 6, -this.height / 2, this.width / 3, this.height / 2);
+    }
+
+    hideHR() {
+        drawingContext.rect(this.width / 6, -this.height / 2, this.width / 3, this.height / 2);
+    }
+
+    hideLL() {
+        drawingContext.rect(-this.width / 2, 0, this.width / 3, this.height / 2);
+    }
+
+    hideLM() {
+        drawingContext.rect(-this.width / 6, 0, this.width / 3, this.height / 2);
+    }
+
+    hideLR() {
+        drawingContext.rect(this.width / 6, 0, this.width / 3, this.height / 2);
+    }
+
+
 
 }

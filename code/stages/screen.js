@@ -16,7 +16,10 @@ class Screen {
         //FIXME why do I need the state here to play the sound???
         if (this.state === SCREEN_STATE.LANDSCAPE) {
             this.screenLandscapes.playSpinSound();
+        } else if (this.state === SCREEN_STATE.CAPTURE) {
+            this.screenCapture.update();
         }
+
     }
 
     spinBW() {
@@ -50,7 +53,7 @@ class Screen {
 
     flipCapture() {
         if (this.state !== SCREEN_STATE.CAPTURE) return;
-        
+
         this.screenCapture.flipCapture();
     }
 
