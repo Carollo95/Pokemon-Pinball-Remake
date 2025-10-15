@@ -128,7 +128,7 @@ class RedField extends Stage {
     onBellsproutEatCallback = () => {
         this.status.bellsproutOnBall++;
         this.status.addPoints(POINTS.BELLSPROUT_POINTS);
-        if(this.state === RED_FIELD_STATUS.PLAYING && this.arrows.captureArrowsLevel >= 2){
+        if (this.state === RED_FIELD_STATUS.PLAYING && this.arrows.captureArrowsLevel >= 2) {
             this.startCaptureSequence();
         }
     }
@@ -145,8 +145,8 @@ class RedField extends Stage {
     onVoltorbHitCallback = () => {
         this.status.addPoints(POINTS.VOLTORB_BUMPER);
         if (this.state === RED_FIELD_STATUS.CAPTURE) {
-        this.screen.flipCapture();
-        this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
+            this.screen.flipCapture();
+            this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
         }
     }
 
@@ -164,7 +164,7 @@ class RedField extends Stage {
         this.arrows.update();
         this.bellsprout.update(this.getBall().sprite);
 
-        if (this.state === RED_FIELD_STATUS.PLAYING) {
+        if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE) {
             this.checkForBallLoss();
             this.updateDitto();
 
@@ -178,7 +178,7 @@ class RedField extends Stage {
 
     }
 
-    updateSensors(){
+    updateSensors() {
         this.rightLowerSensor.update(this.getBall().sprite);
         this.rightInnerUpperSensor.update(this.getBall().sprite);
     }
