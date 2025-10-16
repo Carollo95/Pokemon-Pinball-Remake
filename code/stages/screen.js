@@ -12,12 +12,12 @@ class Screen {
         this.screenCapture = new ScreenCapture();
     }
 
-    update() {
+    update(ballSprite) {
         //FIXME why do I need the state here to play the sound???
         if (this.state === SCREEN_STATE.LANDSCAPE) {
             this.screenLandscapes.playSpinSound();
         } else if (this.state === SCREEN_STATE.CAPTURE) {
-            this.screenCapture.update();
+            this.screenCapture.update(ballSprite);
         }
 
     }

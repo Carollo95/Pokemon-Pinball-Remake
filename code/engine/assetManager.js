@@ -221,7 +221,8 @@ function preloadAnimations() {
   //TODO loop this shit
   Asset.registerAnimationTemplate('001-bw', 'assets/img/dex/001-bw', 96, 64, 1);
   Asset.registerAnimationTemplate('001', 'assets/img/dex/001', 96, 64, 1);
-  Asset.registerAnimationTemplate('001-sprite', 'assets/img/dex/001-sprite', 64, 64, 3);
+  Asset.registerAnimationTemplate('001-sprite', 'assets/img/dex/001-sprite', 64, 64, 2);
+  Asset.registerAnimationTemplate('001-sprite-hurt', 'assets/img/dex/001-sprite-hurt', 64, 64, 3);
 }
 
 

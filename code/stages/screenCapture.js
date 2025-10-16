@@ -1,6 +1,6 @@
 const HIDE_DISAPPEAR_ANIMATION_UPDATE_MS = 100;
 
-const HIDE_DISAPPEAR_ANIMATION_STATES = [6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 1, 2, 3, 4, 5,6];
+const HIDE_DISAPPEAR_ANIMATION_STATES = [6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6];
 
 const SCREEN_CAPTURE_STATE = {
     HIDDEN: "hidden",
@@ -17,12 +17,14 @@ class ScreenCapture {
         this.sprite.addAnimation('001', Asset.getAnimation('001'));
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.visible = false;
+        this.sprite.debug = DEBUG;
         this.sprite.hideLevel = 0;
 
         this.hideSprite = new Sprite(160, 364, 96, 64, "none");
         this.hideSprite.addAnimation('001-bw', Asset.getAnimation('001-bw'));
         this.hideSprite.layer = SCENARIO_LAYER + 1;
         this.hideSprite.visible = false;
+        this.hideSprite.debug = DEBUG;
         this.hideSprite.draw = this.hideSpriteDraw;
         this.hideSprite.hideLevel = 0;
 
@@ -35,9 +37,17 @@ class ScreenCapture {
         this.hideSprite.hideLR = this.hideLR;
 
         this.state = SCREEN_CAPTURE_STATE.HIDDEN;
+
+        this.pokemon = new Sprite(160, 364, 56, 56, "static");
+        EngineUtils.disableSprite(this.pokemon);
+        this.pokemon.layer = SPRITE_LAYER;
+        this.pokemon.visible = false;
+        this.pokemon.debug = DEBUG;
+        this.pokemon.addAnimation('001-sprite-hurt', Asset.getAnimation('001-sprite-hurt'));
+        this.pokemon.addAnimation('001-sprite', Asset.getAnimation('001-sprite'));
     }
 
-    update() {
+    update(ballSprite) {
         if (this.state === SCREEN_CAPTURE_STATE.ANIMATION) {
             //TODO trigger end of animation
             if (this.timeToUpdateAnimation()) {
@@ -46,10 +56,26 @@ class ScreenCapture {
                 this.timeOfLastAnimationUpdate = millis();
 
                 if (this.hideSpriteAnimationFrame === HIDE_DISAPPEAR_ANIMATION_STATES.length) {
-                    this.state = SCREEN_CAPTURE_STATE.SPRITE;
+                    this.startSpritePhase();
                 }
             }
+        }else if(this.state === SCREEN_CAPTURE_STATE.SPRITE){
+            console.log(ballSprite);
+            if(this.pokemon.ani.name.endsWith('-sprite') && (this.pokemon.collide(ballSprite))){
+                this.pokemon.changeAnimation('001-sprite-hurt');
+                this.pokemon.ani.onComplete = () => {
+                    this.pokemon.changeAnimation('001-sprite');
+                };
+            }
         }
+    }
+
+    startSpritePhase() {
+        this.state = SCREEN_CAPTURE_STATE.SPRITE;
+
+        this.sprite.visible = false;
+        EngineUtils.enableSprite(this.pokemon);
+        this.pokemon.visible = true;
     }
 
     timeToUpdateAnimation() {

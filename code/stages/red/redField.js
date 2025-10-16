@@ -152,7 +152,7 @@ class RedField extends Stage {
 
     draw() {
         super.draw();
-        this.updateScreen();
+        this.updateScreen(this.getBall().sprite);
 
         this.updateSensors();
         this.targetArrows.forEach(ta => ta.update());
@@ -189,8 +189,8 @@ class RedField extends Stage {
         }
     }
 
-    updateScreen() {
-        this.screen.update();
+    updateScreen(ballSprite) {
+        this.screen.update(ballSprite);
     }
 
     checkForBallLoss() {
