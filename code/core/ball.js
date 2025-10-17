@@ -29,6 +29,7 @@ class Ball {
         const velX = (this.sprite.velocity && this.sprite.velocity.x) || 0;
         const absVelX = Math.abs(velX);
 
+        //TODO is any of this crap in use???
         //case, almost stopped, ball is not moving
         if (absVelX < BALL_EPSILON) {
             this.sprite.ani.speed = 0;
@@ -65,9 +66,23 @@ class Ball {
         Audio.playSFX('sfx0A');
     }
 
-    getBallMultiplier(){
+    getBallMultiplier() {
         //TODO add other types of balls
         return 1;
+    }
+
+    stopOnCoordinates(x, y) {
+        this.sprite.pos.x = x;
+        this.sprite.pos.y = y;
+        this.sprite.velocity.x = 0;
+        this.sprite.velocity.y = 0;
+        this.sprite.rotation = 0;
+        this.sprite.rotationSpeed = 0;
+        this.sprite.physics = "none";
+    }
+
+    regainPhysics() {
+        this.sprite.physics = "dynamic";
     }
 
     /** Creates and returns a new ball for a bonus level. */
