@@ -1,4 +1,4 @@
-const HIDE_DISAPPEAR_ANIMATION_UPDATE_MS = 50;
+const HIDE_DISAPPEAR_ANIMATION_UPDATE_MS = 100;
 
 const HIDE_DISAPPEAR_ANIMATION_STATES = [6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 7, 8, 9, 10, 11, 0, 0, 0];
 
@@ -6,7 +6,7 @@ const SCREEN_CAPTURE_STATE = {
     HIDDEN: "hidden",
     ANIMATION: "animation",
     SPRITE: "sprite",
-    COMPLETE: "complete"
+    CAPTURE_ANIMATION: "capture_animation"
 }
 
 
@@ -57,11 +57,13 @@ class ScreenCapture {
         this.captureLevel = 0;
 
         this.capturePuffSprite = new Sprite(160, 364, 96, 112, "none");
-        this.capturePuffSprite.layer = OVER_SPRITE_LAYER;
+        this.capturePuffSprite.layer = OVER_BALL_LAYER;
         this.capturePuffSprite.debug = DEBUG;
         this.capturePuffSprite.visible = false;
         this.capturePuffSprite.addAnimation('capture-puff', Asset.getAnimation('capture-puff'));
         this.capturePuffSprite.ani.playing = false;
+
+        this.captureAnimationStep = 0;
     }
 
     //TODO 
@@ -79,9 +81,68 @@ class ScreenCapture {
             this.updateHideEndAnimation();
         } else if (this.state === SCREEN_CAPTURE_STATE.SPRITE) {
             this.updatePokemonSprite(ball);
-        } else if (this.state === SCREEN_CAPTURE_STATE.COMPLETE) {
+        } else if (this.state === SCREEN_CAPTURE_STATE.CAPTURE_ANIMATION) {
             //TODO bounce ball and end calling callback
+            if (this.timeToUpdateAnimation()) {
+                this.captureAnimationStep++;
+            }
+
+            if (this.captureAnimationInRange(0, 8)) {
+                ball.sprite.pos.y = ball.sprite.pos.y - 2;
+            }
+            if (this.captureAnimationInRange(24, 48)) {
+                ball.sprite.pos.y = ball.sprite.pos.y + 2;
+            }
+
+            if (this.captureAnimationInRange(50, 52)) {
+                ball.sprite.pos.y = ball.sprite.pos.y - 2;
+            }
+            if (this.captureAnimationInRange(52, 54)) {
+                ball.sprite.pos.y = ball.sprite.pos.y + 2;
+            }
+
+            if (this.captureAnimationIs(90)) {
+                ball.sprite.ani.frame = 1;
+            }
+            if (this.captureAnimationIs(98)) {
+                ball.sprite.ani.frame = 0;
+            }
+
+            if (this.captureAnimationIs(110)) {
+                ball.sprite.ani.frame = 1;
+            }
+            if (this.captureAnimationIs(118)) {
+                ball.sprite.ani.frame = 0;
+            }
+
+            if (this.captureAnimationIs(110)) {
+                ball.sprite.ani.frame = 1;
+            }
+            if (this.captureAnimationIs(118)) {
+                ball.sprite.ani.frame = 0;
+            }
+
+            if (this.captureAnimationIs(160)) {
+                ball.sprite.ani.frame = 1;
+            }
+            if (this.captureAnimationIs(164)) {
+                ball.sprite.ani.frame = 0;
+            }
+
+            if (this.captureAnimationIs(172)) {
+                ball.sprite.ani.frame = 1;
+            }
+            if (this.captureAnimationIs(180)) {
+                ball.sprite.ani.frame = 0;
+            }
         }
+    }
+
+    captureAnimationInRange(a, b) {
+        return (this.captureAnimationStep > a && this.captureAnimationStep <= b);
+    }
+    captureAnimationIs(a) {
+        return (this.captureAnimationStep === a);
     }
 
     updatePokemonSprite(ball) {
@@ -112,8 +173,9 @@ class ScreenCapture {
     }
 
     startCapturedAnimation(ball) {
-        this.state = SCREEN_CAPTURE_STATE.COMPLETE;
-        ball.stopOnCoordinates(160, 364);
+        this.state = SCREEN_CAPTURE_STATE.CAPTURE_ANIMATION;
+        ball.stopOnCoordinates(160, 340);
+        this.timeOfLastAnimationUpdate = millis();
     }
 
     updateHideEndAnimation() {

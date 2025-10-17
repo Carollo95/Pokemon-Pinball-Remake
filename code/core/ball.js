@@ -29,7 +29,6 @@ class Ball {
         const velX = (this.sprite.velocity && this.sprite.velocity.x) || 0;
         const absVelX = Math.abs(velX);
 
-        //TODO is any of this crap in use???
         //case, almost stopped, ball is not moving
         if (absVelX < BALL_EPSILON) {
             this.sprite.ani.speed = 0;
@@ -37,7 +36,8 @@ class Ball {
             this.sprite.ani.playing = false;
             return;
         }
-
+        
+        //TODO is any of this crap in use???
         const t = Math.min(absVelX / MAX_VEL, 1);
         const speedMagnitude = t * MAX_ANI_SPEED;
 
@@ -79,6 +79,7 @@ class Ball {
         this.sprite.rotation = 0;
         this.sprite.rotationSpeed = 0;
         this.sprite.physics = "none";
+        this.sprite.ani.frame = 0;
     }
 
     regainPhysics() {

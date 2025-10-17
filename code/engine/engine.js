@@ -16,6 +16,7 @@ const OVER_SCENARIO_LAYER = 1; //Layer for items that go over the scenario
 const SPRITE_LAYER = 2; //Base layer for any sprite
 const OVER_SPRITE_LAYER = 3; //Layer for sprites that go over the main sprites
 const BALL_LAYER = 5; //Layer for the ball sprite
+const OVER_BALL_LAYER = 6; //Layer for items that go over the ball
 const FIELD_ELEMENTS_LAYER = 7; //Layer for the field elements
 const HUD_LAYER = 9; //Layer for the HUD elements
 const FLASH_LAYER = 10; //Layer for the flash effect
