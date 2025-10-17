@@ -1,4 +1,5 @@
-const HIDE_DISAPPEAR_ANIMATION_UPDATE_MS = 100;
+const HIDE_DISAPPEAR_ANIMATION_UPDATE_MS = 60;
+const CAPTURE_BALL_ANIMATION_UPDATE_MS = 150;
 
 const HIDE_DISAPPEAR_ANIMATION_STATES = [6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 7, 8, 9, 10, 11, 0, 0, 0];
 
@@ -82,8 +83,7 @@ class ScreenCapture {
         } else if (this.state === SCREEN_CAPTURE_STATE.SPRITE) {
             this.updatePokemonSprite(ball);
         } else if (this.state === SCREEN_CAPTURE_STATE.CAPTURE_ANIMATION) {
-            //TODO bounce ball and end calling callback
-            if (this.timeToUpdateAnimation()) {
+            if (this.timeToUpdateCaptureAnimation()) {
                 this.captureAnimationStep++;
             }
 
@@ -147,35 +147,39 @@ class ScreenCapture {
 
     updatePokemonSprite(ball) {
         if (this.animatedPokemon.ani.name.endsWith('-sprite') && (this.animatedPokemon.collide(ball.sprite))) {
-            this.captureLevel++;
-            this.animatedPokemon.changeAnimation('001-sprite-hurt');
+            this.onPokemonSpriteHit(ball);
+        }
+    }
 
-            if (this.captureLevel < this.catchTextSprite.ani.length) {
-                this.catchTextSprite.ani.frame = this.captureLevel;
-                this.animatedPokemon.ani.onComplete = () => {
-                    this.animatedPokemon.changeAnimation('001-sprite');
-                };
-            } else {
-                this.capturePuffSprite.visible = true;
-                this.capturePuffSprite.ani.playing = true;
-                this.capturePuffSprite.ani.onComplete = () => {
-                    this.capturePuffSprite.visible = false;
-                };
-                this.animatedPokemon.ani.onComplete = () => {
-                    EngineUtils.disableSprite(this.animatedPokemon);
-                    this.animatedPokemon.visible = false;
-                    this.caughtCallback();
-                };
+    onPokemonSpriteHit(ball) {
+        this.captureLevel++;
+        this.animatedPokemon.changeAnimation('001-sprite-hurt');
 
-                this.startCapturedAnimation(ball);
-            }
+        if (this.captureLevel < this.catchTextSprite.ani.length) {
+            this.catchTextSprite.ani.frame = this.captureLevel;
+            this.animatedPokemon.ani.onComplete = () => {
+                this.animatedPokemon.changeAnimation('001-sprite');
+            };
+        } else {
+            this.capturePuffSprite.visible = true;
+            this.capturePuffSprite.ani.playing = true;
+            this.capturePuffSprite.ani.onComplete = () => {
+                this.capturePuffSprite.visible = false;
+            };
+            this.animatedPokemon.ani.onComplete = () => {
+                EngineUtils.disableSprite(this.animatedPokemon);
+                this.animatedPokemon.visible = false;
+                this.caughtCallback();
+            };
+
+            this.startCapturedAnimation(ball);
         }
     }
 
     startCapturedAnimation(ball) {
         this.state = SCREEN_CAPTURE_STATE.CAPTURE_ANIMATION;
         ball.stopOnCoordinates(160, 340);
-        this.timeOfLastAnimationUpdate = millis();
+        this.timeOfLastCaptureAnimationUpdate = millis();
     }
 
     updateHideEndAnimation() {
@@ -202,6 +206,10 @@ class ScreenCapture {
 
     timeToUpdateAnimation() {
         return millis() > this.timeOfLastAnimationUpdate + HIDE_DISAPPEAR_ANIMATION_UPDATE_MS;
+    }
+
+    timeToUpdateCaptureAnimation() {
+        return millis() > this.timeOfLastCaptureAnimationUpdate + CAPTURE_BALL_ANIMATION_UPDATE_MS;
     }
 
     show(visible) {
