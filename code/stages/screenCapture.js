@@ -53,9 +53,8 @@ class ScreenCapture {
         this.catchTextSprite.debug = DEBUG;
         this.catchTextSprite.addAnimation('catch', Asset.getAnimation('catch'));
         this.catchTextSprite.ani.playing = false;
-        this.catchTextSprite.ani.frame = this.captureLevel;
-
         this.captureLevel = 0;
+        this.catchTextSprite.ani.frame = this.captureLevel;
 
         this.capturePuffSprite = new Sprite(160, 364, 96, 112, "none");
         this.capturePuffSprite.layer = OVER_BALL_LAYER;
