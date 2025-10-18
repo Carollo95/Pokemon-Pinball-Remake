@@ -1,3 +1,6 @@
+const RED_FIELD_ARROWS_BLINK_RATE = 30;
+const RED_FIELD_ARROWS_BLINK_HALF_RATE = 15;
+
 class RedFieldArrows {
     constructor() {
         this.captureArrows = new Sprite(244, 324, 44, 64, "none");
@@ -8,11 +11,19 @@ class RedFieldArrows {
         this.setCaptureArrowsLevel(2);
     }
 
-    update() {
-        if(this.captureArrowsLevel <3){
-            let rate = 30;
-            let halfRate = rate / 2;
-            frameCount % rate > halfRate ? this.captureArrows.ani.frame = this.captureArrowsLevel : this.captureArrows.ani.frame = this.captureArrowsLevel + 1;
+    update(visible) {
+        this.blinkCaptureArrows(visible);
+    }
+
+    blinkCaptureArrows(visible) {
+        if (visible) {
+            if (this.captureArrowsLevel < 3) {
+                frameCount % RED_FIELD_ARROWS_BLINK_RATE > RED_FIELD_ARROWS_BLINK_HALF_RATE ?
+                    this.captureArrows.ani.frame = this.captureArrowsLevel :
+                    this.captureArrows.ani.frame = this.captureArrowsLevel + 1;
+            }
+        } else {
+            this.captureArrows.ani.frame = 0;
         }
     }
 

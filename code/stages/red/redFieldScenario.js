@@ -173,13 +173,13 @@ const RED_FIELD_BALL_UPGRADE_SEPARATOR_LEFT = [
 
 
 const RED_FIELD_BALL_UPGRADE_SEPARATOR_RIGHT = [
-    [182, 88],
-    [186, 92],
-    [186, 110],
-    [182, 114],
-    [178, 110],
-    [178, 92],
-    [182, 88]
+    [182, 90],
+    [186, 94],
+    [186, 108],
+    [182, 112],
+    [178, 108],
+    [178, 94],
+    [182, 90]
 ];
 
 const RED_FIELD_BELLSPROUT_BALL_UPGRADE = [
