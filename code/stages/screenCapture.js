@@ -40,7 +40,7 @@ class ScreenCapture {
 
         this.state = SCREEN_CAPTURE_STATE.HIDDEN;
 
-        this.animatedPokemon = new Sprite(160, 364, 56, 56, "static");
+        this.animatedPokemon = new Sprite(160, 364, 56, "static");
         EngineUtils.disableSprite(this.animatedPokemon);
         this.animatedPokemon.layer = SPRITE_LAYER;
         this.animatedPokemon.visible = false;
