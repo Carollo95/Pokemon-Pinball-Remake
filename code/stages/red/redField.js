@@ -61,8 +61,6 @@ class RedField extends Stage {
     setup() {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
-        this.createScenarioGeometry([100, 532], [207, 532], [207, 540], [100, 540], [100, 532]);
-
         //TODO move to geometry
         this.createScenarioGeometry([
             [198, 50],
