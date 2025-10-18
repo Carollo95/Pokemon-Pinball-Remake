@@ -292,14 +292,19 @@ class StageStatusBanner {
     draw() {
         if (this.state === STAGE_TEXT_STATE.TEXT) {
             if ((this.textQueue.length > 0)) {
-                if ((millis() - this.lastMovement) > TEXT_SCROLL_THRESHOLD_MILLIS) {
-                    this.lastMovement = millis();
-                    this.scrollText();
+                if (this.timeToScrollText()) {
+                    this.scrollText(this.textQueue);
                     this.endTextDisplayMillis = millis();
                 }
             } else if (this.hasPassedTextPersistence()) {
-                if (this.callback) this.callback();
-                this.showStatus();
+                if (this.textArrayIsBlank()) {
+                    if (this.callback) this.callback();
+                    this.showStatus();
+                } else {
+                    if (this.timeToScrollText()) {
+                        this.scrollText(' ');
+                    }
+                }
             }
         } else if (this.state === STAGE_TEXT_STATE.STATUS) {
             this.showStatus();
@@ -311,12 +316,21 @@ class StageStatusBanner {
         }
     }
 
-    scrollText() {
+    textArrayIsBlank() {
+        return this.textArray.every(ch => ch?.getAni?.().name === '$ ');
+    }
+
+    timeToScrollText() {
+        return (millis() - this.lastMovement) > TEXT_SCROLL_THRESHOLD_MILLIS;
+    }
+
+    scrollText(textQueue) {
         for (var i = this.getTextChars(); i > 0; i--) {
             this.textArray[i].changeAnimation(this.textArray[i - 1].getAni().name);
         }
-        this.textArray[0].changeAnimation('$' + this.textQueue[0]);
-        this.textQueue = this.textQueue.substring(1);
+        this.textArray[0].changeAnimation('$' + textQueue[0]);
+        this.textQueue = textQueue.substring(1);
+        this.lastMovement = millis();
     }
 
 
