@@ -75,6 +75,15 @@ class ScreenCapture {
         console.log("Remove arrow");
     }
 
+    captureCompleteCallback() {
+        console.log("Capture animation started");
+    }
+
+    capturePhaseFinishedCallback() {
+
+        console.log("Capture phase finished");
+    }
+
     update(ball) {
         if (this.state === SCREEN_CAPTURE_STATE.ANIMATION) {
             //TODO trigger end of animation
@@ -86,54 +95,41 @@ class ScreenCapture {
                 this.captureAnimationStep++;
             }
 
-            if (this.captureAnimationInRange(0, 8)) {
-                ball.sprite.pos.y = ball.sprite.pos.y - 2;
-            }
-            if (this.captureAnimationInRange(24, 48)) {
-                ball.sprite.pos.y = ball.sprite.pos.y + 2;
-            }
+            this.captureAnimationMoveUpBall(ball, 0, 8);
+            this.captureAnimationMoveDownBall(ball, 24, 24);
+            this.captureAnimationMoveUpBall(ball, 50, 2);
+            this.captureAnimationMoveDownBall(ball, 52, 2);
 
-            if (this.captureAnimationInRange(50, 52)) {
-                ball.sprite.pos.y = ball.sprite.pos.y - 2;
-            }
-            if (this.captureAnimationInRange(52, 54)) {
-                ball.sprite.pos.y = ball.sprite.pos.y + 2;
-            }
+            this.captureAnimationWiggleBall(ball, 110);
+            this.captureAnimationWiggleBall(ball, 160);
+        }
+    }
 
-            if (this.captureAnimationIs(90)) {
-                ball.sprite.ani.frame = 1;
-            }
-            if (this.captureAnimationIs(98)) {
-                ball.sprite.ani.frame = 0;
-            }
+    captureAnimationMoveUpBall(ball, frame, duration) {
+        if (this.captureAnimationInRange(frame, frame + duration)) {
+            ball.sprite.pos.y = ball.sprite.pos.y - 2;
+        }
+    }
 
-            if (this.captureAnimationIs(110)) {
-                ball.sprite.ani.frame = 1;
-            }
-            if (this.captureAnimationIs(118)) {
-                ball.sprite.ani.frame = 0;
-            }
+    captureAnimationMoveDownBall(ball, frame, duration) {
+        if (this.captureAnimationInRange(frame, frame + duration)) {
+            ball.sprite.pos.y = ball.sprite.pos.y + 2;
+        }
+    }
 
-            if (this.captureAnimationIs(110)) {
-                ball.sprite.ani.frame = 1;
-            }
-            if (this.captureAnimationIs(118)) {
-                ball.sprite.ani.frame = 0;
-            }
+    captureAnimationWiggleBall(ball, frame) {
+        if (this.captureAnimationIs(frame)) {
+            ball.sprite.ani.frame = 1;
+        }
+        if (this.captureAnimationIs(frame + 4)) {
+            ball.sprite.ani.frame = 0;
+        }
 
-            if (this.captureAnimationIs(160)) {
-                ball.sprite.ani.frame = 1;
-            }
-            if (this.captureAnimationIs(164)) {
-                ball.sprite.ani.frame = 0;
-            }
-
-            if (this.captureAnimationIs(172)) {
-                ball.sprite.ani.frame = 1;
-            }
-            if (this.captureAnimationIs(180)) {
-                ball.sprite.ani.frame = 0;
-            }
+        if (this.captureAnimationIs(frame + 16)) {
+            ball.sprite.ani.frame = 1;
+        }
+        if (this.captureAnimationIs(frame + 20)) {
+            ball.sprite.ani.frame = 0;
         }
     }
 
@@ -177,6 +173,7 @@ class ScreenCapture {
 
     startCapturedAnimation(ball) {
         this.state = SCREEN_CAPTURE_STATE.CAPTURE_ANIMATION;
+        this.captureCompleteCallback();
         ball.stopOnCoordinates(160, 340);
         this.timeOfLastCaptureAnimationUpdate = millis();
     }
