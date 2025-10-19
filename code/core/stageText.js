@@ -241,9 +241,7 @@ class StageStatusBanner {
         left = left.padStart(9, ' ');
 
         // Right part
-        let p = (typeof points === 'number') ? points : parseInt(points || '0', 10);
-        if (isNaN(p)) p = 0;
-        let pointsStr = p <= 99999999 ? p.toString() : "99999999";
+        let pointsStr = points <= 99999999 ? points.toString() : "99999999";
         let withCommas = pointsStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         let right = withCommas.padStart(10, ' ');
 
@@ -258,13 +256,17 @@ class StageStatusBanner {
     }
 
     /**
-     * Sets the text to be scrolled
+     * Sets the text to be scrolledadd
      * @param {*} text 
      * @param {*} persistenceMillis 
      * @param {*} callback 
      */
     setScrollText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
+
+        if (text.length <= this.getTextChars()) {
+            text = this.centerPad(text, this.getTextChars());
+        }
 
         text = text.replace(".", "$");
         this.clearTextImmediately();
@@ -356,6 +358,17 @@ class StageStatusBanner {
     hide() {
         this.changeState(STAGE_TEXT_STATE.NONE);
     }
+
+
+    centerPad(str, width) {
+        const s = String(str);
+        const len = s.length;
+        if (len >= width) return s;
+        const left = Math.floor((width - len) / 2);
+        const right = width - len - left;
+        return ' '.repeat(left) + s + ' '.repeat(right);
+    }
+
 }
 
 function createBonusStageStatusBanner(stateStage) {
