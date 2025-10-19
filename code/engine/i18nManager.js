@@ -4,13 +4,13 @@ const I18NManager = {
             "gengar_stage_clear": "gengar stage cleared",
             "end_gengar_stage": " end gengar stage ",
             "meowth_stage_clear": "meowth stage cleared",
-            "end_meowth_stage": " end meowth stage ",
+            "end_meowth_stage": "end meowth stage",
             "diglett_stage_clear": "diglett stage cleared",
-            "end_diglett_stage": " end diglett stage ",
-            "seal_stage_clear": "  seal stage cleared ",
-            "end_seal_stage": "   end seal stage  ",
+            "end_diglett_stage": "end diglett stage",
+            "seal_stage_clear": "seal stage cleared",
+            "end_seal_stage": "end seal stage",
             "mewtwo_stage_clear": "mewtwo stage cleared",
-            "end_mewtwo_stage": "end mewtwo stage  ",
+            "end_mewtwo_stage": "end mewtwo stage",
 
             "start_from": "start from: ",
             "pallet_town": "pallet town",
@@ -26,7 +26,7 @@ const I18NManager = {
             "cinnabar_island": "cinnabar island",
             "indigo_plateau": "indigo plateau",
 
-            "end_of_ball_bonus": " end of ball bonus   ",
+            "end_of_ball_bonus": "end of ball bonus",
             "bonus": " bonus        ",
             "subtotal": " subtotal     ",
             "total": " total    ",
@@ -39,7 +39,7 @@ const I18NManager = {
             "bellsprout": "bellsprout",
             "dugtrio": "dugtrio",
 
-            "lets_get_pokemon": "let`s get pokémon    ",
+            "lets_get_pokemon": "let`s get pokémon",
             "flipped": "flipped",
         }
     },
