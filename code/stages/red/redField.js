@@ -42,7 +42,7 @@ class RedField extends Stage {
     launchNewBallWaiting() {
         if (this.state === RED_FIELD_STATUS.GAME_START) {
             this.screen.stopSpin();
-            this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText());
+            this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText(), this.screen.getLandmarkText());
         }
         this.getBall().launchFromSpawn();
     }
@@ -81,7 +81,7 @@ class RedField extends Stage {
             [198, 50]
         ]);
 
-    
+
         this.ditto = new RedFieldDitto();
 
         this.speedPad = [];
@@ -136,7 +136,7 @@ class RedField extends Stage {
     startCaptureSequence() {
         this.state = RED_FIELD_STATUS.CAPTURE;
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS));
-        this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"));
+        this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
 
         this.screen.startCapture("001");
         this.voltorbsTargetArrow.setVisible(true);
@@ -161,7 +161,7 @@ class RedField extends Stage {
         this.rightTravelDiglett.update(this.getBall().sprite);
 
         this.voltorbs.forEach(v => v.update(this.getBall().sprite));
-        this.arrows.update();
+        this.updateArrows();
         this.bellsprout.update(this.getBall().sprite);
 
         if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE) {
@@ -176,6 +176,10 @@ class RedField extends Stage {
             }
         }
 
+    }
+
+    updateArrows() {
+        this.arrows.update(this.state !== RED_FIELD_STATUS.CAPTURE);
     }
 
     updateSensors() {
@@ -198,7 +202,7 @@ class RedField extends Stage {
             this.status.balls--;
             this.state = RED_FIELD_STATUS.BALL_LOST;
             Audio.playSFX('sfx24');
-            this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), 1000, () => { this.ballBonusScreen.show(); });
+            this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
         }
     }
 

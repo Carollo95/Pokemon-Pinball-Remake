@@ -150,7 +150,7 @@ class BonusStageGhost extends BonusStage {
     this.millisSinceStageComplete = millis();
 
     const key = resultState === BONUS_STAGE_STATE.WON ? "gengar_stage_clear" : "end_gengar_stage";
-    this.getStageText().setScrollText(I18NManager.translate(key), (STAGE_RESULT_SHOW_MILLS / 2));
+    this.getStageText().setScrollText(I18NManager.translate(key), "", (STAGE_RESULT_SHOW_MILLS / 2));
 
     Audio.playSFX('sfx2A');
   }
@@ -351,7 +351,7 @@ class BonusStageGhost extends BonusStage {
     this.state = BONUS_STAGE_STATE.WON;
     this.millisSinceStageComplete = millis();
     const stageText = this.getStageText();
-    stageText.setScrollText(I18NManager.translate("gengar_stage_clear"), (STAGE_RESULT_SHOW_MILLS / 2));
+    stageText.setScrollText(I18NManager.translate("gengar_stage_clear"), "", (STAGE_RESULT_SHOW_MILLS / 2));
   }
 
 }

@@ -10,17 +10,18 @@ const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on scree
 const DEFAULT_SHOW_TEXT_WITH_POINTS_PERSISTENCE_MILLIS = 1000; //Default millis to keep on screen the shown text with points
 
 const STAGE_TEXT_STATE = {
-    NONE: 0,
-    STATUS: 1,
-    TEXT: 2,
-    TEXT_WITH_POINTS: 3
+    NONE: "none",
+    STATUS: "status",
+    TEXT: "text",
+    TEXT_WITH_POINTS: "text_with_points"
 }
 
 const BANNER_TYPE = {
-    STAGE: 0,
-    BONUS_STAGE: 1
+    STAGE: "stage",
+    BONUS_STAGE: "bonus_stage"
 }
 
+//FIXME this class is a fucking mess
 class StageStatusBanner {
 
 
@@ -43,6 +44,7 @@ class StageStatusBanner {
 
         this.showStatus();
 
+        this.onlyPersistenceTimerStarted = false; // start persistence when only fixedPart remains
     }
 
     getTextChars() {
@@ -256,12 +258,13 @@ class StageStatusBanner {
     }
 
     /**
-     * Sets the text to be scrolledadd
+     * Sets the text to be scrolled
      * @param {*} text 
+     * @param {*} fixedPart 
      * @param {*} persistenceMillis 
      * @param {*} callback 
      */
-    setScrollText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
+    setScrollText(text, fixedPart, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
 
         if (text.length <= this.getTextChars()) {
@@ -272,6 +275,8 @@ class StageStatusBanner {
         this.clearTextImmediately();
         this.persistenceMillis = persistenceMillis;
         this.textQueue += text;
+        this.fixedPart = fixedPart === "" ? undefined : fixedPart;
+        this.onlyPersistenceTimerStarted = false;
         this.callback = callback;
     }
 
@@ -281,6 +286,7 @@ class StageStatusBanner {
 
     clearTextImmediately() {
         this.textQueue = '';
+        this.onlyPersistenceTimerStarted = false;
         this.textArray.forEach(element => {
             element.changeAnimation('$ ');
         });
@@ -293,21 +299,7 @@ class StageStatusBanner {
 
     draw() {
         if (this.state === STAGE_TEXT_STATE.TEXT) {
-            if ((this.textQueue.length > 0)) {
-                if (this.timeToScrollText()) {
-                    this.scrollText(this.textQueue);
-                    this.endTextDisplayMillis = millis();
-                }
-            } else if (this.hasPassedTextPersistence()) {
-                if (this.textArrayIsBlank()) {
-                    if (this.callback) this.callback();
-                    this.showStatus();
-                } else {
-                    if (this.timeToScrollText()) {
-                        this.scrollText(' ');
-                    }
-                }
-            }
+            this.drawTextState();
         } else if (this.state === STAGE_TEXT_STATE.STATUS) {
             this.showStatus();
         } else if (this.state === STAGE_TEXT_STATE.TEXT_WITH_POINTS) {
@@ -318,21 +310,121 @@ class StageStatusBanner {
         }
     }
 
+    drawTextState() {
+        if ((this.textQueue.length > 0)) {
+            this.scrollTextQueue();
+        } else {
+            // Queue is empty
+            if (!this.fixedPart) {
+                // No fixedPart: pause showing the last frame for persistence, then blank out
+                if (!this.onlyPersistenceTimerStarted) {
+                    this.endTextDisplayMillis = millis();
+                    this.onlyPersistenceTimerStarted = true;
+                }
+                if (this.hasPassedTextPersistence()) {
+                    if (this.textArrayIsBlank()) {
+                        if (this.callback) this.callback();
+                        this.showStatus();
+                    } else if (this.timeToScrollText()) {
+                        this.scrollText(' ');
+                    }
+                }
+            } else {
+                // fixedPart present: keep scrolling blanks until only fixedPart remains
+                if (!this.textArrayIsOnlyPersistence()) {
+                    if (this.timeToScrollText()) {
+                        this.scrollText(' ');
+                        this.onlyPersistenceTimerStarted = false;
+                    }
+                } else {
+                    if (!this.onlyPersistenceTimerStarted) {
+                        this.endTextDisplayMillis = millis();
+                        this.onlyPersistenceTimerStarted = true;
+                    }
+                    if (this.hasPassedTextPersistence()) {
+                        if (this.textArrayIsBlank()) {
+                            if (this.callback) this.callback();
+                            this.showStatus();
+                        } else if (this.timeToScrollText()) {
+                            this.scrollText(' ');
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    scrollTextQueue() {
+        if (this.timeToScrollText()) {
+            this.scrollText(this.textQueue);
+            this.endTextDisplayMillis = millis();
+            this.onlyPersistenceTimerStarted = false;
+        }
+    }
+
+    textArrayIsOnlyPersistence() {
+        if (!this.fixedPart) return false;
+        const width = this.textArray.length;
+        let persistence = this.centerPad(this.fixedPart, width)
+            .split('')
+            .reverse();
+        if (persistence.length > width) persistence = persistence.slice(0, width);
+        return this.textArray.every((ch, i) => ch?.getAni?.().name === ('$' + persistence[i]));
+    }
+
     textArrayIsBlank() {
         return this.textArray.every(ch => ch?.getAni?.().name === '$ ');
     }
 
     timeToScrollText() {
-        return (millis() - this.lastMovement) > TEXT_SCROLL_THRESHOLD_MILLIS;
+        return millis() > (this.lastMovement + TEXT_SCROLL_THRESHOLD_MILLIS);
     }
 
     scrollText(textQueue) {
-        for (var i = this.getTextChars(); i > 0; i--) {
-            this.textArray[i].changeAnimation(this.textArray[i - 1].getAni().name);
+        const width = this.textArray.length;
+        let textArrayEndWithFixedPart = false;
+        if (this.fixedPart) {
+            const ref = this.centerPad(this.fixedPart, width)
+                .trimStart()
+                .split('')
+                .reverse();
+            textArrayEndWithFixedPart = ref.every((ch, i) => this.textArray[i]?.getAni?.().name === ('$' + ch));
         }
-        this.textArray[0].changeAnimation('$' + textQueue[0]);
-        this.textQueue = textQueue.substring(1);
-        this.lastMovement = millis();
+
+        if (textArrayEndWithFixedPart) {
+            const last = this.textArray.length - 1;
+            // After persistence has elapsed, we are in the blanking phase: do a full scroll to push out fixedPart
+            if (this.onlyPersistenceTimerStarted && this.hasPassedTextPersistence()) {
+                for (let i = last; i > 0; i--) {
+                    this.textArray[i].changeAnimation(this.textArray[i - 1].getAni().name);
+                }
+                this.textArray[0].changeAnimation('$ ');
+                this.lastMovement = millis();
+            } else {
+                // Before persistence elapses: keep fixedPart static, scroll only the suffix
+                const boundary = this.centerPad(this.fixedPart, width).trimStart().length;
+                for (let i = last; i > boundary; i--) {
+                    this.textArray[i].changeAnimation(this.textArray[i - 1].getAni().name);
+                }
+                if ((boundary < this.textArray.length)) {
+                    this.textArray[boundary].changeAnimation('$ ');
+                }
+                this.lastMovement = millis();
+            }
+        } else {
+            const last = this.textArray.length - 1;
+            for (let i = last; i > 0; i--) {
+                this.textArray[i].changeAnimation(this.textArray[i - 1].getAni().name);
+            }
+            const nextChar = (textQueue && textQueue.length > 0) ? textQueue[0] : ' ';
+            this.textArray[0].changeAnimation('$' + nextChar);
+            if (textQueue && textQueue.length > 0) {
+                this.textQueue = textQueue.substring(1);
+            }
+            this.lastMovement = millis();
+        }
+
+
     }
 
 
@@ -361,11 +453,12 @@ class StageStatusBanner {
 
 
     centerPad(str, width) {
+        width = width + 1;
         const s = String(str);
         const len = s.length;
         if (len >= width) return s;
-        const left = Math.floor((width - len) / 2);
-        const right = width - len - left;
+        const right = Math.floor((width - len) / 2);
+        const left = width - len - right;
         return ' '.repeat(left) + s + ' '.repeat(right);
     }
 
