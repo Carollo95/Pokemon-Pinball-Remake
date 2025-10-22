@@ -6,7 +6,7 @@ const STAGE_STATUS_CHARS = 27;
 const STAGE_TEXT_POINTS_CHARS = 24;
 
 const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showing text
-const DEFAULT_TEXT_PERSISTENCE_MILLIS = 10000; //Default millis to keep on screen the shown text
+const DEFAULT_TEXT_PERSISTENCE_MILLIS = 3000; //Default millis to keep on screen the shown text
 const DEFAULT_SHOW_TEXT_WITH_POINTS_PERSISTENCE_MILLIS = 1000; //Default millis to keep on screen the shown text with points
 
 const STAGE_TEXT_STATE = {
@@ -27,9 +27,9 @@ class StageStatusBanner {
 
     constructor(x, y, type, stageStatus) {
         this.type = type;
-        this.textArray = new Array(this.getTextChars());
-        this.statusArray = new Array(this.getStateChars());
-        this.textWithPointsArray = new Array(this.getTextWithPointsChars());
+        this.textArray = new Array(this.getTextCharsLength());
+        this.statusArray = new Array(this.getStateCharsLength());
+        this.textWithPointsArray = new Array(this.getTextWithPointsCharsLength());
         this.lastMovement = 0;
         this.textQueue = '';
         this.endTextDisplayMillis = 0;
@@ -47,15 +47,16 @@ class StageStatusBanner {
         this.onlyPersistenceTimerStarted = false; // start persistence when only fixedPart remains
     }
 
-    getTextChars() {
+    //Get char lengths
+    getTextCharsLength() {
         return this.type === BANNER_TYPE.BONUS_STAGE ? BONUS_MAX_CHARS : STAGE_MAX_CHARS;
     }
 
-    getStateChars() {
+    getStateCharsLength() {
         return this.type === BANNER_TYPE.BONUS_STAGE ? BONUS_STATUS_CHARS : STAGE_STATUS_CHARS;
     }
 
-    getTextWithPointsChars() {
+    getTextWithPointsCharsLength() {
         return STAGE_TEXT_POINTS_CHARS;
     }
 
@@ -66,8 +67,9 @@ class StageStatusBanner {
         this.setTextArrayVisibility(state === STAGE_TEXT_STATE.TEXT);
     }
 
+    //Create sprites
     createTextSprites(x, y) {
-        for (var i = 0; i <= this.getTextChars(); i++) {
+        for (var i = 0; i <= this.getTextCharsLength(); i++) {
             this.textArray[i] = this.createTextSprite(x, y, i);
         }
     }
@@ -150,6 +152,7 @@ class StageStatusBanner {
         return new StageCharacter(x - padding, y, size, CHAR_SIZE);
     }
 
+    //Text handling
     /**
      * Show the status of the game
      */
@@ -157,21 +160,21 @@ class StageStatusBanner {
         this.changeState(STAGE_TEXT_STATE.STATUS);
         text = this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus(), DEFAULT_TEXT_PERSISTENCE_MILLIS;
         text = text.split('').reverse().join('');
-        for (var i = 0; i < this.getStateChars(); i++) {
+        for (var i = 0; i < this.getStateCharsLength(); i++) {
             this.statusArray[i].changeAnimation("$" + text[i]);
         }
     }
 
     createCapturedStatus() {
         let captured;
-        if (this.stageStatus.captured < 10) {
-            captured = "ª" + this.stageStatus.captured.toString() + "  ";
-        } else if (this.stageStatus.captured < 100) {
-            captured = "ª" + this.stageStatus.captured.toString() + " ";
-        } else if (this.stageStatus.captured > 999) {
+        if (this.stageStatus.captured.length < 10) {
+            captured = "ª" + this.stageStatus.captured.length.toString() + "  ";
+        } else if (this.stageStatus.captured.length < 100) {
+            captured = "ª" + this.stageStatus.captured.length.toString() + " ";
+        } else if (this.stageStatus.captured.length > 999) {
             captured = "ª999";
         } else {
-            captured = "ª" + this.stageStatus.captured.toString();
+            captured = "ª" + this.stageStatus.captured.length.toString();
         }
 
         return captured;
@@ -202,7 +205,7 @@ class StageStatusBanner {
     createPointsStatus() {
         let points = this.stageStatus.points <= 999999999999 ? this.stageStatus.points.toString() : "999999999999";
         let withCommas = points.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return withCommas.padStart(this.getStateChars() - 7, ' ');
+        return withCommas.padStart(this.getStateCharsLength() - 7, ' ');
     }
 
     /**
@@ -218,7 +221,7 @@ class StageStatusBanner {
         this.clearTextImmediately();
 
         this.persistenceMillis = persistenceMillis;
-        for (var i = 0; i < this.getStateChars(); i++) {
+        for (var i = 0; i < this.getStateCharsLength(); i++) {
             this.statusArray[i].changeAnimation("$" + text[i]);
         }
     }
@@ -249,10 +252,10 @@ class StageStatusBanner {
 
         let full = left + right + '      ';
         full = full.split('').reverse().join('');
-        for (var i = 0; i < this.getTextWithPointsChars(); i++) {
+        for (var i = 0; i < this.getTextWithPointsCharsLength(); i++) {
             this.textWithPointsArray[i].changeAnimation("$ ");
         }
-        for (var i = 0; i < this.getTextWithPointsChars(); i++) {
+        for (var i = 0; i < this.getTextWithPointsCharsLength(); i++) {
             this.textWithPointsArray[i].changeAnimation("$" + full[i]);
         }
     }
@@ -267,8 +270,8 @@ class StageStatusBanner {
     setScrollText(text, fixedPart, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
 
-        if (text.length <= this.getTextChars()) {
-            text = this.centerPad(text, this.getTextChars());
+        if (text.length <= this.getTextCharsLength()) {
+            text = this.centerPad(text, this.getTextCharsLength());
         }
 
         text = text.replace(".", "$");
@@ -280,8 +283,8 @@ class StageStatusBanner {
         this.callback = callback;
     }
 
-    clearText() {
-        this.setScrollText('                   ');
+    clearTextScrolling() {
+        this.setScrollText('                   ', '');
     }
 
     clearTextImmediately() {
@@ -314,7 +317,6 @@ class StageStatusBanner {
         if ((this.textQueue.length > 0)) {
             this.scrollTextQueue();
         } else {
-            // Queue is empty
             if (!this.fixedPart) {
                 // No fixedPart: pause showing the last frame for persistence, then blank out
                 if (!this.onlyPersistenceTimerStarted) {
@@ -335,6 +337,9 @@ class StageStatusBanner {
                     if (this.timeToScrollText()) {
                         this.scrollText(' ');
                         this.onlyPersistenceTimerStarted = false;
+                    }
+                    if(this.textArrayIsBlank()){
+                        this.showStatus();
                     }
                 } else {
                     if (!this.onlyPersistenceTimerStarted) {
