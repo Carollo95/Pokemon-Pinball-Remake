@@ -19,13 +19,13 @@ class Screen {
         this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
         this.screenCapture = new ScreenCapture(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback, captureOnPokemonAnimatedHitCallback);
 
-        this.catchTextSprite = new Sprite(160, 404, 96, 16, "none");
-        this.catchTextSprite.layer = SCENARIO_LAYER;
-        this.catchTextSprite.debug = DEBUG;
-        this.catchTextSprite.addAnimation('captured-ball', Asset.getAnimation('captured-ball'));
-        this.catchTextSprite.ani.playing = false;
+        this.ballsSprite = new Sprite(160, 404, 96, 16, "none");
+        this.ballsSprite.layer = SCENARIO_LAYER;
+        this.ballsSprite.debug = DEBUG;
+        this.ballsSprite.addAnimation('captured-ball', Asset.getAnimation('captured-ball'));
+        this.ballsSprite.ani.playing = false;
         this.captureLevel = 0;
-        this.catchTextSprite.ani.frame = this.captureLevel;
+        this.ballsSprite.ani.frame = this.captureLevel;
 
     }
 
@@ -57,8 +57,15 @@ class Screen {
 
     setState(state) {
         this.state = state;
-        this.screenLandscapes.show(state === SCREEN_STATE.LANDSCAPE);
-        this.screenCapture.show(state === SCREEN_STATE.CAPTURE);
+        if (state === SCREEN_STATE.LANDSCAPE) {
+            this.screenLandscapes.show(true);
+            this.screenCapture.show(false)
+            this.ballsSprite.visible = true;
+        } else if (state === SCREEN_STATE.CAPTURE) {
+            this.ballsSprite.visible = false;
+            this.screenCapture.show(true);
+            this.screenLandscapes.show(false);
+        }
     }
 
     startCapture(num) {
@@ -81,7 +88,7 @@ class Screen {
 
     addPokeballsToList(num) {
         this.captureLevel = (this.captureLevel + num) % 4;
-        this.catchTextSprite.ani.frame = this.captureLevel;
+        this.ballsSprite.ani.frame = this.captureLevel;
     }
 
 

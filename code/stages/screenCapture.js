@@ -215,6 +215,9 @@ class ScreenCapture {
 
     show(visible) {
         this.sprite.visible = visible;
+        if (!visible) {
+            this.hide();
+        }
     }
 
     startCapture(num) {
