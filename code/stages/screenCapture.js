@@ -1,7 +1,7 @@
-const HIDE_DISAPPEAR_ANIMATION_UPDATE_MS = 60;
+const HIDE_DISAPPEAR_ANIMATION_UPDATE_MS = 80;
 const CAPTURE_BALL_ANIMATION_UPDATE_MS = 150;
 
-const HIDE_DISAPPEAR_ANIMATION_STATES = [6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 7, 8, 9, 10, 11, 0, 0, 0];
+const HIDE_DISAPPEAR_ANIMATION_STATES = [6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 0 ,0];
 
 const SCREEN_CAPTURE_STATE = {
     HIDDEN: "hidden",
@@ -12,7 +12,12 @@ const SCREEN_CAPTURE_STATE = {
 
 
 class ScreenCapture {
-    constructor() {
+    constructor(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, capturePhaseFinishedCallback) {
+
+        this.captureStartCaptureAnimationCallback = captureStartCaptureAnimationCallback;;
+        this.captureStartAnimatedSpritePhaseCallback = captureStartAnimatedSpritePhaseCallback;
+        this.captureCompleteAnimationStartedCallback = captureCompleteAnimationStartedCallback;
+        this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
 
         this.sprite = new Sprite(160, 364, 96, 64, "none");
         //TODO loop this shits
@@ -66,24 +71,6 @@ class ScreenCapture {
         this.captureAnimationStep = 0;
     }
 
-    //TODO 
-    caughtCallback() {
-        console.log("Pokemon on ball");
-    }
-
-    startAnimatedSpritePhaseCallback() {
-        console.log("Remove arrow");
-    }
-
-    captureCompleteCallback() {
-        console.log("Capture animation started");
-    }
-
-    capturePhaseFinishedCallback() {
-
-        console.log("Capture phase finished");
-    }
-
     update(ball) {
         if (this.state === SCREEN_CAPTURE_STATE.ANIMATION) {
             //TODO trigger end of animation
@@ -102,6 +89,13 @@ class ScreenCapture {
 
             this.captureAnimationWiggleBall(ball, 110);
             this.captureAnimationWiggleBall(ball, 160);
+
+            if(this.captureAnimationIs(200)) {
+                ball.regainPhysics()
+                this.capturePuffSprite.visible = false;
+                this.catchTextSprite.visible = false;
+                this.capturePhaseFinishedCallback();
+            }
         }
     }
 
@@ -164,7 +158,7 @@ class ScreenCapture {
             this.animatedPokemon.ani.onComplete = () => {
                 EngineUtils.disableSprite(this.animatedPokemon);
                 this.animatedPokemon.visible = false;
-                this.caughtCallback();
+                this.captureStartCaptureAnimationCallback();
             };
 
             this.startCapturedAnimation(ball);
@@ -173,7 +167,7 @@ class ScreenCapture {
 
     startCapturedAnimation(ball) {
         this.state = SCREEN_CAPTURE_STATE.CAPTURE_ANIMATION;
-        this.captureCompleteCallback();
+        this.captureCompleteAnimationStartedCallback();
         ball.stopOnCoordinates(160, 340);
         this.timeOfLastCaptureAnimationUpdate = millis();
     }
@@ -192,7 +186,7 @@ class ScreenCapture {
 
     startAnimatedSpritePhase() {
         this.state = SCREEN_CAPTURE_STATE.SPRITE;
-        this.startAnimatedSpritePhaseCallback();
+        this.captureStartAnimatedSpritePhaseCallback();
 
         this.sprite.visible = false;
         this.hideSprite.visible = false;

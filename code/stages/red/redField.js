@@ -91,7 +91,13 @@ class RedField extends Stage {
 
         this.state = RED_FIELD_STATUS.GAME_START;
 
-        this.screen = new Screen();
+        this.screen = new Screen(
+            this.onCaptureStartCaptureAnimationCallback,
+            this.onCaptureStartAnimatedSpritePhaseCallback,
+            this.onCaptureCompleteAnimationStartedCallback,
+            this.onCapturePhaseFinishedCallback
+        );
+
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
 
         this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, false);
@@ -124,6 +130,27 @@ class RedField extends Stage {
         });
 
     }
+
+    onCaptureStartCaptureAnimationCallback = () => {
+        this.getTimer().disable();
+    }
+
+    onCaptureStartAnimatedSpritePhaseCallback = () => {
+        this.voltorbsTargetArrow.setVisible(false);
+    }
+
+    onCaptureCompleteAnimationStartedCallback = () => {
+        this.stageText.setScrollText("you got a bulbasaur", "bulbasaur");
+        //TODO how many, internationalize
+        this.addPointsAndShowText("jackpot", 123456);
+        //TODO add actual pokemon id
+        this.status.addPokemonCaught("001");
+    }
+
+    onCapturePhaseFinishedCallback = () =>{
+        this.state = RED_FIELD_STATUS.PLAYING;
+    }
+
 
     onBellsproutEatCallback = () => {
         this.status.bellsproutOnBall++;

@@ -6,10 +6,22 @@ const SCREEN_STATE = {
 
 
 class Screen {
-    constructor() {
+    constructor(
+        captureStartCaptureAnimationCallback,
+        captureStartAnimatedSpritePhaseCallback,
+        captureCompleteAnimationStartedCallback,
+        capturePhaseFinishedCallback
+    ) {
         this.screenLandscapes = new ScreenLandscapes();
         this.screenLandscapes.spinBW();
-        this.screenCapture = new ScreenCapture();
+        this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
+        this.screenCapture = new ScreenCapture(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback);
+    }
+
+    onCapturePhaseFinishedCallback = () => {
+        this.setState(SCREEN_STATE.LANDSCAPE);
+        //TODO add pokeball to list
+        this.capturePhaseFinishedCallback();
     }
 
     update(ballSprite) {
