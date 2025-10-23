@@ -1,7 +1,7 @@
 const HIDE_DISAPPEAR_ANIMATION_UPDATE_MS = 80;
 const CAPTURE_BALL_ANIMATION_UPDATE_MS = 150;
 
-const HIDE_DISAPPEAR_ANIMATION_STATES = [6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 0 ,0];
+const HIDE_DISAPPEAR_ANIMATION_STATES = [6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 7, 8, 9, 10, 11, 0, 0, 0, 0, 0];
 
 const SCREEN_CAPTURE_STATE = {
     HIDDEN: "hidden",
@@ -46,6 +46,7 @@ class ScreenCapture {
 
         this.state = SCREEN_CAPTURE_STATE.HIDDEN;
 
+        //TODO loop this shits
         this.animatedPokemon = new Sprite(160, 364, 56, "static");
         EngineUtils.disableSprite(this.animatedPokemon);
         this.animatedPokemon.layer = SPRITE_LAYER;
@@ -72,7 +73,7 @@ class ScreenCapture {
         this.captureAnimationStep = 0;
     }
 
-    hide(){
+    hide() {
         this.sprite.visible = false;
         this.hideSprite.visible = false;
         EngineUtils.disableSprite(this.animatedPokemon);
@@ -100,7 +101,7 @@ class ScreenCapture {
             this.captureAnimationWiggleBall(ball, 110);
             this.captureAnimationWiggleBall(ball, 160);
 
-            if(this.captureAnimationIs(200)) {
+            if (this.captureAnimationIs(200)) {
                 ball.regainPhysics()
                 this.capturePuffSprite.visible = false;
                 this.catchTextSprite.visible = false;
@@ -221,9 +222,15 @@ class ScreenCapture {
     }
 
     startCapture(num) {
+        //Restart everything fresh
         this.hideSprite.changeAnimation(num + '-bw');
+        this.hideSprite.hideLevel = 0;
         this.hideSprite.visible = true;
         this.state = SCREEN_CAPTURE_STATE.HIDDEN;
+        this.captureLevel = 0;
+        this.animatedPokemon.changeAnimation('001-sprite');
+        this.catchTextSprite.visible = true;
+        this.catchTextSprite.ani.frame = this.captureLevel;
     }
 
     flipCapture() {
