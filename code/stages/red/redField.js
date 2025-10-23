@@ -95,7 +95,8 @@ class RedField extends Stage {
             this.onCaptureStartCaptureAnimationCallback,
             this.onCaptureStartAnimatedSpritePhaseCallback,
             this.onCaptureCompleteAnimationStartedCallback,
-            this.onCapturePhaseFinishedCallback
+            this.onCapturePhaseFinishedCallback,
+            this.captureOnPokemonAnimatedHitCallback
         );
 
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
@@ -149,6 +150,10 @@ class RedField extends Stage {
 
     onCapturePhaseFinishedCallback = () =>{
         this.state = RED_FIELD_STATUS.PLAYING;
+    }
+
+    captureOnPokemonAnimatedHitCallback = () => {
+        this.addPointsAndShowText("hit", POINTS.CAPTURE_HIT);
     }
 
 

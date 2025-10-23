@@ -12,12 +12,13 @@ const SCREEN_CAPTURE_STATE = {
 
 
 class ScreenCapture {
-    constructor(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, capturePhaseFinishedCallback) {
+    constructor(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, capturePhaseFinishedCallback, onPokemonAnimatedHitCallback) {
 
         this.captureStartCaptureAnimationCallback = captureStartCaptureAnimationCallback;;
         this.captureStartAnimatedSpritePhaseCallback = captureStartAnimatedSpritePhaseCallback;
         this.captureCompleteAnimationStartedCallback = captureCompleteAnimationStartedCallback;
         this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
+        this.onPokemonAnimatedHitCallback = onPokemonAnimatedHitCallback
 
         this.sprite = new Sprite(160, 364, 96, 64, "none");
         //TODO loop this shits
@@ -69,6 +70,15 @@ class ScreenCapture {
         this.capturePuffSprite.ani.playing = false;
 
         this.captureAnimationStep = 0;
+    }
+
+    hide(){
+        this.sprite.visible = false;
+        this.hideSprite.visible = false;
+        EngineUtils.disableSprite(this.animatedPokemon);
+        this.animatedPokemon.visible = false;
+        this.capturePuffSprite.visible = false;
+        this.catchTextSprite.visible = false;
     }
 
     update(ball) {
@@ -143,6 +153,7 @@ class ScreenCapture {
     onPokemonSpriteHit(ball) {
         this.captureLevel++;
         this.animatedPokemon.changeAnimation('001-sprite-hurt');
+        this.onPokemonAnimatedHitCallback();
 
         if (this.captureLevel < this.catchTextSprite.ani.length) {
             this.catchTextSprite.ani.frame = this.captureLevel;

@@ -10,18 +10,23 @@ class Screen {
         captureStartCaptureAnimationCallback,
         captureStartAnimatedSpritePhaseCallback,
         captureCompleteAnimationStartedCallback,
-        capturePhaseFinishedCallback
+        capturePhaseFinishedCallback,
+        captureOnPokemonAnimatedHitCallback
     ) {
         this.screenLandscapes = new ScreenLandscapes();
         this.screenLandscapes.spinBW();
-        this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
-        this.screenCapture = new ScreenCapture(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback);
-    }
 
-    onCapturePhaseFinishedCallback = () => {
-        this.setState(SCREEN_STATE.LANDSCAPE);
-        //TODO add pokeball to list
-        this.capturePhaseFinishedCallback();
+        this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
+        this.screenCapture = new ScreenCapture(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback, captureOnPokemonAnimatedHitCallback);
+
+        this.catchTextSprite = new Sprite(160, 404, 96, 16, "none");
+        this.catchTextSprite.layer = SCENARIO_LAYER;
+        this.catchTextSprite.debug = DEBUG;
+        this.catchTextSprite.addAnimation('captured-ball', Asset.getAnimation('captured-ball'));
+        this.catchTextSprite.ani.playing = false;
+        this.captureLevel = 0;
+        this.catchTextSprite.ani.frame = this.captureLevel;
+
     }
 
     update(ballSprite) {
@@ -50,13 +55,11 @@ class Screen {
         this.screenLandscapes.progressArea();
     }
 
-
     setState(state) {
         this.state = state;
         this.screenLandscapes.show(state === SCREEN_STATE.LANDSCAPE);
         this.screenCapture.show(state === SCREEN_STATE.CAPTURE);
     }
-
 
     startCapture(num) {
         this.setState(SCREEN_STATE.CAPTURE);
@@ -68,6 +71,19 @@ class Screen {
 
         this.screenCapture.flipCapture();
     }
+
+    onCapturePhaseFinishedCallback = () => {
+        this.setState(SCREEN_STATE.LANDSCAPE);
+        this.screenCapture.hide();
+        this.addPokeballsToList(1);
+        this.capturePhaseFinishedCallback();
+    }
+
+    addPokeballsToList(num) {
+        this.captureLevel = (this.captureLevel + num) % 4;
+        this.catchTextSprite.ani.frame = this.captureLevel;
+    }
+
 
 
 }
