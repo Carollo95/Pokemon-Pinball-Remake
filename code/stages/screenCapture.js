@@ -224,7 +224,6 @@ class ScreenCapture {
 
     startCapture(captureTarget) {
         //Restart everything fresh
-        console.log(captureTarget)
         this.captureTarget = captureTarget;
 
         this.hideSprite.changeAnimation(captureTarget.id + '-bw');
