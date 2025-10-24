@@ -168,7 +168,7 @@ class RedField extends Stage {
     startCaptureSequence() {
         this.arrows.resetCaptureArrows();
         this.state = RED_FIELD_STATUS.CAPTURE;
-        this.attachTimer(Timer.createFieldTimer(1000, this.doOnCaptureTimeupCallback));
+        this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
 
         this.screen.startCapture("001");
