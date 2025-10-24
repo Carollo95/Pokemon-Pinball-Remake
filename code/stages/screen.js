@@ -87,7 +87,7 @@ class Screen {
     }
 
     addPokeballsToList(num) {
-        this.captureLevel = (this.captureLevel + num) % 4;
+        this.captureLevel = Math.min(this.captureLevel + num, 3);
         this.ballsSprite.ani.frame = this.captureLevel;
     }
 
