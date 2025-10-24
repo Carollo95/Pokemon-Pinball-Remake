@@ -113,7 +113,6 @@ class Timer {
     }
 
     static createFieldTimer(timer, onTimeUpCallback) {
-        console.log(onTimeUpCallback)
         return new Timer(TIMER_POSITION_FIELD_X, TIMER_POSITION_FIELD_Y, timer, onTimeUpCallback);
     }
 }

@@ -27,12 +27,12 @@ class Screen {
         this.captureLevel = 0;
         this.ballsSprite.ani.frame = this.captureLevel;
 
+        this.state = SCREEN_STATE.LANDSCAPE;
     }
 
     update(ballSprite) {
-        //FIXME why do I need the state here to play the sound???
         if (this.state === SCREEN_STATE.LANDSCAPE) {
-            this.screenLandscapes.playSpinSound();
+            this.screenLandscapes.update();
         } else if (this.state === SCREEN_STATE.CAPTURE) {
             this.screenCapture.update(ballSprite);
         }
