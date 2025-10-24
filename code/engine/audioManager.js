@@ -49,6 +49,14 @@ class AudioManager {
         });
     }
 
+    registerCRY(id, path, { baseVolume = SFX_VOLUME } = {}) {
+        return this._loadAudio(`${path}.ogg`).then(buffer => {
+            if (buffer) {
+                this.sfx[id] = { buffer, baseVolume };
+            }
+        });
+    }
+
     // --- Playback Control ---
 
 
@@ -129,6 +137,10 @@ class AudioManager {
         source.connect(gainNode);
         gainNode.connect(this.sfxGain);
         source.start(0);
+    }
+
+    playCry(id) {
+        this.playSFX("cry-" + id);
     }
 
     interruptWithSFX(id) {
@@ -284,6 +296,7 @@ function preloadAudioAssets() {
 
     //TODO add all cries
     promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4E')); //Gengar cry
+    promises.push(audio.registerCRY('cry-001', 'assets/audio/cries/001'));
 
     return Promise.all(promises);
 }

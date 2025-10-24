@@ -1,20 +1,20 @@
-const POKEDEX = [
-    BULBASAUR = {
+const POKEDEX = {
+    BULBASAUR :{
         id: "001",
         name: "Bulbasaur",
-        evolutionId: "002"
+        evolutionId: "002",
     },
-    IVYSAUR = {
+    IVYSAUR : {
         id: "002",
         name: "Ivysaur",
-        evolutionId: "003"
+        evolutionId: "003",
     },
-    VENUSAUR = {
+    VENUSAUR : {
         id: "003",
         name: "Venusaur",
-        evolutionId: null
+        evolutionId: null,
     }
-]
+}
 
 
 function getPokemonById(id) {

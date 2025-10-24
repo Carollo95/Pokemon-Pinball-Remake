@@ -153,13 +153,13 @@ class ScreenCapture {
 
     onPokemonSpriteHit(ball) {
         this.captureLevel++;
-        this.animatedPokemon.changeAnimation('001-sprite-hurt');
+        this.animatedPokemon.changeAnimation(this.captureTarget.id + '-sprite-hurt');
         this.onPokemonAnimatedHitCallback();
 
         if (this.captureLevel < this.catchTextSprite.ani.length) {
             this.catchTextSprite.ani.frame = this.captureLevel;
             this.animatedPokemon.ani.onComplete = () => {
-                this.animatedPokemon.changeAnimation('001-sprite');
+                this.animatedPokemon.changeAnimation(this.captureTarget.id + '-sprite');
             };
         } else {
             this.capturePuffSprite.visible = true;
@@ -200,6 +200,7 @@ class ScreenCapture {
         this.state = SCREEN_CAPTURE_STATE.SPRITE;
         this.captureStartAnimatedSpritePhaseCallback();
 
+        Audio.playCry(this.captureTarget.id);
         this.sprite.visible = false;
         this.hideSprite.visible = false;
         EngineUtils.enableSprite(this.animatedPokemon);
@@ -221,14 +222,17 @@ class ScreenCapture {
         }
     }
 
-    startCapture(num) {
+    startCapture(captureTarget) {
         //Restart everything fresh
-        this.hideSprite.changeAnimation(num + '-bw');
+        console.log(captureTarget)
+        this.captureTarget = captureTarget;
+
+        this.hideSprite.changeAnimation(captureTarget.id + '-bw');
         this.hideSprite.hideLevel = 0;
         this.hideSprite.visible = true;
         this.state = SCREEN_CAPTURE_STATE.HIDDEN;
         this.captureLevel = 0;
-        this.animatedPokemon.changeAnimation('001-sprite');
+        this.animatedPokemon.changeAnimation(captureTarget.id + '-sprite');
         this.catchTextSprite.visible = true;
         this.catchTextSprite.ani.frame = this.captureLevel;
     }

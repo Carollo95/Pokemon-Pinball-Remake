@@ -68,9 +68,9 @@ class Screen {
         }
     }
 
-    startCapture(num) {
+    startCapture(pokemon) {
         this.setState(SCREEN_STATE.CAPTURE);
-        this.screenCapture.startCapture(num);
+        this.screenCapture.startCapture(pokemon);
     }
 
     flipCapture() {

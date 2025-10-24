@@ -171,7 +171,7 @@ class RedField extends Stage {
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
 
-        this.screen.startCapture("001");
+        this.screen.startCapture(POKEDEX.BULBASAUR);
         this.voltorbsTargetArrow.setVisible(true);
     }
 
