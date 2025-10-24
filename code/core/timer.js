@@ -112,7 +112,8 @@ class Timer {
         return new Timer(TIMER_POSITION_BONUS_X, TIMER_POSITION_BONUS_HIGH_Y, timer);
     }
 
-    static createFieldTimer(timer) {
-        return new Timer(TIMER_POSITION_FIELD_X, TIMER_POSITION_FIELD_Y, timer);
+    static createFieldTimer(timer, onTimeUpCallback) {
+        console.log(onTimeUpCallback)
+        return new Timer(TIMER_POSITION_FIELD_X, TIMER_POSITION_FIELD_Y, timer, onTimeUpCallback);
     }
 }

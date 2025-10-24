@@ -41,6 +41,7 @@ const I18NManager = {
 
             "lets_get_pokemon": "let`s get pokémon",
             "flipped": "flipped",
+            "pokemon_ran_away": "pokémon ran away",
         }
     },
 
