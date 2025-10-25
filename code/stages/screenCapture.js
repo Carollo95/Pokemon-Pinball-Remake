@@ -84,7 +84,6 @@ class ScreenCapture {
 
     update(ball) {
         if (this.state === SCREEN_CAPTURE_STATE.ANIMATION) {
-            //TODO trigger end of animation
             this.updateHideEndAnimation();
         } else if (this.state === SCREEN_CAPTURE_STATE.SPRITE) {
             this.updatePokemonSprite(ball);
@@ -179,7 +178,7 @@ class ScreenCapture {
 
     startCapturedAnimation(ball) {
         this.state = SCREEN_CAPTURE_STATE.CAPTURE_ANIMATION;
-        this.captureCompleteAnimationStartedCallback();
+        this.captureCompleteAnimationStartedCallback(this.captureTarget);
         ball.stopOnCoordinates(160, 340);
         this.timeOfLastCaptureAnimationUpdate = millis();
     }

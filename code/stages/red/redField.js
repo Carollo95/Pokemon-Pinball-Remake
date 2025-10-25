@@ -140,12 +140,11 @@ class RedField extends Stage {
         this.voltorbsTargetArrow.setVisible(false);
     }
 
-    onCaptureCompleteAnimationStartedCallback = () => {
-        this.stageText.setScrollText("you got a bulbasaur", "bulbasaur");
+    onCaptureCompleteAnimationStartedCallback = (pokemonCaught) => {
+        this.stageText.setScrollText("you got a " + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name));
         //TODO how many, internationalize
         this.addPointsAndShowText("jackpot", 123456);
-        //TODO add actual pokemon id
-        this.status.addPokemonCaught("001");
+        this.status.addPokemonCaught(pokemonCaught);
     }
 
     onCapturePhaseFinishedCallback = () => {
