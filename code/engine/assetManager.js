@@ -218,16 +218,22 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldTargetArrows', 'assets/img/red-field/target_arrows', 16, 16, 14);
   Asset.registerAnimationTemplate('redFieldBellsproutIdle', 'assets/img/red-field/bellsprout_idle', 64, 80, 2);
-  Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY*2);
-  Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY*2);
+  Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
+  Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
 
+  for (let i = 1; i <= 151; i++) {
+    Asset.registerAnimationTemplate(pad3(i), 'assets/img/dex/' + pad3(i), 96, 64, 1);
+    Asset.registerAnimationTemplate(pad3(i) + '-bw', 'assets/img/dex/' + pad3(i) + '-bw', 96, 64, 1);
+  }
 
-  //TODO loop this shit
-  Asset.registerAnimationTemplate('001-bw', 'assets/img/dex/001-bw', 96, 64, 1);
-  Asset.registerAnimationTemplate('001', 'assets/img/dex/001', 96, 64, 1);
-  Asset.registerAnimationTemplate('001-sprite', 'assets/img/dex/001-sprite', 64, 64, 2);
-  Asset.registerAnimationTemplate('001-sprite-hurt', 'assets/img/dex/001-sprite-hurt', 64, 64, 3);
+  for (let i = 0; i < BASIC_POKEMON.length; i++) {
+    Asset.registerAnimationTemplate(BASIC_POKEMON[i].id + '-idle', 'assets/img/dex/' + BASIC_POKEMON[i].id + '-idle', 64, 64, 2);
+    Asset.registerAnimationTemplate(BASIC_POKEMON[i].id + '-idle-hurt', 'assets/img/dex/' + BASIC_POKEMON[i].id + '-idle-hurt', 64, 64, 3);
+  }
 }
 
+function pad3(num) {
+  return String(num).padStart(3, '0');
+}
 
 

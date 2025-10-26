@@ -21,16 +21,18 @@ class ScreenCapture {
         this.onPokemonAnimatedHitCallback = onPokemonAnimatedHitCallback
 
         this.sprite = new Sprite(160, 364, 96, 64, "none");
-        //TODO loop this shits
-        this.sprite.addAnimation('001', Asset.getAnimation('001'));
+        for (let i = 0; i < BASIC_POKEMON.length; i++) {
+            this.sprite.addAnimation(BASIC_POKEMON[i].id, Asset.getAnimation(BASIC_POKEMON[i].id));
+        }
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.visible = false;
         this.sprite.debug = DEBUG;
         this.sprite.hideLevel = 0;
 
         this.hideSprite = new Sprite(160, 364, 96, 64, "none");
-        //TODO loop this shits
-        this.hideSprite.addAnimation('001-bw', Asset.getAnimation('001-bw'));
+        for (let i = 0; i < BASIC_POKEMON.length; i++) {
+            this.hideSprite.addAnimation(BASIC_POKEMON[i].id + "-bw", Asset.getAnimation(BASIC_POKEMON[i].id + "-bw"));
+        }
         this.hideSprite.layer = OVER_SCENARIO_LAYER;
         this.hideSprite.visible = false;
         this.hideSprite.debug = DEBUG;
@@ -46,14 +48,15 @@ class ScreenCapture {
 
         this.state = SCREEN_CAPTURE_STATE.HIDDEN;
 
-        //TODO loop this shits
         this.animatedPokemon = new Sprite(160, 364, 56, "static");
         EngineUtils.disableSprite(this.animatedPokemon);
         this.animatedPokemon.layer = SPRITE_LAYER;
         this.animatedPokemon.visible = false;
         this.animatedPokemon.debug = DEBUG;
-        this.animatedPokemon.addAnimation('001-sprite-hurt', Asset.getAnimation('001-sprite-hurt'));
-        this.animatedPokemon.addAnimation('001-sprite', Asset.getAnimation('001-sprite'));
+        for (let i = 0; i < BASIC_POKEMON.length; i++) {
+            this.animatedPokemon.addAnimation(BASIC_POKEMON[i].id + '-idle-hurt', Asset.getAnimation(BASIC_POKEMON[i].id + '-idle-hurt'));
+            this.animatedPokemon.addAnimation(BASIC_POKEMON[i].id + '-idle', Asset.getAnimation(BASIC_POKEMON[i].id + '-idle'));
+        }
 
         this.catchTextSprite = new Sprite(160, 404, 96, 16, "none");
         this.catchTextSprite.layer = SCENARIO_LAYER;
@@ -145,20 +148,20 @@ class ScreenCapture {
     }
 
     updatePokemonSprite(ball) {
-        if (this.animatedPokemon.ani.name.endsWith('-sprite') && (this.animatedPokemon.collide(ball.sprite))) {
+        if (this.animatedPokemon.ani.name.endsWith('-idle') && (this.animatedPokemon.collide(ball.sprite))) {
             this.onPokemonSpriteHit(ball);
         }
     }
 
     onPokemonSpriteHit(ball) {
         this.captureLevel++;
-        this.animatedPokemon.changeAnimation(this.captureTarget.id + '-sprite-hurt');
+        this.animatedPokemon.changeAnimation(this.captureTarget.id + '-idle-hurt');
         this.onPokemonAnimatedHitCallback();
 
         if (this.captureLevel < this.catchTextSprite.ani.length) {
             this.catchTextSprite.ani.frame = this.captureLevel;
             this.animatedPokemon.ani.onComplete = () => {
-                this.animatedPokemon.changeAnimation(this.captureTarget.id + '-sprite');
+                this.animatedPokemon.changeAnimation(this.captureTarget.id + '-idle');
             };
         } else {
             this.capturePuffSprite.visible = true;
@@ -230,7 +233,7 @@ class ScreenCapture {
         this.hideSprite.visible = true;
         this.state = SCREEN_CAPTURE_STATE.HIDDEN;
         this.captureLevel = 0;
-        this.animatedPokemon.changeAnimation(captureTarget.id + '-sprite');
+        this.animatedPokemon.changeAnimation(captureTarget.id + '-idle');
         this.catchTextSprite.visible = true;
         this.catchTextSprite.ani.frame = this.captureLevel;
     }
