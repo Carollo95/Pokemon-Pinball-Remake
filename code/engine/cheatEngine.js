@@ -73,6 +73,12 @@ const CheatEngine = {
         if ((stage instanceof RedField)) {
             stage.createScenarioGeometry([[110, 532], [207, 532], [207, 540], [110, 540], [110, 532]]);
         }
+    },
+
+    upgradeCaptureLevel() {
+        if ((stage instanceof RedField)) {
+            stage.arrows.upgradeCaptureArrows();
+        }
     }
 
 }

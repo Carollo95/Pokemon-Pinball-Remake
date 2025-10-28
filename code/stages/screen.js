@@ -68,9 +68,9 @@ class Screen {
         }
     }
 
-    startCapture(pokemon) {
+    startCapture(level) {
         this.setState(SCREEN_STATE.CAPTURE);
-        this.screenCapture.startCapture(pokemon);
+        this.screenCapture.startCapture(this.screenLandscapes.getPokemonFromLandmark(level));
     }
 
     flipCapture() {

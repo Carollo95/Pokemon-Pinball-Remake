@@ -326,7 +326,7 @@ class BonusStageGhost extends BonusStage {
       this.finishStageSuccessfully();
     } else if (this.gengar.readyToRespawn && this.gengar.readyToRespawn()) {
       this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y, () => {this.addPoints(POINTS.GENGAR_HIT_POINTS);});
-      Audio.playSFX('sfx4E');
+      Audio.playCry('cry-094');
     }
 
     return this.gengar;

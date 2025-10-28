@@ -1,6 +1,6 @@
 // Centralized audio system using native Web Audio API for performance.
 
-
+let debug = true;
 class AudioManager {
     constructor() {
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -19,6 +19,7 @@ class AudioManager {
     }
 
     async _loadAudio(path) {
+        if(debug == true);return;
         try {
             const response = await fetch(path);
             if (!response.ok) {
@@ -42,6 +43,7 @@ class AudioManager {
     }
 
     registerSFX(id, path, { baseVolume = SFX_VOLUME } = {}) {
+        if(debug == true);return;
         return this._loadAudio(`${path}.mp3`).then(buffer => {
             if (buffer) {
                 this.sfx[id] = { buffer, baseVolume };
@@ -50,6 +52,7 @@ class AudioManager {
     }
 
     registerCRY(id, path, { baseVolume = SFX_VOLUME } = {}) {
+        if(debug == true);return;
         return this._loadAudio(`${path}.ogg`).then(buffer => {
             if (buffer) {
                 this.sfx[id] = { buffer, baseVolume };
@@ -61,6 +64,7 @@ class AudioManager {
 
 
     playMusic(id, { restart = true, fade = true } = {}) {
+        if(debug == true);return;
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
         }
@@ -98,6 +102,7 @@ class AudioManager {
     }
 
     stopMusic({ fade = true } = {}) {
+        if(debug == true);return;
         if (!this.currentMusic) return;
 
         const music = this.currentMusic;
@@ -109,7 +114,7 @@ class AudioManager {
             setTimeout(() => {
                 // Checking if source is still valid before stopping
                 if (music.source.context && music.source.context.state === 'running') {
-                   music.source.stop();
+                    music.source.stop();
                 }
             }, 1000);
         } else {
@@ -118,6 +123,7 @@ class AudioManager {
     }
 
     playSFX(id) {
+        if(debug == true);return;
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
         }
@@ -140,10 +146,12 @@ class AudioManager {
     }
 
     playCry(id) {
+        if(debug == true);return;
         this.playSFX("cry-" + id);
     }
 
     interruptWithSFX(id) {
+        if(debug == true);return;
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
         }
@@ -294,9 +302,9 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx4C', 'assets/audio/sfx/SFX-4C'));
     promises.push(audio.registerSFX('sfx4D', 'assets/audio/sfx/SFX-4D'));
 
-    //TODO add all cries
-    promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4E')); //Gengar cry
-    promises.push(audio.registerCRY('cry-001', 'assets/audio/cries/001'));
+    for (let i = 1; i <= 151; i++) {
+        promises.push(audio.registerCRY("cry-" + pad3(i), 'assets/audio/cries/' + pad3(i)));
+    }
 
     return Promise.all(promises);
 }

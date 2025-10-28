@@ -228,6 +228,7 @@ class ScreenCapture {
         //Restart everything fresh
         this.captureTarget = captureTarget;
 
+        this.sprite.changeAnimation(captureTarget.id);
         this.hideSprite.changeAnimation(captureTarget.id + '-bw');
         this.hideSprite.hideLevel = 0;
         this.hideSprite.visible = true;
@@ -236,6 +237,8 @@ class ScreenCapture {
         this.animatedPokemon.changeAnimation(captureTarget.id + '-idle');
         this.catchTextSprite.visible = true;
         this.catchTextSprite.ani.frame = this.captureLevel;
+
+        this.captureAnimationStep = 0;
     }
 
     flipCapture() {
