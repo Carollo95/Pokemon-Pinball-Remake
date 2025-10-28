@@ -186,7 +186,7 @@ class RedField extends Stage {
 
     onVoltorbHitCallback = () => {
         this.status.addPoints(POINTS.VOLTORB_BUMPER);
-        if (this.state === RED_FIELD_STATUS.CAPTURE) {
+        if (this.state === RED_FIELD_STATUS.CAPTURE && this.voltorbsTargetArrow.visible) {
             this.screen.flipCapture();
             this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
         }

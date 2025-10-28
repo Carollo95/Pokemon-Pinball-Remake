@@ -7,7 +7,7 @@ const STAGE_TEXT_POINTS_CHARS = 24;
 
 const TEXT_SCROLL_THRESHOLD_MILLIS = 100; // millis between movement while showing text
 const DEFAULT_TEXT_PERSISTENCE_MILLIS = 3000; //Default millis to keep on screen the shown text
-const DEFAULT_SHOW_TEXT_WITH_POINTS_PERSISTENCE_MILLIS = 1000; //Default millis to keep on screen the shown text with points
+const DEFAULT_SHOW_TEXT_WITH_POINTS_PERSISTENCE_MILLIS = 2000; //Default millis to keep on screen the shown text with points
 
 const STAGE_TEXT_STATE = {
     NONE: "none",

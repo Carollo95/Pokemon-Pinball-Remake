@@ -12,7 +12,7 @@ const DEFAULT_ANIMATION_DELAY = 12; //Default delay between frames of animation
 class AssetManager {
   constructor() {
     this.imageCache = new Map();    // path -> p5.Image
-    this.animTemplates = new Map(); // animKey -> { frames: [p5.Image], delay }
+    this.animTemplates = new Map(); // animKey -> p5.play.Animation
     this.backgrounds = new Map();   // bgKey -> p5.Image
   }
 
@@ -58,6 +58,30 @@ class AssetManager {
     }
 
     throw new Error(`Animation not registered and no fallback provided: ${animKey}`);
+  }
+
+  dispose() {
+    for (const [, anim] of this.animTemplates) {
+      try {
+        if (anim) {
+          if (anim.images && Array.isArray(anim.images)) anim.images.length = 0;
+          if (anim.frames && Array.isArray(anim.frames)) anim.frames.length = 0;
+          if (anim.spriteSheet) anim.spriteSheet = null;
+        }
+      } catch {}
+    }
+    this.animTemplates.clear();
+
+    for (const [, img] of this.imageCache) {
+      try {
+        if (img && img.canvas) {
+          img.canvas.width = 1;
+          img.canvas.height = 1;
+        }
+      } catch {}
+    }
+    this.imageCache.clear();
+    this.backgrounds.clear();
   }
 }
 
@@ -234,6 +258,17 @@ function preloadAnimations() {
 
 function pad3(num) {
   return String(num).padStart(3, '0');
+}
+
+if (typeof window !== 'undefined') {
+  if (window.__ASSET_SINGLETON__ && window.__ASSET_SINGLETON__ !== Asset) {
+    try { window.__ASSET_SINGLETON__.dispose(); } catch {}
+  }
+  window.__ASSET_SINGLETON__ = Asset;
+
+  window.addEventListener('pagehide', () => {
+    try { Asset.dispose(); } catch {}
+  }, { once: true });
 }
 
 

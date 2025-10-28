@@ -1,6 +1,5 @@
 // Centralized audio system using native Web Audio API for performance.
 
-let debug = true;
 class AudioManager {
     constructor() {
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -19,7 +18,6 @@ class AudioManager {
     }
 
     async _loadAudio(path) {
-        if(debug == true);return;
         try {
             const response = await fetch(path);
             if (!response.ok) {
@@ -43,7 +41,6 @@ class AudioManager {
     }
 
     registerSFX(id, path, { baseVolume = SFX_VOLUME } = {}) {
-        if(debug == true);return;
         return this._loadAudio(`${path}.mp3`).then(buffer => {
             if (buffer) {
                 this.sfx[id] = { buffer, baseVolume };
@@ -52,7 +49,6 @@ class AudioManager {
     }
 
     registerCRY(id, path, { baseVolume = SFX_VOLUME } = {}) {
-        if(debug == true);return;
         return this._loadAudio(`${path}.ogg`).then(buffer => {
             if (buffer) {
                 this.sfx[id] = { buffer, baseVolume };
@@ -64,13 +60,12 @@ class AudioManager {
 
 
     playMusic(id, { restart = true, fade = true } = {}) {
-        if(debug == true);return;
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
         }
 
         if (this.currentMusic && this.currentMusic.id === id && !restart) {
-            return; // Already playing and restart is false
+            return;
         }
 
         this.stopMusic({ fade });
@@ -98,32 +93,40 @@ class AudioManager {
             gainNode.gain.value = track.baseVolume;
         }
 
+        source.onended = () => {
+            try { source.disconnect(); } catch {}
+            try { gainNode.disconnect(); } catch {}
+        };
+
         this.currentMusic = { id, source, gainNode, baseVolume: track.baseVolume };
     }
 
     stopMusic({ fade = true } = {}) {
-        if(debug == true);return;
         if (!this.currentMusic) return;
 
         const music = this.currentMusic;
         this.currentMusic = null;
 
+        const doStopAndDisconnect = () => {
+            try { music.source.stop(); } catch {}
+            try { music.source.disconnect(); } catch {}
+            try { music.gainNode.disconnect(); } catch {}
+        };
+
         if (fade) {
             music.gainNode.gain.setValueAtTime(music.gainNode.gain.value, this.audioContext.currentTime);
             music.gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + 1.0);
             setTimeout(() => {
-                // Checking if source is still valid before stopping
-                if (music.source.context && music.source.context.state === 'running') {
-                    music.source.stop();
+                if (music.source.context && music.source.context.state !== 'closed') {
+                    doStopAndDisconnect();
                 }
             }, 1000);
         } else {
-            music.source.stop();
+            doStopAndDisconnect();
         }
     }
 
     playSFX(id) {
-        if(debug == true);return;
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
         }
@@ -142,16 +145,20 @@ class AudioManager {
 
         source.connect(gainNode);
         gainNode.connect(this.sfxGain);
+
+        source.onended = () => {
+            try { source.disconnect(); } catch {}
+            try { gainNode.disconnect(); } catch {}
+        };
+
         source.start(0);
     }
 
     playCry(id) {
-        if(debug == true);return;
         this.playSFX("cry-" + id);
     }
 
     interruptWithSFX(id) {
-        if(debug == true);return;
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
         }
@@ -175,6 +182,8 @@ class AudioManager {
         gainNode.connect(this.sfxGain);
 
         source.onended = () => {
+            try { source.disconnect(); } catch {}
+            try { gainNode.disconnect(); } catch {}
             if (musicToResumeId) {
                 this.playMusic(musicToResumeId, { restart: true, fade: true });
             }
@@ -195,6 +204,32 @@ class AudioManager {
         this.isSfxMuted = mute;
         this.sfxGain.gain.setValueAtTime(mute ? 0 : 1, this.audioContext.currentTime);
     }
+
+    dispose() {
+        try {
+            this.stopMusic({ fade: false });
+        } catch {}
+
+        try { this.musicGain.disconnect(); } catch {}
+        try { this.sfxGain.disconnect(); } catch {}
+
+        for (const k in this.musicTracks) {
+            if (this.musicTracks[k]) this.musicTracks[k].buffer = null;
+            delete this.musicTracks[k];
+        }
+        for (const k in this.sfx) {
+            if (this.sfx[k]) this.sfx[k].buffer = null;
+            delete this.sfx[k];
+        }
+
+        if (this.audioContext && this.audioContext.state !== 'closed') {
+            try { this.audioContext.close(); } catch {}
+        }
+
+        this.audioContext = null;
+        this.musicGain = null;
+        this.sfxGain = null;
+    }
 }
 
 // --- Singleton and Preload Setup ---
@@ -206,6 +241,15 @@ function getAudio() {
         Audio = new AudioManager();
     }
     return Audio;
+}
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('pagehide', () => {
+        if (Audio) {
+            try { Audio.dispose(); } catch {}
+            Audio = null;
+        }
+    }, { once: true });
 }
 
 function preloadAudioAssets() {
