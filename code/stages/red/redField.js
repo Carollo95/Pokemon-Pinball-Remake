@@ -241,11 +241,21 @@ class RedField extends Stage {
 
     checkForBallLoss() {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
+            if(this.state === RED_FIELD_STATUS.CAPTURE){
+                this.interruptCapture();
+            }
             this.status.balls--;
             this.state = RED_FIELD_STATUS.BALL_LOST;
             Audio.playSFX('sfx24');
             this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
         }
+    }
+
+    interruptCapture() {
+        this.getTimer().disable();
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        this.state = RED_FIELD_STATUS.PLAYING;
+        this.voltorbsTargetArrow.setVisible(false);
     }
 
     createNewBallOrEndStage() {
