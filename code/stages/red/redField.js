@@ -106,7 +106,7 @@ class RedField extends Stage {
 
         this.voltorbs = [];
         this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
-        this.voltorbs.push(new RedFieldVoltorb(182, 152, this.onVoltorbHitCallback));
+        this.voltorbs.push(new RedFieldVoltorb(182, 154, this.onVoltorbHitCallback));
         this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
 
         this.targetArrows = [];

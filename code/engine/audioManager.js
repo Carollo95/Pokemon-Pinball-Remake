@@ -271,14 +271,14 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx01', 'assets/audio/sfx/SFX-01'));
     promises.push(audio.registerSFX('sfx02', 'assets/audio/sfx/SFX-02'));
     promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03'));
-    promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); //Red field Bellsprout eat
-    promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05'));
-    promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //Red field Bellsprout spit
+    promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); 
+    promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05')); //Red field Bellsprout eat
+    promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //Red field Bellsprout spit AND capture pokemon hit
     promises.push(audio.registerSFX('sfx07', 'assets/audio/sfx/SFX-07'));
     promises.push(audio.registerSFX('sfx08', 'assets/audio/sfx/SFX-08')); //Bonus scenario hit
     promises.push(audio.registerSFX('sfx09', 'assets/audio/sfx/SFX-09'));
     promises.push(audio.registerSFX('sfx0A', 'assets/audio/sfx/SFX-0A')); //Ball launch
-    promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B'));
+    promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B')); //Pokemon entering ball
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
     promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D'));
     promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //red field Voltorb Bumper hit
@@ -308,7 +308,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26'));
     promises.push(audio.registerSFX('sfx27', 'assets/audio/sfx/SFX-27'));
     promises.push(audio.registerSFX('sfx28', 'assets/audio/sfx/SFX-28'));
-    promises.push(audio.registerSFX('sfx29', 'assets/audio/sfx/SFX-29'));
+    promises.push(audio.registerSFX('sfx29', 'assets/audio/sfx/SFX-29')); //Pokemon captured
     promises.push(audio.registerSFX('sfx2A', 'assets/audio/sfx/SFX-2A')); //Bonus stage clear
     promises.push(audio.registerSFX('sfx2B', 'assets/audio/sfx/SFX-2B')); //Gengar step
     promises.push(audio.registerSFX('sfx2C', 'assets/audio/sfx/SFX-2C')); //Gastly hurt
@@ -332,7 +332,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx3E', 'assets/audio/sfx/SFX-3E')); //Bonus ball screen progress
     promises.push(audio.registerSFX('sfx3F', 'assets/audio/sfx/SFX-3F')); //Close gate on bonus level
     promises.push(audio.registerSFX('sfx40', 'assets/audio/sfx/SFX-40'));
-    promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41'));
+    promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41')); //Ball Wiggle
     promises.push(audio.registerSFX('sfx42', 'assets/audio/sfx/SFX-42'));
     promises.push(audio.registerSFX('sfx43', 'assets/audio/sfx/SFX-43'));
     promises.push(audio.registerSFX('sfx44', 'assets/audio/sfx/SFX-44'));

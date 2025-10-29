@@ -24,7 +24,7 @@ class RedFieldBellsprout {
         }
         if (this.sprite.ani.name === 'idle' && this.well.capturedBall(ballSprite)) {
             this.sprite.changeAni('eat');
-            Audio.playSFX('sfx04'); //TODO is this the correct audio???
+            Audio.playSFX('sfx05');
             ballSprite.visible = false;
             this.sprite.ani.onComplete = () => {
                 this.eatCallback();

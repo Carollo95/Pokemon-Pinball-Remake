@@ -84,6 +84,7 @@ class Ball {
 
     regainPhysics() {
         this.sprite.physics = "dynamic";
+        this.sprite.velocity.x = 0.5;
     }
 
     /** Creates and returns a new ball for a bonus level. */

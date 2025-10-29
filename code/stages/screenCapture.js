@@ -103,7 +103,11 @@ class ScreenCapture {
             this.captureAnimationWiggleBall(ball, 110);
             this.captureAnimationWiggleBall(ball, 160);
 
-            if (this.captureAnimationIs(200)) {
+            if(this.captureAnimationIs(220)){
+                Audio.playSFX('sfx29');
+            }
+
+            if (this.captureAnimationIs(360)) {
                 ball.regainPhysics()
                 this.capturePuffSprite.visible = false;
                 this.catchTextSprite.visible = false;
@@ -126,6 +130,7 @@ class ScreenCapture {
 
     captureAnimationWiggleBall(ball, frame) {
         if (this.captureAnimationIs(frame)) {
+            Audio.playSFX('sfx41');
             ball.sprite.ani.frame = 1;
         }
         if (this.captureAnimationIs(frame + 4)) {
@@ -133,6 +138,7 @@ class ScreenCapture {
         }
 
         if (this.captureAnimationIs(frame + 16)) {
+            Audio.playSFX('sfx41');
             ball.sprite.ani.frame = 1;
         }
         if (this.captureAnimationIs(frame + 20)) {
@@ -155,6 +161,7 @@ class ScreenCapture {
 
     onPokemonSpriteHit(ball) {
         this.captureLevel++;
+        Audio.playSFX('sfx06');
         this.animatedPokemon.changeAnimation(this.captureTarget.id + '-idle-hurt');
         this.onPokemonAnimatedHitCallback();
 
@@ -164,6 +171,7 @@ class ScreenCapture {
                 this.animatedPokemon.changeAnimation(this.captureTarget.id + '-idle');
             };
         } else {
+            Audio.playSFX('sfx0B');
             this.capturePuffSprite.visible = true;
             this.capturePuffSprite.ani.playing = true;
             this.capturePuffSprite.ani.onComplete = () => {
