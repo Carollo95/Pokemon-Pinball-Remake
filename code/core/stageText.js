@@ -38,6 +38,7 @@ class StageStatusBanner {
         this.stageStatus = stageStatus;
         this.state = STAGE_TEXT_STATE.STATUS;
 
+        this.callback = undefined
         this.scrollable = true;
 
         this.createTextSprites(x, y);
@@ -216,10 +217,12 @@ class StageStatusBanner {
      * @param {*} persistenceMillis 
      * @param {*} callback 
      */
-    showText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {
+    showText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback) {
+        this.callback = callback;
+        this.fixedPart = undefined;
+
         this.scrollable = false;
         this.changeState(STAGE_TEXT_STATE.TEXT);
-
         text = this.centerPad(text.split('').reverse().join(''), this.getTextCharsLength()).replace(".", "$");
         this.clearTextImmediately();
 
@@ -236,8 +239,9 @@ class StageStatusBanner {
      * @param {*} persistenceMillis 
      * @param {*} callback 
      */
-    showTextWithPoints(text, points, persistenceMillis = DEFAULT_SHOW_TEXT_WITH_POINTS_PERSISTENCE_MILLIS, callback = () => { }) {
+    showTextWithPoints(text, points, persistenceMillis = DEFAULT_SHOW_TEXT_WITH_POINTS_PERSISTENCE_MILLIS, callback) {
         this.scrollable = false;
+        this.fixedPart = undefined;
 
         this.changeState(STAGE_TEXT_STATE.TEXT_WITH_POINTS);
 
@@ -272,7 +276,7 @@ class StageStatusBanner {
      * @param {*} persistenceMillis 
      * @param {*} callback 
      */
-    setScrollText(text, fixedPart, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
+    setScrollText(text, fixedPart, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback) {
         this.scrollable = true;
 
         this.changeState(STAGE_TEXT_STATE.TEXT);
@@ -315,6 +319,7 @@ class StageStatusBanner {
         } else if (this.state === STAGE_TEXT_STATE.TEXT_WITH_POINTS) {
             if (this.hasPassedTextPersistence()) {
                 if (this.callback) this.callback();
+                else { this.showStatus() }
             }
         }
     }
@@ -330,8 +335,12 @@ class StageStatusBanner {
                     this.onlyPersistenceTimerStarted = true;
                 }
                 if (this.hasPassedTextPersistence()) {
-                    if (this.textArrayIsBlank()) {
+                    if (this.textArrayIsBlank() || !this.scrollable) {
+                        console.log(this.callback)
                         if (this.callback) this.callback();
+                        else {
+                            this.showStatus();
+                        }
                     } else if (this.timeToScrollText()) {
                         this.scrollText(' ');
                     }
@@ -351,6 +360,9 @@ class StageStatusBanner {
                     if (this.hasPassedTextPersistence()) {
                         if (this.textArrayIsBlank()) {
                             if (this.callback) this.callback();
+                            else {
+                                this.showStatus();
+                            }
                         } else if (this.timeToScrollText()) {
                             this.scrollText(' ');
                         }
@@ -387,7 +399,7 @@ class StageStatusBanner {
     }
 
     scrollText(textQueue) {
-        if(!this.scrollable) return;
+        if (!this.scrollable) return;
 
         const width = this.textArray.length;
         let textArrayEndWithFixedPart = false;
