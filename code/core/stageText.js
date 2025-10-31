@@ -217,12 +217,12 @@ class StageStatusBanner {
     showText(text, persistenceMillis = DEFAULT_TEXT_PERSISTENCE_MILLIS) {
         this.changeState(STAGE_TEXT_STATE.TEXT);
 
-        text = text.replace(".", "$");
+        text = this.centerPad(text.split('').reverse().join(''),this.getTextCharsLength()).replace(".", "$");
         this.clearTextImmediately();
 
         this.persistenceMillis = persistenceMillis;
-        for (var i = 0; i < this.getStateCharsLength(); i++) {
-            this.statusArray[i].changeAnimation("$" + text[i]);
+        for (var i = 0; i < this.getTextCharsLength(); i++) {
+            this.textArray[i].changeAnimation("$" + text[i]);
         }
     }
 

@@ -141,10 +141,13 @@ class RedField extends Stage {
     }
 
     onCaptureCompleteAnimationStartedCallback = (pokemonCaught) => {
-        this.stageText.setScrollText("you got a " + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name));
         //TODO how many, internationalize
-        this.addPointsAndShowText("jackpot", 123456);
+        this.stageText.setScrollText("you got a " + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name), 1000, this.showAfterCaptureJackpot);
         this.status.addPokemonCaught(pokemonCaught);
+    }
+
+    showAfterCaptureJackpot = () => {
+        this.addPointsAndShowText("jackpot", 123456, 1000);
     }
 
     onCapturePhaseFinishedCallback = () => {
@@ -168,7 +171,7 @@ class RedField extends Stage {
         this.state = RED_FIELD_STATUS.CAPTURE;
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
-        
+
         this.screen.startCapture(this.arrows.captureArrowsLevel);
         this.arrows.resetCaptureArrows();
         this.voltorbsTargetArrow.setVisible(true);
@@ -241,7 +244,7 @@ class RedField extends Stage {
 
     checkForBallLoss() {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
-            if(this.state === RED_FIELD_STATUS.CAPTURE){
+            if (this.state === RED_FIELD_STATUS.CAPTURE) {
                 this.interruptCapture();
             }
             this.status.balls--;
