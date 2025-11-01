@@ -130,6 +130,7 @@ class RedField extends Stage {
             }
         });
 
+        Audio.playMusic('redField');
     }
 
     onCaptureStartCaptureAnimationCallback = () => {
@@ -152,6 +153,7 @@ class RedField extends Stage {
 
     onCapturePhaseFinishedCallback = () => {
         this.state = RED_FIELD_STATUS.PLAYING;
+        Audio.playMusic('redField');
     }
 
     captureOnPokemonAnimatedHitCallback = () => {
@@ -175,6 +177,8 @@ class RedField extends Stage {
         this.screen.startCapture(this.arrows.captureArrowsLevel);
         this.arrows.resetCaptureArrows();
         this.voltorbsTargetArrow.setVisible(true);
+
+        Audio.playMusic('catchEmEvolutionModeRedField');
     }
 
     doOnCaptureTimeupCallback = () => {
@@ -184,6 +188,7 @@ class RedField extends Stage {
                 this.screen.setState(SCREEN_STATE.LANDSCAPE);
                 this.state = RED_FIELD_STATUS.PLAYING;
             });
+            Audio.playMusic('redField');
         }
     }
 
@@ -251,6 +256,7 @@ class RedField extends Stage {
             this.state = RED_FIELD_STATUS.BALL_LOST;
             Audio.playSFX('sfx24');
             this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
+            Audio.stopMusic();
         }
     }
 
@@ -267,6 +273,7 @@ class RedField extends Stage {
             this.ditto.open();
             this.arrows.setCaptureArrowsLevel(2);
             this.state = RED_FIELD_STATUS.NEW_BALL_WAITING
+            Audio.playMusic('redField');
         } else {
             this.state = RED_FIELD_STATUS.GAME_OVER;
             console.log("GAME OVER");

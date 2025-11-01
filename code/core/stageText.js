@@ -318,9 +318,17 @@ class StageStatusBanner {
             this.showStatus();
         } else if (this.state === STAGE_TEXT_STATE.TEXT_WITH_POINTS) {
             if (this.hasPassedTextPersistence()) {
-                if (this.callback) this.callback();
-                else { this.showStatus() }
+                this.callCallbackOrShowStatus();
             }
+        }
+    }
+
+    callCallbackOrShowStatus() {
+        if (this.callback) {
+            this.callback();
+            this.callback = undefined;
+        } else {
+            this.showStatus();
         }
     }
 
@@ -336,11 +344,7 @@ class StageStatusBanner {
                 }
                 if (this.hasPassedTextPersistence()) {
                     if (this.textArrayIsBlank() || !this.scrollable) {
-                        console.log(this.callback)
-                        if (this.callback) this.callback();
-                        else {
-                            this.showStatus();
-                        }
+                        this.callCallbackOrShowStatus();
                     } else if (this.timeToScrollText()) {
                         this.scrollText(' ');
                     }
@@ -359,10 +363,7 @@ class StageStatusBanner {
                     }
                     if (this.hasPassedTextPersistence()) {
                         if (this.textArrayIsBlank()) {
-                            if (this.callback) this.callback();
-                            else {
-                                this.showStatus();
-                            }
+                            this.callCallbackOrShowStatus();
                         } else if (this.timeToScrollText()) {
                             this.scrollText(' ');
                         }
