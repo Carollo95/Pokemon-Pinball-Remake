@@ -1,11 +1,12 @@
-const DIGLETT_POINTS = 5000;
+const RED_FIELD_CAPTURE_TIMER_MS = 121000;
 
 const RED_FIELD_STATUS = {
     PLAYING: 0,
     GAME_START: 1,
     BALL_LOST: 2,
     GAME_OVER: 3,
-    NEW_BALL_WAITING: 4
+    NEW_BALL_WAITING: 4,
+    CAPTURE: 5
 }
 
 const CALLBACK_DELAY_MS = 500;
@@ -41,7 +42,7 @@ class RedField extends Stage {
     launchNewBallWaiting() {
         if (this.state === RED_FIELD_STATUS.GAME_START) {
             this.screen.stopSpin();
-            this.stageText.setText(I18NManager.translate("start_from") + this.screen.getLandmarkText());
+            this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText(), this.screen.getLandmarkText());
         }
         this.getBall().launchFromSpawn();
     }
@@ -90,32 +91,125 @@ class RedField extends Stage {
 
         this.state = RED_FIELD_STATUS.GAME_START;
 
-        this.screen = new Screen();
+        this.screen = new Screen(
+            this.onCaptureStartCaptureAnimationCallback,
+            this.onCaptureStartAnimatedSpritePhaseCallback,
+            this.onCaptureCompleteAnimationStartedCallback,
+            this.onCapturePhaseFinishedCallback,
+            this.captureOnPokemonAnimatedHitCallback
+        );
+
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
 
-        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, false);
-        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, true);
+        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, false);
+        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, true);
 
         this.voltorbs = [];
         this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
-        this.voltorbs.push(new RedFieldVoltorb(182, 152, this.onVoltorbHitCallback));
+        this.voltorbs.push(new RedFieldVoltorb(182, 154, this.onVoltorbHitCallback));
         this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
+
+        this.targetArrows = [];
+        this.voltorbsTargetArrow = new TargetArrow(130, 210, 6);
+        this.targetArrows.push(this.voltorbsTargetArrow);
+
+        this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
+
+        this.arrows = new RedFieldArrows();
+
+        this.lastSensor;
+        this.rightLowerSensor = new Sensor(284, 214, () => {
+            if (this.state === RED_FIELD_STATUS.PLAYING) {
+                this.lastSensor = this.rightLowerSensor;
+            }
+        });
+        this.rightInnerUpperSensor = new Sensor(248, 106, () => {
+            if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.rightLowerSensor) {
+                this.arrows.upgradeCaptureArrows();
+                this.lastSensor = this.rightInnerUpperSensor;
+            }
+        });
+
+    }
+
+    onCaptureStartCaptureAnimationCallback = () => {
+        this.getTimer().disable();
+    }
+
+    onCaptureStartAnimatedSpritePhaseCallback = () => {
+        this.voltorbsTargetArrow.setVisible(false);
+    }
+
+    onCaptureCompleteAnimationStartedCallback = (pokemonCaught) => {
+        //TODO how many, internationalize
+        this.stageText.setScrollText("you got a " + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name), 1000, this.showAfterCaptureJackpot);
+        this.status.addPokemonCaught(pokemonCaught);
+    }
+
+    showAfterCaptureJackpot = () => {
+        this.addPointsAndShowText("jackpot", 123456, 1000);
+    }
+
+    onCapturePhaseFinishedCallback = () => {
+        this.state = RED_FIELD_STATUS.PLAYING;
+    }
+
+    captureOnPokemonAnimatedHitCallback = () => {
+        this.addPointsAndShowText("hit", POINTS.CAPTURE_HIT);
+    }
+
+
+    onBellsproutEatCallback = () => {
+        this.status.bellsproutOnBall++;
+        this.status.addPoints(POINTS.BELLSPROUT_POINTS);
+        if (this.state === RED_FIELD_STATUS.PLAYING && this.arrows.captureArrowsLevel >= 2) {
+            this.startCaptureSequence();
+        }
+    }
+
+    startCaptureSequence() {
+        this.state = RED_FIELD_STATUS.CAPTURE;
+        this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
+        this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
+
+        this.screen.startCapture(this.arrows.captureArrowsLevel);
+        this.arrows.resetCaptureArrows();
+        this.voltorbsTargetArrow.setVisible(true);
+    }
+
+    doOnCaptureTimeupCallback = () => {
+        if (this.state === RED_FIELD_STATUS.CAPTURE) {
+            this.getTimer().disable();
+            this.stageText.setScrollText(I18NManager.translate("pokemon_ran_away"), "", 1000, () => {
+                this.screen.setState(SCREEN_STATE.LANDSCAPE);
+                this.state = RED_FIELD_STATUS.PLAYING;
+            });
+        }
     }
 
     onVoltorbHitCallback = () => {
         this.status.addPoints(POINTS.VOLTORB_BUMPER);
+        if (this.state === RED_FIELD_STATUS.CAPTURE && this.voltorbsTargetArrow.visible) {
+            this.screen.flipCapture();
+            this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
+        }
     }
 
     draw() {
         super.draw();
         this.updateScreen();
 
+        this.updateSensors();
+        this.targetArrows.forEach(ta => ta.update());
+
         this.leftTravelDiglett.update(this.getBall().sprite);
         this.rightTravelDiglett.update(this.getBall().sprite);
 
         this.voltorbs.forEach(v => v.update(this.getBall().sprite));
+        this.updateArrows();
+        this.bellsprout.update(this.getBall().sprite);
 
-        if (this.state === RED_FIELD_STATUS.PLAYING) {
+        if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE) {
             this.checkForBallLoss();
             this.updateDitto();
 
@@ -129,6 +223,15 @@ class RedField extends Stage {
 
     }
 
+    updateArrows() {
+        this.arrows.update(this.state !== RED_FIELD_STATUS.CAPTURE);
+    }
+
+    updateSensors() {
+        this.rightLowerSensor.update(this.getBall().sprite);
+        this.rightInnerUpperSensor.update(this.getBall().sprite);
+    }
+
     updateDitto() {
         if (this.ditto.isOpen() && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
             this.ditto.close();
@@ -136,22 +239,33 @@ class RedField extends Stage {
     }
 
     updateScreen() {
-        this.screen.update();
+        this.screen.update(this.getBall());
     }
 
     checkForBallLoss() {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
+            if (this.state === RED_FIELD_STATUS.CAPTURE) {
+                this.interruptCapture();
+            }
             this.status.balls--;
             this.state = RED_FIELD_STATUS.BALL_LOST;
             Audio.playSFX('sfx24');
-            this.stageText.setText(I18NManager.translate("end_of_ball_bonus"), 1000, () => { this.ballBonusScreen.show(); });
+            this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
         }
+    }
+
+    interruptCapture() {
+        this.getTimer().disable();
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        this.state = RED_FIELD_STATUS.PLAYING;
+        this.voltorbsTargetArrow.setVisible(false);
     }
 
     createNewBallOrEndStage() {
         if (this.status.balls > 0) {
             this.attachBall(Ball.spawnStageBall());
             this.ditto.open();
+            this.arrows.setCaptureArrowsLevel(2);
             this.state = RED_FIELD_STATUS.NEW_BALL_WAITING
         } else {
             this.state = RED_FIELD_STATUS.GAME_OVER;

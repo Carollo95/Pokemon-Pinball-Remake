@@ -12,7 +12,7 @@ const DEFAULT_ANIMATION_DELAY = 12; //Default delay between frames of animation
 class AssetManager {
   constructor() {
     this.imageCache = new Map();    // path -> p5.Image
-    this.animTemplates = new Map(); // animKey -> { frames: [p5.Image], delay }
+    this.animTemplates = new Map(); // animKey -> p5.play.Animation
     this.backgrounds = new Map();   // bgKey -> p5.Image
   }
 
@@ -58,6 +58,30 @@ class AssetManager {
     }
 
     throw new Error(`Animation not registered and no fallback provided: ${animKey}`);
+  }
+
+  dispose() {
+    for (const [, anim] of this.animTemplates) {
+      try {
+        if (anim) {
+          if (anim.images && Array.isArray(anim.images)) anim.images.length = 0;
+          if (anim.frames && Array.isArray(anim.frames)) anim.frames.length = 0;
+          if (anim.spriteSheet) anim.spriteSheet = null;
+        }
+      } catch {}
+    }
+    this.animTemplates.clear();
+
+    for (const [, img] of this.imageCache) {
+      try {
+        if (img && img.canvas) {
+          img.canvas.width = 1;
+          img.canvas.height = 1;
+        }
+      } catch {}
+    }
+    this.imageCache.clear();
+    this.backgrounds.clear();
   }
 }
 
@@ -177,6 +201,7 @@ function preloadAnimations() {
   }
 
   Asset.registerAnimationTemplate('stageTextDot', 'assets/img/stage-text/dot', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextApostrophe', 'assets/img/stage-text/apostrophe', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextColon', 'assets/img/stage-text/colon', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextExcl', 'assets/img/stage-text/excl', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextSpace', 'assets/img/stage-text/space', 16, 16, 1);
@@ -192,6 +217,9 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('stageTextDotSeparator', 'assets/img/stage-text/dot_separator', 4, 16, 1);
   Asset.registerAnimationTemplate('stageTextSeparator', 'assets/img/stage-text/separator', 4, 16, 1);
 
+  Asset.registerAnimationTemplate('catch', 'assets/img/field/catch', 96, 16, 4);
+  Asset.registerAnimationTemplate('capture-puff', 'assets/img/field/capture_puff', 96, 112, 4);
+  Asset.registerAnimationTemplate('captured-ball', 'assets/img/field/captured_ball', 96, 16, 4);
 
   Asset.registerAnimationTemplate('redArea1Landmarks', 'assets/img/landmarks/red_landmarks_area_1', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea1LandmarksBW', 'assets/img/landmarks/red_landmarks_area_1_bw', 96, 64, 7);
@@ -210,7 +238,37 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldVoltorbIdle', 'assets/img/red-field/voltorb_idle', 32, 32, 1);
   Asset.registerAnimationTemplate('redFieldVoltorbHurt', 'assets/img/red-field/voltorb_hurt', 32, 32, 1, 16);
 
+  Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 48, 64, 4);
+  Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
+  Asset.registerAnimationTemplate('redFieldTargetArrows', 'assets/img/red-field/target_arrows', 16, 16, 14);
+  Asset.registerAnimationTemplate('redFieldBellsproutIdle', 'assets/img/red-field/bellsprout_idle', 64, 80, 2);
+  Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
+  Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
+
+  for (let i = 1; i <= 151; i++) {
+    Asset.registerAnimationTemplate(pad3(i), 'assets/img/dex/' + pad3(i), 96, 64, 1);
+    Asset.registerAnimationTemplate(pad3(i) + '-bw', 'assets/img/dex/' + pad3(i) + '-bw', 96, 64, 1);
+  }
+
+  for (let i = 0; i < BASIC_POKEMON.length; i++) {
+    Asset.registerAnimationTemplate(BASIC_POKEMON[i].id + '-idle', 'assets/img/dex/' + BASIC_POKEMON[i].id + '-idle', 64, 64, 2);
+    Asset.registerAnimationTemplate(BASIC_POKEMON[i].id + '-idle-hurt', 'assets/img/dex/' + BASIC_POKEMON[i].id + '-idle-hurt', 64, 64, 3);
+  }
 }
 
+function pad3(num) {
+  return String(num).padStart(3, '0');
+}
+
+if (typeof window !== 'undefined') {
+  if (window.__ASSET_SINGLETON__ && window.__ASSET_SINGLETON__ !== Asset) {
+    try { window.__ASSET_SINGLETON__.dispose(); } catch {}
+  }
+  window.__ASSET_SINGLETON__ = Asset;
+
+  window.addEventListener('pagehide', () => {
+    try { Asset.dispose(); } catch {}
+  }, { once: true });
+}
 
 

@@ -1,6 +1,5 @@
 // Centralized audio system using native Web Audio API for performance.
 
-
 class AudioManager {
     constructor() {
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -49,6 +48,14 @@ class AudioManager {
         });
     }
 
+    registerCRY(id, path, { baseVolume = SFX_VOLUME } = {}) {
+        return this._loadAudio(`${path}.ogg`).then(buffer => {
+            if (buffer) {
+                this.sfx[id] = { buffer, baseVolume };
+            }
+        });
+    }
+
     // --- Playback Control ---
 
 
@@ -58,7 +65,7 @@ class AudioManager {
         }
 
         if (this.currentMusic && this.currentMusic.id === id && !restart) {
-            return; // Already playing and restart is false
+            return;
         }
 
         this.stopMusic({ fade });
@@ -86,6 +93,11 @@ class AudioManager {
             gainNode.gain.value = track.baseVolume;
         }
 
+        source.onended = () => {
+            try { source.disconnect(); } catch {}
+            try { gainNode.disconnect(); } catch {}
+        };
+
         this.currentMusic = { id, source, gainNode, baseVolume: track.baseVolume };
     }
 
@@ -95,17 +107,22 @@ class AudioManager {
         const music = this.currentMusic;
         this.currentMusic = null;
 
+        const doStopAndDisconnect = () => {
+            try { music.source.stop(); } catch {}
+            try { music.source.disconnect(); } catch {}
+            try { music.gainNode.disconnect(); } catch {}
+        };
+
         if (fade) {
             music.gainNode.gain.setValueAtTime(music.gainNode.gain.value, this.audioContext.currentTime);
             music.gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + 1.0);
             setTimeout(() => {
-                // Checking if source is still valid before stopping
-                if (music.source.context && music.source.context.state === 'running') {
-                   music.source.stop();
+                if (music.source.context && music.source.context.state !== 'closed') {
+                    doStopAndDisconnect();
                 }
             }, 1000);
         } else {
-            music.source.stop();
+            doStopAndDisconnect();
         }
     }
 
@@ -128,7 +145,17 @@ class AudioManager {
 
         source.connect(gainNode);
         gainNode.connect(this.sfxGain);
+
+        source.onended = () => {
+            try { source.disconnect(); } catch {}
+            try { gainNode.disconnect(); } catch {}
+        };
+
         source.start(0);
+    }
+
+    playCry(id) {
+        this.playSFX("cry-" + id);
     }
 
     interruptWithSFX(id) {
@@ -155,6 +182,8 @@ class AudioManager {
         gainNode.connect(this.sfxGain);
 
         source.onended = () => {
+            try { source.disconnect(); } catch {}
+            try { gainNode.disconnect(); } catch {}
             if (musicToResumeId) {
                 this.playMusic(musicToResumeId, { restart: true, fade: true });
             }
@@ -175,6 +204,32 @@ class AudioManager {
         this.isSfxMuted = mute;
         this.sfxGain.gain.setValueAtTime(mute ? 0 : 1, this.audioContext.currentTime);
     }
+
+    dispose() {
+        try {
+            this.stopMusic({ fade: false });
+        } catch {}
+
+        try { this.musicGain.disconnect(); } catch {}
+        try { this.sfxGain.disconnect(); } catch {}
+
+        for (const k in this.musicTracks) {
+            if (this.musicTracks[k]) this.musicTracks[k].buffer = null;
+            delete this.musicTracks[k];
+        }
+        for (const k in this.sfx) {
+            if (this.sfx[k]) this.sfx[k].buffer = null;
+            delete this.sfx[k];
+        }
+
+        if (this.audioContext && this.audioContext.state !== 'closed') {
+            try { this.audioContext.close(); } catch {}
+        }
+
+        this.audioContext = null;
+        this.musicGain = null;
+        this.sfxGain = null;
+    }
 }
 
 // --- Singleton and Preload Setup ---
@@ -186,6 +241,15 @@ function getAudio() {
         Audio = new AudioManager();
     }
     return Audio;
+}
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('pagehide', () => {
+        if (Audio) {
+            try { Audio.dispose(); } catch {}
+            Audio = null;
+        }
+    }, { once: true });
 }
 
 function preloadAudioAssets() {
@@ -203,22 +267,22 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('cloneStage', 'assets/audio/CloneStage_Mewtwo', { loop: true }));
 
     // SFX
-    promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red stage ditto close
+    promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red field ditto close
     promises.push(audio.registerSFX('sfx01', 'assets/audio/sfx/SFX-01'));
     promises.push(audio.registerSFX('sfx02', 'assets/audio/sfx/SFX-02'));
     promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03'));
-    promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04'));
-    promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05'));
-    promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06'));
+    promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); 
+    promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05')); //Red field Bellsprout eat
+    promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //Red field Bellsprout spit AND capture pokemon hit
     promises.push(audio.registerSFX('sfx07', 'assets/audio/sfx/SFX-07'));
     promises.push(audio.registerSFX('sfx08', 'assets/audio/sfx/SFX-08')); //Bonus scenario hit
     promises.push(audio.registerSFX('sfx09', 'assets/audio/sfx/SFX-09'));
     promises.push(audio.registerSFX('sfx0A', 'assets/audio/sfx/SFX-0A')); //Ball launch
-    promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B'));
+    promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B')); //Pokemon entering ball
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
     promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D'));
-    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //Voltorb Bumper hit
-    promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //Travel Digeltt hit
+    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //red field Voltorb Bumper hit
+    promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //red field Travel Diglett hit
     promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10'));
     promises.push(audio.registerSFX('sfx11', 'assets/audio/sfx/SFX-11'));
     promises.push(audio.registerSFX('sfx12', 'assets/audio/sfx/SFX-12'));
@@ -244,7 +308,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26'));
     promises.push(audio.registerSFX('sfx27', 'assets/audio/sfx/SFX-27'));
     promises.push(audio.registerSFX('sfx28', 'assets/audio/sfx/SFX-28'));
-    promises.push(audio.registerSFX('sfx29', 'assets/audio/sfx/SFX-29'));
+    promises.push(audio.registerSFX('sfx29', 'assets/audio/sfx/SFX-29')); //Pokemon captured
     promises.push(audio.registerSFX('sfx2A', 'assets/audio/sfx/SFX-2A')); //Bonus stage clear
     promises.push(audio.registerSFX('sfx2B', 'assets/audio/sfx/SFX-2B')); //Gengar step
     promises.push(audio.registerSFX('sfx2C', 'assets/audio/sfx/SFX-2C')); //Gastly hurt
@@ -268,7 +332,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx3E', 'assets/audio/sfx/SFX-3E')); //Bonus ball screen progress
     promises.push(audio.registerSFX('sfx3F', 'assets/audio/sfx/SFX-3F')); //Close gate on bonus level
     promises.push(audio.registerSFX('sfx40', 'assets/audio/sfx/SFX-40'));
-    promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41'));
+    promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41')); //Ball Wiggle
     promises.push(audio.registerSFX('sfx42', 'assets/audio/sfx/SFX-42'));
     promises.push(audio.registerSFX('sfx43', 'assets/audio/sfx/SFX-43'));
     promises.push(audio.registerSFX('sfx44', 'assets/audio/sfx/SFX-44'));
@@ -281,7 +345,10 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx4B', 'assets/audio/sfx/SFX-4B')); //Timer 5s
     promises.push(audio.registerSFX('sfx4C', 'assets/audio/sfx/SFX-4C'));
     promises.push(audio.registerSFX('sfx4D', 'assets/audio/sfx/SFX-4D'));
-    promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4E')); //Gengar cry
+
+    for (let i = 1; i <= 151; i++) {
+        promises.push(audio.registerCRY("cry-" + pad3(i), 'assets/audio/cries/' + pad3(i)));
+    }
 
     return Promise.all(promises);
 }
