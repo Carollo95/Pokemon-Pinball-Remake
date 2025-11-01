@@ -79,6 +79,13 @@ const CheatEngine = {
         if ((stage instanceof RedField)) {
             stage.arrows.upgradeCaptureArrows();
         }
+    },
+
+    activateStaryu() {
+        if ((stage instanceof RedField)) {
+            stage.staryu.invert();
+
+        }
     }
 
 }
