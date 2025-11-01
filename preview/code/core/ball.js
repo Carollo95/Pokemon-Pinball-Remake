@@ -36,7 +36,8 @@ class Ball {
             this.sprite.ani.playing = false;
             return;
         }
-
+        
+        //TODO is any of this crap in use???
         const t = Math.min(absVelX / MAX_VEL, 1);
         const speedMagnitude = t * MAX_ANI_SPEED;
 
@@ -65,9 +66,25 @@ class Ball {
         Audio.playSFX('sfx0A');
     }
 
-    getBallMultiplier(){
+    getBallMultiplier() {
         //TODO add other types of balls
         return 1;
+    }
+
+    stopOnCoordinates(x, y) {
+        this.sprite.pos.x = x;
+        this.sprite.pos.y = y;
+        this.sprite.velocity.x = 0;
+        this.sprite.velocity.y = 0;
+        this.sprite.rotation = 0;
+        this.sprite.rotationSpeed = 0;
+        this.sprite.physics = "none";
+        this.sprite.ani.frame = 0;
+    }
+
+    regainPhysics() {
+        this.sprite.physics = "dynamic";
+        this.sprite.velocity.x = 0.5;
     }
 
     /** Creates and returns a new ball for a bonus level. */

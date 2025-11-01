@@ -68,6 +68,7 @@ class Stage {
 
         if (this.getBall()) this.getBall().update();
         if (this.getFlippers()) this.getFlippers().update();
+        if (this.getTimer()) this.getTimer().update();
         if (this.getStageText()) this.getStageText().draw();
     }
 
@@ -77,6 +78,11 @@ class Stage {
         } else {
             console.log("Unable to add points, missing status or ball reference.");
         }
+    }
+
+    addPointsAndShowText(text, pts) {
+        if(this.getStageText()) this.stageText.showTextWithPoints(text, pts);
+        this.addPoints(pts);
     }
 
     createScenarioGeometry(positions) {

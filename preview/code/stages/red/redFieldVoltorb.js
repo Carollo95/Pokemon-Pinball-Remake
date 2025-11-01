@@ -20,11 +20,11 @@ class RedFieldVoltorb {
         this.onHitCallback = onHitCallback;
         this.sprite = new Sprite(x, y, 28, "static");
         this.sprite.debug = DEBUG;
+        this.sprite.layer = FIELD_ELEMENTS_LAYER;
         this.lastShakeTime = 0;
         this.nextShakeTime = this.getNextShakeTime();
         this.state = STATE.STILL;
 
-        this.sprite.layer = SPRITE_LAYER;
         this.sprite.addAni('hurt', Asset.getAnimation('redFieldVoltorbHurt'));
         this.sprite.addAni('idle', Asset.getAnimation('redFieldVoltorbIdle'));
     }

@@ -9,7 +9,7 @@ class StageStatus {
 
     constructor() {
         this.points = 0;
-        this.captured = 0;
+        this.captured = []
         this.activeThunder = false;
         this.balls = 4;
 
@@ -44,6 +44,11 @@ class StageStatus {
     
     getBonusForSpinnerTurnsOnBall() {
         return this.spinnerTurnsOnBall * BONUS_FOR_SPINNER_TURNS_ON_BALL;
+    }
+
+    addPokemonCaught(pokemon){
+        this.pokemonCaughtOnBall++;
+        this.captured.push(pokemon);
     }
 
     startNewBall() {

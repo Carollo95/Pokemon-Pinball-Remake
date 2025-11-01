@@ -28,6 +28,7 @@ class StageCharacter {
             this.sprite.addAnimation('$/', Asset.getAnimation('stageTextThunder'));
             this.sprite.addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
             this.sprite.addAnimation('$$', Asset.getAnimation('stageTextDot'));
+            this.sprite.addAnimation('$`', Asset.getAnimation('stageTextApostrophe'));
             this.sprite.addAnimation('$!', Asset.getAnimation('stageTextExcl'));
             this.sprite.addAnimation('$:', Asset.getAnimation('stageTextColon'));
             this.sprite.addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
