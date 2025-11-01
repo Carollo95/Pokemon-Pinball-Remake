@@ -265,6 +265,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('catStage', 'assets/audio/CatStage_Meowth'));
     promises.push(audio.registerMusic('sealStage', 'assets/audio/SealStage_Seel'));
     promises.push(audio.registerMusic('cloneStage', 'assets/audio/CloneStage_Mewtwo', { loop: true }));
+    promises.push(audio.registerMusic('redField', 'assets/audio/Red_Field_Theme', { loop: true }));
+    promises.push(audio.registerMusic('catchEmEvolutionModeRedField', 'assets/audio/Catch_em_Evolution_Mode_Red_Field', { loop: true }));
 
     // SFX
     promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red field ditto close
