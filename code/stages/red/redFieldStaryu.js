@@ -3,13 +3,13 @@ const RED_FIELD_STATYU_COOLDOWN = 1000;
 class RedFieldStaryu {
 
     constructor() {
-        this.sprite = new Sprite(110, 230, 48, 48, "static");
+        this.sprite = new Sprite(110, 230, 48, 48, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.addAnimation("inactive", Asset.getAnimation('redFieldStaryuInactive'));
         this.sprite.addAnimation("active", Asset.getAnimation('redFieldStaryuActive'));
 
-        this.miniSprite = new Sprite(16, 314, 32, 32, "static");
+        this.miniSprite = new Sprite(16, 314, 32, 32, "none");
         this.miniSprite.debug = DEBUG;
         this.miniSprite.layer = SCENARIO_LAYER;
         this.miniSprite.addAnimation("inactive", Asset.getAnimation('redFieldSmallStaryuInactive'));
