@@ -19,15 +19,74 @@ class RedFieldStaryu {
         this.sensor.debug = DEBUG;
         this.sensor.layer = SCENARIO_LAYER;
         this.sensor.visible = false;
-        
-        this.status = true;
+
+        this.active = true;
 
         this.lastChange = 0;
+
+        this.leftBlocker = this.createLeftBlocker();
+        this.centerBlocker = this.createCenterBlocker();
+        this.rightBlocker = this.createRightBlocker();
+    }
+
+    createLeftBlocker() {
+        let leftBlocker = new Sprite([
+            [100, 132],
+            [113, 114],
+            [131, 98],
+            [131, 128],
+            [118, 136],
+            [100, 153],
+            [100, 132]
+
+        ], "static");
+        leftBlocker.debug = DEBUG;
+        leftBlocker.layer = SCENARIO_LAYER;
+        leftBlocker.addAnimation("blocked", Asset.getAnimation('redFieldUpgradeBlockerLeft'));
+
+        return leftBlocker
+    }
+
+    createCenterBlocker() {
+        let centerBlocker = new Sprite([
+            [144, 94],
+            [160, 89],
+            [175, 88],
+            [175, 115],
+            [160, 120],
+            [144, 126],
+            [144, 94]
+
+        ], "static");
+        centerBlocker.debug = DEBUG;
+        centerBlocker.layer = SCENARIO_LAYER;
+        centerBlocker.addAnimation("blocked", Asset.getAnimation('redFieldUpgradeBlockerCenter'));
+
+        return centerBlocker;
+    }
+
+    createRightBlocker() {
+        let rightBlocker = new Sprite([
+            [188, 89],
+            [205, 92],
+            [219, 99],
+            [219, 153],
+            [214, 131],
+            [204, 123],
+            [192, 117],
+            [188, 115],
+            [188, 89]
+        ], "static");
+        rightBlocker.debug = DEBUG;
+        rightBlocker.layer = SCENARIO_LAYER;
+        rightBlocker.addAnimation("blocked", Asset.getAnimation('redFieldUpgradeBlockerRight'));
+
+        return rightBlocker;
     }
 
 
     update(ballSprite) {
-        if(ballSprite.overlaps(this.sensor)&& this.hasPassedCooldown()) {
+        if (ballSprite.overlaps(this.sensor) && this.hasPassedCooldown()) {
             this.invert();
         }
     }
@@ -38,13 +97,19 @@ class RedFieldStaryu {
 
     invert() {
         this.lastChange = millis();
-        this.status = !this.status;
-        if (this.status) {
+        this.active = !this.active;
+        if (this.active) {
             this.sprite.changeAnimation('active');
             this.miniSprite.changeAnimation('active');
+            this.leftBlocker = this.createLeftBlocker();
+            this.centerBlocker = this.createCenterBlocker();
+            this.rightBlocker = this.createRightBlocker();
         } else {
             this.sprite.changeAnimation('inactive');
             this.miniSprite.changeAnimation('inactive');
+            this.leftBlocker.remove();
+            this.centerBlocker.remove();
+            this.rightBlocker.remove();
         }
     }
 
