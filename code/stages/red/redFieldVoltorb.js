@@ -4,6 +4,7 @@ const VOLTORB_BOUNCE_VELOCITY_MULTIPLIER_WEAK = -1.3;
 
 const VOLTORB_SHAKE_TIME = 1000;
 const VOLTORB_SHAKE_DURATION = 200;
+const VOLTORB_COOLDOWN_TIME = 1100;
 
 const STATE = {
     STILL: 0,
@@ -21,7 +22,7 @@ class RedFieldVoltorb {
         this.sprite = new Sprite(x, y, 28, "static");
         this.sprite.debug = DEBUG;
         this.sprite.layer = FIELD_ELEMENTS_LAYER;
-        this.lastShakeTime = 0;
+        this.lastHitTime = 0;
         this.nextShakeTime = this.getNextShakeTime();
         this.state = STATE.STILL;
 
@@ -30,13 +31,14 @@ class RedFieldVoltorb {
     }
 
     update(ball) {
-        if (this.sprite.collide(ball) && this.sprite.ani.name !== "hurt") {
+        if (this.sprite.collide(ball) && this.hasPassedHitCooldown()) {
 
             this.bounceBall(ball);
             this.onHitCallback();
             this.sprite.changeAnimation("hurt");
             Audio.playSFX('sfx0E');
 
+            this.lastHitTime = millis();
             this.nextShakeTime = millis();
 
             this.sprite.ani.frame = 0;
@@ -51,8 +53,12 @@ class RedFieldVoltorb {
         this.updateShake();
     }
 
+    hasPassedHitCooldown(){
+        return millis() - this.lastHitTime > VOLTORB_COOLDOWN_TIME;
+    }
+
     getNextShakeTime() {
-        return millis() + VOLTORB_SHAKE_TIME + random(0, 2000);
+        return millis() + VOLTORB_SHAKE_TIME + random(1000, 2000);
     }
 
     updateShake() {
@@ -60,7 +66,6 @@ class RedFieldVoltorb {
         // start shake
         if (now >= this.nextShakeTime) {
             this.shakeStartTime = now;
-            this.lastShakeTime = now;
             this.nextShakeTime = this.getNextShakeTime();
         }
         // shaking
@@ -75,6 +80,7 @@ class RedFieldVoltorb {
 
     shake() {
         this.sprite.x = frameCount % 4 > 2 ? this.x : this.shakeX;
+        this.sprite.y = frameCount % 4 > 2 ? this.y : this.y + 2;
     }
 
     bounceBall(ball) {
