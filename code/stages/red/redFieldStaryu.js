@@ -24,9 +24,6 @@ class RedFieldStaryu {
 
         this.lastChange = 0;
 
-        this.leftBlocker = this.createLeftBlocker();
-        this.centerBlocker = this.createCenterBlocker();
-        this.rightBlocker = this.createRightBlocker();
     }
 
     createLeftBlocker() {
@@ -101,15 +98,15 @@ class RedFieldStaryu {
         if (this.active) {
             this.sprite.changeAnimation('active');
             this.miniSprite.changeAnimation('active');
-            this.leftBlocker = this.createLeftBlocker();
-            this.centerBlocker = this.createCenterBlocker();
-            this.rightBlocker = this.createRightBlocker();
-        } else {
-            this.sprite.changeAnimation('inactive');
-            this.miniSprite.changeAnimation('inactive');
             this.leftBlocker.remove();
             this.centerBlocker.remove();
             this.rightBlocker.remove();
+        } else {
+            this.sprite.changeAnimation('inactive');
+            this.miniSprite.changeAnimation('inactive');
+            this.leftBlocker = this.createLeftBlocker();
+            this.centerBlocker = this.createCenterBlocker();
+            this.rightBlocker = this.createRightBlocker();
         }
     }
 
