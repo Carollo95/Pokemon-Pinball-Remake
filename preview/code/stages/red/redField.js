@@ -117,6 +117,8 @@ class RedField extends Stage {
 
         this.arrows = new RedFieldArrows();
 
+        this.staryu = new RedFieldStaryu();
+
         this.lastSensor;
         this.rightLowerSensor = new Sensor(284, 214, () => {
             if (this.state === RED_FIELD_STATUS.PLAYING) {
@@ -213,6 +215,8 @@ class RedField extends Stage {
         this.voltorbs.forEach(v => v.update(this.getBall().sprite));
         this.updateArrows();
         this.bellsprout.update(this.getBall().sprite);
+
+        this.staryu.update(this.getBall().sprite);
 
         if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE) {
             this.checkForBallLoss();

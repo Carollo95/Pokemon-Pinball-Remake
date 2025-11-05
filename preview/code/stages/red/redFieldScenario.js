@@ -88,7 +88,7 @@ const RED_FIELD_RIGHT_SCENARIO_BORDER = [
 ];
 
 const RED_FIELD_TOP_THINGY = [
-    [234, 78],
+    [234, 74],
     [210, 60],
     [189, 50],
     [174, 50],
@@ -102,8 +102,9 @@ const RED_FIELD_TOP_THINGY = [
     [144, 60],
     [168, 60],
     [192, 62],
-    [216, 70],
-    [234, 78]
+    [206, 64],
+    [216, 68],
+    [234, 74]
 ];
 
 const RED_FIELD_LEFT_SIDE_FLIPPERS = [
@@ -173,19 +174,19 @@ const RED_FIELD_BALL_UPGRADE_SEPARATOR_LEFT = [
 
 
 const RED_FIELD_BALL_UPGRADE_SEPARATOR_RIGHT = [
-    [182, 90],
-    [186, 94],
+    [182, 88],
+    [186, 92],
     [186, 108],
     [182, 112],
     [178, 108],
-    [178, 94],
-    [182, 90]
+    [178, 92],
+    [182, 88]
 ];
 
 const RED_FIELD_BELLSPROUT_BALL_UPGRADE = [
     [212, 224],
     [224, 168],
-    [224, 104],
+    [224, 100],
     [234, 108],
     [252, 126],
     [264, 148],
