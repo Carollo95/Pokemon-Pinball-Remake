@@ -20,7 +20,11 @@ class RedFieldStaryu {
         this.sensor.layer = SCENARIO_LAYER;
         this.sensor.visible = false;
 
-        this.active = true;
+        this.active = false;
+
+        this.leftBlocker = this.createLeftBlocker();
+        this.centerBlocker = this.createCenterBlocker();
+        this.rightBlocker = this.createRightBlocker();
 
         this.lastChange = 0;
 
