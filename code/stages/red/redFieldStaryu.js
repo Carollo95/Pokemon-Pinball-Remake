@@ -99,6 +99,7 @@ class RedFieldStaryu {
     invert() {
         this.lastChange = millis();
         this.active = !this.active;
+        Audio.playSFX('sfx07');
         if (this.active) {
             this.sprite.changeAnimation('active');
             this.miniSprite.changeAnimation('active');

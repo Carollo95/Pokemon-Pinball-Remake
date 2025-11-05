@@ -276,7 +276,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); 
     promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05')); //Red field Bellsprout eat
     promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //Red field Bellsprout spit AND capture pokemon hit
-    promises.push(audio.registerSFX('sfx07', 'assets/audio/sfx/SFX-07'));
+    promises.push(audio.registerSFX('sfx07', 'assets/audio/sfx/SFX-07')); //Red field Staryu active
     promises.push(audio.registerSFX('sfx08', 'assets/audio/sfx/SFX-08')); //Bonus scenario hit
     promises.push(audio.registerSFX('sfx09', 'assets/audio/sfx/SFX-09'));
     promises.push(audio.registerSFX('sfx0A', 'assets/audio/sfx/SFX-0A')); //Ball launch
