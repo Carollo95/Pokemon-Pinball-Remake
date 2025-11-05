@@ -236,7 +236,14 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldDiglettHurt', 'assets/img/red-field/diglett_hurt', 24, 32, 1);
   Asset.registerAnimationTemplate('redFieldDugtrio', 'assets/img/red-field/dugtrio', 48, 64, 4);
   Asset.registerAnimationTemplate('redFieldVoltorbIdle', 'assets/img/red-field/voltorb_idle', 32, 32, 1);
-  Asset.registerAnimationTemplate('redFieldVoltorbHurt', 'assets/img/red-field/voltorb_hurt', 32, 32, 1, 16);
+  Asset.registerAnimationTemplate('redFieldVoltorbHurt', 'assets/img/red-field/voltorb_hurt', 32, 32, 1);
+  Asset.registerAnimationTemplate('redFieldStaryuActive', 'assets/img/red-field/staryu_active', 48, 48, 1);
+  Asset.registerAnimationTemplate('redFieldStaryuInactive', 'assets/img/red-field/staryu_inactive', 48, 48, 1);
+  Asset.registerAnimationTemplate('redFieldSmallStaryuActive', 'assets/img/red-field/small_staryu_active', 32, 32, 1);
+  Asset.registerAnimationTemplate('redFieldSmallStaryuInactive', 'assets/img/red-field/small_staryu_inactive', 32, 32, 1);
+  Asset.registerAnimationTemplate('redFieldUpgradeBlockerLeft', 'assets/img/red-field/ball_upgrade_blocker_left', 28, 46, 1);
+  Asset.registerAnimationTemplate('redFieldUpgradeBlockerCenter', 'assets/img/red-field/ball_upgrade_blocker_center', 28, 38, 1);
+  Asset.registerAnimationTemplate('redFieldUpgradeBlockerRight', 'assets/img/red-field/ball_upgrade_blocker_right', 28, 54, 1);
 
   Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 48, 64, 4);
   Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
