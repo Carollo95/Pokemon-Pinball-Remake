@@ -138,6 +138,8 @@ class RedField extends Field {
             }
         });
 
+        this.well = new StageWell();
+        
         Audio.playMusic('redField');
     }
 

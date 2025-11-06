@@ -252,10 +252,13 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
   Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
 
-
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusClone', 'assets/img/field/go_to_bonus_clone', 96, 64, 1);
+
+  Asset.registerAnimationTemplate('openWell', 'assets/img/field/open_well', 30, 30, 1);
+  Asset.registerAnimationTemplate('closedWell', 'assets/img/field/closed_well', 30, 30, 1);
+  Asset.registerAnimationTemplate('wellAura', 'assets/img/field/well_aura', 66, 62, 3);
 
   for (let i = 1; i <= 151; i++) {
     Asset.registerAnimationTemplate(pad3(i), 'assets/img/dex/' + pad3(i), 96, 64, 1);
