@@ -281,8 +281,6 @@ class ScreenLandscapes {
         this.sprite.layer = SCENARIO_LAYER;
         this.area = 0;
 
-        this.state = SCREEN_STATE.LANDSCAPE;
-
         this.sprite.addAnimation('Area1', Asset.getAnimation('redArea1Landmarks'));
         this.sprite.addAnimation('Area1BW', Asset.getAnimation('redArea1LandmarksBW'));
         this.sprite.addAnimation('Area2', Asset.getAnimation('redArea2Landmarks'));

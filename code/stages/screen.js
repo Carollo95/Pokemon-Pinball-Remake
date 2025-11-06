@@ -1,12 +1,14 @@
 const SCREEN_STATE = {
     LANDSCAPE: "landscape",
-    CAPTURE: "capture"
+    CAPTURE: "capture",
+    GO_TO_BONUS: "go_to_bonus"
 }
 
-
+const BLINK_TIME_OF_LAST_BALL = 1000;
 
 class Screen {
     constructor(
+        onThreeBallsCallback,
         captureStartCaptureAnimationCallback,
         captureStartAnimatedSpritePhaseCallback,
         captureCompleteAnimationStartedCallback,
@@ -16,23 +18,38 @@ class Screen {
         this.screenLandscapes = new ScreenLandscapes();
         this.screenLandscapes.spinBW();
 
+        this.screenBonus = new ScreenBonus();
+
         this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
         this.screenCapture = new ScreenCapture(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback, captureOnPokemonAnimatedHitCallback);
 
-        this.ballsSprite = new Sprite(160, 404, 96, 16, "none");
-        this.ballsSprite.layer = SCENARIO_LAYER;
-        this.ballsSprite.debug = DEBUG;
-        this.ballsSprite.addAnimation('captured-ball', Asset.getAnimation('captured-ball'));
-        this.ballsSprite.ani.playing = false;
-        this.captureLevel = 0;
-        this.ballsSprite.ani.frame = this.captureLevel;
+        this.ballSprites = []
+
+        for (let i = 0; i < 3; i++) {
+            let ballSprite = new Sprite(128 + i * 32, 404, 32, 16, "none");
+            ballSprite.layer = SCENARIO_LAYER;
+            ballSprite.debug = DEBUG;
+            ballSprite.addAnimation('captured-ball', Asset.getAnimation('captured-ball'));
+            ballSprite.visible = false;
+            this.ballSprites.push(ballSprite);
+        }
+        this.lastBallBlinking = false;
 
         this.state = SCREEN_STATE.LANDSCAPE;
+        this.lastCaptureBallTime = -10000;
+        this.captureLevel = 0;
+
+        this.onThreeBallsCallback = onThreeBallsCallback;
+
+        this.setState(SCREEN_STATE.LANDSCAPE);
     }
 
     update(ballSprite) {
         if (this.state === SCREEN_STATE.LANDSCAPE) {
             this.screenLandscapes.update();
+            this.blinkLastCaptureBallIfNeeded();
+        } else if (this.state === SCREEN_STATE.GO_TO_BONUS) {
+            this.blinkLastCaptureBallIfNeeded();
         } else if (this.state === SCREEN_STATE.CAPTURE) {
             this.screenCapture.update(ballSprite);
         }
@@ -60,11 +77,18 @@ class Screen {
         if (state === SCREEN_STATE.LANDSCAPE) {
             this.screenLandscapes.show(true);
             this.screenCapture.show(false)
-            this.ballsSprite.visible = true;
+            this.screenBonus.show(false);
+            this.updateBallSpritesVisibility();
         } else if (state === SCREEN_STATE.CAPTURE) {
-            this.ballsSprite.visible = false;
             this.screenCapture.show(true);
             this.screenLandscapes.show(false);
+            this.screenBonus.show(false);
+            this.ballSprites.forEach(sprite => sprite.visible = false);
+        } else if (state === SCREEN_STATE.GO_TO_BONUS) {
+            this.screenBonus.show(true);
+            this.screenLandscapes.show(false);
+            this.screenCapture.show(false);
+            this.updateBallSpritesVisibility();
         }
     }
 
@@ -88,9 +112,36 @@ class Screen {
 
     addPokeballsToList(num) {
         this.captureLevel = Math.min(this.captureLevel + num, 3);
-        this.ballsSprite.ani.frame = this.captureLevel;
+        this.lastCaptureBallTime = millis();
+        this.updateBallSpritesVisibility();
+        this.lastBallBlinking = true;
     }
 
+    updateBallSpritesVisibility() {
+        for (let i = 0; i < this.captureLevel; i++) {
+            this.ballSprites[i].visible = true;
+        }
+    }
+
+    blinkLastCaptureBallIfNeeded() {
+        if (this.captureLevel > 0 && this.lastBallBlinking) {
+            if (millis() < (this.lastCaptureBallTime + BLINK_TIME_OF_LAST_BALL)) {
+                EngineUtils.blinkSprite(this.ballSprites[this.captureLevel - 1]);
+            } else {
+                this.ballSprites[this.captureLevel - 1].visible = true;
+                this.lastBallBlinking = false;
+                if (this.captureLevel === 3) {
+                    this.onThreeBallsCallback();
+                }
+            }
+        }
+    }
+
+
+    goToBonusScreen(bonus) {
+        this.screenBonus.setBonus(bonus);
+        this.setState(SCREEN_STATE.GO_TO_BONUS);
+    }
 
 
 }

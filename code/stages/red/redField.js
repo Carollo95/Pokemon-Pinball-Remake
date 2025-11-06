@@ -9,9 +9,12 @@ const RED_FIELD_STATUS = {
     CAPTURE: 5
 }
 
+
+const RED_FIELD_BONUS_ORDER = [FIELD_BONUS.MOLE, FIELD_BONUS.GHOST, FIELD_BONUS.CLONE];
+
 const CALLBACK_DELAY_MS = 500;
 
-class RedField extends Stage {
+class RedField extends Field {
 
     constructor(status) {
         super(status);
@@ -22,6 +25,8 @@ class RedField extends Stage {
         this.attachBall(Ball.spawnStageBall());
         this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
         this.attachStageText(createStageStatusBanner(this.status));
+
+        this.nextBonusLevelIndex = 0;
     }
 
     rightFlipperCallback = () => {
@@ -92,6 +97,7 @@ class RedField extends Stage {
         this.state = RED_FIELD_STATUS.GAME_START;
 
         this.screen = new Screen(
+            this.onThreeBallsCallback,
             this.onCaptureStartCaptureAnimationCallback,
             this.onCaptureStartAnimatedSpritePhaseCallback,
             this.onCaptureCompleteAnimationStartedCallback,
@@ -133,6 +139,14 @@ class RedField extends Stage {
         });
 
         Audio.playMusic('redField');
+    }
+
+    onThreeBallsCallback = () => {
+        this.screen.goToBonusScreen(this.getNextBonusLevel());
+    }
+
+    getNextBonusLevel(){
+        return RED_FIELD_BONUS_ORDER[this.nextBonusLevelIndex % RED_FIELD_BONUS_ORDER.length];
     }
 
     onCaptureStartCaptureAnimationCallback = () => {
