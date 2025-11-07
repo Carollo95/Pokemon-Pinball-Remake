@@ -1,3 +1,5 @@
+const STAGE_WELL_RADIUS = 50;
+
 class StageWell {
     constructor() {
         this.sprite = new Sprite(161, 282, 64, 64, "none");
@@ -13,16 +15,34 @@ class StageWell {
         this.auraSprite.layer = SCENARIO_LAYER;
         this.auraSprite.addAnimation('wellAura', Asset.getAnimation('wellAura'));
         this.auraSprite.animation.visible = false;
+        
+        this.well = new Well(this.sprite.x, this.sprite.y, 5, STAGE_WELL_RADIUS);
+        this.isOpen = false;
+    }
+
+    update(ball){
+        if(this.isOpen){
+            this.well.applyGravity(ball.sprite, ()=>{ball.minimize();});
+        }
     }
 
     open(callback) {
+        this.isOpen=true;
         this.sprite.changeAnimation('openWell');
         this.auraSprite.animation.visible = true;
     }
 
     close() {
+        this.isOpen=false;
         this.sprite.changeAnimation('closedWell');
         this.auraSprite.animation.visible = false;
+    }
+
+    spitBall(ball){
+        this.close();
+        ball.stopOnCoordinates(this.sprite.x, this.sprite.y);
+        ball.regainPhysics();
+        ball.maximize();
     }
 
 }

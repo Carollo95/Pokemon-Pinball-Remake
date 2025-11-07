@@ -139,7 +139,7 @@ class RedField extends Field {
         });
 
         this.well = new StageWell();
-        
+
         Audio.playMusic('redField');
     }
 
@@ -222,6 +222,7 @@ class RedField extends Field {
         super.draw();
         this.updateScreen();
 
+        this.well.update(this.getBall());
         this.updateSensors();
         this.targetArrows.forEach(ta => ta.update());
 

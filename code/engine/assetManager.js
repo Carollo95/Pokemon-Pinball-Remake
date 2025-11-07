@@ -119,6 +119,8 @@ function preloadAnimations() {
 
   // Register animation templates
   Asset.registerAnimationTemplate('animPokeBall', 'assets/img/ball/poke_ball', 32, 32, 8);
+  Asset.registerAnimationTemplate('animPokeBallSmall', 'assets/img/ball/poke_ball_small', 32, 32, 8);
+  Asset.registerAnimationTemplate('animPokeBallSmall2', 'assets/img/ball/poke_ball_small_2', 32, 32, 8);
 
   Asset.registerAnimationTemplate('animLeftFlipperUp', 'assets/img/left_flipper_up', 48, 48, 1);
   Asset.registerAnimationTemplate('animLeftFlipperMiddle', 'assets/img/left_flipper_middle', 48, 48, 1);
@@ -250,7 +252,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldTargetArrows', 'assets/img/red-field/target_arrows', 16, 16, 14);
   Asset.registerAnimationTemplate('redFieldBellsproutIdle', 'assets/img/red-field/bellsprout_idle', 64, 80, 2);
   Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
-  Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
+  Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 3);
 
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);
