@@ -67,6 +67,7 @@ class Ball {
             }else if(this.sprite.animation.name === "pokeBallSmall2"){
                 this.sprite.visible = false;
                 this.minimizing = false;
+                this.onMinimizedCallback();
             }
         }
     }
@@ -123,8 +124,9 @@ class Ball {
         return new Ball(334, 542);
     }
 
-    minimize() {
+    minimize(onMinimizedCallback = () => {}) {
         this.minimizing = true;
+        this.onMinimizedCallback = onMinimizedCallback;
     }
 
     maximize(){

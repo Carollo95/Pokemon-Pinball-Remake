@@ -356,4 +356,9 @@ class ScreenLandscapes {
 
     }
 
+    setLandmark(landmark) {
+        this.currentLandmark = landmark;
+    }
+
+
 }

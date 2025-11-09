@@ -8,6 +8,7 @@ const BLINK_TIME_OF_LAST_BALL = 1000;
 
 class Screen {
     constructor(
+        initialLandmark,
         onThreeBallsCallback,
         captureStartCaptureAnimationCallback,
         captureStartAnimatedSpritePhaseCallback,
@@ -16,7 +17,11 @@ class Screen {
         captureOnPokemonAnimatedHitCallback
     ) {
         this.screenLandscapes = new ScreenLandscapes();
-        this.screenLandscapes.spinBW();
+        if (initialLandmark === undefined || initialLandmark === null) {
+            this.screenLandscapes.spinBW();
+        } else {
+            this.screenLandscapes.setLandmark(initialLandmark);
+        }
 
         this.screenBonus = new ScreenBonus();
 

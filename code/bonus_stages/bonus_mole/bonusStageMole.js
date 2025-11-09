@@ -6,10 +6,9 @@ const MOLE_PHASE = {
 
 class BonusStageMole extends BonusStage {
 
-  constructor(status) {
-    super(status);
+  constructor(status, onEndCallback) {
+    super(status, onEndCallback);
     this.phase = MOLE_PHASE.DIGLETTS;
-    this.millisSinceStageComplete = 0;
 
     this.diglettMatrix = [];
     this.dugtrio = null;
@@ -50,7 +49,7 @@ class BonusStageMole extends BonusStage {
     this.drawStage();
 
     if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-      //TODO end stage
+      if (this.onEndCallback) this.onEndCallback();
     }
   }
 

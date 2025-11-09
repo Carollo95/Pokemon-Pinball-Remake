@@ -16,7 +16,7 @@ const CALLBACK_DELAY_MS = 500;
 
 class RedField extends Field {
 
-    constructor(status) {
+    constructor(status, initialLandmark) {
         super(status);
         this._lastCallbackCall = 0;
 
@@ -27,6 +27,8 @@ class RedField extends Field {
         this.attachStageText(createStageStatusBanner(this.status));
 
         this.nextBonusLevelIndex = 0;
+
+        this.initialLandmark = initialLandmark;
     }
 
     rightFlipperCallback = () => {
@@ -97,6 +99,7 @@ class RedField extends Field {
         this.state = RED_FIELD_STATUS.GAME_START;
 
         this.screen = new Screen(
+            this.initialLandmark,
             this.onThreeBallsCallback,
             this.onCaptureStartCaptureAnimationCallback,
             this.onCaptureStartAnimatedSpritePhaseCallback,
@@ -145,9 +148,18 @@ class RedField extends Field {
 
     onThreeBallsCallback = () => {
         this.screen.goToBonusScreen(this.getNextBonusLevel());
+        this.well.open(() => { 
+            EngineUtils.flashWhite();
+            EngineUtils.startMoleStage(this.onBackFromBonusStageCallback); 
+        });
     }
 
-    getNextBonusLevel(){
+    onBackFromBonusStageCallback = () => {
+        console.log("Back from bonus stage");
+    }
+
+
+    getNextBonusLevel() {
         return RED_FIELD_BONUS_ORDER[this.nextBonusLevelIndex % RED_FIELD_BONUS_ORDER.length];
     }
 
@@ -160,7 +172,7 @@ class RedField extends Field {
     }
 
     onCaptureCompleteAnimationStartedCallback = (pokemonCaught) => {
-        //TODO how many, internationalize
+        //TODO how many points on jackpot, internationalize text
         this.stageText.setScrollText("you got a " + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name), 1000, this.showAfterCaptureJackpot);
         this.status.addPokemonCaught(pokemonCaught);
     }

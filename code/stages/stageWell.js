@@ -22,14 +22,15 @@ class StageWell {
 
     update(ball){
         if(this.isOpen){
-            this.well.applyGravity(ball.sprite, ()=>{ball.minimize();});
+            this.well.applyGravity(ball.sprite, ()=>{ball.minimize(()=>{this.onWellBallCapture();});});
         }
     }
 
-    open(callback) {
+    open(onWellBallCapture) {
         this.isOpen=true;
         this.sprite.changeAnimation('openWell');
         this.auraSprite.animation.visible = true;
+        this.onWellBallCapture = onWellBallCapture;
     }
 
     close() {
