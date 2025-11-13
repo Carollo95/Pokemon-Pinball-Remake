@@ -27,8 +27,8 @@ const GENGAR_SPAWN_Y = 120;
 
 class BonusStageGhost extends BonusStage {
 
-  constructor(status) {
-    super(status);
+  constructor(status, onEndCallback) {
+    super(status, onEndCallback);
 
     // create and attach timer so Stage API exposes it
     this.attachTimer(Timer.createBonusHighTimer(GHOST_STAGE_TIME_MILLIS));
@@ -62,7 +62,7 @@ class BonusStageGhost extends BonusStage {
     this.state = BONUS_STAGE_STATE.PLAYING;
 
     this.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
-    
+
     EngineUtils.flashWhite();
   }
 
@@ -102,7 +102,7 @@ class BonusStageGhost extends BonusStage {
 
     if (this.state === BONUS_STAGE_STATE.WON || this.state === BONUS_STAGE_STATE.LOST) {
       if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-        // TODO: end stage sequence (return to main stage, award points, etc.)
+        super.finishStageSuccessfully();
       }
     }
   }
@@ -325,16 +325,16 @@ class BonusStageGhost extends BonusStage {
 
     //TODO review this condition, why did I do this???
     if (this.gengar.isDefeated && this.gengar.isDefeated()) {
-      this.finishStageSuccessfully();
+      this.finishGhostStageSuccessfully();
     } else if (this.gengar.readyToRespawn && this.gengar.readyToRespawn()) {
-      this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y, () => {this.addPoints(POINTS.GENGAR_HIT_POINTS);});
-      Audio.playCry('cry-094');
+      this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y, () => { this.addPoints(POINTS.GENGAR_HIT_POINTS); });
+      Audio.playCry('094');
     }
 
     return this.gengar;
   }
 
-  finishStageSuccessfully() {
+  finishGhostStageSuccessfully() {
     Audio.stopMusic();
     this.getTimer().disable();
     this.getFlippers().disableFlippers();

@@ -170,11 +170,14 @@ class BonusStage extends Stage {
         Audio.playSFX('sfx2A');
     }
 
-
     loseBonusStage() {
         this.flippers.disableFlippers();
         this.timer.stop();
         this.endStage(BONUS_STAGE_STATE.LOST);
+    }
+
+    finishStageSuccessfully() {
+        if (this.onEndCallback) this.onEndCallback();
     }
 
 }

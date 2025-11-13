@@ -397,7 +397,7 @@ class ScreenLandscapes {
     }
 
     goTo(area, location) {
-        this.currentLandmark = this.landmarkFromAreaAndLocation(AREA_MAP[area], location);
+        this.currentLandmark = this.landmarkFromAreaAndLocation(area, location);
         this.sprite.changeAnimation(AREA_MAP[area]);
         this.sprite.animation.stop();
         this.sprite.animation.frame = location;

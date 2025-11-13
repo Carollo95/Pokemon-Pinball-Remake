@@ -83,29 +83,15 @@ class RedField extends Field {
 
         this.attachBall(Ball.spawnStageBall());
 
-        if (spawnOnWell) {
-            this.closeWell();
-        }
-
         this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
         this.attachStageText(createStageStatusBanner(this.status));
 
         this.ditto = new RedFieldDitto();
 
-        if (spawnOnWell) {
-            this.ditto.close();
-        }
-
         this.speedPad = [];
         this.speedPad.push(new SpeedPad(265, 293));
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
-
-        if (spawnOnWell) {
-            this.state = RED_FIELD_STATUS.PLAYING;
-        } else {
-            this.state = RED_FIELD_STATUS.GAME_START;
-        }
 
         this.screen = new Screen(
             initialLandmark,
@@ -151,6 +137,14 @@ class RedField extends Field {
 
         this.well = new StageWell();
 
+        if (spawnOnWell) {
+            this.state = RED_FIELD_STATUS.PLAYING;
+            this.ditto.close();
+            this.closeWell();
+        } else {
+            this.state = RED_FIELD_STATUS.GAME_START;
+        }
+
         Audio.playMusic('redField');
     }
 
@@ -160,8 +154,14 @@ class RedField extends Field {
     }
 
     goToBonusStageCallback = () => {
-        //TODO change bonus level based on this.bonusLevelIndex
-        EngineUtils.startMoleStage(this.onBackFromBonusStageCallback);
+        let nextLevel = this.getNextBonusLevel();
+        if (nextLevel === FIELD_BONUS.MOLE) {
+            EngineUtils.startMoleStage(this.onBackFromBonusStageCallback);
+        } else if (nextLevel === FIELD_BONUS.GHOST) {
+            EngineUtils.startGhostStage(this.onBackFromBonusStageCallback);
+        } else if (nextLevel === FIELD_BONUS.CLONE) {
+            EngineUtils.startCloneStage(this.onBackFromBonusStageCallback);
+        }
     }
 
     onBackFromBonusStageCallback = () => {
@@ -191,6 +191,7 @@ class RedField extends Field {
     }
 
     showAfterCaptureJackpot = () => {
+        //TODO internationalize
         this.addPointsAndShowText("jackpot", 123456, 1000);
     }
 
@@ -200,6 +201,7 @@ class RedField extends Field {
     }
 
     captureOnPokemonAnimatedHitCallback = () => {
+        //TODO internationalize
         this.addPointsAndShowText("hit", POINTS.CAPTURE_HIT);
     }
 
@@ -298,7 +300,7 @@ class RedField extends Field {
             if (this.state === RED_FIELD_STATUS.CAPTURE) {
                 this.interruptCapture();
             }
-            this.status.balls--;
+            this.status.startNewBall();
             this.state = RED_FIELD_STATUS.BALL_LOST;
             Audio.playSFX('sfx24');
             this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
@@ -326,12 +328,12 @@ class RedField extends Field {
         }
     }
 
-    openWell(callback){
+    openWell(callback) {
         this.well.open(callback);
         //TODO turn on well arrow
     }
 
-    closeWell(){
+    closeWell() {
         this.well.spitBall(this.getBall());
         //TODO turn off well arrow
     }

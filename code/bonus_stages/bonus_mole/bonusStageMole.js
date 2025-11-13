@@ -51,7 +51,7 @@ class BonusStageMole extends BonusStage {
     this.drawStage();
 
     if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-      if (this.onEndCallback) this.onEndCallback();
+      super.finishStageSuccessfully();
     }
   }
 

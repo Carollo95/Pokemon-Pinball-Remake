@@ -10,8 +10,8 @@ const CAT_STAGE_LAST_HIT = {
 
 class BonusStageCat extends BonusStage {
 
-    constructor(status) {
-        super(status);
+    constructor(status, onEndCallback) {
+        super(status, onEndCallback);
         this.lastElementHit = CAT_STAGE_LAST_HIT.CAT;
         this.highLaneCoins = new Array(8);
         this.lowLaneCoins = new Array(6);
@@ -73,7 +73,7 @@ class BonusStageCat extends BonusStage {
         if (this.state === BONUS_STAGE_STATE.LOST || this.getTimer().timeIsUp()) {
             this.meowth.stopAndSmug();
             if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-                //TODO end stage
+                super.finishStageSuccessfully();
             }
         }
     }
