@@ -40,7 +40,7 @@ class BonusStageSeal extends BonusStage {
         this.createNewBonusBall(bonusGateBackground);
         this.applyBallLossPenalty();
     }
-    
+
     applyBallLossPenalty() {
         this.seal1.swim();
         this.seal2.swim();
@@ -58,6 +58,8 @@ class BonusStageSeal extends BonusStage {
         this.attachTimer(Timer.createBonusLowTimer(SEAL_STAGE_TIME_MILLIS));
 
         Audio.playMusic('sealStage');
+
+        EngineUtils.flashWhite();
     }
 
     draw() {

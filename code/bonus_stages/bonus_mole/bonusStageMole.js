@@ -19,9 +19,11 @@ class BonusStageMole extends BonusStage {
     super.createBonusScenarioGeometry(true);
 
     this.createDigletts();
-    this.dugtrio = new Dugtrio(188, 130, () => {this.addPoints(POINTS.DUGTRIO_HIT_POINTS);});
+    this.dugtrio = new Dugtrio(188, 130, () => { this.addPoints(POINTS.DUGTRIO_HIT_POINTS); });
 
     Audio.playMusic('moleDiglett');
+
+    EngineUtils.flashWhite();
   }
 
   createDigletts() {
@@ -40,7 +42,7 @@ class BonusStageMole extends BonusStage {
     ];
 
     this.diglettMatrix = diglettConfig.map(([x, ys, delays]) =>
-      ys.map((y, i) => new Diglett(x, y, timeOfDiggletCreation, delays[i],  () => {this.addPoints(POINTS.DIGLETT_HIT_POINTS);} ))
+      ys.map((y, i) => new Diglett(x, y, timeOfDiggletCreation, delays[i], () => { this.addPoints(POINTS.DIGLETT_HIT_POINTS); }))
     );
   }
 

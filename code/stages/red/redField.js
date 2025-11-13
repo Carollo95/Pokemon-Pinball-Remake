@@ -16,19 +16,13 @@ const CALLBACK_DELAY_MS = 500;
 
 class RedField extends Field {
 
-    constructor(status, initialLandmark) {
+    constructor(status) {
         super(status);
         this._lastCallbackCall = 0;
+        this.nextBonusLevelIndex = 0;
 
         this.background = Asset.getBackground('redFieldBackground');
 
-        this.attachBall(Ball.spawnStageBall());
-        this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
-        this.attachStageText(createStageStatusBanner(this.status));
-
-        this.nextBonusLevelIndex = 0;
-
-        this.initialLandmark = initialLandmark;
     }
 
     rightFlipperCallback = () => {
@@ -65,10 +59,10 @@ class RedField extends Field {
         this.createNewBallOrEndStage();
     }
 
-    setup() {
+    setup(initialLandmark = undefined, spawnOnWell = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
-        //TODO move to geometry
+        //TODO move to ditto
         this.createScenarioGeometry([
             [198, 50],
             [220, 54],
@@ -79,7 +73,6 @@ class RedField extends Field {
             [290, 118],
             [296, 132],
             [300, 158],
-
             [290, 134],
             [272, 108],
             [256, 92],
@@ -88,18 +81,34 @@ class RedField extends Field {
             [198, 50]
         ]);
 
+        this.attachBall(Ball.spawnStageBall());
+
+        if (spawnOnWell) {
+            this.closeWell();
+        }
+
+        this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
+        this.attachStageText(createStageStatusBanner(this.status));
 
         this.ditto = new RedFieldDitto();
+
+        if (spawnOnWell) {
+            this.ditto.close();
+        }
 
         this.speedPad = [];
         this.speedPad.push(new SpeedPad(265, 293));
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
 
-        this.state = RED_FIELD_STATUS.GAME_START;
+        if (spawnOnWell) {
+            this.state = RED_FIELD_STATUS.PLAYING;
+        } else {
+            this.state = RED_FIELD_STATUS.GAME_START;
+        }
 
         this.screen = new Screen(
-            this.initialLandmark,
+            initialLandmark,
             this.onThreeBallsCallback,
             this.onCaptureStartCaptureAnimationCallback,
             this.onCaptureStartAnimatedSpritePhaseCallback,
@@ -125,7 +134,6 @@ class RedField extends Field {
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
         this.arrows = new RedFieldArrows();
-
         this.staryu = new RedFieldStaryu();
 
         this.lastSensor;
@@ -148,16 +156,21 @@ class RedField extends Field {
 
     onThreeBallsCallback = () => {
         this.screen.goToBonusScreen(this.getNextBonusLevel());
-        this.well.open(() => { 
-            EngineUtils.flashWhite();
-            EngineUtils.startMoleStage(this.onBackFromBonusStageCallback); 
-        });
+        this.openWell(this.goToBonusStageCallback);
+    }
+
+    goToBonusStageCallback = () => {
+        //TODO change bonus level based on this.bonusLevelIndex
+        EngineUtils.startMoleStage(this.onBackFromBonusStageCallback);
     }
 
     onBackFromBonusStageCallback = () => {
-        console.log("Back from bonus stage");
+        allSprites.remove();
+        stage = this;
+        this.nextBonusLevelIndex++;
+        stage.setup(this.screen.screenLandscapes.currentLandmark, true);
+        EngineUtils.flashWhite();
     }
-
 
     getNextBonusLevel() {
         return RED_FIELD_BONUS_ORDER[this.nextBonusLevelIndex % RED_FIELD_BONUS_ORDER.length];
@@ -311,5 +324,15 @@ class RedField extends Field {
             this.state = RED_FIELD_STATUS.GAME_OVER;
             console.log("GAME OVER");
         }
+    }
+
+    openWell(callback){
+        this.well.open(callback);
+        //TODO turn on well arrow
+    }
+
+    closeWell(){
+        this.well.close(this.getBall());
+        //TODO turn off well arrow
     }
 }

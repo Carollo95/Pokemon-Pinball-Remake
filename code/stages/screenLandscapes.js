@@ -296,6 +296,7 @@ class ScreenLandscapes {
     }
 
     update() {
+        //TODO why?
         this.playSpinSound();
     }
 
@@ -328,6 +329,15 @@ class ScreenLandscapes {
     }
 
 
+    landmarkFromAreaAndLocation(area, location) {
+        for (const key in RED_LANDMARKS) {
+            if (RED_LANDMARKS[key].index === `${AREA_MAP[area]}-${location}`) {
+                return RED_LANDMARKS[key];
+            }
+        }
+        return undefined;
+    }
+
     getPokemonFromLandmark(level) {
         const rand = parseFloat((Math.random() * 100).toFixed(2));
         let pool = [];
@@ -350,14 +360,47 @@ class ScreenLandscapes {
         return this.currentLandmark ? I18NManager.translate(this.currentLandmark.text) : "";
     }
 
-    progressArea() {
+    progressLandmark() {
         this.area = (this.area + 1) % 6;
-        this.currentLandmark = this.landmarkFromIndex(currentFrame);
+        let newIndexOnArea;
+        if (AREA_MAP[this.area].endsWith(1)) {
+            newIndexOnArea = this.getNextLandmarkOnArea(this.sprite.animation.frame, 7);
+        } else if (AREA_MAP[this.area].endsWith(2)) {
+            newIndexOnArea = this.getNextLandmarkOnArea(this.sprite.animation.frame, 4);
+        } else {
+            newIndexOnArea = this.getNextLandmarkOnArea(this.sprite.animation.frame, 1);
+        }
 
+        this.goTo(this.area, newIndexOnArea);
     }
 
-    setLandmark(landmark) {
-        this.currentLandmark = landmark;
+    getNextLandmarkOnArea(currentLandmark = 0, landmarksOnCurrentArea = 0) {
+        const total = Math.max(1, (landmarksOnCurrentArea));
+        if (total === 1) return 0;
+
+        const options = Array.from({ length: total }, (_, i) => i).filter(n => n !== currentLandmark);
+        if (options.length === 0) return 0;
+
+        return random(options);
+    }
+
+    setLandmarkFromIndex(landmark) {
+        let parsed = landmark.index.replace("Area", "").split("-");
+        const area = parseInt(parsed[0]);
+        const location = parseInt(parsed[1]);
+        this.setLandmark(area, location);
+    }
+
+    setLandmark(area, location) {
+        this.area = area;
+        this.goTo(this.area, location)
+    }
+
+    goTo(area, location) {
+        this.currentLandmark = this.landmarkFromAreaAndLocation(AREA_MAP[area], location);
+        this.sprite.changeAnimation(AREA_MAP[area]);
+        this.sprite.animation.stop();
+        this.sprite.animation.frame = location;
     }
 
 

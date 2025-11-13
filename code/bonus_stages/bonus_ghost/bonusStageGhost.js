@@ -62,6 +62,8 @@ class BonusStageGhost extends BonusStage {
     this.state = BONUS_STAGE_STATE.PLAYING;
 
     this.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
+    
+    EngineUtils.flashWhite();
   }
 
   createBonusScenarioGeometry() {

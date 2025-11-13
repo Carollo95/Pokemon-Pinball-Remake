@@ -20,7 +20,7 @@ class Screen {
         if (initialLandmark === undefined || initialLandmark === null) {
             this.screenLandscapes.spinBW();
         } else {
-            this.screenLandscapes.setLandmark(initialLandmark);
+            this.screenLandscapes.setLandmarkFromIndex(initialLandmark);
         }
 
         this.screenBonus = new ScreenBonus();
@@ -73,8 +73,8 @@ class Screen {
         return this.screenLandscapes.getLandmarkText();
     }
 
-    progressArea() {
-        this.screenLandscapes.progressArea();
+    progressLandmark() {
+        this.screenLandscapes.progressLandmark();
     }
 
     setState(state) {

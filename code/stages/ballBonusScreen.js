@@ -53,7 +53,6 @@ class BallBonusScreen {
     show() {
         this.state = BONUS_BALL_SCREEN_LINES.POKEMON_CAUGHT;
         this.showCurrentPage();
-        console.log("SHOW")
     }
 
     remove() {

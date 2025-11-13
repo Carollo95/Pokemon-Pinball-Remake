@@ -34,6 +34,8 @@ class BonusStageClone extends BonusStage {
     super.createBonusScenarioGeometry(true);
 
     Audio.playMusic('cloneStage');
+
+    EngineUtils.flashWhite();
   }
 
   draw() {
