@@ -330,11 +330,11 @@ class RedField extends Field {
 
     openWell(callback) {
         this.well.open(callback);
-        //TODO turn on well arrow
+        this.arrows.turnOnCaveArrow();
     }
 
     closeWell() {
         this.well.spitBall(this.getBall());
-        //TODO turn off well arrow
+        this.arrows.turnOffCaveArrow();
     }
 }

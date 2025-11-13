@@ -249,6 +249,7 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 48, 64, 4);
   Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
+  Asset.registerAnimationTemplate('redFieldCaveArrow', 'assets/img/red-field/cave_arrow', 26, 22, 2);
   Asset.registerAnimationTemplate('redFieldTargetArrows', 'assets/img/red-field/target_arrows', 16, 16, 14);
   Asset.registerAnimationTemplate('redFieldBellsproutIdle', 'assets/img/red-field/bellsprout_idle', 64, 80, 2);
   Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
