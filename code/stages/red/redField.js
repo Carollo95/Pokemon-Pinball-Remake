@@ -332,7 +332,7 @@ class RedField extends Field {
     }
 
     closeWell(){
-        this.well.close(this.getBall());
+        this.well.spitBall(this.getBall());
         //TODO turn off well arrow
     }
 }
