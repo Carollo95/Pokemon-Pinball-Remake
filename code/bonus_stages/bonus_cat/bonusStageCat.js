@@ -3,15 +3,15 @@ const VICTORY_STAGE_COINS = 20;
 
 const CAT_STAGE_MAX_COINS_ON_SCREEN = 6;
 
-const CAT_STAGE_LAST_HIT ={
+const CAT_STAGE_LAST_HIT = {
     CAT: 0,
     COIN: 1
 }
 
 class BonusStageCat extends BonusStage {
 
-    constructor(status) {
-        super(status);
+    constructor(status, onEndCallback) {
+        super(status, onEndCallback);
         this.lastElementHit = CAT_STAGE_LAST_HIT.CAT;
         this.highLaneCoins = new Array(8);
         this.lowLaneCoins = new Array(6);
@@ -32,18 +32,19 @@ class BonusStageCat extends BonusStage {
         this.meowth = new Meowth(this.onMeowthHitCallback);
         this.coinCounter = new CoinCounter();
         this.createCoins();
+        EngineUtils.flashWhite();
     }
 
     onMeowthHitCallback = () => {
         this.addPoints(POINTS.MEOWTH_HIT_POINTS);
         this.lastElementHit = CAT_STAGE_LAST_HIT.CAT;
-        if(this.currentActiveCoins() < CAT_STAGE_MAX_COINS_ON_SCREEN) {
+        if (this.currentActiveCoins() < CAT_STAGE_MAX_COINS_ON_SCREEN) {
             this.createCoinProjectile(this.meowth.sprite.pos);
         }
     }
 
-    currentActiveCoins(){
-        return this.highLaneCoins.filter(c => !c.disabled).length + this.lowLaneCoins.filter(c => !c.disabled).length +this.flyingCoins.length;
+    currentActiveCoins() {
+        return this.highLaneCoins.filter(c => !c.disabled).length + this.lowLaneCoins.filter(c => !c.disabled).length + this.flyingCoins.length;
     }
 
     createCoins() {
@@ -72,7 +73,7 @@ class BonusStageCat extends BonusStage {
         if (this.state === BONUS_STAGE_STATE.LOST || this.getTimer().timeIsUp()) {
             this.meowth.stopAndSmug();
             if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-                //TODO end stage
+                super.finishStageSuccessfully();
             }
         }
     }

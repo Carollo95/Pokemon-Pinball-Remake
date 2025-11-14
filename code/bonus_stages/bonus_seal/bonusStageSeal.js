@@ -15,8 +15,8 @@ const SEAL_LAST_ACTION = {
 
 class BonusStageSeal extends BonusStage {
 
-    constructor(status) {
-        super(status);
+    constructor(status, onEndCallback) {
+        super(status, onEndCallback);
         this.millisSinceStageComplete = 0;
         this.state = BONUS_STAGE_STATE.PLAYING;
 
@@ -40,7 +40,7 @@ class BonusStageSeal extends BonusStage {
         this.createNewBonusBall(bonusGateBackground);
         this.applyBallLossPenalty();
     }
-    
+
     applyBallLossPenalty() {
         this.seal1.swim();
         this.seal2.swim();
@@ -58,6 +58,8 @@ class BonusStageSeal extends BonusStage {
         this.attachTimer(Timer.createBonusLowTimer(SEAL_STAGE_TIME_MILLIS));
 
         Audio.playMusic('sealStage');
+
+        EngineUtils.flashWhite();
     }
 
     draw() {
@@ -66,8 +68,7 @@ class BonusStageSeal extends BonusStage {
 
         if (this.state === BONUS_STAGE_STATE.LOST || (this.state === BONUS_STAGE_STATE.WON && super.checkBonusBallLoss())) {
             if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-                //TODO end stage
-                console.log("LEVEL COMPLETE");
+                super.finishStageSuccessfully();
             }
         }
     }

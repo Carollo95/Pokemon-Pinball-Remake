@@ -15,11 +15,20 @@ class RedFieldArrows {
         this.bellsproutArrow.layer = SCENARIO_LAYER;
         this.bellsproutArrow.addAni("bellsproutArrow", Asset.getAnimation("redFieldBellsproutArrow"));
         this.bellsproutArrow.ani.playing = false;
+
+
+        this.caveArrow = new Sprite(161, 315, 26, 22, "none");
+        this.caveArrow.debug = DEBUG;
+        this.caveArrow.layer = SCENARIO_LAYER;
+        this.caveArrow.addAni("caveArrow", Asset.getAnimation("redFieldCaveArrow"));
+        this.caveArrow.ani.playing = false;
+        this.caveActive = false;
     }
 
     update(visible) {
         this.blinkCaptureArrows(visible);
         this.blinkBellsproutArrow(visible);
+        this.blinkCaveArrow(visible);
     }
 
     blinkCaptureArrows(visible) {
@@ -44,6 +53,16 @@ class RedFieldArrows {
         }
     }
 
+    blinkCaveArrow(visible) {
+        if (visible) {
+            frameCount % RED_FIELD_ARROWS_BLINK_RATE > RED_FIELD_ARROWS_BLINK_HALF_RATE ?
+                this.caveArrow.ani.frame = 0 :
+                this.caveArrow.ani.frame = this.caveActive ? 1 : 0;
+        } else {
+            this.caveArrow.ani.frame = 0;
+        }
+    }
+
     resetCaptureArrows() {
         this.setCaptureArrowsLevel(0);
     }
@@ -60,4 +79,21 @@ class RedFieldArrows {
         }
     }
 
+    turnOnCaveArrow() {
+        this.caveActive = true;
+    }
+
+    turnOffCaveArrow() {
+        this.caveActive = false;
+    }
+
+    getState(){
+        return {
+            captureArrowsLevel: this.captureArrowsLevel
+        };
+    }
+
+    setState(state){
+        this.setCaptureArrowsLevel(state.captureArrowsLevel);
+    }
 }

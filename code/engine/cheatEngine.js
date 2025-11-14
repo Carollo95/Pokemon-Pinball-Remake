@@ -1,5 +1,5 @@
 let SHOW_FPS = false; // true to show FPS
-let DEBUG = true; //true to start the game on debug mode
+let DEBUG = false; //true to start the game on debug mode
 
 const CheatEngine = {
 
@@ -12,39 +12,27 @@ const CheatEngine = {
     },
 
     startGhostStage() {
-        allSprites.remove();
-        stage = new BonusStageGhost(EngineUtils.getGameStatus());
-        stage.setup();
+        EngineUtils.startGhostStage();
     },
 
     startMoleStage() {
-        allSprites.remove();
-        stage = new BonusStageMole(EngineUtils.getGameStatus());
-        stage.setup();
+        EngineUtils.startMoleStage();
     },
 
     startCatStage() {
-        allSprites.remove();
-        stage = new BonusStageCat(EngineUtils.getGameStatus());
-        stage.setup();
+        EngineUtils.startCatStage();
     },
 
     startSealStage() {
-        allSprites.remove();
-        stage = new BonusStageSeal(EngineUtils.getGameStatus());
-        stage.setup();
+        EngineUtils.startSealStage();
     },
 
     startCloneStage() {
-        allSprites.remove();
-        stage = new BonusStageClone(EngineUtils.getGameStatus());
-        stage.setup();
+        EngineUtils.startCloneStage();
     },
 
     startRedField() {
-        allSprites.remove();
-        stage = new RedField(EngineUtils.getGameStatus());
-        stage.setup();
+        EngineUtils.startRedField();
     },
 
     startCapture() {

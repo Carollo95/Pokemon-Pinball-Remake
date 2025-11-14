@@ -4,8 +4,8 @@ const MEWTWO_POS_Y = 136;
 
 class BonusStageClone extends BonusStage {
 
-  constructor(status) {
-    super(status);
+  constructor(status, onEndCallback) {
+    super(status, onEndCallback);
 
     this.state = BONUS_STAGE_STATE.PLAYING;
     this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y, this.doOnCheckCreateShield, this.doOnMewtwoDefeat);
@@ -34,6 +34,8 @@ class BonusStageClone extends BonusStage {
     super.createBonusScenarioGeometry(true);
 
     Audio.playMusic('cloneStage');
+
+    EngineUtils.flashWhite();
   }
 
   draw() {
@@ -42,8 +44,7 @@ class BonusStageClone extends BonusStage {
 
     if (this.state === BONUS_STAGE_STATE.LOST || this.state === BONUS_STAGE_STATE.WON) {
       if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-        //TODO end stage
-        console.log("Finish!");
+        super.finishStageSuccessfully();
       }
     }
   }
