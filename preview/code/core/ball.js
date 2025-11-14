@@ -7,6 +7,8 @@ const MAX_VEL = 15;       // velocity at which animation reaches max speed
 const MAX_ANI_SPEED = 2;  // maximum animation speed (positive value)
 const BALL_EPSILON = 1;      // threshold to consider "stopped"
 
+const MINIMIZATION_SPRITE_DELAY = 100;
+
 class Ball {
 
     /**
@@ -22,10 +24,17 @@ class Ball {
         this.spawnX = x;
         this.spawnY = y;
 
+        this.sprite.addAnimation("pokeBallSmall", Asset.getAnimation('animPokeBallSmall'));
+        this.sprite.addAnimation("pokeBallSmall2", Asset.getAnimation('animPokeBallSmall2'));
         this.sprite.addAnimation("pokeBall", Asset.getAnimation('animPokeBall'));
+
+        this.minimizing = false;
+        this.lastSizeUpdate = -10000;
     }
 
     update() {
+        this.updateSize();
+
         const velX = (this.sprite.velocity && this.sprite.velocity.x) || 0;
         const absVelX = Math.abs(velX);
 
@@ -36,7 +45,8 @@ class Ball {
             this.sprite.ani.playing = false;
             return;
         }
-        
+
+
         //TODO is any of this crap in use???
         const t = Math.min(absVelX / MAX_VEL, 1);
         const speedMagnitude = t * MAX_ANI_SPEED;
@@ -45,6 +55,25 @@ class Ball {
         const MAX_DELAY = 12;
         const frameDelay = Math.round(MAX_DELAY + (MIN_DELAY - MAX_DELAY) * (speedMagnitude / MAX_ANI_SPEED));
         this.sprite.ani.frameDelay = Math.max(MIN_DELAY, Math.min(MAX_DELAY, frameDelay));
+    }
+
+    updateSize(){
+        if(this.minimizing && this.timeToUpdateSize()){
+            this.lastSizeUpdate = millis();
+            if(this.sprite.animation.name === "pokeBall"){
+                this.sprite.changeAnimation("pokeBallSmall");
+            }else if(this.sprite.animation.name === "pokeBallSmall"){
+                this.sprite.changeAnimation("pokeBallSmall2");
+            }else if(this.sprite.animation.name === "pokeBallSmall2"){
+                this.sprite.visible = false;
+                this.minimizing = false;
+                this.onMinimizedCallback();
+            }
+        }
+    }
+
+    timeToUpdateSize(){
+        return millis() > this.lastSizeUpdate + MINIMIZATION_SPRITE_DELAY;
     }
 
     /** Returns the current X position of the ball. */
@@ -94,5 +123,18 @@ class Ball {
     static spawnStageBall() {
         return new Ball(334, 542);
     }
+
+    minimize(onMinimizedCallback = () => {}) {
+        this.minimizing = true;
+        this.onMinimizedCallback = onMinimizedCallback;
+    }
+
+    maximize(){
+        this.sprite.changeAnimation("pokeBall");
+        this.minimizing = false;
+        this.sprite.visible = true;
+    }
+
+
 }
 

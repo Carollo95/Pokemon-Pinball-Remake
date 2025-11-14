@@ -9,19 +9,20 @@ const RED_FIELD_STATUS = {
     CAPTURE: 5
 }
 
+
+const RED_FIELD_BONUS_ORDER = [FIELD_BONUS.MOLE, FIELD_BONUS.GHOST, FIELD_BONUS.CLONE];
+
 const CALLBACK_DELAY_MS = 500;
 
-class RedField extends Stage {
+class RedField extends Field {
 
     constructor(status) {
         super(status);
         this._lastCallbackCall = 0;
+        this.nextBonusLevelIndex = 0;
 
         this.background = Asset.getBackground('redFieldBackground');
 
-        this.attachBall(Ball.spawnStageBall());
-        this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
-        this.attachStageText(createStageStatusBanner(this.status));
     }
 
     rightFlipperCallback = () => {
@@ -58,10 +59,10 @@ class RedField extends Stage {
         this.createNewBallOrEndStage();
     }
 
-    setup() {
+    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
-        //TODO move to geometry
+        //TODO move to ditto
         this.createScenarioGeometry([
             [198, 50],
             [220, 54],
@@ -72,7 +73,6 @@ class RedField extends Stage {
             [290, 118],
             [296, 132],
             [300, 158],
-
             [290, 134],
             [272, 108],
             [256, 92],
@@ -81,6 +81,10 @@ class RedField extends Stage {
             [198, 50]
         ]);
 
+        this.attachBall(Ball.spawnStageBall());
+
+        this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
+        this.attachStageText(createStageStatusBanner(this.status));
 
         this.ditto = new RedFieldDitto();
 
@@ -89,9 +93,9 @@ class RedField extends Stage {
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
 
-        this.state = RED_FIELD_STATUS.GAME_START;
-
         this.screen = new Screen(
+            initialLandmark,
+            this.onThreeBallsCallback,
             this.onCaptureStartCaptureAnimationCallback,
             this.onCaptureStartAnimatedSpritePhaseCallback,
             this.onCaptureCompleteAnimationStartedCallback,
@@ -116,6 +120,9 @@ class RedField extends Stage {
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
         this.arrows = new RedFieldArrows();
+        if(arrowsState != undefined){
+            this.arrows.setState(arrowsState);
+        }
 
         this.staryu = new RedFieldStaryu();
 
@@ -132,7 +139,45 @@ class RedField extends Stage {
             }
         });
 
+        this.well = new StageWell();
+
+        if (spawnOnWell) {
+            this.state = RED_FIELD_STATUS.PLAYING;
+            this.ditto.close(true);
+            this.closeWell();
+        } else {
+            this.state = RED_FIELD_STATUS.GAME_START;
+        }
+
         Audio.playMusic('redField');
+    }
+
+    onThreeBallsCallback = () => {
+        this.screen.goToBonusScreen(this.getNextBonusLevel());
+        this.openWell(this.goToBonusStageCallback);
+    }
+
+    goToBonusStageCallback = () => {
+        let nextLevel = this.getNextBonusLevel();
+        if (nextLevel === FIELD_BONUS.MOLE) {
+            EngineUtils.startMoleStage(this.onBackFromBonusStageCallback);
+        } else if (nextLevel === FIELD_BONUS.GHOST) {
+            EngineUtils.startGhostStage(this.onBackFromBonusStageCallback);
+        } else if (nextLevel === FIELD_BONUS.CLONE) {
+            EngineUtils.startCloneStage(this.onBackFromBonusStageCallback);
+        }
+    }
+
+    onBackFromBonusStageCallback = () => {
+        allSprites.remove();
+        stage = this;
+        this.nextBonusLevelIndex++;
+        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true);
+        EngineUtils.flashWhite();
+    }
+
+    getNextBonusLevel() {
+        return RED_FIELD_BONUS_ORDER[this.nextBonusLevelIndex % RED_FIELD_BONUS_ORDER.length];
     }
 
     onCaptureStartCaptureAnimationCallback = () => {
@@ -144,12 +189,13 @@ class RedField extends Stage {
     }
 
     onCaptureCompleteAnimationStartedCallback = (pokemonCaught) => {
-        //TODO how many, internationalize
+        //TODO how many points on jackpot, internationalize text
         this.stageText.setScrollText("you got a " + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name), 1000, this.showAfterCaptureJackpot);
         this.status.addPokemonCaught(pokemonCaught);
     }
 
     showAfterCaptureJackpot = () => {
+        //TODO internationalize
         this.addPointsAndShowText("jackpot", 123456, 1000);
     }
 
@@ -159,6 +205,7 @@ class RedField extends Stage {
     }
 
     captureOnPokemonAnimatedHitCallback = () => {
+        //TODO internationalize
         this.addPointsAndShowText("hit", POINTS.CAPTURE_HIT);
     }
 
@@ -206,6 +253,7 @@ class RedField extends Stage {
         super.draw();
         this.updateScreen();
 
+        this.well.update(this.getBall());
         this.updateSensors();
         this.targetArrows.forEach(ta => ta.update());
 
@@ -256,7 +304,7 @@ class RedField extends Stage {
             if (this.state === RED_FIELD_STATUS.CAPTURE) {
                 this.interruptCapture();
             }
-            this.status.balls--;
+            this.status.startNewBall();
             this.state = RED_FIELD_STATUS.BALL_LOST;
             Audio.playSFX('sfx24');
             this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
@@ -282,5 +330,15 @@ class RedField extends Stage {
             this.state = RED_FIELD_STATUS.GAME_OVER;
             console.log("GAME OVER");
         }
+    }
+
+    openWell(callback) {
+        this.well.open(callback);
+        this.arrows.turnOnCaveArrow();
+    }
+
+    closeWell() {
+        this.well.spitBall(this.getBall());
+        this.arrows.turnOffCaveArrow();
     }
 }

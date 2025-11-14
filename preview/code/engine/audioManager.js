@@ -15,6 +15,8 @@ class AudioManager {
 
         this.sfxGain = this.audioContext.createGain();
         this.sfxGain.connect(this.audioContext.destination);
+
+        this._lastSfxTime = new Map();
     }
 
     async _loadAudio(path) {
@@ -126,9 +128,15 @@ class AudioManager {
         }
     }
 
-    playSFX(id) {
+    playSFX(id, cooldown = 0) {
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
+        }
+
+        const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+        const last = this._lastSfxTime.get(id) || 0;
+        if (cooldown > 0 && (now - last) < cooldown) {
+            return;
         }
 
         const sound = this.sfx[id];
@@ -152,6 +160,8 @@ class AudioManager {
         };
 
         source.start(0);
+
+        this._lastSfxTime.set(id, now);
     }
 
     playCry(id) {
@@ -222,6 +232,10 @@ class AudioManager {
             delete this.sfx[k];
         }
 
+        if (this._lastSfxTime) {
+            try { this._lastSfxTime.clear(); } catch {}
+        }
+
         if (this.audioContext && this.audioContext.state !== 'closed') {
             try { this.audioContext.close(); } catch {}
         }
@@ -273,7 +287,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx01', 'assets/audio/sfx/SFX-01'));
     promises.push(audio.registerSFX('sfx02', 'assets/audio/sfx/SFX-02'));
     promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03'));
-    promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); 
+    promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); //Well ball on capture area
     promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05')); //Red field Bellsprout eat
     promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //Red field Bellsprout spit AND capture pokemon hit
     promises.push(audio.registerSFX('sfx07', 'assets/audio/sfx/SFX-07')); //Red field Staryu active
@@ -302,7 +316,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx1E', 'assets/audio/sfx/SFX-1E'));
     promises.push(audio.registerSFX('sfx1F', 'assets/audio/sfx/SFX-1F'));
     promises.push(audio.registerSFX('sfx20', 'assets/audio/sfx/SFX-20'));
-    promises.push(audio.registerSFX('sfx21', 'assets/audio/sfx/SFX-21'));
+    promises.push(audio.registerSFX('sfx21', 'assets/audio/sfx/SFX-21')); //Well capture ball
     promises.push(audio.registerSFX('sfx22', 'assets/audio/sfx/SFX-22'));
     promises.push(audio.registerSFX('sfx23', 'assets/audio/sfx/SFX-23'));
     promises.push(audio.registerSFX('sfx24', 'assets/audio/sfx/SFX-24')); //Field ball loss

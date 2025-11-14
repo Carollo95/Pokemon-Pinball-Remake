@@ -203,4 +203,40 @@ const EngineUtils = {
         }
     },
 
+    startGhostStage(callback = () => { }) {
+        allSprites.remove();
+        stage = new BonusStageGhost(EngineUtils.getGameStatus(), callback);
+        stage.setup();
+    },
+
+    startMoleStage(callback = () => { }) {
+        allSprites.remove();
+        stage = new BonusStageMole(EngineUtils.getGameStatus(), callback);
+        stage.setup();
+    },
+
+    startCatStage(callback = () => { }) {
+        allSprites.remove();
+        stage = new BonusStageCat(EngineUtils.getGameStatus(), callback);
+        stage.setup();
+    },
+
+    startSealStage(callback = () => { }) {
+        allSprites.remove();
+        stage = new BonusStageSeal(EngineUtils.getGameStatus(), callback);
+        stage.setup();
+    },
+
+    startCloneStage(callback = () => { }) {
+        allSprites.remove();
+        stage = new BonusStageClone(EngineUtils.getGameStatus(), callback);
+        stage.setup();
+    },
+
+    startRedField() {
+        allSprites.remove();
+        stage = new RedField(EngineUtils.getGameStatus());
+        stage.setup();
+    },
+
 }

@@ -46,9 +46,10 @@ class RedFieldDitto {
         return this.status === RED_STAGE_DITTO_STATE.OPEN;
     }
 
-    close() {
+    close(silent = false) {
         this.removeSprites();
-        Audio.playSFX('sfx00');
+
+        if(!silent) Audio.playSFX('sfx00');
 
         this.closeSprite = new Sprite([
             [20, 188],

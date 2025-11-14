@@ -119,6 +119,8 @@ function preloadAnimations() {
 
   // Register animation templates
   Asset.registerAnimationTemplate('animPokeBall', 'assets/img/ball/poke_ball', 32, 32, 8);
+  Asset.registerAnimationTemplate('animPokeBallSmall', 'assets/img/ball/poke_ball_small', 32, 32, 8);
+  Asset.registerAnimationTemplate('animPokeBallSmall2', 'assets/img/ball/poke_ball_small_2', 32, 32, 8);
 
   Asset.registerAnimationTemplate('animLeftFlipperUp', 'assets/img/left_flipper_up', 48, 48, 1);
   Asset.registerAnimationTemplate('animLeftFlipperMiddle', 'assets/img/left_flipper_middle', 48, 48, 1);
@@ -219,7 +221,7 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('catch', 'assets/img/field/catch', 96, 16, 4);
   Asset.registerAnimationTemplate('capture-puff', 'assets/img/field/capture_puff', 96, 112, 4);
-  Asset.registerAnimationTemplate('captured-ball', 'assets/img/field/captured_ball', 96, 16, 4);
+  Asset.registerAnimationTemplate('captured-ball', 'assets/img/field/captured_ball', 32, 16, 1);
 
   Asset.registerAnimationTemplate('redArea1Landmarks', 'assets/img/landmarks/red_landmarks_area_1', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea1LandmarksBW', 'assets/img/landmarks/red_landmarks_area_1_bw', 96, 64, 7);
@@ -247,10 +249,19 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 48, 64, 4);
   Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
+  Asset.registerAnimationTemplate('redFieldCaveArrow', 'assets/img/red-field/cave_arrow', 26, 22, 2);
   Asset.registerAnimationTemplate('redFieldTargetArrows', 'assets/img/red-field/target_arrows', 16, 16, 14);
   Asset.registerAnimationTemplate('redFieldBellsproutIdle', 'assets/img/red-field/bellsprout_idle', 64, 80, 2);
   Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
-  Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
+  Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 3);
+
+  Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
+  Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);
+  Asset.registerAnimationTemplate('goToBonusClone', 'assets/img/field/go_to_bonus_clone', 96, 64, 1);
+
+  Asset.registerAnimationTemplate('openWell', 'assets/img/field/open_well', 30, 30, 1);
+  Asset.registerAnimationTemplate('closedWell', 'assets/img/field/closed_well', 30, 30, 1);
+  Asset.registerAnimationTemplate('wellAura', 'assets/img/field/well_aura', 66, 62, 3);
 
   for (let i = 1; i <= 151; i++) {
     Asset.registerAnimationTemplate(pad3(i), 'assets/img/dex/' + pad3(i), 96, 64, 1);

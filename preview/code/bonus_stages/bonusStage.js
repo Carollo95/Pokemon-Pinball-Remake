@@ -29,8 +29,9 @@ const SCENARIO_TOP_DOME_POINTS = [
 ];
 
 class BonusStage extends Stage {
-    constructor(status) {
+    constructor(status, onEndCallback) {
         super(status);
+        this.onEndCallback = onEndCallback;
 
         this.attachBall(Ball.spawnBonusBall());
         this.attachFlippers(createBonusFlippers());
@@ -39,7 +40,7 @@ class BonusStage extends Stage {
         this.gateIsOpen = true;
 
         this.state = BONUS_STAGE_STATE.PLAYING;
-        this.millisSinceStageComplete = 0;
+        this.millisSinceStageComplete = Number.MAX_SAFE_INTEGER;
 
         this.playableStages = [BONUS_STAGE_STATE.PLAYING];
         this.createFrame();
@@ -169,11 +170,14 @@ class BonusStage extends Stage {
         Audio.playSFX('sfx2A');
     }
 
-
     loseBonusStage() {
         this.flippers.disableFlippers();
         this.timer.stop();
         this.endStage(BONUS_STAGE_STATE.LOST);
+    }
+
+    finishStageSuccessfully() {
+        if (this.onEndCallback) this.onEndCallback();
     }
 
 }
