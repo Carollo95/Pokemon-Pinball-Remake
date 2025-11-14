@@ -86,4 +86,14 @@ class RedFieldArrows {
     turnOffCaveArrow() {
         this.caveActive = false;
     }
+
+    getState(){
+        return {
+            captureArrowsLevel: this.captureArrowsLevel
+        };
+    }
+
+    setState(state){
+        this.setCaptureArrowsLevel(state.captureArrowsLevel);
+    }
 }

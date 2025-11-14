@@ -59,7 +59,7 @@ class RedField extends Field {
         this.createNewBallOrEndStage();
     }
 
-    setup(initialLandmark = undefined, spawnOnWell = false) {
+    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
         //TODO move to ditto
@@ -119,8 +119,11 @@ class RedField extends Field {
 
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
-        //TODO arrows state when coming from well
         this.arrows = new RedFieldArrows();
+        if(arrowsState != undefined){
+            this.arrows.setState(arrowsState);
+        }
+
         this.staryu = new RedFieldStaryu();
 
         this.lastSensor;
@@ -169,7 +172,7 @@ class RedField extends Field {
         allSprites.remove();
         stage = this;
         this.nextBonusLevelIndex++;
-        stage.setup(this.screen.screenLandscapes.currentLandmark, true);
+        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true);
         EngineUtils.flashWhite();
     }
 

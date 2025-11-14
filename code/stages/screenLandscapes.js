@@ -401,6 +401,8 @@ class ScreenLandscapes {
         this.sprite.changeAnimation(AREA_MAP[area]);
         this.sprite.animation.stop();
         this.sprite.animation.frame = location;
+        //This prevents sound on the first frame
+        this._lastFrame = this.sprite.animation.frame;
     }
 
 
