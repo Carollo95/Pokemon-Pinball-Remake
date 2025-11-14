@@ -119,6 +119,7 @@ class RedField extends Field {
 
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
+        //TODO arrows state when coming from well
         this.arrows = new RedFieldArrows();
         this.staryu = new RedFieldStaryu();
 
@@ -139,7 +140,7 @@ class RedField extends Field {
 
         if (spawnOnWell) {
             this.state = RED_FIELD_STATUS.PLAYING;
-            this.ditto.close();
+            this.ditto.close(true);
             this.closeWell();
         } else {
             this.state = RED_FIELD_STATUS.GAME_START;

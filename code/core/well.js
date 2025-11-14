@@ -9,7 +9,7 @@ class Well {
         this.radiusY = radiusY;
     }
 
-    applyGravity(sprite, ballOnCenterCallback = () => { }) {
+    applyGravity(sprite, ballOnCenterCallback = () => { }, ballOnAreaOfInfluenceCallback = () => { }) {
         let dx = this.x - sprite.x;
         let dy = this.y - sprite.y;
 
@@ -22,6 +22,7 @@ class Well {
 
         if (ellipseDist < 1) {
             let distance = Math.sqrt(dx * dx + dy * dy);
+            ballOnAreaOfInfluenceCallback();
 
             //Clamp to center if very close
             if (distance <= WELL_EVENT_HORIZON_RADIUS) {
