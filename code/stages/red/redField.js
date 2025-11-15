@@ -344,9 +344,11 @@ class RedField extends Field {
 
     onTravelToLeft(){
         this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
+        this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
     }
     
     onTravelToRight(){
         this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
+        this.arrows.setTravel(TRAVEL_DIRECTION.RIGHT);
     }
 }
