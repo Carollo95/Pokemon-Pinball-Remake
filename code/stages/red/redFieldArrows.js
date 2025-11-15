@@ -23,7 +23,6 @@ class RedFieldArrows {
         this.bellsproutArrow.addAni("bellsproutArrow", Asset.getAnimation("redFieldBellsproutArrow"));
         this.bellsproutArrow.ani.playing = false;
 
-
         this.caveArrow = new Sprite(161, 315, 26, 22, "none");
         this.caveArrow.debug = DEBUG;
         this.caveArrow.layer = SCENARIO_LAYER;
@@ -42,6 +41,7 @@ class RedFieldArrows {
         this.evolutionArrows.layer = SCENARIO_LAYER;
         this.evolutionArrows.addAni("evolutionArrows", Asset.getAnimation("redFieldEvolutionArrows"));
         this.evolutionArrows.ani.playing = false;
+        this.evolutionArrowsLevel = 0;
 
         this.state = RED_FIELD_ARROW_STATE.NORMAL;
     }
@@ -49,6 +49,7 @@ class RedFieldArrows {
     update(visible) {
         if (this.state === RED_FIELD_ARROW_STATE.NORMAL) {
             this.blinkCaptureArrows(visible);
+            this.blinkEvolutionArrows(visible);
             this.blinkBellsproutArrow(visible);
             this.blinkCaveArrow(visible);
         } else if (this.state === RED_FIELD_ARROW_STATE.TRAVEL_LEFT) {
@@ -69,6 +70,18 @@ class RedFieldArrows {
             }
         } else {
             this.captureArrows.ani.frame = 0;
+        }
+    }
+
+    blinkEvolutionArrows(visible) {
+        if (visible) {
+            if (this.evolutionArrowsLevel < 3) {
+                frameCount % RED_FIELD_ARROWS_BLINK_RATE > RED_FIELD_ARROWS_BLINK_HALF_RATE ?
+                    this.evolutionArrows.ani.frame = this.evolutionArrowsLevel :
+                    this.evolutionArrows.ani.frame = this.evolutionArrowsLevel + 1;
+            }
+        } else {
+            this.evolutionArrows.ani.frame = 0;
         }
     }
 
@@ -106,6 +119,23 @@ class RedFieldArrows {
             this.captureArrowsLevel++;
             this.captureArrows.ani.frame = this.captureArrowsLevel;
         }
+    }
+
+    upgradeEvolutionArrows() {
+        if (this.evolutionArrowsLevel < 3) {
+            this.evolutionArrowsLevel++;
+            this.captureArrows.ani.frame = this.evolutionArrowsLevel;
+        }
+    }
+
+    setEvolutionArrowsLevel(level) {
+        this.evolutionArrowsLevel = level;
+        this.evolutionArrows.ani.frame = this.evolutionArrowsLevel;
+    }
+
+
+    resetEvolutionArrows() {
+        this.setEvolutionArrowsLevel(0);
     }
 
     turnOnCaveArrow() {
