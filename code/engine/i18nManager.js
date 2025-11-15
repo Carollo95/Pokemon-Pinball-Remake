@@ -14,6 +14,7 @@ const I18NManager = {
             "end_mewtwo_stage": "end mewtwo stage",
 
             "start_from": "start from: ",
+            "arrived_at": "arrived at: ",
             "pallet_town": "pallet town",
             "viridian_forest": "viridian forest",
             "pewter_city": "pewter city",

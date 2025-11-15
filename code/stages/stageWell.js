@@ -31,7 +31,7 @@ class StageWell {
     }
 
     onCapturedBallByWellCallback(ball) {
-        ball.minimize(() => { this.onWellBallCapture && this.onWellBallCapture(); });
+        ball.minimize(() => { this.onWellBallCapture && this.onWellBallCapture(); this.onWellBallCapture = undefined; });
         Audio.playSFX('sfx21', 3000);
     }
 

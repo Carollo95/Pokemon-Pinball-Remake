@@ -4,7 +4,8 @@ const RED_FIELD_ARROWS_BLINK_HALF_RATE = 20;
 const RED_FIELD_ARROW_STATE = {
     NORMAL: "normal",
     TRAVEL_LEFT: "travel_left",
-    TRAVEL_RIGHT: "travel_right"
+    TRAVEL_RIGHT: "travel_right",
+    TRAVEL_CAVE: "travel_cave"
 }
 
 class RedFieldArrows {
@@ -54,6 +55,8 @@ class RedFieldArrows {
             this.blinkTravelLeftArrows(visible);
         } else if (this.state === RED_FIELD_ARROW_STATE.TRAVEL_RIGHT) {
             this.blinkTravelRightArrows(visible);
+        } else if (this.state === RED_FIELD_ARROW_STATE.TRAVEL_CAVE) {
+            this.blinkTravelCaveArrows(visible);
         }
     }
 
@@ -138,6 +141,16 @@ class RedFieldArrows {
         } else {
             this.bellsproutArrow.ani.frame = 0;
             this.captureArrows.ani.frame = 0;
+        }
+    }
+
+    blinkTravelCaveArrows(visible) {
+        if (visible) {
+            frameCount % RED_FIELD_ARROWS_BLINK_RATE > RED_FIELD_ARROWS_BLINK_HALF_RATE ?
+                this.caveArrow.ani.frame = 0 :
+                this.caveArrow.ani.frame = 1;
+        } else {
+            this.caveArrow.ani.frame = 0;
         }
     }
 

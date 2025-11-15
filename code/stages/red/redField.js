@@ -314,6 +314,7 @@ class RedField extends Field {
                 this.interruptCapture();
             }
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            this.well.close();
             this.status.startNewBall();
             this.state = RED_FIELD_STATUS.BALL_LOST;
             Audio.playSFX('sfx24');
@@ -371,15 +372,18 @@ class RedField extends Field {
     startTravelCave() {
         this.state = RED_FIELD_STATUS.TRAVEL_CAVE;
         this.screen.setTravelDirection(TRAVEL_DIRECTION.CAVE);
+        this.arrows.setTravel(TRAVEL_DIRECTION.CAVE);
         this.openWell(this.onTravelCaveCallback);
     }
 
-    onTravelCaveCallback = () =>{
+    onTravelCaveCallback = () => {
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        this.screen.progressLandmark();
+        this.stageText.setScrollText(I18NManager.translate("arrived_at") + this.screen.getLandmarkText(), this.screen.getLandmarkText(), DEFAULT_TEXT_PERSISTENCE_MILLIS, () => {
             this.state = RED_FIELD_STATUS.PLAYING;
-            this.screen.setState(SCREEN_STATE.LANDSCAPE);
-            this.screen.progressLandmark();
             this.arrows.resetFromTravel();
             this.closeWell();
+        });
     }
 
 }
