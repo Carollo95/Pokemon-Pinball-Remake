@@ -223,6 +223,9 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('capture-puff', 'assets/img/field/capture_puff', 96, 112, 4);
   Asset.registerAnimationTemplate('captured-ball', 'assets/img/field/captured_ball', 32, 16, 1);
 
+  Asset.registerAnimationTemplate('travelLeft', 'assets/img/field/travel_left', 96, 64, 1);
+  Asset.registerAnimationTemplate('travelRight', 'assets/img/field/travel_right', 96, 64, 1);
+
   Asset.registerAnimationTemplate('redArea1Landmarks', 'assets/img/landmarks/red_landmarks_area_1', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea1LandmarksBW', 'assets/img/landmarks/red_landmarks_area_1_bw', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea2Landmarks', 'assets/img/landmarks/red_landmarks_area_2', 96, 64, 4);

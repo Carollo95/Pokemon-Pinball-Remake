@@ -1,4 +1,4 @@
-class ScreenBonus {
+class ScreenImage {
     constructor() {
         this.sprite = new Sprite(160, 364, 96, 64, "none");
         this.sprite.debug = DEBUG;
@@ -10,6 +10,8 @@ class ScreenBonus {
         //this.sprite.addAnimation(FIELD_BONUS.CAT, Asset.getAnimation('goToBonusCat'));
         //this.sprite.addAnimation(FIELD_BONUS.SEAL, Asset.getAnimation('goToBonusSeal'));
         this.sprite.addAnimation(FIELD_BONUS.CLONE, Asset.getAnimation('goToBonusClone'));
+        this.sprite.addAnimation(TRAVEL_DIRECTION.LEFT, Asset.getAnimation('travelLeft'));
+        this.sprite.addAnimation(TRAVEL_DIRECTION.RIGHT, Asset.getAnimation('travelRight'));
 
     }
 
@@ -19,6 +21,10 @@ class ScreenBonus {
 
     setBonus(bonus) {
         this.sprite.changeAnimation(bonus);
+    }
+
+    setTravelDirection(direction) {
+        this.sprite.changeAnimation(direction);
     }
 
 }

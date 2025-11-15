@@ -105,8 +105,8 @@ class RedField extends Field {
 
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
 
-        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, false);
-        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, true);
+        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall; this.onTravelToLeft(); }, false);
+        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++; this.onTravelToRight(); }, true);
 
         this.voltorbs = [];
         this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
@@ -340,5 +340,13 @@ class RedField extends Field {
     closeWell() {
         this.well.spitBall(this.getBall());
         this.arrows.turnOffCaveArrow();
+    }
+
+    onTravelToLeft(){
+        this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
+    }
+    
+    onTravelToRight(){
+        this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
     }
 }
