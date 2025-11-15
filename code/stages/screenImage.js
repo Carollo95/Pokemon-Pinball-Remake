@@ -12,6 +12,7 @@ class ScreenImage {
         this.sprite.addAnimation(FIELD_BONUS.CLONE, Asset.getAnimation('goToBonusClone'));
         this.sprite.addAnimation(TRAVEL_DIRECTION.LEFT, Asset.getAnimation('travelLeft'));
         this.sprite.addAnimation(TRAVEL_DIRECTION.RIGHT, Asset.getAnimation('travelRight'));
+        this.sprite.addAnimation(TRAVEL_DIRECTION.CAVE, Asset.getAnimation('travelCave'));
 
     }
 

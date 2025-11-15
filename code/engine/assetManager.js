@@ -225,6 +225,7 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('travelLeft', 'assets/img/field/travel_left', 96, 64, 1);
   Asset.registerAnimationTemplate('travelRight', 'assets/img/field/travel_right', 96, 64, 1);
+  Asset.registerAnimationTemplate('travelCave', 'assets/img/field/travel_cave', 96, 64, 1);
 
   Asset.registerAnimationTemplate('redArea1Landmarks', 'assets/img/landmarks/red_landmarks_area_1', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea1LandmarksBW', 'assets/img/landmarks/red_landmarks_area_1_bw', 96, 64, 7);

@@ -9,6 +9,7 @@ const FIELD_BONUS = {
 const TRAVEL_DIRECTION={
     LEFT: 'left',
     RIGHT: 'right',
+    CAVE: 'cave'
 }
 
 class Field extends Stage{

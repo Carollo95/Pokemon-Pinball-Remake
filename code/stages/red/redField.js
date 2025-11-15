@@ -6,7 +6,10 @@ const RED_FIELD_STATUS = {
     BALL_LOST: 2,
     GAME_OVER: 3,
     NEW_BALL_WAITING: 4,
-    CAPTURE: 5
+    CAPTURE: 5,
+    TRAVEL_LEFT: 6,
+    TRAVEL_RIGHT: 7,
+    TRAVEL_CAVE: 8
 }
 
 
@@ -120,7 +123,7 @@ class RedField extends Field {
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
         this.arrows = new RedFieldArrows();
-        if(arrowsState != undefined){
+        if (arrowsState != undefined) {
             this.arrows.setState(arrowsState);
         }
 
@@ -128,12 +131,15 @@ class RedField extends Field {
 
         this.lastSensor;
         this.rightLowerSensor = new Sensor(284, 214, () => {
-            if (this.state === RED_FIELD_STATUS.PLAYING) {
+            if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.TRAVEL_RIGHT) {
                 this.lastSensor = this.rightLowerSensor;
             }
         });
         this.rightInnerUpperSensor = new Sensor(248, 106, () => {
-            if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.rightLowerSensor) {
+            if (this.state === RED_FIELD_STATUS.TRAVEL_RIGHT && this.lastSensor === this.rightLowerSensor) {
+                this.startTravelCave();
+                this.lastSensor = this.rightInnerUpperSensor;
+            } else if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.rightLowerSensor) {
                 this.arrows.upgradeCaptureArrows();
                 this.lastSensor = this.rightInnerUpperSensor;
             }
@@ -211,9 +217,12 @@ class RedField extends Field {
 
 
     onBellsproutEatCallback = () => {
+        //TODO this should increates on travel???
         this.status.bellsproutOnBall++;
         this.status.addPoints(POINTS.BELLSPROUT_POINTS);
-        if (this.state === RED_FIELD_STATUS.PLAYING && this.arrows.captureArrowsLevel >= 2) {
+        if (this.state === RED_FIELD_STATUS.TRAVEL_RIGHT) {
+            this.startTravelCave();
+        } else if (this.state === RED_FIELD_STATUS.PLAYING && this.arrows.captureArrowsLevel >= 2) {
             this.startCaptureSequence();
         }
     }
@@ -266,7 +275,7 @@ class RedField extends Field {
 
         this.staryu.update(this.getBall().sprite);
 
-        if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE) {
+        if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE || this.isTravelState()) {
             this.checkForBallLoss();
             this.updateDitto();
 
@@ -304,6 +313,7 @@ class RedField extends Field {
             if (this.state === RED_FIELD_STATUS.CAPTURE) {
                 this.interruptCapture();
             }
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
             this.status.startNewBall();
             this.state = RED_FIELD_STATUS.BALL_LOST;
             Audio.playSFX('sfx24');
@@ -342,13 +352,34 @@ class RedField extends Field {
         this.arrows.turnOffCaveArrow();
     }
 
-    onTravelToLeft(){
+    onTravelToLeft() {
+        this.state = RED_FIELD_STATUS.TRAVEL_LEFT;
         this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
         this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
     }
-    
-    onTravelToRight(){
+
+    onTravelToRight() {
+        this.state = RED_FIELD_STATUS.TRAVEL_RIGHT;
         this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
         this.arrows.setTravel(TRAVEL_DIRECTION.RIGHT);
     }
+
+    isTravelState() {
+        return this.state === RED_FIELD_STATUS.TRAVEL_LEFT || this.state === RED_FIELD_STATUS.TRAVEL_RIGHT || this.state === RED_FIELD_STATUS.TRAVEL_CAVE;
+    }
+
+    startTravelCave() {
+        this.state = RED_FIELD_STATUS.TRAVEL_CAVE;
+        this.screen.setTravelDirection(TRAVEL_DIRECTION.CAVE);
+        this.openWell(this.onTravelCaveCallback);
+    }
+
+    onTravelCaveCallback = () =>{
+            this.state = RED_FIELD_STATUS.PLAYING;
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            this.screen.progressLandmark();
+            this.arrows.resetFromTravel();
+            this.closeWell();
+    }
+
 }
