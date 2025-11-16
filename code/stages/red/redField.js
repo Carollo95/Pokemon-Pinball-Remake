@@ -147,33 +147,39 @@ class RedField extends Field {
     setupSensors() {
         this.lastSensor;
         this.rightLowerSensor = new Sensor(284, 214, () => {
-            if (this.state === RED_FIELD_STATUS.PLAYING || this.isTravelState()) {
-                this.lastSensor = this.rightLowerSensor;
-            }
+            this.lastSensor = this.rightLowerSensor;
         });
         this.rightInnerUpperSensor = new Sensor(248, 106, () => {
             if (this.state === RED_FIELD_STATUS.TRAVEL_RIGHT && this.lastSensor === this.rightLowerSensor) {
                 this.startTravelCave();
-                this.lastSensor = this.rightInnerUpperSensor;
             } else if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.rightLowerSensor) {
                 this.arrows.upgradeCaptureArrows();
-                this.lastSensor = this.rightInnerUpperSensor;
             }
+            this.lastSensor = this.rightInnerUpperSensor;
         });
 
         this.leftOuterLowerSensor = new Sensor(35, 214, () => {
-            if (this.state === RED_FIELD_STATUS.PLAYING || this.isTravelState()) {
-                this.lastSensor = this.leftOuterLowerSensor;
-            }
+            this.lastSensor = this.leftOuterLowerSensor;
         });
         this.leftMiddleUpperSensor = new Sensor(82, 106, () => {
             if (this.state === RED_FIELD_STATUS.TRAVEL_LEFT && this.lastSensor === this.leftOuterLowerSensor) {
                 this.startTravelCave();
-                this.lastSensor = this.leftMiddleUpperSensor;
             } else if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.leftOuterLowerSensor) {
                 this.arrows.upgradeEvolutionArrows();
-                this.lastSensor = this.leftMiddleUpperSensor;
             }
+
+            this.lastSensor = this.leftMiddleUpperSensor;
+        });
+
+
+        this.leftInnerLowerSensor = new Sensor(76, 223, () => {
+            this.lastSensor = this.leftInnerLowerSensor;
+        });
+        this.leftInnerUpperSensor = new Sensor(73, 168, () => {
+            if (this.state === RED_FIELD_STATUS.TRAVEL_LEFT && this.lastSensor === this.leftInnerLowerSensor) {
+                this.startTravelCave();
+            }
+            this.lastSensor = this.leftInnerUpperSensor;
         });
     }
 
@@ -338,6 +344,8 @@ class RedField extends Field {
             this.well.close();
             this.status.startNewBall();
             this.state = RED_FIELD_STATUS.BALL_LOST;
+            //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
+            this.arrows.restart();
             Audio.playSFX('sfx24');
             this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
             Audio.stopMusic();

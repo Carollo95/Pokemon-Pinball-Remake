@@ -15,7 +15,6 @@ class RedFieldArrows {
         this.captureArrows.layer = SCENARIO_LAYER;
         this.captureArrows.addAni("captureAnimation", Asset.getAnimation("redFieldCaptureArrows"));
         this.captureArrows.ani.playing = false;
-        this.setCaptureArrowsLevel(2);
 
         this.bellsproutArrow = new Sprite(207, 284, 34, 32, "none");
         this.bellsproutArrow.debug = DEBUG;
@@ -41,9 +40,8 @@ class RedFieldArrows {
         this.evolutionArrows.layer = SCENARIO_LAYER;
         this.evolutionArrows.addAni("evolutionArrows", Asset.getAnimation("redFieldEvolutionArrows"));
         this.evolutionArrows.ani.playing = false;
-        this.evolutionArrowsLevel = 0;
 
-        this.state = RED_FIELD_ARROW_STATE.NORMAL;
+        this.restart();
     }
 
     update(visible) {
@@ -52,6 +50,7 @@ class RedFieldArrows {
             this.blinkEvolutionArrows(visible);
             this.blinkBellsproutArrow(visible);
             this.blinkCaveArrow(visible);
+            this.blinkLeftInnerArrow(visible);
         } else if (this.state === RED_FIELD_ARROW_STATE.TRAVEL_LEFT) {
             this.blinkTravelLeftArrows(visible);
         } else if (this.state === RED_FIELD_ARROW_STATE.TRAVEL_RIGHT) {
@@ -72,6 +71,12 @@ class RedFieldArrows {
             this.captureArrows.ani.frame = 0;
         }
     }
+
+
+    blinkLeftInnerArrows(visible) {
+        this.captureArrows.ani.frame = 0;
+    }
+
 
     blinkEvolutionArrows(visible) {
         if (visible) {
@@ -177,7 +182,7 @@ class RedFieldArrows {
             this.captureArrows.ani.frame = 0;
         }
 
-        
+
         this.evolutionArrows.ani.frame = 0;
         this.leftInnerArrow.ani.frame = 0;
         this.caveArrow.ani.frame = 0;
@@ -213,6 +218,12 @@ class RedFieldArrows {
     }
 
     resetFromTravel() {
+        this.state = RED_FIELD_ARROW_STATE.NORMAL;
+    }
+
+    restart(){
+        this.setCaptureArrowsLevel(2);
+        this.setEvolutionArrowsLevel(0);
         this.state = RED_FIELD_ARROW_STATE.NORMAL;
     }
 
