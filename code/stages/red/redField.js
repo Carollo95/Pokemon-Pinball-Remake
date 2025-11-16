@@ -129,9 +129,25 @@ class RedField extends Field {
 
         this.staryu = new RedFieldStaryu();
 
+        this.setupSensors();
+
+        this.well = new StageWell();
+
+        if (spawnOnWell) {
+            this.state = RED_FIELD_STATUS.PLAYING;
+            this.ditto.close(true);
+            this.closeWell();
+        } else {
+            this.state = RED_FIELD_STATUS.GAME_START;
+        }
+
+        Audio.playMusic('redField');
+    }
+
+    setupSensors() {
         this.lastSensor;
         this.rightLowerSensor = new Sensor(284, 214, () => {
-            if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.TRAVEL_RIGHT) {
+            if (this.state === RED_FIELD_STATUS.PLAYING || this.isTravelState()) {
                 this.lastSensor = this.rightLowerSensor;
             }
         });
@@ -145,17 +161,20 @@ class RedField extends Field {
             }
         });
 
-        this.well = new StageWell();
-
-        if (spawnOnWell) {
-            this.state = RED_FIELD_STATUS.PLAYING;
-            this.ditto.close(true);
-            this.closeWell();
-        } else {
-            this.state = RED_FIELD_STATUS.GAME_START;
-        }
-
-        Audio.playMusic('redField');
+        this.leftOuterLowerSensor = new Sensor(35, 214, () => {
+            if (this.state === RED_FIELD_STATUS.PLAYING || this.isTravelState()) {
+                this.lastSensor = this.leftOuterLowerSensor;
+            }
+        });
+        this.leftMiddleUpperSensor = new Sensor(82, 106, () => {
+            if (this.state === RED_FIELD_STATUS.TRAVEL_LEFT && this.lastSensor === this.leftOuterLowerSensor) {
+                this.startTravelCave();
+                this.lastSensor = this.leftMiddleUpperSensor;
+            } else if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.leftOuterLowerSensor) {
+                this.arrows.upgradeEvolutionArrows();
+                this.lastSensor = this.leftMiddleUpperSensor;
+            }
+        });
     }
 
     onThreeBallsCallback = () => {
@@ -296,6 +315,8 @@ class RedField extends Field {
     updateSensors() {
         this.rightLowerSensor.update(this.getBall().sprite);
         this.rightInnerUpperSensor.update(this.getBall().sprite);
+        this.leftOuterLowerSensor.update(this.getBall().sprite);
+        this.leftMiddleUpperSensor.update(this.getBall().sprite);
     }
 
     updateDitto() {

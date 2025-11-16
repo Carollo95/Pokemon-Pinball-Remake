@@ -158,6 +158,10 @@ class RedFieldArrows {
             this.leftInnerArrow.ani.frame = 0;
             this.evolutionArrows.ani.frame = 0;
         }
+
+        this.bellsproutArrow.ani.frame = 0;
+        this.captureArrows.ani.frame = 0;
+        this.caveArrow.ani.frame = 0;
     }
 
     blinkTravelRightArrows(visible) {
@@ -172,6 +176,11 @@ class RedFieldArrows {
             this.bellsproutArrow.ani.frame = 0;
             this.captureArrows.ani.frame = 0;
         }
+
+        
+        this.evolutionArrows.ani.frame = 0;
+        this.leftInnerArrow.ani.frame = 0;
+        this.caveArrow.ani.frame = 0;
     }
 
     blinkTravelCaveArrows(visible) {
