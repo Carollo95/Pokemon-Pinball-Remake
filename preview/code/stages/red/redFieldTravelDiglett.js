@@ -70,7 +70,6 @@ class TravelDiglett {
             this.timeOfLasDugtrioUpgrade = millis();
             if(this.dugtrioLevel === 3) {
                 this.onFullDugtrioCallback();
-                console.log("TODO Start map move mode");
             }
         }
     }

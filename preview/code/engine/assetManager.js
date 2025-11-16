@@ -223,6 +223,10 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('capture-puff', 'assets/img/field/capture_puff', 96, 112, 4);
   Asset.registerAnimationTemplate('captured-ball', 'assets/img/field/captured_ball', 32, 16, 1);
 
+  Asset.registerAnimationTemplate('travelLeft', 'assets/img/field/travel_left', 96, 64, 1);
+  Asset.registerAnimationTemplate('travelRight', 'assets/img/field/travel_right', 96, 64, 1);
+  Asset.registerAnimationTemplate('travelCave', 'assets/img/field/travel_cave', 96, 64, 1);
+
   Asset.registerAnimationTemplate('redArea1Landmarks', 'assets/img/landmarks/red_landmarks_area_1', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea1LandmarksBW', 'assets/img/landmarks/red_landmarks_area_1_bw', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea2Landmarks', 'assets/img/landmarks/red_landmarks_area_2', 96, 64, 4);
@@ -247,8 +251,10 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldUpgradeBlockerCenter', 'assets/img/red-field/ball_upgrade_blocker_center', 28, 38, 1);
   Asset.registerAnimationTemplate('redFieldUpgradeBlockerRight', 'assets/img/red-field/ball_upgrade_blocker_right', 28, 54, 1);
 
-  Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 48, 64, 4);
+  Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 46, 68, 4);
+  Asset.registerAnimationTemplate('redFieldEvolutionArrows', 'assets/img/red-field/evolution_arrows', 46, 68, 4);
   Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
+  Asset.registerAnimationTemplate('redFieldLeftInnerArrow', 'assets/img/red-field/left_inner_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldCaveArrow', 'assets/img/red-field/cave_arrow', 26, 22, 2);
   Asset.registerAnimationTemplate('redFieldTargetArrows', 'assets/img/red-field/target_arrows', 16, 16, 14);
   Asset.registerAnimationTemplate('redFieldBellsproutIdle', 'assets/img/red-field/bellsprout_idle', 64, 80, 2);

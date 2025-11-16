@@ -67,7 +67,10 @@ class Ball {
             }else if(this.sprite.animation.name === "pokeBallSmall2"){
                 this.sprite.visible = false;
                 this.minimizing = false;
-                this.onMinimizedCallback();
+
+                //Called only once
+                if(this.onMinimizedCallback) this.onMinimizedCallback();
+                this.onMinimizedCallback = undefined;
             }
         }
     }

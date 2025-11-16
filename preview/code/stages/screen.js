@@ -1,7 +1,7 @@
 const SCREEN_STATE = {
     LANDSCAPE: "landscape",
     CAPTURE: "capture",
-    GO_TO_BONUS: "go_to_bonus"
+    IMAGE: "image"
 }
 
 const BLINK_TIME_OF_LAST_BALL = 1000;
@@ -23,7 +23,7 @@ class Screen {
             this.screenLandscapes.setLandmarkFromIndex(initialLandmark);
         }
 
-        this.screenBonus = new ScreenBonus();
+        this.screenImage = new ScreenImage();
 
         this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
         this.screenCapture = new ScreenCapture(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback, captureOnPokemonAnimatedHitCallback);
@@ -53,7 +53,7 @@ class Screen {
         if (this.state === SCREEN_STATE.LANDSCAPE) {
             this.screenLandscapes.update();
             this.blinkLastCaptureBallIfNeeded();
-        } else if (this.state === SCREEN_STATE.GO_TO_BONUS) {
+        } else if (this.state === SCREEN_STATE.IMAGE) {
             this.blinkLastCaptureBallIfNeeded();
         } else if (this.state === SCREEN_STATE.CAPTURE) {
             this.screenCapture.update(ballSprite);
@@ -82,15 +82,15 @@ class Screen {
         if (state === SCREEN_STATE.LANDSCAPE) {
             this.screenLandscapes.show(true);
             this.screenCapture.show(false)
-            this.screenBonus.show(false);
+            this.screenImage.show(false);
             this.updateBallSpritesVisibility();
         } else if (state === SCREEN_STATE.CAPTURE) {
             this.screenCapture.show(true);
             this.screenLandscapes.show(false);
-            this.screenBonus.show(false);
+            this.screenImage.show(false);
             this.ballSprites.forEach(sprite => sprite.visible = false);
-        } else if (state === SCREEN_STATE.GO_TO_BONUS) {
-            this.screenBonus.show(true);
+        } else if (state === SCREEN_STATE.IMAGE) {
+            this.screenImage.show(true);
             this.screenLandscapes.show(false);
             this.screenCapture.show(false);
             this.updateBallSpritesVisibility();
@@ -144,9 +144,13 @@ class Screen {
 
 
     goToBonusScreen(bonus) {
-        this.screenBonus.setBonus(bonus);
-        this.setState(SCREEN_STATE.GO_TO_BONUS);
+        this.screenImage.setBonus(bonus);
+        this.setState(SCREEN_STATE.IMAGE);
     }
 
+    setTravelDirection(direction){
+        this.screenImage.setTravelDirection(direction);
+        this.setState(SCREEN_STATE.IMAGE);
+    }
 
 }
