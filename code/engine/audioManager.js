@@ -281,6 +281,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('cloneStage', 'assets/audio/CloneStage_Mewtwo', { loop: true }));
     promises.push(audio.registerMusic('redField', 'assets/audio/Red_Field_Theme', { loop: true }));
     promises.push(audio.registerMusic('catchEmEvolutionModeRedField', 'assets/audio/Catch_em_Evolution_Mode_Red_Field', { loop: true }));
+    promises.push(audio.registerMusic('mapMode', 'assets/audio/Field_MapMode', { loop: true }));
 
     // SFX
     promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red field ditto close
@@ -320,7 +321,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx22', 'assets/audio/sfx/SFX-22'));
     promises.push(audio.registerSFX('sfx23', 'assets/audio/sfx/SFX-23'));
     promises.push(audio.registerSFX('sfx24', 'assets/audio/sfx/SFX-24')); //Field ball loss
-    promises.push(audio.registerSFX('sfx25', 'assets/audio/sfx/SFX-25'));
+    promises.push(audio.registerSFX('sfx25', 'assets/audio/sfx/SFX-25')); //Field map travel complete
     promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26'));
     promises.push(audio.registerSFX('sfx27', 'assets/audio/sfx/SFX-27'));
     promises.push(audio.registerSFX('sfx28', 'assets/audio/sfx/SFX-28'));

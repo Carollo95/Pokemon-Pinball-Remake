@@ -54,8 +54,8 @@ class Well {
         stroke(0, 0, 255);
 
 
-        ellipse(this.x, this.y, this.radiusX *2, this.radiusY *2);
-        ellipse(this.x, this.y, WELL_EVENT_HORIZON_RADIUS *2, WELL_EVENT_HORIZON_RADIUS *2);
+        ellipse(this.x, this.y, this.radiusX * 2, this.radiusY * 2);
+        ellipse(this.x, this.y, WELL_EVENT_HORIZON_RADIUS * 2, WELL_EVENT_HORIZON_RADIUS * 2);
         pop();
 
     }

@@ -73,8 +73,8 @@ class RedFieldArrows {
     }
 
 
-    blinkLeftInnerArrows(visible) {
-        this.captureArrows.ani.frame = 0;
+    blinkLeftInnerArrow(visible) {
+        this.leftInnerArrow.ani.frame = 0;
     }
 
 
