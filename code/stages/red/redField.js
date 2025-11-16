@@ -6,7 +6,10 @@ const RED_FIELD_STATUS = {
     BALL_LOST: 2,
     GAME_OVER: 3,
     NEW_BALL_WAITING: 4,
-    CAPTURE: 5
+    CAPTURE: 5,
+    TRAVEL_LEFT: 6,
+    TRAVEL_RIGHT: 7,
+    TRAVEL_CAVE: 8
 }
 
 
@@ -105,8 +108,8 @@ class RedField extends Field {
 
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
 
-        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, false);
-        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++ }, true);
+        this.leftTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall; this.onTravelToLeft(); }, false);
+        this.rightTravelDiglett = new TravelDiglett(() => { this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS) }, () => { this.status.dugtrioOnBall++; this.onTravelToRight(); }, true);
 
         this.voltorbs = [];
         this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
@@ -120,24 +123,13 @@ class RedField extends Field {
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
         this.arrows = new RedFieldArrows();
-        if(arrowsState != undefined){
+        if (arrowsState != undefined) {
             this.arrows.setState(arrowsState);
         }
 
         this.staryu = new RedFieldStaryu();
 
-        this.lastSensor;
-        this.rightLowerSensor = new Sensor(284, 214, () => {
-            if (this.state === RED_FIELD_STATUS.PLAYING) {
-                this.lastSensor = this.rightLowerSensor;
-            }
-        });
-        this.rightInnerUpperSensor = new Sensor(248, 106, () => {
-            if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.rightLowerSensor) {
-                this.arrows.upgradeCaptureArrows();
-                this.lastSensor = this.rightInnerUpperSensor;
-            }
-        });
+        this.setupSensors();
 
         this.well = new StageWell();
 
@@ -150,6 +142,45 @@ class RedField extends Field {
         }
 
         Audio.playMusic('redField');
+    }
+
+    setupSensors() {
+        this.lastSensor;
+        this.rightLowerSensor = new Sensor(284, 214, () => {
+            this.lastSensor = this.rightLowerSensor;
+        });
+        this.rightInnerUpperSensor = new Sensor(248, 106, () => {
+            if (this.state === RED_FIELD_STATUS.TRAVEL_RIGHT && this.lastSensor === this.rightLowerSensor) {
+                this.startTravelCave();
+            } else if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.rightLowerSensor) {
+                this.arrows.upgradeCaptureArrows();
+            }
+            this.lastSensor = this.rightInnerUpperSensor;
+        });
+
+        this.leftOuterLowerSensor = new Sensor(35, 214, () => {
+            this.lastSensor = this.leftOuterLowerSensor;
+        });
+        this.leftMiddleUpperSensor = new Sensor(82, 106, () => {
+            if (this.state === RED_FIELD_STATUS.TRAVEL_LEFT && this.lastSensor === this.leftOuterLowerSensor) {
+                this.startTravelCave();
+            } else if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.leftOuterLowerSensor) {
+                this.arrows.upgradeEvolutionArrows();
+            }
+
+            this.lastSensor = this.leftMiddleUpperSensor;
+        });
+
+
+        this.leftInnerLowerSensor = new Sensor(76, 223, () => {
+            this.lastSensor = this.leftInnerLowerSensor;
+        });
+        this.leftInnerUpperSensor = new Sensor(73, 168, () => {
+            if (this.state === RED_FIELD_STATUS.TRAVEL_LEFT && this.lastSensor === this.leftInnerLowerSensor) {
+                this.startTravelCave();
+            }
+            this.lastSensor = this.leftInnerUpperSensor;
+        });
     }
 
     onThreeBallsCallback = () => {
@@ -211,9 +242,12 @@ class RedField extends Field {
 
 
     onBellsproutEatCallback = () => {
+        //TODO this should increates on travel???
         this.status.bellsproutOnBall++;
         this.status.addPoints(POINTS.BELLSPROUT_POINTS);
-        if (this.state === RED_FIELD_STATUS.PLAYING && this.arrows.captureArrowsLevel >= 2) {
+        if (this.state === RED_FIELD_STATUS.TRAVEL_RIGHT) {
+            this.startTravelCave();
+        } else if (this.state === RED_FIELD_STATUS.PLAYING && this.arrows.captureArrowsLevel >= 2) {
             this.startCaptureSequence();
         }
     }
@@ -266,7 +300,7 @@ class RedField extends Field {
 
         this.staryu.update(this.getBall().sprite);
 
-        if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE) {
+        if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE || this.isTravelState()) {
             this.checkForBallLoss();
             this.updateDitto();
 
@@ -287,6 +321,8 @@ class RedField extends Field {
     updateSensors() {
         this.rightLowerSensor.update(this.getBall().sprite);
         this.rightInnerUpperSensor.update(this.getBall().sprite);
+        this.leftOuterLowerSensor.update(this.getBall().sprite);
+        this.leftMiddleUpperSensor.update(this.getBall().sprite);
     }
 
     updateDitto() {
@@ -304,8 +340,12 @@ class RedField extends Field {
             if (this.state === RED_FIELD_STATUS.CAPTURE) {
                 this.interruptCapture();
             }
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            this.well.close();
             this.status.startNewBall();
             this.state = RED_FIELD_STATUS.BALL_LOST;
+            //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
+            this.arrows.restart();
             Audio.playSFX('sfx24');
             this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
             Audio.stopMusic();
@@ -341,4 +381,38 @@ class RedField extends Field {
         this.well.spitBall(this.getBall());
         this.arrows.turnOffCaveArrow();
     }
+
+    onTravelToLeft() {
+        this.state = RED_FIELD_STATUS.TRAVEL_LEFT;
+        this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
+        this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
+    }
+
+    onTravelToRight() {
+        this.state = RED_FIELD_STATUS.TRAVEL_RIGHT;
+        this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
+        this.arrows.setTravel(TRAVEL_DIRECTION.RIGHT);
+    }
+
+    isTravelState() {
+        return this.state === RED_FIELD_STATUS.TRAVEL_LEFT || this.state === RED_FIELD_STATUS.TRAVEL_RIGHT || this.state === RED_FIELD_STATUS.TRAVEL_CAVE;
+    }
+
+    startTravelCave() {
+        this.state = RED_FIELD_STATUS.TRAVEL_CAVE;
+        this.screen.setTravelDirection(TRAVEL_DIRECTION.CAVE);
+        this.arrows.setTravel(TRAVEL_DIRECTION.CAVE);
+        this.openWell(this.onTravelCaveCallback);
+    }
+
+    onTravelCaveCallback = () => {
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        this.screen.progressLandmark();
+        this.stageText.setScrollText(I18NManager.translate("arrived_at") + this.screen.getLandmarkText(), this.screen.getLandmarkText(), DEFAULT_TEXT_PERSISTENCE_MILLIS, () => {
+            this.state = RED_FIELD_STATUS.PLAYING;
+            this.arrows.resetFromTravel();
+            this.closeWell();
+        });
+    }
+
 }

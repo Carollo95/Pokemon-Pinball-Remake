@@ -6,6 +6,12 @@ const FIELD_BONUS = {
     CLONE: "clone",
 }
 
+const TRAVEL_DIRECTION={
+    LEFT: 'left',
+    RIGHT: 'right',
+    CAVE: 'cave'
+}
+
 class Field extends Stage{
     constructor(status){
         super(status);
