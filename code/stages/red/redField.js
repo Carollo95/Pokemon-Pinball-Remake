@@ -1,4 +1,5 @@
 const RED_FIELD_CAPTURE_TIMER_MS = 121000;
+const RED_FIELD_TRAVEL_TIMER_MS = 31000;
 
 const RED_FIELD_STATUS = {
     PLAYING: 0,
@@ -375,15 +376,35 @@ class RedField extends Field {
     }
 
     onTravelToLeft() {
-        this.state = RED_FIELD_STATUS.TRAVEL_LEFT;
-        this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
-        this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
+        if (this.state === RED_FIELD_STATUS.PLAYING) {
+            this.state = RED_FIELD_STATUS.TRAVEL_LEFT;
+            this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
+            this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
+            this.attachTimer(Timer.createFieldTimer(RED_FIELD_TRAVEL_TIMER_MS, this.doOnTravelTimeupCallback));
+            Audio.playMusic('mapMode');
+        }
     }
 
     onTravelToRight() {
-        this.state = RED_FIELD_STATUS.TRAVEL_RIGHT;
-        this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
-        this.arrows.setTravel(TRAVEL_DIRECTION.RIGHT);
+        if (this.state === RED_FIELD_STATUS.PLAYING) {
+            this.state = RED_FIELD_STATUS.TRAVEL_RIGHT;
+            this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
+            this.arrows.setTravel(TRAVEL_DIRECTION.RIGHT);
+            this.attachTimer(Timer.createFieldTimer(RED_FIELD_TRAVEL_TIMER_MS, this.doOnTravelTimeupCallback));
+            Audio.playMusic('mapMode');
+        }
+    }
+
+    doOnTravelTimeupCallback = () => {
+        if (this.isTravelState()) {
+            this.getTimer().disable();
+            this.state = RED_FIELD_STATUS.PLAYING;
+            this.arrows.resetFromTravel();
+            this.well.close();
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            //Anything else??
+            Audio.playMusic('redField');
+        }
     }
 
     isTravelState() {
@@ -398,12 +419,16 @@ class RedField extends Field {
     }
 
     onTravelCaveCallback = () => {
+        this.getTimer().disable();
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        Audio.stopMusic();
+        Audio.playSFX('sfx25');
         this.screen.progressLandmark();
         this.stageText.setScrollText(I18NManager.translate("arrived_at") + this.screen.getLandmarkText(), this.screen.getLandmarkText(), DEFAULT_TEXT_PERSISTENCE_MILLIS, () => {
             this.state = RED_FIELD_STATUS.PLAYING;
             this.arrows.resetFromTravel();
             this.closeWell();
+            Audio.playMusic('redField');
         });
     }
 
