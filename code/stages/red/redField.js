@@ -9,7 +9,8 @@ const RED_FIELD_STATUS = {
     CAPTURE: 5,
     TRAVEL_LEFT: 6,
     TRAVEL_RIGHT: 7,
-    TRAVEL_CAVE: 8
+    TRAVEL_CAVE: 8,
+    EVOLUTION: 9
 }
 
 
@@ -25,6 +26,7 @@ class RedField extends Field {
         this.nextBonusLevelIndex = 0;
 
         this.background = Asset.getBackground('redFieldBackground');
+        this._newBallLaunched = true;
 
     }
 
@@ -48,6 +50,7 @@ class RedField extends Field {
             this.screen.stopSpin();
             this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText(), this.screen.getLandmarkText());
         }
+        this._newBallLaunched = true;
         this.ditto.removeLauncherDoor();
         this.getBall().launchFromSpawn();
     }
@@ -308,9 +311,10 @@ class RedField extends Field {
     }
 
     updateDitto() {
-        if (this.ditto.isOpen() && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
+        if (this._newBallLaunched && this.ditto.isOpen() && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
             this.ditto.close();
             this.ditto.createLauncherDoor();
+            this._newBallLaunched = false;
         }
     }
 
