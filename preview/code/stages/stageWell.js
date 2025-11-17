@@ -25,14 +25,13 @@ class StageWell {
             this.well.applyGravity(
                 ball.sprite,
                 () => this.onCapturedBallByWellCallback(ball),
-                () => { Audio.playSFX('sfx04', 1000); }
-            );
+                () => { Audio.playSFX('sfx04', 6500); });
         }
     }
 
     onCapturedBallByWellCallback(ball) {
         ball.minimize(() => { this.onWellBallCapture && this.onWellBallCapture(); this.onWellBallCapture = undefined; });
-        Audio.playSFX('sfx21', 3000);
+        Audio.playSFX('sfx21', 6500);
     }
 
     open(onWellBallCapture) {
