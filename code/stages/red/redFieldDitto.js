@@ -8,6 +8,11 @@ class RedFieldDitto {
     constructor() {
         this.createOpenSprite();
         this.status = RED_STAGE_DITTO_STATE.OPEN;
+        this.well = new Well(36,38,10,20,40);
+    }
+
+    update(ball){
+        this.well.applyGravity(ball.sprite);
     }
 
 

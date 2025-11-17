@@ -238,6 +238,7 @@ class RedField extends Field {
     }
 
     startCaptureSequence() {
+        //TODO close ditto here and on travel if its the case and then open it again
         this.state = RED_FIELD_STATUS.CAPTURE;
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
@@ -311,11 +312,15 @@ class RedField extends Field {
     }
 
     updateDitto() {
+        this.ditto.update(this.getBall());
         if (this._newBallLaunched && this.ditto.isOpen() && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
             this.ditto.close();
             this.ditto.createLauncherDoor();
             this._newBallLaunched = false;
+        } else if (this.state === RED_FIELD_STATUS.PLAYING && this.arrows.evolutionArrowsLevel === 3 && this.ditto.isClosed()) {
+            this.ditto.fullyOpen();
         }
+
     }
 
     updateScreen() {
