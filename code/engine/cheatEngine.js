@@ -1,5 +1,5 @@
 let SHOW_FPS = false; // true to show FPS
-let DEBUG = false; //true to start the game on debug mode
+let DEBUG = true; //true to start the game on debug mode
 
 const CheatEngine = {
 

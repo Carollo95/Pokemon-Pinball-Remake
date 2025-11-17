@@ -10,10 +10,12 @@ class RedFieldDitto {
         this.status = RED_STAGE_DITTO_STATE.OPEN;
     }
 
+
     removeSprites() {
         this.openSprite && this.openSprite.remove();
         this.closeSprite && this.closeSprite.remove();
         this.fullyOpenSprite && this.fullyOpenSprite.remove();
+        this.removeOuterLoopDoor();
     }
 
     open() {
@@ -21,6 +23,7 @@ class RedFieldDitto {
         Audio.playSFX('sfx00');
         this.createOpenSprite();
         this.status = RED_STAGE_DITTO_STATE.OPEN;
+        this.removeOuterLoopDoor();
     }
 
     createOpenSprite() {
@@ -49,7 +52,7 @@ class RedFieldDitto {
     close(silent = false) {
         this.removeSprites();
 
-        if(!silent) Audio.playSFX('sfx00');
+        if (!silent) Audio.playSFX('sfx00');
 
         this.closeSprite = new Sprite([
             [20, 188],
@@ -70,6 +73,7 @@ class RedFieldDitto {
         this.closeSprite.layer = SPRITE_LAYER;
 
         this.status = RED_STAGE_DITTO_STATE.CLOSE;
+        this.createOuterLoopDoor();
     }
 
     isClosed() {
@@ -86,12 +90,67 @@ class RedFieldDitto {
         this.fullyOpenSprite.layer = SPRITE_LAYER;
 
         this.status = RED_STAGE_DITTO_STATE.FULLY_OPEN;
+        this.removeOuterLoopDoor();
     }
 
     isFullyOpen() {
         return this.status === RED_STAGE_DITTO_STATE.FULLY_OPEN;
     }
 
+    createOuterLoopDoor() {
+        this.outerLoopDoor = new Sprite([
+            [198, 50],
+            [220, 54],
+            [242, 62],
+            [268, 78],
+            [278, 88],
+            [288, 108],
+            [290, 118],
+            [296, 132],
+            [300, 158],
+            [290, 134],
+            [272, 108],
+            [256, 92],
+            [240, 80],
+            [234, 76],
+            [198, 50]
+        ], "static");
+        this.outerLoopDoor.layer = SCENARIO_LAYER;
+        this.outerLoopDoor.debug = DEBUG;
+        this.outerLoopDoor.visible = true;
+
+        this.outerLoopImage = new Sprite(244, 98, 104, 104, "none");
+        this.outerLoopImage.addAnimation(Asset.getAnimation('redFieldOuterLoopDoor'));
+        this.outerLoopImage.layer = SCENARIO_LAYER;
+        this.outerLoopImage.debug = DEBUG;
+        this.outerLoopImage.visible = true;
+    }
+
+    createLauncherDoor() {
+        if (this.launcherDoor) return;
+
+        this.launcherDoor = new Sprite([
+            [180, 21],
+            [226, 37],
+            [250, 54],
+            [276, 80],
+            [276, 21],
+            [180, 21]
+        ], "static");
+        this.launcherDoor.layer = SCENARIO_LAYER;
+        this.launcherDoor.debug = DEBUG;
+        this.launcherDoor.visible = true;
+    }
+
+    removeLauncherDoor() {
+        this.launcherDoor && this.launcherDoor.remove();
+        this.launcherDoor = undefined;
+    }
+
+    removeOuterLoopDoor() {
+        this.outerLoopDoor && this.outerLoopDoor.remove();
+        this.outerLoopImage && this.outerLoopImage.remove();
+    }
 
 
 }

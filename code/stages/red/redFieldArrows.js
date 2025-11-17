@@ -73,8 +73,8 @@ class RedFieldArrows {
     }
 
 
-    blinkLeftInnerArrows(visible) {
-        this.captureArrows.ani.frame = 0;
+    blinkLeftInnerArrow(visible) {
+        this.leftInnerArrow.ani.frame = 0;
     }
 
 
@@ -129,7 +129,7 @@ class RedFieldArrows {
     upgradeEvolutionArrows() {
         if (this.evolutionArrowsLevel < 3) {
             this.evolutionArrowsLevel++;
-            this.captureArrows.ani.frame = this.evolutionArrowsLevel;
+            this.evolutionArrows.ani.frame = this.evolutionArrowsLevel;
         }
     }
 
@@ -200,12 +200,14 @@ class RedFieldArrows {
 
     getState() {
         return {
-            captureArrowsLevel: this.captureArrowsLevel
+            captureArrowsLevel: this.captureArrowsLevel,
+            evolutionArrowsLevel : this.evolutionArrowsLevel
         };
     }
 
     setState(state) {
         this.setCaptureArrowsLevel(state.captureArrowsLevel);
+        this.setEvolutionArrowsLevel(state.evolutionArrowsLevel);
     }
 
 

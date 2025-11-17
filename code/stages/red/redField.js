@@ -48,6 +48,7 @@ class RedField extends Field {
             this.screen.stopSpin();
             this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText(), this.screen.getLandmarkText());
         }
+        this.ditto.removeLauncherDoor();
         this.getBall().launchFromSpawn();
     }
 
@@ -64,25 +65,6 @@ class RedField extends Field {
 
     setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
-
-        //TODO move to ditto
-        this.createScenarioGeometry([
-            [198, 50],
-            [220, 54],
-            [242, 62],
-            [268, 78],
-            [278, 88],
-            [288, 108],
-            [290, 118],
-            [296, 132],
-            [300, 158],
-            [290, 134],
-            [272, 108],
-            [256, 92],
-            [240, 80],
-            [234, 76],
-            [198, 50]
-        ]);
 
         this.attachBall(Ball.spawnStageBall());
 
@@ -328,6 +310,7 @@ class RedField extends Field {
     updateDitto() {
         if (this.ditto.isOpen() && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
             this.ditto.close();
+            this.ditto.createLauncherDoor();
         }
     }
 
