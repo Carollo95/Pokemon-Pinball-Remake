@@ -7,8 +7,9 @@ class EvolutionChooserScreen {
     constructor(basicPokemonList, onScreenEndCallback) {
         this.onScreenEndCallback = onScreenEndCallback;
         this.currentLines = [];
-        //this.basicPokemonList = [POKEDEX.BULBASAUR, POKEDEX.CHARMANDER, POKEDEX.SQUIRTLE, POKEDEX.CATERPIE, POKEDEX.WEEDLE, POKEDEX.PIDGEY, POKEDEX.RATTATA, POKEDEX.SPEAROW, POKEDEX.EKANS, POKEDEX.PIKACHU, POKEDEX.SANDSHREW];
-        this.basicPokemonList = [POKEDEX.BULBASAUR, POKEDEX.CHARMANDER, POKEDEX.SQUIRTLE];
+        this.basicPokemonList = [POKEDEX.BULBASAUR, POKEDEX.CHARMANDER, POKEDEX.SQUIRTLE, POKEDEX.CATERPIE, POKEDEX.WEEDLE, POKEDEX.PIDGEY, POKEDEX.RATTATA, POKEDEX.SPEAROW, POKEDEX.EKANS, POKEDEX.PIKACHU, POKEDEX.SANDSHREW];
+
+        //this.basicPokemonList = [POKEDEX.BULBASAUR, POKEDEX.CHARMANDER, POKEDEX.SQUIRTLE];
         this.currentlySelectedIndex = 0;
     }
 

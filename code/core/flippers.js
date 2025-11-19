@@ -21,17 +21,13 @@ const RIGHT_FLIPPER_MAX_ROTATION = LEFT_FLIPPER_MAX_ROTATION * -1; //Max angle f
 const RIGHT_FLIPPER_ROTATION_SPEED = 15; //Movement speed for the right flipper
 const LEFT_FLIPPER_ROTATION_SPEED = RIGHT_FLIPPER_ROTATION_SPEED * -1; //Movement speed for the left flipper
 
-const LEFT_FLIPPER_KEY = 'a'; //Key for the movemenet of the left flipper
-const RIGHT_FLIPPER_KEY = 'l'; //Key for the movemenet of the right flipper
-
 const LEFT_FLIPPER_OFFSET = 14;//Offset of the left flipper animation
 const RIGHT_FLIPPER_OFFSET = -14; //Offset of the right flipper animation
 
 const FLIPPER_SFX_PLAY_COOLDOWN = 200; //Cooldown betwen flipper sfx plays to avoid spamming
 
-
 class Flippers {
-    constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY, rightFlipperCallback = function () { }) {
+    constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY, leftFlipperCallback = function () { }, rightFlipperCallback = function () { }) {
         this.flippersEnabled = true;
 
         this.createHtmlButtonControls();
@@ -39,6 +35,7 @@ class Flippers {
         this.createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY);
         this.createRightFlipper(rightFlipperRotationPointX, rightFlipperRotationPointY);
 
+        this.leftFlipperCallback = leftFlipperCallback;
         this.rightFlipperCallback = rightFlipperCallback;
 
     }
@@ -128,6 +125,7 @@ class Flippers {
         if (this.flippersEnabled) {
             if (this.isLeftFlipperAction()) {
                 this.liftLeftFlipper();
+                this.leftFlipperCallback();
             } else {
                 this.lowerLeftFlipper();
             }
@@ -260,10 +258,14 @@ class Flippers {
     enableFlippers() {
         this.flippersEnabled = true;
     }
+
+    isCenterButtonAction() {
+        return kb.pressing(CENTER_BUTTON_KEY) || this.centerButtonPressed;
+    }
 }
 
-function createTableFlippers(rightFlipperCallback) {
-    return new Flippers(LEFT_FLIPPER_ROTATION_POINT_X, LEFT_FLIPPER_ROTATION_POINT_Y, RIGHT_FLIPPER_ROTATION_POINT_X, RIGHT_FLIPPER_ROTATION_POINT_Y, rightFlipperCallback);
+function createTableFlippers(leftFlipperCallback, rightFlipperCallback) {
+    return new Flippers(LEFT_FLIPPER_ROTATION_POINT_X, LEFT_FLIPPER_ROTATION_POINT_Y, RIGHT_FLIPPER_ROTATION_POINT_X, RIGHT_FLIPPER_ROTATION_POINT_Y, leftFlipperCallback, rightFlipperCallback);
 }
 
 function createBonusFlippers() {

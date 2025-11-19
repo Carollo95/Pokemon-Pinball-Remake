@@ -72,7 +72,7 @@ class RedField extends Field {
 
         this.attachBall(Ball.spawnStageBall());
 
-        this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
+        this.attachFlippers(createTableFlippers(() => { }, this.rightFlipperCallback));
         this.attachStageText(createStageStatusBanner(this.status));
 
         this.ditto = new RedFieldDitto(this.onEvolutionStartCallback);
