@@ -7,10 +7,15 @@ class EvolutionChooserScreen {
     constructor(basicPokemonList, onScreenEndCallback) {
         this.onScreenEndCallback = onScreenEndCallback;
         this.currentLines = [];
-        this.basicPokemonList = [POKEDEX.BULBASAUR, POKEDEX.CHARMANDER, POKEDEX.SQUIRTLE, POKEDEX.CATERPIE, POKEDEX.WEEDLE, POKEDEX.PIDGEY, POKEDEX.RATTATA, POKEDEX.SPEAROW, POKEDEX.EKANS, POKEDEX.PIKACHU, POKEDEX.SANDSHREW];
 
-        //this.basicPokemonList = [POKEDEX.BULBASAUR, POKEDEX.CHARMANDER, POKEDEX.SQUIRTLE];
+
+        basicPokemonList = [POKEDEX.BULBASAUR, POKEDEX.CHARMANDER, POKEDEX.SQUIRTLE, POKEDEX.PIKACHU, POKEDEX.EEVEE, POKEDEX.JIGGLYPUFF, POKEDEX.MEOWTH, POKEDEX.PSYDUCK, POKEDEX.MACHOP, POKEDEX.GEODUDE, POKEDEX.MAGIKARP];
+
+        this.basicPokemonList = basicPokemonList.map(e => e.name).concat("exit");
+
         this.currentlySelectedIndex = 0;
+        this.shownList = this.basicPokemonList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
+        this.scroll = 0;
     }
 
     createLine(y, xs) {
@@ -44,21 +49,33 @@ class EvolutionChooserScreen {
     }
 
     createNameToPrint(i) {
-        if (i >= this.basicPokemonList.length) {
+        if (i >= this.shownList.length) {
             return ''.padEnd(EVOLUTION_CHOOSER_SCREEN_TEXT_XS.length, ' ');
         }
-        return (i == this.currentlySelectedIndex ? ' >' : '  ') + this.basicPokemonList[i].name.padEnd(EVOLUTION_CHOOSER_SCREEN_TEXT_XS.length - 2, ' ');
+        let prefix = (i + this.scroll == this.currentlySelectedIndex ? ' >' : '  ');
+        return prefix + this.shownList[i].padEnd(EVOLUTION_CHOOSER_SCREEN_TEXT_XS.length - 2, ' ');
     }
 
     next() {
-        this.currentlySelectedIndex = this.currentlySelectedIndex < this.basicPokemonList.length-1 ? this.currentlySelectedIndex + 1 : this.currentlySelectedIndex;
-        this.show();
+        if (this.currentlySelectedIndex < this.basicPokemonList.length - 1) {
+            this.currentlySelectedIndex++;
+            if (this.currentlySelectedIndex >= 5) {
+                this.scroll++;
+                this.shownList = this.basicPokemonList.slice(this.currentlySelectedIndex - 4, this.currentlySelectedIndex + 1);
+            }
+            this.show();
+        }
     }
 
     previous() {
-        this.currentlySelectedIndex = this.currentlySelectedIndex > 0 ? this.currentlySelectedIndex - 1 : this.currentlySelectedIndex;
-        this.show();
+        if (this.currentlySelectedIndex > 0) {
+            this.currentlySelectedIndex--;
+            if (this.currentlySelectedIndex < this.scroll) {
+                this.scroll--;
+                this.shownList = this.basicPokemonList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
+            }
+            this.show();
+        }
     }
-
 
 }
