@@ -5,14 +5,18 @@ const RED_STAGE_DITTO_STATE = {
 };
 
 class RedFieldDitto {
-    constructor() {
+    constructor(onCapturedBallCallback) {
         this.createOpenSprite();
         this.status = RED_STAGE_DITTO_STATE.OPEN;
-        this.well = new Well(36,38,10,20,40);
+        this.well = new Well(36, 38, 10, 20, 50);
+        this.wellOpen = false;
+        this.onCapturedBallCallback = onCapturedBallCallback;
     }
 
-    update(ball){
-        this.well.applyGravity(ball.sprite);
+    update(ball) {
+        if (this.wellOpen) {
+            this.well.applyGravity(ball.sprite, () => this.onCapturedBallByWellCallback(ball));
+        }
     }
 
 
@@ -86,6 +90,7 @@ class RedFieldDitto {
     }
 
     fullyOpen() {
+        this.wellOpen = true;
         this.removeSprites();
         Audio.playSFX('sfx00');
 
@@ -157,5 +162,24 @@ class RedFieldDitto {
         this.outerLoopImage && this.outerLoopImage.remove();
     }
 
+
+    onCapturedBallByWellCallback(ball) {
+        ball.minimize(() => { this.onCapturedBallCallback && this.onCapturedBallCallback() });
+        Audio.playSFX('sfx21', 6500);
+    }
+
+    spitBall(ball) {
+        ball.stopOnCoordinates(this.well.x, this.well.y);
+        ball.regainPhysics();
+        ball.maximize();
+    }
+
+    openWell() {
+        this.wellOpen = true;
+    }
+
+    closeWell() {
+        this.wellOpen = false;
+    }
 
 }

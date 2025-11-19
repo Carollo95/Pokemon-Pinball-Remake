@@ -27,7 +27,7 @@ class RedField extends Field {
         this.nextBonusLevelIndex = 0;
 
         this.background = Asset.getBackground('redFieldBackground');
-        this._newBallLaunched = true;
+        this._closeBallOnWayDown = true;
 
     }
 
@@ -51,7 +51,7 @@ class RedField extends Field {
             this.screen.stopSpin();
             this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText(), this.screen.getLandmarkText());
         }
-        this._newBallLaunched = true;
+        this._closeBallOnWayDown = true;
         this.ditto.removeLauncherDoor();
         this.getBall().launchFromSpawn();
     }
@@ -75,7 +75,7 @@ class RedField extends Field {
         this.attachFlippers(createTableFlippers(this.rightFlipperCallback));
         this.attachStageText(createStageStatusBanner(this.status));
 
-        this.ditto = new RedFieldDitto();
+        this.ditto = new RedFieldDitto(this.onEvolutionStartCallback);
 
         this.speedPad = [];
         this.speedPad.push(new SpeedPad(265, 293));
@@ -313,15 +313,15 @@ class RedField extends Field {
     }
 
     updateDitto() {
-        this.ditto.update(this.getBall());
-        if (this._newBallLaunched && this.ditto.isOpen() && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
+        if (this._closeBallOnWayDown && (!this.ditto.isClosed()) && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
             this.ditto.close();
             this.ditto.createLauncherDoor();
-            this._newBallLaunched = false;
+            this._closeBallOnWayDown = false;
         } else if (this.state === RED_FIELD_STATUS.PLAYING && this.arrows.evolutionArrowsLevel === 3 && this.ditto.isClosed()) {
             this.ditto.fullyOpen();
         }
 
+        this.ditto.update(this.getBall());
     }
 
     updateScreen() {
@@ -430,6 +430,13 @@ class RedField extends Field {
             this.closeWell();
             Audio.playMusic('redField');
         });
+    }
+
+    onEvolutionStartCallback = () => {
+        this.ditto.closeWell();
+        this._closeBallOnWayDown = true;
+        console.log("showEvolutionScreen");
+        this.ditto.spitBall(this.getBall());
     }
 
 }
