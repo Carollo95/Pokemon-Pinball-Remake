@@ -8,7 +8,6 @@ class EvolutionChooserScreen {
         this.onScreenEndCallback = onScreenEndCallback;
         this.currentLines = [];
 
-
         basicPokemonList = [POKEDEX.BULBASAUR, POKEDEX.CHARMANDER, POKEDEX.SQUIRTLE, POKEDEX.PIKACHU, POKEDEX.EEVEE, POKEDEX.JIGGLYPUFF, POKEDEX.MEOWTH, POKEDEX.PSYDUCK, POKEDEX.MACHOP, POKEDEX.GEODUDE, POKEDEX.MAGIKARP];
 
         this.basicPokemonList = basicPokemonList.map(e => e.name).concat("exit");
@@ -44,7 +43,7 @@ class EvolutionChooserScreen {
             for (let j = 0; j < EVOLUTION_CHOOSER_SCREEN_TEXT_XS.length; j++) {
                 line[j].changeAnimation(`$${name.charAt(j)}`);
             }
-
+            this.currentLines.push(line);
         }
     }
 
@@ -78,4 +77,17 @@ class EvolutionChooserScreen {
         }
     }
 
+    getSelected() {
+        if (this.currentlySelectedIndex >= this.basicPokemonList.length) {
+            return null;
+        }
+        return this.basicPokemonList[this.currentlySelectedIndex];
+    }
+
+    remove() {
+        if (this.currentLines) {
+            this.currentLines.forEach(row => row.forEach(char => char.remove()));
+            this.currentLines = [];
+        }
+    }
 }
