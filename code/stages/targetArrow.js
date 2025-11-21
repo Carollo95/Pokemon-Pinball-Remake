@@ -10,6 +10,7 @@ class TargetArrow {
         this.sprite.ani.playing = false;
         this.sprite.visible = false;
         this.visible = this.sprite.visible;
+        this.active = true;
     }
 
     setVisible(visible) {
@@ -17,8 +18,13 @@ class TargetArrow {
         this.sprite.visible = visible;
     }
 
+    setActive(active) {
+        this.active = active;
+        this.setVisible(active);
+    }
+
     update() {
-        if (this.visible) {
+        if (this.visible && this.active) {
             EngineUtils.blinkSprite(this.sprite, 16);
         }
     }

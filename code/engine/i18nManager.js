@@ -45,6 +45,9 @@ const I18NManager = {
             "flipped": "flipped",
             "pokemon_ran_away": "pokémon ran away",
 
+            "start_training": "start training",
+            "you_got_it": "yeah! you got it",
+
             "bulbasaur": "bulbasaur",
             "ivysaur": "ivysaur",
             "venusaur": "venusaur",
