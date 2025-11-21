@@ -1,6 +1,6 @@
 const SCREEN_STATE = {
     LANDSCAPE: "landscape",
-    CAPTURE: "capture",
+    CAPTURE_EVOLUTION: "capture",
     IMAGE: "image"
 }
 
@@ -26,7 +26,7 @@ class Screen {
         this.screenImage = new ScreenImage();
 
         this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
-        this.screenCapture = new ScreenCapture(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback, captureOnPokemonAnimatedHitCallback);
+        this.screenCapture = new ScreenCaptureEvolution(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback, captureOnPokemonAnimatedHitCallback);
 
         this.ballSprites = []
 
@@ -55,7 +55,7 @@ class Screen {
             this.blinkLastCaptureBallIfNeeded();
         } else if (this.state === SCREEN_STATE.IMAGE) {
             this.blinkLastCaptureBallIfNeeded();
-        } else if (this.state === SCREEN_STATE.CAPTURE) {
+        } else if (this.state === SCREEN_STATE.CAPTURE_EVOLUTION) {
             this.screenCapture.update(ballSprite);
         }
 
@@ -84,7 +84,7 @@ class Screen {
             this.screenCapture.show(false)
             this.screenImage.show(false);
             this.updateBallSpritesVisibility();
-        } else if (state === SCREEN_STATE.CAPTURE) {
+        } else if (state === SCREEN_STATE.CAPTURE_EVOLUTION) {
             this.screenCapture.show(true);
             this.screenLandscapes.show(false);
             this.screenImage.show(false);
@@ -98,12 +98,17 @@ class Screen {
     }
 
     startCapture(level) {
-        this.setState(SCREEN_STATE.CAPTURE);
+        this.setState(SCREEN_STATE.CAPTURE_EVOLUTION);
         this.screenCapture.startCapture(this.screenLandscapes.getPokemonFromLandmark(level));
     }
 
+    startEvolution(pokemon){
+        this.setState(SCREEN_STATE.CAPTURE_EVOLUTION);
+        this.screenCapture.startEvolution(pokemon);
+    }
+
     flipCapture() {
-        if (this.state !== SCREEN_STATE.CAPTURE) return;
+        if (this.state !== SCREEN_STATE.CAPTURE_EVOLUTION) return;
 
         this.screenCapture.flipCapture();
     }

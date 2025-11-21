@@ -464,18 +464,24 @@ class RedField extends Field {
             if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
                 let selected = this.evolutionScreenChooser.getSelected();
                 if (selected !== null) {
-                    console.log("Selected for evolution: " + selected.name);
-                    this.state = RED_FIELD_STATUS.EVOLUTION;
+                    this.startEvolutionSequence(selected);
                 } else {
                     this.state = RED_FIELD_STATUS.PLAYING;
-                    console.log("No selection made for evolution");
                 }
+
                 this.evolutionScreenChooser.remove();
                 this.ditto.closeWell();
                 this._closeBallOnWayDown = true;
                 this.ditto.spitBall(this.getBall());
             }
         }
+    }
+
+    startEvolutionSequence(pokemon) {
+        this.state = RED_FIELD_STATUS.EVOLUTION;
+        //TODO startTimer
+        this.screen.startEvolution(pokemon);
+        Audio.playMusic('catchEmEvolutionModeRedField');
     }
 
 }

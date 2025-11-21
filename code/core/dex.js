@@ -153,20 +153,14 @@ const POKEDEX = {
 };
 
 const BASIC_POKEMON = Object.values(POKEDEX).filter(pokemon => pokemon.basic);
+const ALL_POKEMON = Object.values(POKEDEX);
 
 function getPokemonById(id) {
-    for (let i = 0; i < POKEDEX.length; i++) {
-        if (POKEDEX[i].id === id) {
-            return POKEDEX[i];
-        }
-    }
-    return null;
-}   
+    const key = String(id).padStart(3, '0');
+    return Object.values(POKEDEX).find(p => p.id === key) || null;
+}
 
 function canEvolve(id){
     const currentPokemon = getPokemonById(id);
-    if (currentPokemon && currentPokemon.evolutionId) {
-        return true;
-    }
-    return false;
+    return !!(currentPokemon && currentPokemon.evolutionId);
 }
