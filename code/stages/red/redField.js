@@ -446,6 +446,8 @@ class RedField extends Field {
             this.state = RED_FIELD_STATUS.PLAYING;
             this.arrows.resetFromTravel();
             this.closeWell();
+            this.leftTravelDiglett.reset();
+            this.rightTravelDiglett.reset();
             Audio.playMusic('redField');
         });
     }
