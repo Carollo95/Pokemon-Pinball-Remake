@@ -8,12 +8,11 @@ class EvolutionChooserScreen {
         this.onScreenEndCallback = onScreenEndCallback;
         this.currentLines = [];
 
-        basicPokemonList = [POKEDEX.BULBASAUR, POKEDEX.CHARMANDER, POKEDEX.SQUIRTLE, POKEDEX.PIKACHU, POKEDEX.EEVEE, POKEDEX.JIGGLYPUFF, POKEDEX.MEOWTH, POKEDEX.PSYDUCK, POKEDEX.MACHOP, POKEDEX.GEODUDE, POKEDEX.MAGIKARP];
-
-        this.basicPokemonList = basicPokemonList.map(e => e.name).concat("exit");
+        this.basicPokemonList = basicPokemonList;
+        this.basicPokemonNamesList = basicPokemonList.map(e => e.name).concat("exit");
 
         this.currentlySelectedIndex = 0;
-        this.shownList = this.basicPokemonList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
+        this.shownList = this.basicPokemonNamesList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
         this.scroll = 0;
     }
 
@@ -56,11 +55,11 @@ class EvolutionChooserScreen {
     }
 
     next() {
-        if (this.currentlySelectedIndex < this.basicPokemonList.length - 1) {
+        if (this.currentlySelectedIndex < this.basicPokemonNamesList.length - 1) {
             this.currentlySelectedIndex++;
             if (this.currentlySelectedIndex >= 5) {
                 this.scroll++;
-                this.shownList = this.basicPokemonList.slice(this.currentlySelectedIndex - 4, this.currentlySelectedIndex + 1);
+                this.shownList = this.basicPokemonNamesList.slice(this.currentlySelectedIndex - 4, this.currentlySelectedIndex + 1);
             }
             this.show();
         }
@@ -71,7 +70,7 @@ class EvolutionChooserScreen {
             this.currentlySelectedIndex--;
             if (this.currentlySelectedIndex < this.scroll) {
                 this.scroll--;
-                this.shownList = this.basicPokemonList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
+                this.shownList = this.basicPokemonNamesList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
             }
             this.show();
         }

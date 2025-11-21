@@ -11,7 +11,8 @@ const RED_FIELD_STATUS = {
     TRAVEL_LEFT: 6,
     TRAVEL_RIGHT: 7,
     TRAVEL_CAVE: 8,
-    EVOLUTION: 9
+    EVOLUTION_CHOOSE_SCREEN: 9,
+    EVOLUTION: 10
 }
 
 
@@ -38,12 +39,25 @@ class RedField extends Field {
             if (this.state === RED_FIELD_STATUS.GAME_START || this.state === RED_FIELD_STATUS.NEW_BALL_WAITING) {
                 this.launchNewBallWaiting();
                 this.state = RED_FIELD_STATUS.PLAYING;
+            } else if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
+                this.evolutionScreenChooser.next();
             }
         }
 
         if (this.state === RED_FIELD_STATUS.BALL_LOST) {
             this.progressBonusBallScreen();
         }
+    }
+
+    leftFlipperCallback = () => {
+
+        if (millis() > this._lastCallbackCall + CALLBACK_DELAY_MS) {
+            this._lastCallbackCall = millis();
+            if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
+                this.evolutionScreenChooser.previous();
+            }
+        }
+
     }
 
     launchNewBallWaiting() {
@@ -72,10 +86,10 @@ class RedField extends Field {
 
         this.attachBall(Ball.spawnStageBall());
 
-        this.attachFlippers(createTableFlippers(() => { }, this.rightFlipperCallback));
+        this.attachFlippers(createTableFlippers(this.leftFlipperCallback, this.rightFlipperCallback));
         this.attachStageText(createStageStatusBanner(this.status));
 
-        this.ditto = new RedFieldDitto(this.onEvolutionStartCallback);
+        this.ditto = new RedFieldDitto(this.onDittoWellCallback);
 
         this.speedPad = [];
         this.speedPad.push(new SpeedPad(265, 293));
@@ -126,6 +140,8 @@ class RedField extends Field {
         } else {
             this.state = RED_FIELD_STATUS.GAME_START;
         }
+
+        super.setCentralButtonCallback(this.centerButtonCallback);
 
         Audio.playMusic('redField');
     }
@@ -287,7 +303,7 @@ class RedField extends Field {
 
         this.staryu.update(this.getBall().sprite);
 
-        if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE || this.isTravelState()) {
+        if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE || this.state === RED_FIELD_STATUS.EVOLUTION || this.isTravelState()) {
             this.checkForBallLoss();
             this.updateDitto();
 
@@ -302,7 +318,7 @@ class RedField extends Field {
     }
 
     updateArrows() {
-        this.arrows.update(this.state !== RED_FIELD_STATUS.CAPTURE);
+        this.arrows.update(this.state !== RED_FIELD_STATUS.CAPTURE && this.state !== RED_FIELD_STATUS.EVOLUTION);
     }
 
     updateSensors() {
@@ -333,6 +349,7 @@ class RedField extends Field {
             if (this.state === RED_FIELD_STATUS.CAPTURE) {
                 this.interruptCapture();
             }
+            //TODO interrupt evolution
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
             this.well.close();
             this.status.startNewBall();
@@ -377,6 +394,7 @@ class RedField extends Field {
 
     onTravelToLeft() {
         if (this.state === RED_FIELD_STATUS.PLAYING) {
+            //TODO close ditto if open and then open it again if it was closed
             this.state = RED_FIELD_STATUS.TRAVEL_LEFT;
             this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
             this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
@@ -432,11 +450,30 @@ class RedField extends Field {
         });
     }
 
-    onEvolutionStartCallback = () => {
-        this.ditto.closeWell();
-        this._closeBallOnWayDown = true;
-        console.log("showEvolutionScreen");
-        this.ditto.spitBall(this.getBall());
+    onDittoWellCallback = () => {
+        this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.getEvolvablePokemon());
+        this.evolutionScreenChooser.show();
+        this.state = RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN;
+    }
+
+    centerButtonCallback = () => {
+        if (millis() > this._lastCallbackCall + CALLBACK_DELAY_MS) {
+            this._lastCallbackCall = millis();
+            if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
+                let selected = this.evolutionScreenChooser.getSelected();
+                if (selected !== null) {
+                    console.log("Selected for evolution: " + selected.name);
+                    this.state = RED_FIELD_STATUS.EVOLUTION;
+                } else {
+                    this.state = RED_FIELD_STATUS.PLAYING;
+                    console.log("No selection made for evolution");
+                }
+                this.evolutionScreenChooser.remove();
+                this.ditto.closeWell();
+                this._closeBallOnWayDown = true;
+                this.ditto.spitBall(this.getBall());
+            }
+        }
     }
 
 }

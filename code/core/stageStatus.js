@@ -51,6 +51,10 @@ class StageStatus {
         this.captured.push(pokemon);
     }
 
+    getEvolvablePokemon(){
+        return this.captured.filter(p => p.evolutionId != null);
+    }
+
     startNewBall() {
         this.balls--;
 

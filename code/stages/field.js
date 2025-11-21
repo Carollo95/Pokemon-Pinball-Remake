@@ -38,6 +38,7 @@ class Field extends Stage {
             this.centerButtonPressed = false;
         });
 
+        this.centralButtonCallback = undefined;
 
     }
 
