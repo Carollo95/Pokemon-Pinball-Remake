@@ -108,8 +108,8 @@ class RedField extends Field {
 
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
 
-        this.leftTravelDiglett = new TravelDiglett(() => { this.diglettHitCallback(false) }, () => { this.status.dugtrioOnBall++; this.onTravelToLeft(); }, false);
-        this.rightTravelDiglett = new TravelDiglett(() => { this.diglettHitCallback(true) }, () => { this.status.dugtrioOnBall++; this.onTravelToRight(); }, true);
+        this.leftTravelDiglett = new TravelDiglett(() => { this.onDiglettHitCallback(false) }, () => { this.status.dugtrioOnBall++; this.onTravelToLeft(); }, false);
+        this.rightTravelDiglett = new TravelDiglett(() => { this.onDiglettHitCallback(true) }, () => { this.status.dugtrioOnBall++; this.onTravelToRight(); }, true);
 
         this.voltorbs = [];
         this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
@@ -129,6 +129,9 @@ class RedField extends Field {
         this.targetArrows.push(this.rightMultiplierTargetArrow);
 
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
+
+        this.leftMultiplier = new MultiplierTarget(85, 298, 75, 281, this.onMultiplierHitCallback);
+        this.rightMultiplier = new MultiplierTarget(233, 298, 245, 281, this.onMultiplierHitCallback);
 
         this.arrows = new RedFieldArrows();
         if (arrowsState != undefined) {
@@ -154,19 +157,13 @@ class RedField extends Field {
         Audio.playMusic('redField');
     }
 
-    diglettHitCallback = (isRight) => {
+    onDiglettHitCallback = (isRight) => {
         this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS);
         if (this.state === RED_FIELD_STATUS.EVOLUTION) {
             if (isRight) {
-                if (this.rightDiglettTargetArrow.active) {
-                    this.rightDiglettTargetArrow.setActive(false);
-                    //TODO show experience
-                }
+                this.onEvolutionTargetHit(this.rightDiglettTargetArrow);
             } else {
-                if (this.leftDiglettTargetArrow.active) {
-                    this.leftDiglettTargetArrow.setActive(false);
-                    //TODO show experience
-                }
+                this.onEvolutionTargetHit(this.leftDiglettTargetArrow);
             }
         }
     }
@@ -311,19 +308,16 @@ class RedField extends Field {
             this.screen.flipCapture();
             this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
         } else if (this.state === RED_FIELD_STATUS.EVOLUTION && this.voltorbsTargetArrow.active) {
-            this.voltorbsTargetArrow.setActive(false);
-            //TODO show experience
+            this.onEvolutionTargetHit(this.voltorbsTargetArrow);
         }
     }
 
     onMultiplierHitCallback = (isRight) => {
         if (this.state === RED_FIELD_STATUS.EVOLUTION) {
             if (isRight) {
-                this.rightMultiplierTargetArrow.setActive(false);
-                //TODO show experience
+                this.onEvolutionTargetHit(this.rightMultiplierTargetArrow);
             } else {
-                this.leftMultiplierTargetArrow.setActive(false);
-                //TODO show experience
+                this.onEvolutionTargetHit(this.leftMultiplierTargetArrow);
             }
         }
     }
@@ -344,6 +338,9 @@ class RedField extends Field {
         this.bellsprout.update(this.getBall().sprite);
 
         this.staryu.update(this.getBall().sprite);
+
+        this.leftMultiplier.update(this.getBall().sprite);
+        this.rightMultiplier.update(this.getBall().sprite);
 
         if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE || this.state === RED_FIELD_STATUS.EVOLUTION || this.isTravelState()) {
             this.checkForBallLoss();
@@ -390,7 +387,7 @@ class RedField extends Field {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
             if (this.state === RED_FIELD_STATUS.CAPTURE) {
                 this.interruptCapture();
-            }else if (this.state === RED_FIELD_STATUS.EVOLUTION) {
+            } else if (this.state === RED_FIELD_STATUS.EVOLUTION) {
                 this.interruptEvolution();
             }
             //TODO interrupt evolution
@@ -535,10 +532,38 @@ class RedField extends Field {
         this.screen.startEvolution(pokemon);
         Audio.playMusic('catchEmEvolutionModeRedField');
 
+
+        //Pick 3 random target arrows to be evolution, the rest just get the pokemon tired
+        const pool = [...this.targetArrows];
+        for (let i = pool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        this.evolutionTargetArrows = pool.slice(0, Math.min(3, pool.length));
+
         this.targetArrows.forEach(ta => {
             ta.setVisible(true);
             ta.setActive(true);
         });
+    }
+
+    onEvolutionTargetHit(targetArrow) {
+        if (targetArrow.active) {
+            if (this.evolutionTargetArrows.includes(targetArrow)) {
+                this.spawnEvolutionItem();
+            } else {
+                this.setPokemonTired();
+            }
+            targetArrow.setActive(false);
+        }
+    }
+
+    setPokemonTired() {
+
+    }
+
+    spawnEvolutionItem() {
+
     }
 
 }
