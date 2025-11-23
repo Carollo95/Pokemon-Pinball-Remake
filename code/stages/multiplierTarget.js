@@ -11,7 +11,7 @@ class MultiplierTarget {
         this.target = new Sprite(colliderX, colliderY, 6, 9, "none");
         this.target.debug = DEBUG;
         this.target.layer = SCENARIO_LAYER;
-        this.target.visible = true;
+        this.target.visible = false;
 
         this.callback = callback;
         this.lastHitTime = -10000;

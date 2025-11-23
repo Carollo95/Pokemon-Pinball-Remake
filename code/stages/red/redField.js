@@ -130,8 +130,8 @@ class RedField extends Field {
 
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
-        this.leftMultiplier = new MultiplierTarget(85, 298, 75, 281, this.onMultiplierHitCallback);
-        this.rightMultiplier = new MultiplierTarget(233, 298, 245, 281, this.onMultiplierHitCallback);
+        this.leftMultiplier = new MultiplierTarget(85, 298, 75, 281, () => this.onMultiplierHitCallback(false));
+        this.rightMultiplier = new MultiplierTarget(233, 298, 245, 281, () => this.onMultiplierHitCallback(true));
 
         this.arrows = new RedFieldArrows();
         if (arrowsState != undefined) {
@@ -328,6 +328,7 @@ class RedField extends Field {
 
         this.well.update(this.getBall());
         this.updateSensors();
+
         this.targetArrows.forEach(ta => ta.update());
 
         this.leftTravelDiglett.update(this.getBall().sprite);
@@ -501,7 +502,7 @@ class RedField extends Field {
     }
 
     onDittoWellCallback = () => {
-        this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.getEvolvablePokemon());
+        this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.captured);
         this.evolutionScreenChooser.show();
         this.state = RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN;
     }
@@ -559,11 +560,14 @@ class RedField extends Field {
     }
 
     setPokemonTired() {
-
+        console.log("POKEMON IS TIRED");
+        //TODO set pokemon tired for 5 seconds
     }
 
     spawnEvolutionItem() {
-
+        console.log("NEW EVOLUTION ITEM");
+        //TODO disable arrows
+        //TODO Spawn one random evolution item on the field
     }
 
 }
