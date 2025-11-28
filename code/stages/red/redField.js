@@ -98,7 +98,7 @@ class RedField extends Field {
 
         this.screen = new Screen(
             initialLandmark,
-            this.onThreeBallsCallback,
+            this.onCaptureThreeBallsCallback,
             this.onCaptureStartCaptureAnimationCallback,
             this.onCaptureStartAnimatedSpritePhaseCallback,
             this.onCaptureCompleteAnimationStartedCallback,
@@ -154,16 +154,25 @@ class RedField extends Field {
 
         super.setCentralButtonCallback(this.centerButtonCallback);
 
+
+        this.evolutionTargets = [];
+        this.evolutionTargets.push(new EvolutionTarget(97, 368, this.onEvolutionTargetHit));
+
+        this.evolutionManager = new EvolutionManager(this.targetArrows, this.evolutionTargets);
         Audio.playMusic('redField');
+    }
+
+    onEvolutionTargetHit = () => {
+        //TODO add exp and so on
     }
 
     onDiglettHitCallback = (isRight) => {
         this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS);
         if (this.state === RED_FIELD_STATUS.EVOLUTION) {
             if (isRight) {
-                this.onEvolutionTargetHit(this.rightDiglettTargetArrow);
+                this.onEvolutionTargetArrowHit(this.rightDiglettTargetArrow);
             } else {
-                this.onEvolutionTargetHit(this.leftDiglettTargetArrow);
+                this.onEvolutionTargetArrowHit(this.leftDiglettTargetArrow);
             }
         }
     }
@@ -207,7 +216,7 @@ class RedField extends Field {
         });
     }
 
-    onThreeBallsCallback = () => {
+    onCaptureThreeBallsCallback = () => {
         this.screen.goToBonusScreen(this.getNextBonusLevel());
         this.openWell(this.goToBonusStageCallback);
     }
@@ -308,16 +317,16 @@ class RedField extends Field {
             this.screen.flipCapture();
             this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
         } else if (this.state === RED_FIELD_STATUS.EVOLUTION && this.voltorbsTargetArrow.active) {
-            this.onEvolutionTargetHit(this.voltorbsTargetArrow);
+            this.onEvolutionTargetArrowHit(this.voltorbsTargetArrow);
         }
     }
 
     onMultiplierHitCallback = (isRight) => {
         if (this.state === RED_FIELD_STATUS.EVOLUTION) {
             if (isRight) {
-                this.onEvolutionTargetHit(this.rightMultiplierTargetArrow);
+                this.onEvolutionTargetArrowHit(this.rightMultiplierTargetArrow);
             } else {
-                this.onEvolutionTargetHit(this.leftMultiplierTargetArrow);
+                this.onEvolutionTargetArrowHit(this.leftMultiplierTargetArrow);
             }
         }
     }
@@ -348,6 +357,10 @@ class RedField extends Field {
             this.updateDitto();
 
             this.speedPad.forEach(pad => pad.update(this.getBall()));
+
+            if (this.state === RED_FIELD_STATUS.EVOLUTION) {
+                this.evolutionManager.update(this.getBall().sprite);
+            }   
 
         } else if (this.state === RED_FIELD_STATUS.BALL_LOST) {
             {
@@ -534,42 +547,11 @@ class RedField extends Field {
         this.screen.startEvolution(pokemon);
         Audio.playMusic('catchEmEvolutionModeRedField');
 
-
-        //Pick 3 random target arrows to be evolution, the rest just get the pokemon tired
-        const pool = [...this.targetArrows];
-        for (let i = pool.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [pool[i], pool[j]] = [pool[j], pool[i]];
-        }
-        this.evolutionTargetArrows = pool.slice(0, Math.min(3, pool.length));
-
-        this.targetArrows.forEach(ta => {
-            ta.setVisible(true);
-            ta.setActive(true);
-        });
+        this.evolutionManager.startEvolution();
     }
 
-    onEvolutionTargetHit(targetArrow) {
-        if (targetArrow.active) {
-            if (this.evolutionTargetArrows.includes(targetArrow)) {
-                this.spawnEvolutionItem();
-            } else {
-                this.setPokemonTired();
-            }
-            targetArrow.setActive(false);
-        }
-    }
-
-    setPokemonTired() {
-        console.log("POKEMON IS TIRED");
-        //TODO set pokemon tired for 5 seconds or item not found
-        //Try next place
-    }
-
-    spawnEvolutionItem() {
-        console.log("NEW EVOLUTION ITEM");
-        //TODO disable arrows
-        //TODO Spawn one random evolution item on the field
+    onEvolutionTargetArrowHit(targetArrow) {
+        this.evolutionManager.onEvolutionTargetArrowHit(targetArrow);
     }
 
 }

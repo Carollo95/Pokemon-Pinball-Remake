@@ -21,7 +21,6 @@ class MultiplierTarget {
     update(ballSprite) {
         if (this.target.overlaps(ballSprite) && this.hasCooldownTimePassed()) {
             this.callback();
-            console.log("hit")
             this.lastHitTime = millis();
         }
 
