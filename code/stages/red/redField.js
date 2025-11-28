@@ -213,7 +213,7 @@ class RedField extends Field {
     }
 
     goToBonusStageCallback = () => {
-        //TODO scroll text go to X stage and SFX
+        //TODO scroll text "go to X stage" and SFX
         let nextLevel = this.getNextBonusLevel();
         if (nextLevel === FIELD_BONUS.MOLE) {
             EngineUtils.startMoleStage(this.onBackFromBonusStageCallback);
@@ -529,6 +529,7 @@ class RedField extends Field {
     startEvolutionSequence(pokemon) {
         this.state = RED_FIELD_STATUS.EVOLUTION;
         //TODO startTimer
+        //TODO set dito open when ball is down enough
         this.stageText.setScrollText(I18NManager.translate("start_training"));
         this.screen.startEvolution(pokemon);
         Audio.playMusic('catchEmEvolutionModeRedField');
@@ -561,7 +562,8 @@ class RedField extends Field {
 
     setPokemonTired() {
         console.log("POKEMON IS TIRED");
-        //TODO set pokemon tired for 5 seconds
+        //TODO set pokemon tired for 5 seconds or item not found
+        //Try next place
     }
 
     spawnEvolutionItem() {

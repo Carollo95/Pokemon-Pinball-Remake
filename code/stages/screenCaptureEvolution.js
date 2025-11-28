@@ -372,12 +372,17 @@ class ScreenCaptureEvolution {
     }
 
     startEvolution(pokemon){
-        this.captureTarget = getPokemonById(pokemon.evolutionId);
+        this.captureTarget = pokemon;
 
         this.sprite.changeAnimation(this.captureTarget.id);
         this.hideSprite.visible = false;
         this.state = SCREEN_CAPTURE_STATE.EVOLUTION;
         this.catchTextSprite.visible = false;
+    }
+
+    showTargetEvolution(){
+        let evolution = getPokemonById(this.captureTarget.evolutionId);
+        this.sprite.changeAnimation(evolution.id);
     }
 
 }
