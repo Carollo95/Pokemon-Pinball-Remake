@@ -14,11 +14,12 @@ class TargetArrow {
     }
 
     setVisible(visible) {
+        console.log("setVisible " + visible);
         this.visible = visible;
-        this.sprite.visible = visible;
     }
 
     setActive(active) {
+        console.log("setActive " + active);
         this.active = active;
         this.setVisible(active);
     }

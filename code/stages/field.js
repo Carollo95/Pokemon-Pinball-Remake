@@ -51,7 +51,6 @@ class Field extends Stage {
 
     controlCentralButton() {
         if (this.isCentralButtonAction()) {
-            console.log("Central button action triggered");
             if (this.centralButtonCallback) this.centralButtonCallback();
         }
     }

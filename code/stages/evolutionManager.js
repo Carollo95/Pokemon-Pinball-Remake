@@ -14,13 +14,14 @@ class EvolutionManager {
     update(ballSprite) {
         if (this.isTired && this.hasTiredTimePassed()) {
             this.showTargetArrows();
+            this.isTired = false;
         }
 
         this.evolutionTargets.forEach(et => et.update(ballSprite));
     }
 
     onEvolutionTargetArrowHit(targetArrow) {
-        if (targetArrow.active) {
+        if (targetArrow.active && targetArrow.visible) {
             if (this.validTargetArrows.includes(targetArrow)) {
                 this.spawnEvolutionItem();
             } else {
@@ -39,7 +40,7 @@ class EvolutionManager {
         }
         this.validTargetArrows = pool.slice(0, Math.min(3, pool.length));
 
-        this.targetArrows.forEach(ta => {ta.setVisible(true);});
+        this.targetArrows.forEach(ta => { ta.setVisible(true); });
     }
 
     hasTiredTimePassed() {
@@ -66,12 +67,11 @@ class EvolutionManager {
     spawnEvolutionItem() {
         this.hideTargetArrows();
         let n = this.randInt0N(this.evolutionTargets.length);
-        this.evolutionTargets[n].setActive(true, this.onEvolutionTargetHit);
         console.log("get evolution item")
+        this.evolutionTargets[n].setActive(true, this.onEvolutionTargetHit);
     }
 
-    onEvolutionTargetHit(evolutionTarget) {
-        evolutionTarget.setActive(false);
+    onEvolutionTargetHit = () => {
         this.showTargetArrows();
         console.log("got it, this sholud call a callback to add experience and so on");
         //TODO add experience

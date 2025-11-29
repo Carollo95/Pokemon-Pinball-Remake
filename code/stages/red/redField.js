@@ -156,14 +156,14 @@ class RedField extends Field {
 
 
         this.evolutionTargets = [];
-        this.evolutionTargets.push(new EvolutionTarget(97, 368, this.onEvolutionTargetHit));
+        this.evolutionTargets.push(new EvolutionTarget(97, 368));
 
         this.evolutionManager = new EvolutionManager(this.targetArrows, this.evolutionTargets);
         Audio.playMusic('redField');
     }
 
     onEvolutionTargetHit = () => {
-        //TODO add exp and so on
+        //TODO add exp and so on // keep or remove is also en evolutio nmanagere
     }
 
     onDiglettHitCallback = (isRight) => {
