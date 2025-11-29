@@ -219,6 +219,8 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('stageTextDotSeparator', 'assets/img/stage-text/dot_separator', 4, 16, 1);
   Asset.registerAnimationTemplate('stageTextSeparator', 'assets/img/stage-text/separator', 4, 16, 1);
 
+  Asset.registerAnimationTemplate('evolutionMethods', 'assets/img/field/evolution_methods', 16, 20, 7);
+
   Asset.registerAnimationTemplate('catch', 'assets/img/field/catch', 96, 16, 4);
   Asset.registerAnimationTemplate('capture-puff', 'assets/img/field/capture_puff', 96, 112, 4);
   Asset.registerAnimationTemplate('captured-ball', 'assets/img/field/captured_ball', 32, 16, 1);

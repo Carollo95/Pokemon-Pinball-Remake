@@ -5,6 +5,9 @@ class EvolutionTarget{
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.visible = false;
+        this.sprite.addAni('evolutionMethods', Asset.getAnimation('evolutionMethods'));
+        this.sprite.ani.frame = 0;
+        this.sprite.ani.playing = false;
     }
 
     update(ballSprite){
