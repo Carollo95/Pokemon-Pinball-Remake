@@ -16,12 +16,18 @@ class TargetArrow {
     setVisible(visible) {
         console.log("setVisible " + visible);
         this.visible = visible;
+
+        //In case of disabling, hide it immediately, if enabling let update handle the visibility (for blinking)
+        if(!visible) {
+            this.sprite.visible = false;
+        }
     }
 
     setActive(active) {
         console.log("setActive " + active);
         this.active = active;
         this.setVisible(active);
+
     }
 
     update() {
