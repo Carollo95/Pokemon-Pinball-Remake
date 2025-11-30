@@ -40,6 +40,15 @@ class Screen {
         }
         this.lastBallBlinking = false;
 
+
+        this.evolutionSprite = new Sprite(160, 404, 96, 16, "none");
+        this.evolutionSprite.layer = SCENARIO_LAYER;
+        this.evolutionSprite.debug = DEBUG;
+        this.evolutionSprite.visible = false;
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.EXPERIENCE, Asset.getAnimation('evolveExperience'));
+        this.evolutionSprite.ani.playing = false;
+
+
         this.state = SCREEN_STATE.LANDSCAPE;
         this.lastCaptureBallTime = -10000;
         this.captureLevel = 0;
@@ -102,9 +111,19 @@ class Screen {
         this.screenCapture.startCapture(this.screenLandscapes.getPokemonFromLandmark(level));
     }
 
-    startEvolution(pokemon){
+    startEvolution(pokemon) {
         this.setState(SCREEN_STATE.CAPTURE_EVOLUTION);
+        for(let i =0; i<this.ballSprites.length; i++){
+            this.ballSprites[i].visible = false;
+        }
         this.screenCapture.startEvolution(pokemon);
+        this.evolutionSprite.visible = true;
+        this.evolutionSprite.ani.frame = 0;
+        //TODO change sprite based on evolution method
+    }
+
+    progressEvolutionAnimation(){
+        this.evolutionSprite.ani.frame++;
     }
 
     flipCapture() {
@@ -153,7 +172,7 @@ class Screen {
         this.setState(SCREEN_STATE.IMAGE);
     }
 
-    setTravelDirection(direction){
+    setTravelDirection(direction) {
         this.screenImage.setTravelDirection(direction);
         this.setState(SCREEN_STATE.IMAGE);
     }

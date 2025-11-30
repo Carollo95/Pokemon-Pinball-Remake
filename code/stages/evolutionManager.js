@@ -2,13 +2,14 @@ const EVOLUTION_TIRED_TIME_MS = 5000;
 
 class EvolutionManager {
 
-    constructor(targetArrows, evolutionTargets) {
+    constructor(targetArrows, evolutionTargets, addExperienceCallback) {
 
         this.targetArrows = targetArrows;
         this.evolutionTargets = evolutionTargets;
         this.validTargetArrows = [];
         this.lastTiredTime = -10000;
         this.isTired = false;
+        this.addExperienceCallback = addExperienceCallback;;
     }
 
     update(ballSprite) {
@@ -75,7 +76,8 @@ class EvolutionManager {
     onEvolutionTargetHit = () => {
         this.showTargetArrows();
         console.log("got it, this sholud call a callback to add experience and so on");
-        //TODO add experience
+        this.addExperienceCallback();
+        
         //TODO IF enough experience open well (Callback)
     }
 
