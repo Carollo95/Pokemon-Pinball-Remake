@@ -547,7 +547,7 @@ class RedField extends Field {
         this.screen.startEvolution(pokemon);
         Audio.playMusic('catchEmEvolutionModeRedField');
 
-        this.evolutionManager.startEvolution();
+        this.evolutionManager.startEvolution(pokemon);
     }
 
     onEvolutionTargetArrowHit(targetArrow) {

@@ -14,7 +14,6 @@ class TargetArrow {
     }
 
     setVisible(visible) {
-        console.log("setVisible " + visible);
         this.visible = visible;
 
         //In case of disabling, hide it immediately, if enabling let update handle the visibility (for blinking)
@@ -24,7 +23,6 @@ class TargetArrow {
     }
 
     setActive(active) {
-        console.log("setActive " + active);
         this.active = active;
         this.setVisible(active);
 

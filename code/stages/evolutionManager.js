@@ -31,7 +31,7 @@ class EvolutionManager {
         }
     }
 
-    startEvolution() {
+    startEvolution(target) {
         //Pick 3 random target arrows to be evolution, the rest just get the pokemon tired
         const pool = [...this.targetArrows];
         for (let i = pool.length - 1; i > 0; i--) {
@@ -41,6 +41,7 @@ class EvolutionManager {
         this.validTargetArrows = pool.slice(0, Math.min(3, pool.length));
 
         this.targetArrows.forEach(ta => { ta.setVisible(true); });
+        this.evolutionTargets.forEach(et => et.setEvolutionMethod(target.evolutionMethod));
     }
 
     hasTiredTimePassed() {
