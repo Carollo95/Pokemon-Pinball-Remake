@@ -119,7 +119,7 @@ class Screen {
 
     startEvolution(pokemon) {
         this.setState(SCREEN_STATE.CAPTURE_EVOLUTION);
-        for(let i =0; i<this.ballSprites.length; i++){
+        for (let i = 0; i < this.ballSprites.length; i++) {
             this.ballSprites[i].visible = false;
         }
         this.screenCapture.startEvolution(pokemon);
@@ -129,8 +129,12 @@ class Screen {
         this.evolutionSprite.ani.playing = 0;
     }
 
-    progressEvolutionAnimation(){
+    progressEvolutionAnimation() {
         this.evolutionSprite.ani.frame++;
+    }
+
+    showTargetEvolution() {
+        this.screenCapture.showTargetEvolution();
     }
 
     flipCapture() {
