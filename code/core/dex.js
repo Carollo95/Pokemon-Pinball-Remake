@@ -174,3 +174,7 @@ function canEvolve(id){
     const currentPokemon = getPokemonById(id);
     return !!(currentPokemon && currentPokemon.evolutionId);
 }
+
+function getEvolutionMethod(pokemon){
+    return pokemon.evolutionMethod;
+}

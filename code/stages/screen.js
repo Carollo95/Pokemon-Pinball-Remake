@@ -46,6 +46,12 @@ class Screen {
         this.evolutionSprite.debug = DEBUG;
         this.evolutionSprite.visible = false;
         this.evolutionSprite.addAnimation(EVOLUTION_METHODS.EXPERIENCE, Asset.getAnimation('evolveExperience'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.FIRE_STONE, Asset.getAnimation('evolveFire'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.LEAF_STONE, Asset.getAnimation('evolveLeaf'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.WATER_STONE, Asset.getAnimation('evolveWater'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.MOON_STONE, Asset.getAnimation('evolveMoon'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.THUNDER_STONE, Asset.getAnimation('evolveThunder'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.LINK_CABLE, Asset.getAnimation('evolveCable'));
         this.evolutionSprite.ani.playing = false;
 
 
@@ -117,9 +123,10 @@ class Screen {
             this.ballSprites[i].visible = false;
         }
         this.screenCapture.startEvolution(pokemon);
+        this.evolutionSprite.changeAnimation(getEvolutionMethod(pokemon));
         this.evolutionSprite.visible = true;
         this.evolutionSprite.ani.frame = 0;
-        //TODO change sprite based on evolution method
+        this.evolutionSprite.ani.playing = 0;
     }
 
     progressEvolutionAnimation(){

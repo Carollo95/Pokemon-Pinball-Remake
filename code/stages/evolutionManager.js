@@ -42,7 +42,7 @@ class EvolutionManager {
         this.validTargetArrows = pool.slice(0, Math.min(3, pool.length));
 
         this.targetArrows.forEach(ta => { ta.setVisible(true); });
-        this.evolutionTargets.forEach(et => et.setEvolutionMethod(target.evolutionMethod));
+        this.evolutionTargets.forEach(et => et.setEvolutionMethod(getEvolutionMethod(target)));
     }
 
     hasTiredTimePassed() {

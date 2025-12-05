@@ -221,6 +221,12 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('evolutionMethods', 'assets/img/field/evolution_methods', 16, 20, 7);
   Asset.registerAnimationTemplate('evolveExperience', 'assets/img/field/evolve_experience', 96, 16, 4);
+  Asset.registerAnimationTemplate('evolveFire', 'assets/img/field/evolve_fire', 96, 16, 4);
+  Asset.registerAnimationTemplate('evolveWater', 'assets/img/field/evolve_water', 96, 16, 4);
+  Asset.registerAnimationTemplate('evolveLeaf', 'assets/img/field/evolve_leaf', 96, 16, 4);
+  Asset.registerAnimationTemplate('evolveThunder', 'assets/img/field/evolve_thunder', 96, 16, 4);
+  Asset.registerAnimationTemplate('evolveMoon', 'assets/img/field/evolve_moon', 96, 16, 4);
+  Asset.registerAnimationTemplate('evolveCable', 'assets/img/field/evolve_cable', 96, 16, 4);
 
   Asset.registerAnimationTemplate('catch', 'assets/img/field/catch', 96, 16, 4);
   Asset.registerAnimationTemplate('capture-puff', 'assets/img/field/capture_puff', 96, 112, 4);
