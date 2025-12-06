@@ -107,13 +107,14 @@ class EvolutionManager {
     }
 
     onEvolutionTargetHit = () => {
-        this.showTargetArrows();
         this.stageText.setScrollText(I18NManager.translate("you_got_it"));
         this.addExperienceCallback();
 
         this.evolutionLevel++;
         if (this.evolutionLevel >= 3) {
             this.onFullExperienceCallback();
+        }else{
+            this.showTargetArrows();
         }
     }
 
