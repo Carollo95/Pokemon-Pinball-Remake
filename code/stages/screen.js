@@ -134,7 +134,7 @@ class Screen {
     }
 
     showTargetEvolution() {
-        this.screenCapture.showTargetEvolution();
+        return this.screenCapture.showTargetEvolution();
     }
 
     flipCapture() {

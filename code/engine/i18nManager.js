@@ -46,7 +46,11 @@ const I18NManager = {
             "pokemon_ran_away": "pokémon ran away",
 
             "start_training": "start training",
+            "pokemon_is_tired": "pokémon is tired",
+            "get_experience": "get experience",
             "you_got_it": "yeah! you got it",
+            "pokemon_recovered": "pokémon recovered",
+            "it_evolved_into": "it evolved into ",
 
             "bulbasaur": "bulbasaur",
             "ivysaur": "ivysaur",

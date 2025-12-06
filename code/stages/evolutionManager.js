@@ -2,8 +2,9 @@ const EVOLUTION_TIRED_TIME_MS = 5000;
 
 class EvolutionManager {
 
-    constructor(targetArrows, evolutionTargets, addExperienceCallback, onFullExperienceCallback) {
+    constructor(stageText, targetArrows, evolutionTargets, addExperienceCallback, onFullExperienceCallback) {
 
+        this.stageText = stageText;
         this.targetArrows = targetArrows;
         this.evolutionTargets = evolutionTargets;
         this.validTargetArrows = [];
@@ -18,6 +19,7 @@ class EvolutionManager {
         if (this.isTired && this.hasTiredTimePassed()) {
             this.showTargetArrows();
             this.isTired = false;
+            this.stageText.setScrollText(I18NManager.translate("pokemon_recovered"));
         }
 
         this.evolutionTargets.forEach(et => et.update(ballSprite));
@@ -46,6 +48,9 @@ class EvolutionManager {
         this.targetArrows.forEach(ta => { ta.setVisible(true); });
         this.evolutionTargets.forEach(et => et.setEvolutionMethod(getEvolutionMethod(target)));
         this.evolutionLevel = 0;
+
+        this.stageText.setScrollText(I18NManager.translate("start_training"))
+
     }
 
     hasTiredTimePassed() {
@@ -66,19 +71,19 @@ class EvolutionManager {
         this.lastTiredTime = millis();
         this.hideTargetArrows();
         console.log("pokemon is tired")
-        //TODO text "Try next place" or whatever else
+        this.stageText.setScrollText(I18NManager.translate("pokemon_is_tired"));
     }
 
     spawnEvolutionItem() {
         this.hideTargetArrows();
         let n = this.randInt0N(this.evolutionTargets.length);
-        console.log("get evolution item")
+        this.stageText.setScrollText(I18NManager.translate("get_experience"));
         this.evolutionTargets[n].setActive(true, this.onEvolutionTargetHit);
     }
 
     onEvolutionTargetHit = () => {
         this.showTargetArrows();
-        console.log("got it, this sholud call a callback to add experience and so on");
+        this.stageText.setScrollText(I18NManager.translate("you_got_it"));
         this.addExperienceCallback();
 
         this.evolutionLevel++;

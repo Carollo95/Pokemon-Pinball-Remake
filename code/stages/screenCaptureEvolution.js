@@ -383,6 +383,7 @@ class ScreenCaptureEvolution {
     showTargetEvolution(){
         let evolution = getPokemonById(this.captureTarget.evolutionId);
         this.sprite.changeAnimation(evolution.id);
+        return evolution;
     }
 
 }
