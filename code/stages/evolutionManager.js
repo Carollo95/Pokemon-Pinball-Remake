@@ -1,4 +1,4 @@
-const EVOLUTION_TIRED_TIME_MS = 5000;
+const EVOLUTION_TIRED_TIME_MS = 10000;
 
 class EvolutionManager {
 
@@ -38,6 +38,7 @@ class EvolutionManager {
 
     startEvolution(target) {
         //Pick 3 random target arrows to be evolution, the rest just get the pokemon tired
+        this.targetPokemon = target;
         const pool = [...this.targetArrows];
         for (let i = pool.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -49,7 +50,11 @@ class EvolutionManager {
         this.evolutionTargets.forEach(et => et.setEvolutionMethod(getEvolutionMethod(target)));
         this.evolutionLevel = 0;
 
-        this.stageText.setScrollText(I18NManager.translate("start_training"))
+        if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.EXPERIENCE) {
+            this.stageText.setScrollText(I18NManager.translate("start_training"))
+        } else {
+            this.stageText.setScrollText(I18NManager.translate("find_items"))
+        }
 
     }
 
@@ -70,15 +75,35 @@ class EvolutionManager {
         this.isTired = true;
         this.lastTiredTime = millis();
         this.hideTargetArrows();
-        console.log("pokemon is tired")
-        this.stageText.setScrollText(I18NManager.translate("pokemon_is_tired"));
+
+        if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.EXPERIENCE) {
+            this.stageText.setScrollText(I18NManager.translate("pokemon_is_tired"));
+        } else {
+            this.stageText.setScrollText(I18NManager.translate("try_next_place"));
+        }
     }
 
     spawnEvolutionItem() {
         this.hideTargetArrows();
         let n = this.randInt0N(this.evolutionTargets.length);
-        this.stageText.setScrollText(I18NManager.translate("get_experience"));
+
         this.evolutionTargets[n].setActive(true, this.onEvolutionTargetHit);
+
+        if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.EXPERIENCE) {
+            this.stageText.setScrollText(I18NManager.translate("get_experience"));
+        } else if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.THUNDER_STONE) {
+            this.stageText.setScrollText(I18NManager.translate("get_thunder_stone"))
+        } else if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.FIRE_STONE) {
+            this.stageText.setScrollText(I18NManager.translate("get_fire_stone"))
+        } else if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.WATER_STONE) {
+            this.stageText.setScrollText(I18NManager.translate("get_water_stone"))
+        } else if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.LEAF_STONE) {
+            this.stageText.setScrollText(I18NManager.translate("get_leaf_stone"))
+        } else if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.MOON_STONE) {
+            this.stageText.setScrollText(I18NManager.translate("get_moon_stone"))
+        } else if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.LINK_CABLE) {
+            this.stageText.setScrollText(I18NManager.translate("get_link_cable"))
+        }
     }
 
     onEvolutionTargetHit = () => {
