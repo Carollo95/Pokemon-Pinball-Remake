@@ -127,7 +127,7 @@ class RedFieldDitto {
         ], "static");
         this.outerLoopDoor.layer = SCENARIO_LAYER;
         this.outerLoopDoor.debug = DEBUG;
-        this.outerLoopDoor.visible = true;
+        this.outerLoopDoor.visible = false;
 
         this.outerLoopImage = new Sprite(244, 98, 104, 104, "none");
         this.outerLoopImage.addAnimation(Asset.getAnimation('redFieldOuterLoopDoor'));
@@ -149,7 +149,7 @@ class RedFieldDitto {
         ], "static");
         this.launcherDoor.layer = SCENARIO_LAYER;
         this.launcherDoor.debug = DEBUG;
-        this.launcherDoor.visible = true;
+        this.launcherDoor.visible = false;
     }
 
     removeLauncherDoor() {
