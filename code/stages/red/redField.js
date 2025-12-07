@@ -172,7 +172,10 @@ class RedField extends Field {
 
     evolvePokemonCallback = () => {
         let targetEvolution =this.screen.showTargetEvolution();
+        this.status.pokemonEvolvedOnBall++;
         this.stageText.setScrollText(I18NManager.translate("it_evolved_into") + targetEvolution.name, targetEvolution.name);
+
+        //TODO start timer and then spit ball
     }
 
     onDiglettHitCallback = (isRight) => {

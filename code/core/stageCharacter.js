@@ -32,6 +32,7 @@ class StageCharacter {
             this.sprite.addAnimation('$!', Asset.getAnimation('stageTextExcl'));
             this.sprite.addAnimation('$:', Asset.getAnimation('stageTextColon'));
             this.sprite.addAnimation('$>', Asset.getAnimation('stageTextRight'));
+            this.sprite.addAnimation('$*', Asset.getAnimation('stageTextStar'));
             this.sprite.addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
         } else {
             this.sprite.addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));

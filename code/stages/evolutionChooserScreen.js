@@ -4,15 +4,15 @@ const EVOLUTION_CHOOSER_SCREEN_YS = [484, 500, 516, 532, 548, 564];
 const EVOLUTION_CHOOSER_SCREEN_TEXT_XS = [CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR, CHAR_TYPE.CHAR];
 
 class EvolutionChooserScreen {
-    constructor(basicPokemonList, onScreenEndCallback) {
+    constructor(pokemonList, onScreenEndCallback) {
         this.onScreenEndCallback = onScreenEndCallback;
         this.currentLines = [];
 
-        this.basicPokemonList = basicPokemonList;
-        this.basicPokemonNamesList = basicPokemonList.map(e => e.name).concat("exit");
+        this.pokemonList = pokemonList;
+        this.pokemonNamesList = pokemonList.map(e => e.name).concat("exit");
 
         this.currentlySelectedIndex = 0;
-        this.shownList = this.basicPokemonNamesList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
+        this.shownList = this.pokemonNamesList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
         this.scroll = 0;
     }
 
@@ -51,15 +51,21 @@ class EvolutionChooserScreen {
             return ''.padEnd(EVOLUTION_CHOOSER_SCREEN_TEXT_XS.length, ' ');
         }
         let prefix = (i + this.scroll == this.currentlySelectedIndex ? ' >' : '  ');
-        return prefix + this.shownList[i].padEnd(EVOLUTION_CHOOSER_SCREEN_TEXT_XS.length - 2, ' ');
+        let evolvable = this.isPokemonFullyEvolved(i) ? '*' : ' ';
+        return prefix + evolvable + this.shownList[i].padEnd(EVOLUTION_CHOOSER_SCREEN_TEXT_XS.length - 3, ' ');
+    }
+
+    isPokemonFullyEvolved(i) {
+        let pos = i + this.scroll;
+        return this.pokemonList[pos] !== undefined && this.pokemonList[pos].evolutionId === null;
     }
 
     next() {
-        if (this.currentlySelectedIndex < this.basicPokemonNamesList.length - 1) {
+        if (this.currentlySelectedIndex < this.pokemonNamesList.length - 1) {
             this.currentlySelectedIndex++;
             if (this.currentlySelectedIndex >= 5) {
                 this.scroll++;
-                this.shownList = this.basicPokemonNamesList.slice(this.currentlySelectedIndex - 4, this.currentlySelectedIndex + 1);
+                this.shownList = this.pokemonNamesList.slice(this.currentlySelectedIndex - 4, this.currentlySelectedIndex + 1);
             }
             this.show();
         }
@@ -70,17 +76,17 @@ class EvolutionChooserScreen {
             this.currentlySelectedIndex--;
             if (this.currentlySelectedIndex < this.scroll) {
                 this.scroll--;
-                this.shownList = this.basicPokemonNamesList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
+                this.shownList = this.pokemonNamesList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);
             }
             this.show();
         }
     }
 
     getSelected() {
-        if (this.currentlySelectedIndex >= this.basicPokemonList.length) {
+        if (this.currentlySelectedIndex >= this.pokemonList.length) {
             return null;
         }
-        return this.basicPokemonList[this.currentlySelectedIndex];
+        return this.pokemonList[this.currentlySelectedIndex];
     }
 
     remove() {
