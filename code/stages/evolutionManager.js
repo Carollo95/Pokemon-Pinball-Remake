@@ -17,12 +17,19 @@ class EvolutionManager {
 
     update(ballSprite) {
         if (this.isTired && this.hasTiredTimePassed()) {
+            this.recoverPokemon();
+        }
+
+        this.evolutionTargets.forEach(et => et.update(ballSprite));
+    }
+
+    recoverPokemon(){
+        if(this.isTired){
             this.showTargetArrows();
             this.isTired = false;
             this.stageText.setScrollText(I18NManager.translate("pokemon_recovered"));
         }
 
-        this.evolutionTargets.forEach(et => et.update(ballSprite));
     }
 
     onEvolutionTargetArrowHit(targetArrow) {

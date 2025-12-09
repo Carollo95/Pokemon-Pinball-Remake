@@ -176,5 +176,8 @@ function canEvolve(id){
 }
 
 function getEvolutionMethod(pokemon){
+    if(pokemon.evolutionMethod === null){
+        return EVOLUTION_METHODS.EXPERIENCE;
+    }
     return pokemon.evolutionMethod;
 }

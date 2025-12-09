@@ -171,7 +171,7 @@ class RedField extends Field {
     }
 
     evolvePokemonCallback = () => {
-        let targetEvolution =this.screen.showTargetEvolution();
+        let targetEvolution = this.screen.showTargetEvolution();
         this.status.pokemonEvolvedOnBall++;
         this.stageText.setScrollText(I18NManager.translate("it_evolved_into") + targetEvolution.name, targetEvolution.name);
 
@@ -195,10 +195,14 @@ class RedField extends Field {
             this.lastSensor = this.rightLowerSensor;
         });
         this.rightInnerUpperSensor = new Sensor(248, 106, () => {
-            if (this.state === RED_FIELD_STATUS.TRAVEL_RIGHT && this.lastSensor === this.rightLowerSensor) {
-                this.startTravelCave();
-            } else if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.rightLowerSensor) {
-                this.arrows.upgradeCaptureArrows();
+            if (this.lastSensor === this.rightLowerSensor) {
+                if (this.state === RED_FIELD_STATUS.TRAVEL_RIGHT) {
+                    this.startTravelCave();
+                } else if (this.state === RED_FIELD_STATUS.PLAYING) {
+                    this.arrows.upgradeCaptureArrows();
+                } else if (this.state === RED_FIELD_STATUS.EVOLUTION) {
+                    this.evolutionManager.recoverPokemon();
+                }
             }
             this.lastSensor = this.rightInnerUpperSensor;
         });
@@ -207,10 +211,14 @@ class RedField extends Field {
             this.lastSensor = this.leftOuterLowerSensor;
         });
         this.leftMiddleUpperSensor = new Sensor(82, 106, () => {
-            if (this.state === RED_FIELD_STATUS.TRAVEL_LEFT && this.lastSensor === this.leftOuterLowerSensor) {
-                this.startTravelCave();
-            } else if (this.state === RED_FIELD_STATUS.PLAYING && this.lastSensor === this.leftOuterLowerSensor) {
-                this.arrows.upgradeEvolutionArrows();
+            if (this.leftOuterLowerSensor) {
+                if (this.state === RED_FIELD_STATUS.TRAVEL_LEFT) {
+                    this.startTravelCave();
+                } else if (this.state === RED_FIELD_STATUS.PLAYING) {
+                    this.arrows.upgradeEvolutionArrows();
+                } else if (this.state === RED_FIELD_STATUS.EVOLUTION) {
+                    this.evolutionManager.recoverPokemon();
+                }
             }
 
             this.lastSensor = this.leftMiddleUpperSensor;
@@ -372,7 +380,7 @@ class RedField extends Field {
 
             if (this.state === RED_FIELD_STATUS.EVOLUTION) {
                 this.evolutionManager.update(this.getBall().sprite);
-            }   
+            }
 
         } else if (this.state === RED_FIELD_STATUS.BALL_LOST) {
             {
