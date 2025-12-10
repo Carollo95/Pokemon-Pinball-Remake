@@ -80,8 +80,8 @@ class Stage {
         }
     }
 
-    addPointsAndShowText(text, pts) {
-        if(this.getStageText()) this.stageText.showTextWithPoints(text, pts);
+    addPointsAndShowText(text, pts, peristence = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
+        if (this.getStageText()) this.stageText.showTextWithPoints(text, pts, peristence, callback);
         this.addPoints(pts);
     }
 
@@ -106,4 +106,10 @@ class Stage {
     getFlippers() { return this.flippers; }
     getStageText() { return this.stageText; }
     getBallSprite() { return this.getBall().sprite; }
+
+    disableTimer(){
+        if(this.getTimer()){
+            this.getTimer().disable();
+        }
+    }
 }

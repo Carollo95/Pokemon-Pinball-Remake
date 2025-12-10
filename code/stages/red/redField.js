@@ -1,4 +1,5 @@
 const RED_FIELD_CAPTURE_TIMER_MS = 121000;
+const RED_FIELD_EVOLUTION_TIMER_MS = 121000;
 const RED_FIELD_TRAVEL_TIMER_MS = 31000;
 
 const RED_FIELD_STATUS = {
@@ -167,16 +168,31 @@ class RedField extends Field {
     }
 
     onFullExperienceCallback = () => {
-        this.well.open(this.evolvePokemonCallback);
+        this.well.open(this.onEvolutionCompletedCallback);
     }
 
-    evolvePokemonCallback = () => {
+    onEvolutionCompletedCallback = () => {
+        this.getTimer().stop();
+        //TODO how many points on jackpot, internationalize text
         let targetEvolution = this.screen.showTargetEvolution();
-        this.status.pokemonEvolvedOnBall++;
-        this.stageText.setScrollText(I18NManager.translate("it_evolved_into") + targetEvolution.name, targetEvolution.name);
-
-        //TODO start timer and then spit ball
+        this.status.addPokemonEvolved(targetEvolution);
+        this.stageText.setScrollText(I18NManager.translate("it_evolved_into") + I18NManager.translate(targetEvolution.name), I18NManager.translate(targetEvolution.name), 1000, this.showAfterEvolutionJackpot);
     }
+
+    showAfterEvolutionJackpot = () => {
+        //TODO internationalize
+        this.addPointsAndShowText("jackpot", 123456, 1000, this.finishEvolutionStage);
+    }
+
+    finishEvolutionStage = () => {
+        //TODO create a method called go back to playing state or smnliktat
+        this.closeWell();
+        this.state = RED_FIELD_STATUS.PLAYING;
+        Audio.playMusic('redField');
+        this.disableTimer()
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+    }
+
 
     onDiglettHitCallback = (isRight) => {
         this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS);
@@ -266,7 +282,7 @@ class RedField extends Field {
     }
 
     onCaptureStartCaptureAnimationCallback = () => {
-        this.getTimer().disable();
+        this.disableTimer()
     }
 
     onCaptureStartAnimatedSpritePhaseCallback = () => {
@@ -307,6 +323,7 @@ class RedField extends Field {
     }
 
     startCaptureSequence() {
+        this.interruptTravel();
         //TODO close ditto here and on travel if its the case and then open it again
         this.state = RED_FIELD_STATUS.CAPTURE;
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
@@ -322,7 +339,7 @@ class RedField extends Field {
 
     doOnCaptureTimeupCallback = () => {
         if (this.state === RED_FIELD_STATUS.CAPTURE) {
-            this.getTimer().disable();
+            this.disableTimer()
             this.stageText.setScrollText(I18NManager.translate("pokemon_ran_away"), "", 1000, () => {
                 this.screen.setState(SCREEN_STATE.LANDSCAPE);
                 this.state = RED_FIELD_STATUS.PLAYING;
@@ -424,7 +441,6 @@ class RedField extends Field {
             } else if (this.state === RED_FIELD_STATUS.EVOLUTION) {
                 this.interruptEvolution();
             }
-            //TODO interrupt evolution
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
             this.well.close();
             this.status.startNewBall();
@@ -438,17 +454,35 @@ class RedField extends Field {
     }
 
     interruptCapture() {
-        this.getTimer().disable();
-        this.screen.setState(SCREEN_STATE.LANDSCAPE);
-        this.state = RED_FIELD_STATUS.PLAYING;
-        this.voltorbsTargetArrow.setVisible(false);
+        if (this.state === RED_FIELD_STATUS.CAPTURE) {
+            this.disableTimer()
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            this.state = RED_FIELD_STATUS.PLAYING;
+            this.voltorbsTargetArrow.setVisible(false);
+        }
     }
 
     interruptEvolution() {
-        this.getTimer().disable();
-        this.screen.setState(SCREEN_STATE.LANDSCAPE);
-        this.state = RED_FIELD_STATUS.PLAYING;
-        this.targetArrows.forEach(ta => ta.setVisible(false));
+        if (this.state === RED_FIELD_STATUS.EVOLUTION) {
+            this.disableTimer()
+            this.evolutionManager.interruptEvolution();
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            this.state = RED_FIELD_STATUS.PLAYING;
+            this.ditto.close(true);
+        }
+    }
+
+    interruptTravel() {
+        if (this.isTravelState()) {
+            this.disableTimer()
+            this.well.close();
+            this.arrows.resetFromTravel();
+            this.state = RED_FIELD_STATUS.PLAYING;
+            this.leftTravelDiglett.reset();
+            this.rightTravelDiglett.reset();
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            Audio.playMusic('redField');
+        }
     }
 
     createNewBallOrEndStage() {
@@ -496,15 +530,7 @@ class RedField extends Field {
     }
 
     doOnTravelTimeupCallback = () => {
-        if (this.isTravelState()) {
-            this.getTimer().disable();
-            this.state = RED_FIELD_STATUS.PLAYING;
-            this.arrows.resetFromTravel();
-            this.well.close();
-            this.screen.setState(SCREEN_STATE.LANDSCAPE);
-            //Anything else??
-            Audio.playMusic('redField');
-        }
+        this.interruptTravel();
     }
 
     isTravelState() {
@@ -519,7 +545,7 @@ class RedField extends Field {
     }
 
     onTravelCaveCallback = () => {
-        this.getTimer().disable();
+        this.disableTimer()
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
         Audio.stopMusic();
         Audio.playSFX('sfx25');
@@ -561,13 +587,16 @@ class RedField extends Field {
 
     startEvolutionSequence(pokemon) {
         this.state = RED_FIELD_STATUS.EVOLUTION;
-        //TODO startTimer
+        this.attachTimer(Timer.createFieldTimer(RED_FIELD_EVOLUTION_TIMER_MS, this.doOnEvolutionTimeupCallback));
         //TODO set dito open when ball is down enough
         this.stageText.setScrollText(I18NManager.translate("start_training"));
         this.screen.startEvolution(pokemon);
         Audio.playMusic('catchEmEvolutionModeRedField');
 
         this.evolutionManager.startEvolution(pokemon);
+    }
+
+    doOnEvolutionTimeupCallback = () => {
     }
 
     onEvolutionTargetArrowHit(targetArrow) {

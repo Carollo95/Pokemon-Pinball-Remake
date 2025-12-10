@@ -169,6 +169,10 @@ function getPokemonById(id) {
     const key = String(id).padStart(3, '0');
     return Object.values(POKEDEX).find(p => p.id === key) || null;
 }
+function getPokemonNextEvolution(pokemon) {
+    let evolutionId = pokemon.evolutionId;
+    return evolutionId !== null ? getPokemonById(evolutionId) : pokemon;
+}
 
 function canEvolve(id){
     const currentPokemon = getPokemonById(id);

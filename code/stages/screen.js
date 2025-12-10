@@ -99,6 +99,7 @@ class Screen {
             this.screenCapture.show(false)
             this.screenImage.show(false);
             this.updateBallSpritesVisibility();
+            this.evolutionSprite.visible = false;
         } else if (state === SCREEN_STATE.CAPTURE_EVOLUTION) {
             this.screenCapture.show(true);
             this.screenLandscapes.show(false);
@@ -109,6 +110,7 @@ class Screen {
             this.screenLandscapes.show(false);
             this.screenCapture.show(false);
             this.updateBallSpritesVisibility();
+            this.evolutionSprite.visible = false;
         }
     }
 

@@ -130,4 +130,9 @@ class EvolutionManager {
         return Math.floor(Math.random() * (n));
     }
 
+    interruptEvolution(){
+        //TODO check if this is only set visible false or also set active false
+        this.hideTargetArrows();
+    }
+
 }

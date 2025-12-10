@@ -19,7 +19,6 @@ class RedFieldDitto {
         }
     }
 
-
     removeSprites() {
         this.openSprite && this.openSprite.remove();
         this.closeSprite && this.closeSprite.remove();
@@ -27,9 +26,9 @@ class RedFieldDitto {
         this.removeOuterLoopDoor();
     }
 
-    open() {
+    open(silent = false) {
         this.removeSprites();
-        Audio.playSFX('sfx00');
+        if (!silent) Audio.playSFX('sfx00');
         this.createOpenSprite();
         this.status = RED_STAGE_DITTO_STATE.OPEN;
         this.removeOuterLoopDoor();
