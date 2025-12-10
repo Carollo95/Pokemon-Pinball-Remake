@@ -227,7 +227,7 @@ class RedField extends Field {
             this.lastSensor = this.leftOuterLowerSensor;
         });
         this.leftMiddleUpperSensor = new Sensor(82, 106, () => {
-            if (this.leftOuterLowerSensor) {
+            if (this.lastSensor === this.leftOuterLowerSensor) {
                 if (this.state === RED_FIELD_STATUS.TRAVEL_LEFT) {
                     this.startTravelCave();
                 } else if (this.state === RED_FIELD_STATUS.PLAYING) {
