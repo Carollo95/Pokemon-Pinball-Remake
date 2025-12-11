@@ -59,6 +59,9 @@ const I18NManager = {
             "you_got_it": "yeah! you got it",
             "pokemon_recovered": "pokémon recovered",
             "it_evolved_into": "it evolved into ",
+            "hit": "hit",
+            "jackpot": "jackpot",
+            "you_got_a": "you got a ",
 
             "bulbasaur": "bulbasaur",
             "ivysaur": "ivysaur",

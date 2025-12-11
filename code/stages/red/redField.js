@@ -39,7 +39,7 @@ class RedField extends Field {
             this._lastCallbackCall = millis();
             if (this.state === RED_FIELD_STATUS.GAME_START || this.state === RED_FIELD_STATUS.NEW_BALL_WAITING) {
                 this.launchNewBallWaiting();
-                this.state = RED_FIELD_STATUS.PLAYING;
+                this.setState(RED_FIELD_STATUS.PLAYING);
             } else if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
                 this.evolutionScreenChooser.next();
             }
@@ -146,11 +146,11 @@ class RedField extends Field {
         this.well = new StageWell();
 
         if (spawnOnWell) {
-            this.state = RED_FIELD_STATUS.PLAYING;
+            this.setState(RED_FIELD_STATUS.PLAYING);
             this.ditto.close(true);
             this.closeWell();
         } else {
-            this.state = RED_FIELD_STATUS.GAME_START;
+            this.setState(RED_FIELD_STATUS.GAME_START);
         }
 
         super.setCentralButtonCallback(this.centerButtonCallback);
@@ -173,21 +173,20 @@ class RedField extends Field {
 
     onEvolutionCompletedCallback = () => {
         this.getTimer().stop();
-        //TODO how many points on jackpot, internationalize text
+        //TODO how many points on jackpot
         let targetEvolution = this.screen.showTargetEvolution();
         this.status.addPokemonEvolved(targetEvolution);
         this.stageText.setScrollText(I18NManager.translate("it_evolved_into") + I18NManager.translate(targetEvolution.name), I18NManager.translate(targetEvolution.name), 1000, this.showAfterEvolutionJackpot);
     }
 
     showAfterEvolutionJackpot = () => {
-        //TODO internationalize
-        this.addPointsAndShowText("jackpot", 123456, 1000, this.finishEvolutionStage);
+        this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 1000, this.finishEvolutionStage);
     }
 
     finishEvolutionStage = () => {
         //TODO create a method called go back to playing state or smnliktat
         this.closeWell();
-        this.state = RED_FIELD_STATUS.PLAYING;
+        this.setState(RED_FIELD_STATUS.PLAYING);
         Audio.playMusic('redField');
         this.disableTimer()
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
@@ -290,24 +289,22 @@ class RedField extends Field {
     }
 
     onCaptureCompleteAnimationStartedCallback = (pokemonCaught) => {
-        //TODO how many points on jackpot, internationalize text
-        this.stageText.setScrollText("you got a " + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name), 1000, this.showAfterCaptureJackpot);
+        //TODO how many points on jackpot
+        this.stageText.setScrollText(I18NManager.translate("you_got_a") + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name), 1000, this.showAfterCaptureJackpot);
         this.status.addPokemonCaught(pokemonCaught);
     }
 
     showAfterCaptureJackpot = () => {
-        //TODO internationalize
-        this.addPointsAndShowText("jackpot", 123456, 1000);
+        this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 1000);
     }
 
     onCapturePhaseFinishedCallback = () => {
-        this.state = RED_FIELD_STATUS.PLAYING;
+        this.setState(RED_FIELD_STATUS.PLAYING);
         Audio.playMusic('redField');
     }
 
     captureOnPokemonAnimatedHitCallback = () => {
-        //TODO internationalize
-        this.addPointsAndShowText("hit", POINTS.CAPTURE_HIT);
+        this.addPointsAndShowText(I18NManager.translate("hit"), POINTS.CAPTURE_HIT);
     }
 
 
@@ -325,7 +322,7 @@ class RedField extends Field {
     startCaptureSequence() {
         this.interruptTravel();
         //TODO close ditto here and on travel if its the case and then open it again
-        this.state = RED_FIELD_STATUS.CAPTURE;
+        this.setState(RED_FIELD_STATUS.CAPTURE);
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
 
@@ -342,7 +339,7 @@ class RedField extends Field {
             this.disableTimer()
             this.stageText.setScrollText(I18NManager.translate("pokemon_ran_away"), "", 1000, () => {
                 this.screen.setState(SCREEN_STATE.LANDSCAPE);
-                this.state = RED_FIELD_STATUS.PLAYING;
+                this.setState(RED_FIELD_STATUS.PLAYING);
             });
             Audio.playMusic('redField');
         }
@@ -444,7 +441,7 @@ class RedField extends Field {
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
             this.well.close();
             this.status.startNewBall();
-            this.state = RED_FIELD_STATUS.BALL_LOST;
+            this.setState(RED_FIELD_STATUS.BALL_LOST);
             //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
             this.arrows.restart();
             Audio.playSFX('sfx24');
@@ -457,7 +454,7 @@ class RedField extends Field {
         if (this.state === RED_FIELD_STATUS.CAPTURE) {
             this.disableTimer()
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
-            this.state = RED_FIELD_STATUS.PLAYING;
+            this.setState(RED_FIELD_STATUS.PLAYING);
             this.voltorbsTargetArrow.setVisible(false);
         }
     }
@@ -467,7 +464,7 @@ class RedField extends Field {
             this.disableTimer()
             this.evolutionManager.interruptEvolution();
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
-            this.state = RED_FIELD_STATUS.PLAYING;
+            this.setState(RED_FIELD_STATUS.PLAYING);
             this.ditto.close(true);
         }
     }
@@ -477,7 +474,7 @@ class RedField extends Field {
             this.disableTimer()
             this.well.close();
             this.arrows.resetFromTravel();
-            this.state = RED_FIELD_STATUS.PLAYING;
+            this.setState(RED_FIELD_STATUS.PLAYING);
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
@@ -490,10 +487,10 @@ class RedField extends Field {
             this.attachBall(Ball.spawnStageBall());
             this.ditto.open();
             this.arrows.setCaptureArrowsLevel(2);
-            this.state = RED_FIELD_STATUS.NEW_BALL_WAITING
+            this.setState(RED_FIELD_STATUS.NEW_BALL_WAITING);
             Audio.playMusic('redField');
         } else {
-            this.state = RED_FIELD_STATUS.GAME_OVER;
+            this.setState(RED_FIELD_STATUS.GAME_OVER);
             console.log("GAME OVER");
         }
     }
@@ -511,7 +508,7 @@ class RedField extends Field {
     onTravelToLeft() {
         if (this.state === RED_FIELD_STATUS.PLAYING) {
             //TODO close ditto if open and then open it again if it was closed
-            this.state = RED_FIELD_STATUS.TRAVEL_LEFT;
+            this.setState(RED_FIELD_STATUS.TRAVEL_LEFT);
             this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
             this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
             this.attachTimer(Timer.createFieldTimer(RED_FIELD_TRAVEL_TIMER_MS, this.doOnTravelTimeupCallback));
@@ -521,7 +518,7 @@ class RedField extends Field {
 
     onTravelToRight() {
         if (this.state === RED_FIELD_STATUS.PLAYING) {
-            this.state = RED_FIELD_STATUS.TRAVEL_RIGHT;
+            this.setState(RED_FIELD_STATUS.TRAVEL_RIGHT);
             this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
             this.arrows.setTravel(TRAVEL_DIRECTION.RIGHT);
             this.attachTimer(Timer.createFieldTimer(RED_FIELD_TRAVEL_TIMER_MS, this.doOnTravelTimeupCallback));
@@ -538,7 +535,7 @@ class RedField extends Field {
     }
 
     startTravelCave() {
-        this.state = RED_FIELD_STATUS.TRAVEL_CAVE;
+        this.setState(RED_FIELD_STATUS.TRAVEL_CAVE);
         this.screen.setTravelDirection(TRAVEL_DIRECTION.CAVE);
         this.arrows.setTravel(TRAVEL_DIRECTION.CAVE);
         this.openWell(this.onTravelCaveCallback);
@@ -551,7 +548,7 @@ class RedField extends Field {
         Audio.playSFX('sfx25');
         this.screen.progressLandmark();
         this.stageText.setScrollText(I18NManager.translate("arrived_at") + this.screen.getLandmarkText(), this.screen.getLandmarkText(), DEFAULT_TEXT_PERSISTENCE_MILLIS, () => {
-            this.state = RED_FIELD_STATUS.PLAYING;
+            this.setState(RED_FIELD_STATUS.PLAYING);
             this.arrows.resetFromTravel();
             this.closeWell();
             this.leftTravelDiglett.reset();
@@ -563,7 +560,7 @@ class RedField extends Field {
     onDittoWellCallback = () => {
         this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.captured);
         this.evolutionScreenChooser.show();
-        this.state = RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN;
+        this.setState(RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN);
     }
 
     centerButtonCallback = () => {
@@ -574,7 +571,7 @@ class RedField extends Field {
                 if (selected !== null) {
                     this.startEvolutionSequence(selected);
                 } else {
-                    this.state = RED_FIELD_STATUS.PLAYING;
+                    this.setState(RED_FIELD_STATUS.PLAYING);
                 }
 
                 this.evolutionScreenChooser.remove();
@@ -586,7 +583,7 @@ class RedField extends Field {
     }
 
     startEvolutionSequence(pokemon) {
-        this.state = RED_FIELD_STATUS.EVOLUTION;
+        this.setState(RED_FIELD_STATUS.EVOLUTION);
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_EVOLUTION_TIMER_MS, this.doOnEvolutionTimeupCallback));
         //TODO set dito open when ball is down enough
         this.stageText.setScrollText(I18NManager.translate("start_training"));
@@ -601,6 +598,10 @@ class RedField extends Field {
 
     onEvolutionTargetArrowHit(targetArrow) {
         this.evolutionManager.onEvolutionTargetArrowHit(targetArrow);
+    }
+
+    setState(state){
+        this.state = state;
     }
 
 }
