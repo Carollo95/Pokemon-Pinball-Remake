@@ -82,12 +82,10 @@ class RedFieldArrows {
 
     blinkEvolutionArrows(visible) {
         if (visible) {
-            if (this.evolutionArrowsLevel < 3) {
+            if (this.evolutionArrowsLevel < 4) {
                 frameCount % RED_FIELD_ARROWS_BLINK_RATE > RED_FIELD_ARROWS_BLINK_HALF_RATE ?
                     this.evolutionArrows.ani.frame = this.evolutionArrowsLevel :
                     this.evolutionArrows.ani.frame = this.evolutionArrowsLevel + 1;
-            } else {
-                this.evolutionArrows.ani.frame = this.evolutionArrowsLevel;
             }
         } else {
             this.evolutionArrows.ani.frame = 0;

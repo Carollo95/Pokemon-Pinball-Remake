@@ -262,7 +262,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldUpgradeBlockerRight', 'assets/img/red-field/ball_upgrade_blocker_right', 28, 54, 1);
 
   Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 46, 68, 4);
-  Asset.registerAnimationTemplate('redFieldEvolutionArrows', 'assets/img/red-field/evolution_arrows', 46, 68, 4);
+  Asset.registerAnimationTemplate('redFieldEvolutionArrows', 'assets/img/red-field/evolution_arrows', 46, 68, 5);
   Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldLeftInnerArrow', 'assets/img/red-field/left_inner_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldCaveArrow', 'assets/img/red-field/cave_arrow', 26, 22, 2);
