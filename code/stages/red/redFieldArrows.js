@@ -220,6 +220,8 @@ class RedFieldArrows {
             this.state = RED_FIELD_ARROW_STATE.TRAVEL_LEFT;
         } else if (direction === TRAVEL_DIRECTION.RIGHT) {
             this.state = RED_FIELD_ARROW_STATE.TRAVEL_RIGHT;
+        } else if (direction === TRAVEL_DIRECTION.CAVE) {
+            this.state = RED_FIELD_ARROW_STATE.TRAVEL_CAVE;
         }
     }
 
