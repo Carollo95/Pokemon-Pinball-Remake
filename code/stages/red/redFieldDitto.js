@@ -89,7 +89,7 @@ class RedFieldDitto {
     }
 
     fullyOpen() {
-        this.wellOpen = true;
+        this.openWell();
         this.removeSprites();
         Audio.playSFX('sfx00');
 
@@ -163,14 +163,18 @@ class RedFieldDitto {
 
 
     onCapturedBallByWellCallback(ball) {
-        ball.minimize(() => { this.onCapturedBallCallback && this.onCapturedBallCallback() });
-        Audio.playSFX('sfx21', 6500);
+        //If ball already minimizing or minimized, do nothing
+        if (ball.sprite.visible) {
+            ball.minimize(() => { this.onCapturedBallCallback && this.onCapturedBallCallback() });
+            Audio.playSFX('sfx21', 6500);
+        }
     }
 
     spitBall(ball) {
         ball.stopOnCoordinates(this.well.x, this.well.y);
         ball.regainPhysics();
         ball.maximize();
+        this.closeWell();
     }
 
     openWell() {
@@ -182,7 +186,7 @@ class RedFieldDitto {
     }
 
     setState(state) {
-        if(state === undefined) return;
+        if (state === undefined) return;
         switch (state) {
             case RED_FIELD_DITTO_STATE.OPEN:
                 if (this.isOpen()) return;

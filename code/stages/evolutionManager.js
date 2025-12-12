@@ -82,6 +82,7 @@ class EvolutionManager {
         this.isTired = true;
         this.lastTiredTime = millis();
         this.hideTargetArrows();
+        Audio.playSFX('sfx47');
 
         if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.EXPERIENCE) {
             this.stageText.setScrollText(I18NManager.translate("pokemon_is_tired"));
@@ -95,6 +96,7 @@ class EvolutionManager {
         let n = this.randInt0N(this.evolutionTargets.length);
 
         this.evolutionTargets[n].setActive(true, this.onEvolutionTargetHit);
+        Audio.playSFX('sfx46');
 
         if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.EXPERIENCE) {
             this.stageText.setScrollText(I18NManager.translate("get_experience"));

@@ -36,6 +36,8 @@ class BonusStage extends Stage {
         this.attachBall(Ball.spawnBonusBall());
         this.attachFlippers(createBonusFlippers());
         this.attachStageText(createBonusStageStatusBanner(this.status));
+        this.attachControls(new Controls(leftFlipperCallback(), () => { }, rightFlipperCallback()));
+
 
         this.gateIsOpen = true;
 
@@ -44,6 +46,15 @@ class BonusStage extends Stage {
 
         this.playableStages = [BONUS_STAGE_STATE.PLAYING];
         this.createFrame();
+    }
+
+    rightFlipperCallback = () => {
+        this.getFlippers().moveRightFlipper();
+    }
+
+
+    leftFlipperCallback = () => {
+        this.getFlippers().moveLeftFlipper();
     }
 
     createBonusScenarioGeometry(dome = false) {

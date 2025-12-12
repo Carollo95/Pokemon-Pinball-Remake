@@ -63,6 +63,7 @@ class EvolutionChooserScreen {
     next() {
         if (this.currentlySelectedIndex < this.pokemonNamesList.length - 1) {
             this.currentlySelectedIndex++;
+            Audio.playSFX('sfx03');
             if (this.currentlySelectedIndex >= 5) {
                 this.scroll++;
                 this.shownList = this.pokemonNamesList.slice(this.currentlySelectedIndex - 4, this.currentlySelectedIndex + 1);
@@ -74,6 +75,7 @@ class EvolutionChooserScreen {
     previous() {
         if (this.currentlySelectedIndex > 0) {
             this.currentlySelectedIndex--;
+            Audio.playSFX('sfx03');
             if (this.currentlySelectedIndex < this.scroll) {
                 this.scroll--;
                 this.shownList = this.pokemonNamesList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);

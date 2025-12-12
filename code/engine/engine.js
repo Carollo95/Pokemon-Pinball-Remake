@@ -25,10 +25,6 @@ const DEBUG_LAYER = 12; //Layer for debug elements
 
 const DEFAULT_BLINKING_FRAMES = 10;
 
-const LEFT_FLIPPER_KEY = 'a'; //Key for the movemenet of the left flipper
-const RIGHT_FLIPPER_KEY = 'l'; //Key for the movemenet of the right flipper
-const CENTER_BUTTON_KEY = ' '; //Key for the pressing of the center button
-
 let stage; //The p5 sketch in use
 
 // Flash internal state

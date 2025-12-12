@@ -27,59 +27,12 @@ const RIGHT_FLIPPER_OFFSET = -14; //Offset of the right flipper animation
 const FLIPPER_SFX_PLAY_COOLDOWN = 200; //Cooldown betwen flipper sfx plays to avoid spamming
 
 class Flippers {
-    constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY, leftFlipperCallback = function () { }, rightFlipperCallback = function () { }) {
+    constructor(leftFlipperRotationPointX, leftFlipperRotationPointY, rightFlipperRotationPointX, rightFlipperRotationPointY) {
         this.flippersEnabled = true;
 
-        this.createHtmlButtonControls();
 
         this.createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY);
         this.createRightFlipper(rightFlipperRotationPointX, rightFlipperRotationPointY);
-
-        this.leftFlipperCallback = leftFlipperCallback;
-        this.rightFlipperCallback = rightFlipperCallback;
-
-    }
-
-    createHtmlButtonControls() {
-        leftFlipperButton.addEventListener("mousedown", () => {
-            this.leftFlipperButtonPressed = true;
-        });
-        leftFlipperButton.addEventListener("mouseup", () => {
-            this.leftFlipperButtonPressed = false;
-        });
-        leftFlipperButton.addEventListener("touchstart", (e) => {
-            e.preventDefault();
-            this.leftFlipperButtonPressed = true;
-        }, { passive: false });
-        leftFlipperButton.addEventListener("touchend", (e) => {
-            e.preventDefault();
-            this.leftFlipperButtonPressed = false;
-        }, { passive: false });
-
-        document.addEventListener("mouseup", () => {
-            this.leftFlipperButtonPressed = false;
-            this.rightFlipperButtonPressed = false;
-        });
-        document.addEventListener("touchend", () => {
-            this.leftFlipperButtonPressed = false;
-            this.rightFlipperButtonPressed = false;
-        });
-
-
-        rightFlipperButton.addEventListener("mousedown", () => {
-            this.rightFlipperButtonPressed = true;
-        });
-        rightFlipperButton.addEventListener("mouseup", () => {
-            this.rightFlipperButtonPressed = false;
-        });
-        rightFlipperButton.addEventListener("touchstart", (e) => {
-            e.preventDefault();
-            this.rightFlipperButtonPressed = true;
-        }, { passive: false });
-        rightFlipperButton.addEventListener("touchend", (e) => {
-            e.preventDefault();
-            this.rightFlipperButtonPressed = false;
-        }, { passive: false });
     }
 
     createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY) {
@@ -97,6 +50,8 @@ class Flippers {
         this.leftFlipper.draw = function () { rotateFlipperAnimation(this, LEFT_FLIPPER_MIN_ROTATION, LEFT_FLIPPER_MAX_ROTATION, LEFT_FLIPPER_OFFSET); }
 
         this.hasLeftFlipperBeenLowered = true;
+
+        this.leftFlipperAction = false;
     }
 
     createRightFlipper(rightFlipperRotationPointX, rightFlipperRotationPointY) {
@@ -114,6 +69,8 @@ class Flippers {
         this.rightFlipper.draw = function () { rotateFlipperAnimation(this, RIGHT_FLIPPER_MIN_ROTATION, RIGHT_FLIPPER_MAX_ROTATION, RIGHT_FLIPPER_OFFSET); }
 
         this.hasRightFlipperBeenLowered = true;
+
+        this.rightFlipperAction = false;
     }
 
     update() {
@@ -121,21 +78,21 @@ class Flippers {
         this.controlRightFlipper();
     }
 
+    moveLeftFlipper = () => {
+        this.leftFlipperAction = true;
+    }
+
     controlLeftFlipper() {
         if (this.flippersEnabled) {
-            if (this.isLeftFlipperAction()) {
+            if (this.leftFlipperAction) {
+                this.leftFlipperAction = false;
                 this.liftLeftFlipper();
-                this.leftFlipperCallback();
+                this.playLeftFLipperSFX();
             } else {
                 this.lowerLeftFlipper();
             }
-            this.playLeftFLipperSFX();
             this.changeLeftFlipperAnimation();
         }
-    }
-
-    isLeftFlipperAction() {
-        return kb.pressing(LEFT_FLIPPER_KEY) || this.leftFlipperButtonPressed;
     }
 
     liftLeftFlipper() {
@@ -186,21 +143,21 @@ class Flippers {
 
     controlRightFlipper() {
         if (this.flippersEnabled) {
-            if (this.isRightFlipperActive()) {
+            if (this.rightFlipperAction) {
+                this.rightFlipperAction = false;
                 this.liftRightFlipper();
-
-                this.rightFlipperCallback();
+                this.playRightFlipperSFX();
             } else {
                 this.lowerRightFlipper();
             }
-            this.playRightFlipperSFX();
             this.changeActiveRightFlipperAnimation();
         }
     }
 
-    isRightFlipperActive() {
-        return kb.pressing(RIGHT_FLIPPER_KEY) || this.rightFlipperButtonPressed;
+    moveRightFlipper = () => {
+        this.rightFlipperAction = true;
     }
+
 
     liftRightFlipper() {
         if (this.rightFlipper.rotation < RIGHT_FLIPPER_MAX_ROTATION - EPSILON) {
@@ -247,7 +204,6 @@ class Flippers {
         }
     }
 
-
     disableFlippers() {
         this.flippersEnabled = false;
 
@@ -258,14 +214,10 @@ class Flippers {
     enableFlippers() {
         this.flippersEnabled = true;
     }
-
-    isCenterButtonAction() {
-        return kb.pressing(CENTER_BUTTON_KEY) || this.centerButtonPressed;
-    }
 }
 
-function createTableFlippers(leftFlipperCallback, rightFlipperCallback) {
-    return new Flippers(LEFT_FLIPPER_ROTATION_POINT_X, LEFT_FLIPPER_ROTATION_POINT_Y, RIGHT_FLIPPER_ROTATION_POINT_X, RIGHT_FLIPPER_ROTATION_POINT_Y, leftFlipperCallback, rightFlipperCallback);
+function createTableFlippers() {
+    return new Flippers(LEFT_FLIPPER_ROTATION_POINT_X, LEFT_FLIPPER_ROTATION_POINT_Y, RIGHT_FLIPPER_ROTATION_POINT_X, RIGHT_FLIPPER_ROTATION_POINT_Y);
 }
 
 function createBonusFlippers() {
