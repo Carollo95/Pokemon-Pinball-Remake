@@ -245,6 +245,12 @@ class RedField extends Field {
 
         this.leftOuterLowerSensor = new Sensor(35, 214, () => {
             this.lastSensor = this.leftOuterLowerSensor;
+            
+            if(this.shouldOpenEvolutionCave()){
+                this.ditto.fullyOpen();
+                this._closeBallOnWayDown = true;
+            }
+
         });
         this.leftMiddleUpperSensor = new Sensor(82, 106, () => {
             if (this.lastSensor === this.leftOuterLowerSensor) {
@@ -445,25 +451,10 @@ class RedField extends Field {
                 }
                 break;
             case RED_FIELD_STATUS.PLAYING:
-                if (this.shouldOpenEvolutionCave()) {
-                    dittoState = RED_FIELD_DITTO_STATE.FULLY_OPEN;
-                }
-                if (this._closeBallOnWayDown && this.ballInPositionToCloseDitto()) {
-                    if (this.shouldOpenEvolutionCave()) {
-                        this._closeBallOnWayDown = false;
-                    } else {
-                        dittoState = RED_FIELD_DITTO_STATE.CLOSE;
-                        this._closeBallOnWayDown = false;
-                    }
-                }
-                break;
             case RED_FIELD_STATUS.CAPTURE:
             case RED_FIELD_STATUS.TRAVEL_LEFT:
             case RED_FIELD_STATUS.TRAVEL_RIGHT:
             case RED_FIELD_STATUS.TRAVEL_CAVE:
-                if (this.shouldOpenEvolutionCave()) {
-                    dittoState = RED_FIELD_DITTO_STATE.CLOSE;
-                }
                 if (this._closeBallOnWayDown && this.ballInPositionToCloseDitto()) {
                     if (this.shouldOpenEvolutionCave()) {
                         this._closeBallOnWayDown = false;
