@@ -164,7 +164,7 @@ class RedFieldDitto {
 
     onCapturedBallByWellCallback(ball) {
         //If ball already minimizing or minimized, do nothing
-        if (ball.sprite.visible) {
+        if (ball.isVisible()) {
             ball.minimize(() => { this.onCapturedBallCallback && this.onCapturedBallCallback() });
             Audio.playSFX('sfx21', 6500);
         }
