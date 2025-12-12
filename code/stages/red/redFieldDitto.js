@@ -1,4 +1,4 @@
-const RED_STAGE_DITTO_STATE = {
+const RED_FIELD_DITTO_STATE = {
     OPEN: 0,
     CLOSE: 1,
     FULLY_OPEN: 2
@@ -7,7 +7,7 @@ const RED_STAGE_DITTO_STATE = {
 class RedFieldDitto {
     constructor(onCapturedBallCallback) {
         this.createOpenSprite();
-        this.status = RED_STAGE_DITTO_STATE.OPEN;
+        this.status = RED_FIELD_DITTO_STATE.OPEN;
         this.well = new Well(36, 38, 10, 20, 50);
         this.wellOpen = false;
         this.onCapturedBallCallback = onCapturedBallCallback;
@@ -30,7 +30,7 @@ class RedFieldDitto {
         this.removeSprites();
         if (!silent) Audio.playSFX('sfx00');
         this.createOpenSprite();
-        this.status = RED_STAGE_DITTO_STATE.OPEN;
+        this.status = RED_FIELD_DITTO_STATE.OPEN;
         this.removeOuterLoopDoor();
     }
 
@@ -54,7 +54,7 @@ class RedFieldDitto {
     }
 
     isOpen() {
-        return this.status === RED_STAGE_DITTO_STATE.OPEN;
+        return this.status === RED_FIELD_DITTO_STATE.OPEN;
     }
 
     close(silent = false) {
@@ -80,12 +80,12 @@ class RedFieldDitto {
         this.closeSprite.debug = DEBUG;
         this.closeSprite.layer = SPRITE_LAYER;
 
-        this.status = RED_STAGE_DITTO_STATE.CLOSE;
+        this.status = RED_FIELD_DITTO_STATE.CLOSE;
         this.createOuterLoopDoor();
     }
 
     isClosed() {
-        return this.status === RED_STAGE_DITTO_STATE.CLOSE;
+        return this.status === RED_FIELD_DITTO_STATE.CLOSE;
     }
 
     fullyOpen() {
@@ -98,12 +98,12 @@ class RedFieldDitto {
         this.fullyOpenSprite.debug = DEBUG;
         this.fullyOpenSprite.layer = SPRITE_LAYER;
 
-        this.status = RED_STAGE_DITTO_STATE.FULLY_OPEN;
+        this.status = RED_FIELD_DITTO_STATE.FULLY_OPEN;
         this.removeOuterLoopDoor();
     }
 
     isFullyOpen() {
-        return this.status === RED_STAGE_DITTO_STATE.FULLY_OPEN;
+        return this.status === RED_FIELD_DITTO_STATE.FULLY_OPEN;
     }
 
     createOuterLoopDoor() {
@@ -179,6 +179,24 @@ class RedFieldDitto {
 
     closeWell() {
         this.wellOpen = false;
+    }
+
+    setState(state) {
+        if(state === undefined) return;
+        switch (state) {
+            case RED_FIELD_DITTO_STATE.OPEN:
+                if (this.isOpen()) return;
+                this.open();
+                break;
+            case RED_FIELD_DITTO_STATE.CLOSE:
+                if (this.isClosed()) return;
+                this.close();
+                break;
+            case RED_FIELD_DITTO_STATE.FULLY_OPEN:
+                if (this.isFullyOpen()) return;
+                this.fullyOpen();
+                break;
+        }
     }
 
 }

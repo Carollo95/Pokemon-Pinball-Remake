@@ -148,7 +148,7 @@ class RedField extends Field {
         if (spawnOnWell) {
             this.setState(RED_FIELD_STATUS.PLAYING);
             this.ditto.close(true);
-            this.closeWell();
+            this.spitAndCloseWell();
         } else {
             this.setState(RED_FIELD_STATUS.GAME_START);
         }
@@ -185,7 +185,7 @@ class RedField extends Field {
 
     finishEvolutionStage = () => {
         //TODO create a method called go back to playing state or smnliktat
-        this.closeWell();
+        this.spitAndCloseWell();
         this.setState(RED_FIELD_STATUS.PLAYING);
         Audio.playMusic('redField');
         this.disableTimer()
@@ -397,9 +397,7 @@ class RedField extends Field {
             }
 
         } else if (this.state === RED_FIELD_STATUS.BALL_LOST) {
-            {
-                this.ballBonusScreen.update();
-            }
+            this.ballBonusScreen.update();
         }
 
     }
@@ -416,15 +414,56 @@ class RedField extends Field {
     }
 
     updateDitto() {
-        if (this._closeBallOnWayDown && (!this.ditto.isClosed()) && this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40) {
-            this.ditto.close();
-            this.ditto.createLauncherDoor();
-            this._closeBallOnWayDown = false;
-        } else if (this.state === RED_FIELD_STATUS.PLAYING && this.arrows.evolutionArrowsLevel === 3 && this.ditto.isClosed()) {
-            this.ditto.fullyOpen();
+        let dittoState = undefined;
+
+        switch (this.state) {
+            case RED_FIELD_STATUS.EVOLUTION:
+                if (this._closeBallOnWayDown && this.ballInPositionToCloseDitto() && !this.ditto.isOpen()) {
+                    dittoState = RED_FIELD_DITTO_STATE.OPEN;
+                    _closeBallOnWayDown = false;
+                }
+                break;
+            case RED_FIELD_STATUS.PLAYING:
+                if (this.shouldOpenEvolutionCave()) {
+                    dittoState = RED_FIELD_DITTO_STATE.FULLY_OPEN;
+                }
+                if (this._closeBallOnWayDown && this.ballInPositionToCloseDitto()) {
+                    if (this.shouldOpenEvolutionCave()) {
+                        this._closeBallOnWayDown = false;
+                    } else {
+                        dittoState = RED_FIELD_DITTO_STATE.CLOSE;
+                        this._closeBallOnWayDown = false;
+                    }
+                }
+                break;
+            case RED_FIELD_STATUS.CAPTURE:
+            case RED_FIELD_STATUS.TRAVEL_LEFT:
+            case RED_FIELD_STATUS.TRAVEL_RIGHT:
+            case RED_FIELD_STATUS.TRAVEL_CAVE:
+                if (this.shouldOpenEvolutionCave()) {
+                    dittoState = RED_FIELD_DITTO_STATE.CLOSE;
+                }
+                if (this._closeBallOnWayDown && this.ballInPositionToCloseDitto()) {
+                    if (this.shouldOpenEvolutionCave()) {
+                        this._closeBallOnWayDown = false;
+                    } else {
+                        dittoState = RED_FIELD_DITTO_STATE.CLOSE;
+                        this._closeBallOnWayDown = false;
+                    }
+                }
+                break;
         }
 
+        this.ditto.setState(dittoState);
         this.ditto.update(this.getBall());
+    }
+
+    ballInPositionToCloseDitto() {
+        return this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40;
+    }
+
+    shouldOpenEvolutionCave() {
+        return this.arrows.evolutionArrowsLevel === 3;
     }
 
     updateScreen() {
@@ -439,7 +478,10 @@ class RedField extends Field {
                 this.interruptEvolution();
             }
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
-            this.well.close();
+            this.closeWell();
+            this.ditto.close(true)
+            this.leftTravelDiglett.reset();
+            this.rightTravelDiglett.reset();
             this.status.startNewBall();
             this.setState(RED_FIELD_STATUS.BALL_LOST);
             //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
@@ -472,7 +514,7 @@ class RedField extends Field {
     interruptTravel() {
         if (this.isTravelState()) {
             this.disableTimer()
-            this.well.close();
+            this.closeWell();
             this.arrows.resetFromTravel();
             this.setState(RED_FIELD_STATUS.PLAYING);
             this.leftTravelDiglett.reset();
@@ -500,8 +542,13 @@ class RedField extends Field {
         this.arrows.turnOnCaveArrow();
     }
 
-    closeWell() {
+    spitAndCloseWell() {
         this.well.spitBall(this.getBall());
+        this.arrows.turnOffCaveArrow();
+    }
+
+    closeWell() {
+        this.well.close();
         this.arrows.turnOffCaveArrow();
     }
 
@@ -550,7 +597,7 @@ class RedField extends Field {
         this.stageText.setScrollText(I18NManager.translate("arrived_at") + this.screen.getLandmarkText(), this.screen.getLandmarkText(), DEFAULT_TEXT_PERSISTENCE_MILLIS, () => {
             this.setState(RED_FIELD_STATUS.PLAYING);
             this.arrows.resetFromTravel();
-            this.closeWell();
+            this.spitAndCloseWell();
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             Audio.playMusic('redField');
@@ -600,7 +647,7 @@ class RedField extends Field {
         this.evolutionManager.onEvolutionTargetArrowHit(targetArrow);
     }
 
-    setState(state){
+    setState(state) {
         this.state = state;
     }
 
