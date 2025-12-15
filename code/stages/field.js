@@ -1,20 +1,25 @@
 const FIELD_BONUS = {
-    MOLE : "mole",
+    MOLE: "mole",
     GHOST: "ghost",
     CAT: "cat",
     SEAL: "seal",
     CLONE: "clone",
 }
 
-const TRAVEL_DIRECTION={
+const TRAVEL_DIRECTION = {
     LEFT: 'left',
     RIGHT: 'right',
     CAVE: 'cave'
 }
 
-class Field extends Stage{
-    constructor(status){
+class Field extends Stage {
+    constructor(status) {
         super(status);
     }
-    
+
+
+    draw() {
+        super.draw();
+    }
+
 }

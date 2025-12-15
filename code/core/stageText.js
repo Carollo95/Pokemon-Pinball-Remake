@@ -325,8 +325,10 @@ class StageStatusBanner {
 
     callCallbackOrShowStatus() {
         if (this.callback) {
-            this.callback();
+            //for the case that a callback sets another callback, if the first wants to create a second will do AFTER clearing the first one, else it clears the next
+            let callback = this.callback;
             this.callback = undefined;
+            callback();
         } else {
             this.showStatus();
         }

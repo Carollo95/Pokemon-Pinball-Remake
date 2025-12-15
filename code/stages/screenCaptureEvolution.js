@@ -7,11 +7,12 @@ const SCREEN_CAPTURE_STATE = {
     HIDDEN: "hidden",
     ANIMATION: "animation",
     SPRITE: "sprite",
-    CAPTURE_ANIMATION: "capture_animation"
+    CAPTURE_ANIMATION: "capture_animation",
+    EVOLUTION: "evolution"
 }
 
 
-class ScreenCapture {
+class ScreenCaptureEvolution {
     constructor(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, capturePhaseFinishedCallback, onPokemonAnimatedHitCallback) {
 
         this.captureStartCaptureAnimationCallback = captureStartCaptureAnimationCallback;;
@@ -21,8 +22,8 @@ class ScreenCapture {
         this.onPokemonAnimatedHitCallback = onPokemonAnimatedHitCallback
 
         this.sprite = new Sprite(160, 364, 96, 64, "none");
-        for (let i = 0; i < BASIC_POKEMON.length; i++) {
-            this.sprite.addAnimation(BASIC_POKEMON[i].id, Asset.getAnimation(BASIC_POKEMON[i].id));
+        for (let i = 0; i < ALL_POKEMON.length; i++) {
+            this.sprite.addAnimation(ALL_POKEMON[i].id, Asset.getAnimation(ALL_POKEMON[i].id));
         }
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.visible = false;
@@ -113,6 +114,8 @@ class ScreenCapture {
                 this.catchTextSprite.visible = false;
                 this.capturePhaseFinishedCallback();
             }
+        }else if(this.state === SCREEN_CAPTURE_STATE.EVOLUTION){
+
         }
     }
 
@@ -368,6 +371,23 @@ class ScreenCapture {
         drawingContext.rect(this.width / 6, 0, this.width / 3, this.height / 2);
     }
 
+    startEvolution(pokemon){
+        this.captureTarget = pokemon;
 
+        this.sprite.changeAnimation(this.captureTarget.id);
+        this.hideSprite.visible = false;
+        this.state = SCREEN_CAPTURE_STATE.EVOLUTION;
+        this.catchTextSprite.visible = false;
+    }
+
+    showTargetEvolution(){
+        if(this.captureTarget.evolutionId ===null){
+            return this.captureTarget;
+        }
+        
+        let evolution = getPokemonById(this.captureTarget.evolutionId);
+        this.sprite.changeAnimation(evolution.id);
+        return evolution;
+    }
 
 }

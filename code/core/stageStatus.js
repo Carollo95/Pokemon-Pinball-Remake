@@ -2,7 +2,7 @@ const BONUS_FOR_POKEMON_CAUGHT_ON_BALL = 500000;
 const BONUS_FOR_POKEMON_EVOLVED_ON_BALL = 750000;
 const BONUS_FOR_CAVE_SHOTS_ON_BALL = 25000;
 const BONUS_FOR_BELLSPROUT_ON_BALL = 75000;
-const BONUS_FOR_SPINNER_TURNS_ON_BALL  =100000;
+const BONUS_FOR_SPINNER_TURNS_ON_BALL = 100000;
 const BONUS_FOR_DUGTRIO_ON_BALL = 50000;
 
 class StageStatus {
@@ -25,30 +25,41 @@ class StageStatus {
     getBonusForCaughtPokemonOnBall() {
         return this.pokemonCaughtOnBall * BONUS_FOR_POKEMON_CAUGHT_ON_BALL;
     }
-    
+
     getBonusForEvolvedPokemonOnBall() {
         return this.pokemonEvolvedOnBall * BONUS_FOR_POKEMON_EVOLVED_ON_BALL;
     }
-    
+
     getBonusForBellsproutOnBall() {
         return this.bellsproutOnBall * BONUS_FOR_BELLSPROUT_ON_BALL;
     }
-    
+
     getBonusForDugtrioOnBall() {
         return this.dugtrioOnBall * BONUS_FOR_DUGTRIO_ON_BALL;
     }
-    
+
     getBonusForCaveShotsOnBall() {
         return this.caveShotsOnBall * BONUS_FOR_CAVE_SHOTS_ON_BALL;
     }
-    
+
     getBonusForSpinnerTurnsOnBall() {
         return this.spinnerTurnsOnBall * BONUS_FOR_SPINNER_TURNS_ON_BALL;
     }
 
-    addPokemonCaught(pokemon){
+    addPokemonCaught(pokemon) {
         this.pokemonCaughtOnBall++;
         this.captured.push(pokemon);
+    }
+
+    addPokemonEvolved(pokemon) {
+        this.pokemonEvolvedOnBall++;
+        this.removeCapturedPokemon(pokemon);
+        this.captured.push(getPokemonNextEvolution(pokemon));
+    }
+
+    removeCapturedPokemon(pokemon) {
+        const idx = this.captured.findIndex(p => p && p.id === pokemon.id);
+        if (idx !== -1) this.captured.splice(idx, 1);
     }
 
     startNewBall() {
@@ -67,7 +78,7 @@ class StageStatus {
         this.points += ball.multiplyPoints(pts);
     }
 
-    addPoints(pts){
+    addPoints(pts) {
         this.points += pts;
     }
 

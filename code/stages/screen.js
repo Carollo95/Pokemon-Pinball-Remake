@@ -1,6 +1,6 @@
 const SCREEN_STATE = {
     LANDSCAPE: "landscape",
-    CAPTURE: "capture",
+    CAPTURE_EVOLUTION: "capture",
     IMAGE: "image"
 }
 
@@ -26,7 +26,7 @@ class Screen {
         this.screenImage = new ScreenImage();
 
         this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;
-        this.screenCapture = new ScreenCapture(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback, captureOnPokemonAnimatedHitCallback);
+        this.screenCapture = new ScreenCaptureEvolution(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, this.onCapturePhaseFinishedCallback, captureOnPokemonAnimatedHitCallback);
 
         this.ballSprites = []
 
@@ -39,6 +39,21 @@ class Screen {
             this.ballSprites.push(ballSprite);
         }
         this.lastBallBlinking = false;
+
+
+        this.evolutionSprite = new Sprite(160, 404, 96, 16, "none");
+        this.evolutionSprite.layer = SCENARIO_LAYER;
+        this.evolutionSprite.debug = DEBUG;
+        this.evolutionSprite.visible = false;
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.EXPERIENCE, Asset.getAnimation('evolveExperience'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.FIRE_STONE, Asset.getAnimation('evolveFire'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.LEAF_STONE, Asset.getAnimation('evolveLeaf'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.WATER_STONE, Asset.getAnimation('evolveWater'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.MOON_STONE, Asset.getAnimation('evolveMoon'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.THUNDER_STONE, Asset.getAnimation('evolveThunder'));
+        this.evolutionSprite.addAnimation(EVOLUTION_METHODS.LINK_CABLE, Asset.getAnimation('evolveCable'));
+        this.evolutionSprite.ani.playing = false;
+
 
         this.state = SCREEN_STATE.LANDSCAPE;
         this.lastCaptureBallTime = -10000;
@@ -55,7 +70,7 @@ class Screen {
             this.blinkLastCaptureBallIfNeeded();
         } else if (this.state === SCREEN_STATE.IMAGE) {
             this.blinkLastCaptureBallIfNeeded();
-        } else if (this.state === SCREEN_STATE.CAPTURE) {
+        } else if (this.state === SCREEN_STATE.CAPTURE_EVOLUTION) {
             this.screenCapture.update(ballSprite);
         }
 
@@ -84,7 +99,8 @@ class Screen {
             this.screenCapture.show(false)
             this.screenImage.show(false);
             this.updateBallSpritesVisibility();
-        } else if (state === SCREEN_STATE.CAPTURE) {
+            this.evolutionSprite.visible = false;
+        } else if (state === SCREEN_STATE.CAPTURE_EVOLUTION) {
             this.screenCapture.show(true);
             this.screenLandscapes.show(false);
             this.screenImage.show(false);
@@ -94,16 +110,37 @@ class Screen {
             this.screenLandscapes.show(false);
             this.screenCapture.show(false);
             this.updateBallSpritesVisibility();
+            this.evolutionSprite.visible = false;
         }
     }
 
     startCapture(level) {
-        this.setState(SCREEN_STATE.CAPTURE);
+        this.setState(SCREEN_STATE.CAPTURE_EVOLUTION);
         this.screenCapture.startCapture(this.screenLandscapes.getPokemonFromLandmark(level));
     }
 
+    startEvolution(pokemon) {
+        this.setState(SCREEN_STATE.CAPTURE_EVOLUTION);
+        for (let i = 0; i < this.ballSprites.length; i++) {
+            this.ballSprites[i].visible = false;
+        }
+        this.screenCapture.startEvolution(pokemon);
+        this.evolutionSprite.changeAnimation(getEvolutionMethod(pokemon));
+        this.evolutionSprite.visible = true;
+        this.evolutionSprite.ani.frame = 0;
+        this.evolutionSprite.ani.playing = 0;
+    }
+
+    progressEvolutionAnimation() {
+        this.evolutionSprite.ani.frame++;
+    }
+
+    showTargetEvolution() {
+        return this.screenCapture.showTargetEvolution();
+    }
+
     flipCapture() {
-        if (this.state !== SCREEN_STATE.CAPTURE) return;
+        if (this.state !== SCREEN_STATE.CAPTURE_EVOLUTION) return;
 
         this.screenCapture.flipCapture();
     }
@@ -148,7 +185,7 @@ class Screen {
         this.setState(SCREEN_STATE.IMAGE);
     }
 
-    setTravelDirection(direction){
+    setTravelDirection(direction) {
         this.screenImage.setTravelDirection(direction);
         this.setState(SCREEN_STATE.IMAGE);
     }

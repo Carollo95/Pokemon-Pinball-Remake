@@ -21,7 +21,7 @@ class StageWell {
     }
 
     update(ball) {
-        if (this.isOpen) {
+        if (this.isOpen && ball.isVisible()) {
             this.well.applyGravity(
                 ball.sprite,
                 () => this.onCapturedBallByWellCallback(ball),

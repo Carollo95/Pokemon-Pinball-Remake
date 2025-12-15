@@ -10,15 +10,26 @@ class TargetArrow {
         this.sprite.ani.playing = false;
         this.sprite.visible = false;
         this.visible = this.sprite.visible;
+        this.active = true;
     }
 
     setVisible(visible) {
         this.visible = visible;
-        this.sprite.visible = visible;
+
+        //In case of disabling, hide it immediately, if enabling let update handle the visibility (for blinking)
+        if(!visible) {
+            this.sprite.visible = false;
+        }
+    }
+
+    setActive(active) {
+        this.active = active;
+        this.setVisible(active);
+
     }
 
     update() {
-        if (this.visible) {
+        if (this.visible && this.active) {
             EngineUtils.blinkSprite(this.sprite, 16);
         }
     }
