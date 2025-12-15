@@ -144,8 +144,8 @@ class EvolutionManager {
     }
 
     interruptEvolution() {
-        //TODO check if this is only set visible false or also set active false
         this.hideTargetArrows();
+        this.evolutionItems.forEach(et => et.setActive(false));
     }
 
 }
