@@ -99,7 +99,6 @@ class RedFieldDitto {
         this.fullyOpenSprite.layer = SPRITE_LAYER;
 
         this.status = RED_FIELD_DITTO_STATE.FULLY_OPEN;
-        this.removeOuterLoopDoor();
     }
 
     isFullyOpen() {

@@ -176,10 +176,10 @@ class RedField extends Field {
             this.setState(RED_FIELD_STATUS.GAME_START);
         }
 
-        this.evolutionTargets = [];
-        this.evolutionTargets.push(new EvolutionTarget(97, 368));
+        this.evolutionItems = [];
+        this.evolutionItems.push(new EvolutionItem(97, 368));
 
-        this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionTargets, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
+        this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionItems, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
         Audio.playMusic('redField');
     }
 
@@ -488,10 +488,13 @@ class RedField extends Field {
                 this.interruptCapture();
             } else if (this.state === RED_FIELD_STATUS.EVOLUTION) {
                 this.interruptEvolution();
+            }else if (this.isTravelState()){
+                this.interruptTravel();
             }
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
             this.closeWell();
-            this.ditto.close(true)
+            this.ditto.close(true);
+            this.ditto.removeLauncherDoor();
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.status.startNewBall();

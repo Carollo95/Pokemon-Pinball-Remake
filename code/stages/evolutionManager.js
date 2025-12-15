@@ -2,11 +2,11 @@ const EVOLUTION_TIRED_TIME_MS = 10000;
 
 class EvolutionManager {
 
-    constructor(stageText, targetArrows, evolutionTargets, addExperienceCallback, onFullExperienceCallback) {
+    constructor(stageText, targetArrows, evolutionItems, addExperienceCallback, onFullExperienceCallback) {
 
         this.stageText = stageText;
         this.targetArrows = targetArrows;
-        this.evolutionTargets = evolutionTargets;
+        this.evolutionItems = evolutionItems;
         this.validTargetArrows = [];
         this.lastTiredTime = -10000;
         this.isTired = false;
@@ -20,7 +20,7 @@ class EvolutionManager {
             this.recoverPokemon();
         }
 
-        this.evolutionTargets.forEach(et => et.update(ballSprite));
+        this.evolutionItems.forEach(et => et.update(ballSprite, this.evolutionLevel));
     }
 
     recoverPokemon(){
@@ -54,7 +54,7 @@ class EvolutionManager {
         this.validTargetArrows = pool.slice(0, Math.min(3, pool.length));
 
         this.targetArrows.forEach(ta => { ta.setVisible(true); });
-        this.evolutionTargets.forEach(et => et.setEvolutionMethod(getEvolutionMethod(target)));
+        this.evolutionItems.forEach(et => et.setEvolutionMethod(getEvolutionMethod(target)));
         this.evolutionLevel = 0;
 
         if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.EXPERIENCE) {
@@ -93,9 +93,9 @@ class EvolutionManager {
 
     spawnEvolutionItem() {
         this.hideTargetArrows();
-        let n = this.randInt0N(this.evolutionTargets.length);
+        let n = this.randInt0N(this.evolutionItems.length);
 
-        this.evolutionTargets[n].setActive(true, this.onEvolutionTargetHit);
+        this.evolutionItems[n].setActive(true, this.onevolutionItemHit);
         Audio.playSFX('sfx46');
 
         if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.EXPERIENCE) {
@@ -115,7 +115,7 @@ class EvolutionManager {
         }
     }
 
-    onEvolutionTargetHit = () => {
+    onevolutionItemHit = () => {
         this.stageText.setScrollText(I18NManager.translate("you_got_it"));
         this.addExperienceCallback();
 

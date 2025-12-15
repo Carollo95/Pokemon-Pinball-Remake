@@ -2,7 +2,7 @@ const EVOLUTION_TARGET_TIME_JUMP_INTERVAL = 750;
 const EVOLUTION_TARGET_TIME_JUMP_HIGH_POSITION_TIME = 100;
 const EVOLUTION_TARGET_HEIGHT_JUMP = 4;
 
-class EvolutionTarget {
+class EvolutionItem {
     constructor(x, y) {
         this.sprite = new Sprite(x, y, 16, 16, "none");
         this.sprite.debug = DEBUG;
@@ -20,12 +20,17 @@ class EvolutionTarget {
         this.callback = () => { };
     }
 
-    update(ballSprite) {
+    update(ballSprite, currentCaptureLevel) {
         if (!this.active) return;
 
         if (this.sprite.overlaps(ballSprite)) {
             this.callback && this.callback();
             this.setActive(false);
+            if (currentCaptureLevel < 2) {
+                Audio.playSFX('sfx44');
+            } else {
+                Audio.playSFX('sfx45');
+            }
             return;
         }
 

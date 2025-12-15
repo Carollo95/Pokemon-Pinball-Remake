@@ -353,8 +353,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41')); //Ball Wiggle
     promises.push(audio.registerSFX('sfx42', 'assets/audio/sfx/SFX-42'));
     promises.push(audio.registerSFX('sfx43', 'assets/audio/sfx/SFX-43'));
-    promises.push(audio.registerSFX('sfx44', 'assets/audio/sfx/SFX-44'));
-    promises.push(audio.registerSFX('sfx45', 'assets/audio/sfx/SFX-45'));
+    promises.push(audio.registerSFX('sfx44', 'assets/audio/sfx/SFX-44')); //Evolution item collected
+    promises.push(audio.registerSFX('sfx45', 'assets/audio/sfx/SFX-45')); //Evolution last item collected
     promises.push(audio.registerSFX('sfx46', 'assets/audio/sfx/SFX-46')); //Evolution item appears
     promises.push(audio.registerSFX('sfx47', 'assets/audio/sfx/SFX-47')); //Evolution item missed
     promises.push(audio.registerSFX('sfx48', 'assets/audio/sfx/SFX-48')); //Landscape spinner
