@@ -178,6 +178,18 @@ class RedField extends Field {
 
         this.evolutionItems = [];
         this.evolutionItems.push(new EvolutionItem(97, 368));
+        this.evolutionItems.push(new EvolutionItem(107,325));
+        this.evolutionItems.push(new EvolutionItem(133,316));
+        this.evolutionItems.push(new EvolutionItem(191,316));
+        this.evolutionItems.push(new EvolutionItem(216,325));
+        this.evolutionItems.push(new EvolutionItem(221, 368));
+        this.evolutionItems.push(new EvolutionItem(188, 254));
+        this.evolutionItems.push(new EvolutionItem(238, 248));
+        this.evolutionItems.push(new EvolutionItem(35, 194));
+        this.evolutionItems.push(new EvolutionItem(108, 45));
+        this.evolutionItems.push(new EvolutionItem(220, 48));
+        this.evolutionItems.push(new EvolutionItem(262, 117));
+
 
         this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionItems, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
         Audio.playMusic('redField');
@@ -201,6 +213,7 @@ class RedField extends Field {
     }
 
     showAfterEvolutionJackpot = () => {
+        Audio.stopMusic();
         Audio.playSFX('sfx26');
         this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 3000, this.finishEvolutionPhaseCallback);
     }
