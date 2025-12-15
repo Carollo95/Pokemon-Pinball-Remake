@@ -53,7 +53,7 @@ class EvolutionManager {
         }
         this.validTargetArrows = pool.slice(0, Math.min(3, pool.length));
 
-        this.targetArrows.forEach(ta => { ta.setVisible(true); });
+        this.targetArrows.forEach(ta => { ta.setActive(true); });
         this.evolutionItems.forEach(et => et.setEvolutionMethod(getEvolutionMethod(target)));
         this.evolutionLevel = 0;
 

@@ -31,7 +31,8 @@ class RedFieldDitto {
         if (!silent) Audio.playSFX('sfx00');
         this.createOpenSprite();
         this.status = RED_FIELD_DITTO_STATE.OPEN;
-        this.removeOuterLoopDoor();
+        
+        this.createLauncherDoor();
     }
 
     createOpenSprite() {
@@ -82,6 +83,7 @@ class RedFieldDitto {
 
         this.status = RED_FIELD_DITTO_STATE.CLOSE;
         this.createOuterLoopDoor();
+        this.createLauncherDoor();
     }
 
     isClosed() {
@@ -106,6 +108,8 @@ class RedFieldDitto {
     }
 
     createOuterLoopDoor() {
+        if(this.outerLoopDoor) return;
+        
         this.outerLoopDoor = new Sprite([
             [198, 50],
             [220, 54],
@@ -157,7 +161,9 @@ class RedFieldDitto {
 
     removeOuterLoopDoor() {
         this.outerLoopDoor && this.outerLoopDoor.remove();
+        this.outerLoopDoor = undefined;
         this.outerLoopImage && this.outerLoopImage.remove();
+        this.outerLoopImage = undefined;
     }
 
 

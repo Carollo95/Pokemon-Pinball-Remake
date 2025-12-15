@@ -129,7 +129,6 @@ class AudioManager {
     }
 
     playSFX(id, cooldown = 0) {
-        console.log(id);
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
         }
@@ -323,7 +322,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx23', 'assets/audio/sfx/SFX-23'));
     promises.push(audio.registerSFX('sfx24', 'assets/audio/sfx/SFX-24')); //Field ball loss
     promises.push(audio.registerSFX('sfx25', 'assets/audio/sfx/SFX-25')); //Field map travel complete
-    promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26'));
+    promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26')); //Pokemon evolved
     promises.push(audio.registerSFX('sfx27', 'assets/audio/sfx/SFX-27'));
     promises.push(audio.registerSFX('sfx28', 'assets/audio/sfx/SFX-28'));
     promises.push(audio.registerSFX('sfx29', 'assets/audio/sfx/SFX-29')); //Pokemon captured

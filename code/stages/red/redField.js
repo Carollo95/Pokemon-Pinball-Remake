@@ -201,18 +201,15 @@ class RedField extends Field {
     }
 
     showAfterEvolutionJackpot = () => {
-        this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 1000, this.finishEvolutionStage);
+        Audio.playSFX('sfx26');
+        this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 3000, this.finishEvolutionPhaseCallback);
     }
 
-    finishEvolutionStage = () => {
-        //TODO create a method called go back to playing state or smnliktat
+    finishEvolutionPhaseCallback = () => {
         this.spitAndCloseWell();
-        this.setState(RED_FIELD_STATUS.PLAYING);
-        Audio.playMusic('redField');
-        this.disableTimer()
-        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        this.screen.addPokeballsToList(2);
+        this.finishEvolutionPhase();
     }
-
 
     onDiglettHitCallback = (isRight) => {
         this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS);
@@ -227,10 +224,12 @@ class RedField extends Field {
 
     setupSensors() {
         this.lastSensor;
+
         this.rightLowerSensor = new Sensor(284, 214, () => {
             this.lastSensor = this.rightLowerSensor;
         });
-        this.rightInnerUpperSensor = new Sensor(248, 106, () => {
+
+        this.rightUpperSensor = new Sensor(248, 106, () => {
             if (this.lastSensor === this.rightLowerSensor) {
                 if (this.state === RED_FIELD_STATUS.TRAVEL_RIGHT) {
                     this.startTravelCave();
@@ -240,17 +239,18 @@ class RedField extends Field {
                     this.evolutionManager.recoverPokemon();
                 }
             }
-            this.lastSensor = this.rightInnerUpperSensor;
+            this.lastSensor = this.rightUpperSensor;
         });
 
         this.leftOuterLowerSensor = new Sensor(35, 214, () => {
-            this.lastSensor = this.leftOuterLowerSensor;
-            
-            if(this.shouldOpenEvolutionCave()){
+            if (!this._closeBallOnWayDown
+                && this.state === RED_FIELD_STATUS.PLAYING
+                && this.shouldOpenEvolutionCave()) {
                 this.ditto.fullyOpen();
                 this._closeBallOnWayDown = true;
             }
 
+            this.lastSensor = this.leftOuterLowerSensor;
         });
         this.leftMiddleUpperSensor = new Sensor(82, 106, () => {
             if (this.lastSensor === this.leftOuterLowerSensor) {
@@ -270,11 +270,30 @@ class RedField extends Field {
         this.leftInnerLowerSensor = new Sensor(76, 223, () => {
             this.lastSensor = this.leftInnerLowerSensor;
         });
+
         this.leftInnerUpperSensor = new Sensor(73, 168, () => {
             if (this.state === RED_FIELD_STATUS.TRAVEL_LEFT && this.lastSensor === this.leftInnerLowerSensor) {
                 this.startTravelCave();
             }
             this.lastSensor = this.leftInnerUpperSensor;
+        });
+
+        this.leftOuterUpperSensor = new Sensor(58, 89, () => {
+            if (this.lastSensor === this.leftOuterLowerSensor) {
+                if (this.state === RED_FIELD_STATUS.EVOLUTION) {
+                    this.evolutionManager.recoverPokemon();
+                }
+            }
+            this.lastSensor = this.leftOuterUpperSensor;
+        });
+
+        this.rightOuterUpperSensor = new Sensor(265, 89, () => {
+            if (this.lastSensor === this.rightLowerSensor) {
+                if (this.state === RED_FIELD_STATUS.EVOLUTION) {
+                    this.evolutionManager.recoverPokemon();
+                }
+            }
+            this.lastSensor = this.rightOuterUpperSensor;
         });
     }
 
@@ -435,8 +454,12 @@ class RedField extends Field {
 
     updateSensors() {
         this.rightLowerSensor.update(this.getBall().sprite);
-        this.rightInnerUpperSensor.update(this.getBall().sprite);
+        this.rightUpperSensor.update(this.getBall().sprite);
+        this.rightOuterUpperSensor.update(this.getBall().sprite);
         this.leftOuterLowerSensor.update(this.getBall().sprite);
+        this.leftOuterUpperSensor.update(this.getBall().sprite);
+        this.leftInnerLowerSensor.update(this.getBall().sprite);
+        this.leftInnerUpperSensor.update(this.getBall().sprite);
         this.leftMiddleUpperSensor.update(this.getBall().sprite);
     }
 
@@ -456,12 +479,8 @@ class RedField extends Field {
             case RED_FIELD_STATUS.TRAVEL_RIGHT:
             case RED_FIELD_STATUS.TRAVEL_CAVE:
                 if (this._closeBallOnWayDown && this.ballInPositionToCloseDitto()) {
-                    if (this.shouldOpenEvolutionCave()) {
-                        this._closeBallOnWayDown = false;
-                    } else {
-                        dittoState = RED_FIELD_DITTO_STATE.CLOSE;
-                        this._closeBallOnWayDown = false;
-                    }
+                    dittoState = RED_FIELD_DITTO_STATE.CLOSE;
+                    this._closeBallOnWayDown = false;
                 }
                 break;
         }
@@ -471,7 +490,8 @@ class RedField extends Field {
     }
 
     ballInPositionToCloseDitto() {
-        return this.getBall().getPositionY() > 200 && this.getBall().getPositionX() < 40;
+        console.log("CLOSE: " + this._closeBallOnWayDown);
+        return this.getBall().getPositionY() > 240 && this.getBall().getPositionX() < 45;
     }
 
     shouldOpenEvolutionCave() {
@@ -488,7 +508,7 @@ class RedField extends Field {
                 this.interruptCapture();
             } else if (this.state === RED_FIELD_STATUS.EVOLUTION) {
                 this.interruptEvolution();
-            }else if (this.isTravelState()){
+            } else if (this.isTravelState()) {
                 this.interruptTravel();
             }
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
@@ -629,7 +649,6 @@ class RedField extends Field {
     startEvolutionSequence(pokemon) {
         this.setState(RED_FIELD_STATUS.EVOLUTION);
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_EVOLUTION_TIMER_MS, this.doOnEvolutionTimeupCallback));
-        //TODO set dito open when ball is down enough
         this.stageText.setScrollText(I18NManager.translate("start_training"));
         this.screen.startEvolution(pokemon);
         Audio.playMusic('catchEmEvolutionModeRedField');
@@ -638,6 +657,17 @@ class RedField extends Field {
     }
 
     doOnEvolutionTimeupCallback = () => {
+        this.finishEvolutionPhase();
+    }
+
+    finishEvolutionPhase() {
+        this.getTimer().disable();
+        this.setState(RED_FIELD_STATUS.PLAYING);
+        this.ditto.close();
+        this.arrows.resetEvolutionArrows();
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        Audio.playMusic('redField');
+
     }
 
     onEvolutionTargetArrowHit(targetArrow) {
