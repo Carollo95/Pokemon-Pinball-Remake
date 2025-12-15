@@ -1,26 +1,38 @@
-const RED_STAGE_DITTO_STATE = {
+const RED_FIELD_DITTO_STATE = {
     OPEN: 0,
     CLOSE: 1,
     FULLY_OPEN: 2
 };
 
 class RedFieldDitto {
-    constructor() {
+    constructor(onCapturedBallCallback) {
         this.createOpenSprite();
-        this.status = RED_STAGE_DITTO_STATE.OPEN;
+        this.status = RED_FIELD_DITTO_STATE.OPEN;
+        this.well = new Well(36, 38, 10, 20, 50);
+        this.wellOpen = false;
+        this.onCapturedBallCallback = onCapturedBallCallback;
+    }
+
+    update(ball) {
+        if (this.wellOpen) {
+            this.well.applyGravity(ball.sprite, () => this.onCapturedBallByWellCallback(ball));
+        }
     }
 
     removeSprites() {
         this.openSprite && this.openSprite.remove();
         this.closeSprite && this.closeSprite.remove();
         this.fullyOpenSprite && this.fullyOpenSprite.remove();
+        this.removeOuterLoopDoor();
     }
 
-    open() {
+    open(silent = false) {
         this.removeSprites();
-        Audio.playSFX('sfx00');
+        if (!silent) Audio.playSFX('sfx00');
         this.createOpenSprite();
-        this.status = RED_STAGE_DITTO_STATE.OPEN;
+        this.status = RED_FIELD_DITTO_STATE.OPEN;
+        
+        this.createLauncherDoor();
     }
 
     createOpenSprite() {
@@ -43,13 +55,13 @@ class RedFieldDitto {
     }
 
     isOpen() {
-        return this.status === RED_STAGE_DITTO_STATE.OPEN;
+        return this.status === RED_FIELD_DITTO_STATE.OPEN;
     }
 
     close(silent = false) {
         this.removeSprites();
 
-        if(!silent) Audio.playSFX('sfx00');
+        if (!silent) Audio.playSFX('sfx00');
 
         this.closeSprite = new Sprite([
             [20, 188],
@@ -69,14 +81,17 @@ class RedFieldDitto {
         this.closeSprite.debug = DEBUG;
         this.closeSprite.layer = SPRITE_LAYER;
 
-        this.status = RED_STAGE_DITTO_STATE.CLOSE;
+        this.status = RED_FIELD_DITTO_STATE.CLOSE;
+        this.createOuterLoopDoor();
+        this.createLauncherDoor();
     }
 
     isClosed() {
-        return this.status === RED_STAGE_DITTO_STATE.CLOSE;
+        return this.status === RED_FIELD_DITTO_STATE.CLOSE;
     }
 
     fullyOpen() {
+        this.openWell();
         this.removeSprites();
         Audio.playSFX('sfx00');
 
@@ -85,13 +100,112 @@ class RedFieldDitto {
         this.fullyOpenSprite.debug = DEBUG;
         this.fullyOpenSprite.layer = SPRITE_LAYER;
 
-        this.status = RED_STAGE_DITTO_STATE.FULLY_OPEN;
+        this.status = RED_FIELD_DITTO_STATE.FULLY_OPEN;
     }
 
     isFullyOpen() {
-        return this.status === RED_STAGE_DITTO_STATE.FULLY_OPEN;
+        return this.status === RED_FIELD_DITTO_STATE.FULLY_OPEN;
+    }
+
+    createOuterLoopDoor() {
+        if(this.outerLoopDoor) return;
+        
+        this.outerLoopDoor = new Sprite([
+            [198, 50],
+            [220, 54],
+            [242, 62],
+            [268, 78],
+            [278, 88],
+            [288, 108],
+            [290, 118],
+            [296, 132],
+            [300, 158],
+            [290, 134],
+            [272, 108],
+            [256, 92],
+            [240, 80],
+            [234, 76],
+            [198, 50]
+        ], "static");
+        this.outerLoopDoor.layer = SCENARIO_LAYER;
+        this.outerLoopDoor.debug = DEBUG;
+        this.outerLoopDoor.visible = false;
+
+        this.outerLoopImage = new Sprite(244, 98, 104, 104, "none");
+        this.outerLoopImage.addAnimation(Asset.getAnimation('redFieldOuterLoopDoor'));
+        this.outerLoopImage.layer = SCENARIO_LAYER;
+        this.outerLoopImage.debug = DEBUG;
+        this.outerLoopImage.visible = true;
+    }
+
+    createLauncherDoor() {
+        if (this.launcherDoor) return;
+
+        this.launcherDoor = new Sprite([
+            [180, 21],
+            [226, 37],
+            [250, 54],
+            [276, 80],
+            [276, 21],
+            [180, 21]
+        ], "static");
+        this.launcherDoor.layer = SCENARIO_LAYER;
+        this.launcherDoor.debug = DEBUG;
+        this.launcherDoor.visible = false;
+    }
+
+    removeLauncherDoor() {
+        this.launcherDoor && this.launcherDoor.remove();
+        this.launcherDoor = undefined;
+    }
+
+    removeOuterLoopDoor() {
+        this.outerLoopDoor && this.outerLoopDoor.remove();
+        this.outerLoopDoor = undefined;
+        this.outerLoopImage && this.outerLoopImage.remove();
+        this.outerLoopImage = undefined;
     }
 
 
+    onCapturedBallByWellCallback(ball) {
+        //If ball already minimizing or minimized, do nothing
+        if (ball.isVisible()) {
+            ball.minimize(() => { this.onCapturedBallCallback && this.onCapturedBallCallback() });
+            Audio.playSFX('sfx21', 6500);
+        }
+    }
+
+    spitBall(ball) {
+        ball.stopOnCoordinates(this.well.x, this.well.y);
+        ball.regainPhysics();
+        ball.maximize();
+        this.closeWell();
+    }
+
+    openWell() {
+        this.wellOpen = true;
+    }
+
+    closeWell() {
+        this.wellOpen = false;
+    }
+
+    setState(state) {
+        if (state === undefined) return;
+        switch (state) {
+            case RED_FIELD_DITTO_STATE.OPEN:
+                if (this.isOpen()) return;
+                this.open();
+                break;
+            case RED_FIELD_DITTO_STATE.CLOSE:
+                if (this.isClosed()) return;
+                this.close();
+                break;
+            case RED_FIELD_DITTO_STATE.FULLY_OPEN:
+                if (this.isFullyOpen()) return;
+                this.fullyOpen();
+                break;
+        }
+    }
 
 }

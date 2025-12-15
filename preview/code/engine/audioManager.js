@@ -287,7 +287,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red field ditto close
     promises.push(audio.registerSFX('sfx01', 'assets/audio/sfx/SFX-01'));
     promises.push(audio.registerSFX('sfx02', 'assets/audio/sfx/SFX-02'));
-    promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03'));
+    promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03')); //Evolution chooser change selection
     promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); //Well ball on capture area
     promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05')); //Red field Bellsprout eat
     promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //Red field Bellsprout spit AND capture pokemon hit
@@ -322,7 +322,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx23', 'assets/audio/sfx/SFX-23'));
     promises.push(audio.registerSFX('sfx24', 'assets/audio/sfx/SFX-24')); //Field ball loss
     promises.push(audio.registerSFX('sfx25', 'assets/audio/sfx/SFX-25')); //Field map travel complete
-    promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26'));
+    promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26')); //Pokemon evolved
     promises.push(audio.registerSFX('sfx27', 'assets/audio/sfx/SFX-27'));
     promises.push(audio.registerSFX('sfx28', 'assets/audio/sfx/SFX-28'));
     promises.push(audio.registerSFX('sfx29', 'assets/audio/sfx/SFX-29')); //Pokemon captured
@@ -352,10 +352,10 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41')); //Ball Wiggle
     promises.push(audio.registerSFX('sfx42', 'assets/audio/sfx/SFX-42'));
     promises.push(audio.registerSFX('sfx43', 'assets/audio/sfx/SFX-43'));
-    promises.push(audio.registerSFX('sfx44', 'assets/audio/sfx/SFX-44'));
-    promises.push(audio.registerSFX('sfx45', 'assets/audio/sfx/SFX-45'));
-    promises.push(audio.registerSFX('sfx46', 'assets/audio/sfx/SFX-46'));
-    promises.push(audio.registerSFX('sfx47', 'assets/audio/sfx/SFX-47'));
+    promises.push(audio.registerSFX('sfx44', 'assets/audio/sfx/SFX-44')); //Evolution item collected
+    promises.push(audio.registerSFX('sfx45', 'assets/audio/sfx/SFX-45')); //Evolution last item collected
+    promises.push(audio.registerSFX('sfx46', 'assets/audio/sfx/SFX-46')); //Evolution item appears
+    promises.push(audio.registerSFX('sfx47', 'assets/audio/sfx/SFX-47')); //Evolution item missed
     promises.push(audio.registerSFX('sfx48', 'assets/audio/sfx/SFX-48')); //Landscape spinner
     promises.push(audio.registerSFX('sfx49', 'assets/audio/sfx/SFX-49')); //Timer 20s
     promises.push(audio.registerSFX('sfx4A', 'assets/audio/sfx/SFX-4A')); //Timer 10s

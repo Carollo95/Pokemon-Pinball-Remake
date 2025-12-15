@@ -74,6 +74,13 @@ const CheatEngine = {
             stage.staryu.invert();
 
         }
+    },
+
+    unstuckBall() {
+        if (stage && stage.getBall()) {
+            stage.ball.sprite.pos.x = 150;
+            stage.ball.sprite.pos.y = 300;
+        }
     }
 
 }

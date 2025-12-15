@@ -90,7 +90,7 @@ const RED_FIELD_RIGHT_SCENARIO_BORDER = [
 const RED_FIELD_TOP_THINGY = [
     [234, 74],
     [210, 60],
-    [189, 50],
+    [189, 54],
     [174, 50],
     [152, 52],
     [134, 54],

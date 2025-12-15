@@ -82,5 +82,9 @@ class TravelDiglett {
         }
     }
 
+    reset(){
+        this.dugtrioLevel = 0;
+        this.dugtrioSprite.ani.frame = this.dugtrioLevel;
+    }
 
 }

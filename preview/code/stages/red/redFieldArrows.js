@@ -66,6 +66,8 @@ class RedFieldArrows {
                 frameCount % RED_FIELD_ARROWS_BLINK_RATE > RED_FIELD_ARROWS_BLINK_HALF_RATE ?
                     this.captureArrows.ani.frame = this.captureArrowsLevel :
                     this.captureArrows.ani.frame = this.captureArrowsLevel + 1;
+            }else{
+                this.captureArrows.ani.frame = this.captureArrowsLevel;
             }
         } else {
             this.captureArrows.ani.frame = 0;
@@ -80,7 +82,7 @@ class RedFieldArrows {
 
     blinkEvolutionArrows(visible) {
         if (visible) {
-            if (this.evolutionArrowsLevel < 3) {
+            if (this.evolutionArrowsLevel < 4) {
                 frameCount % RED_FIELD_ARROWS_BLINK_RATE > RED_FIELD_ARROWS_BLINK_HALF_RATE ?
                     this.evolutionArrows.ani.frame = this.evolutionArrowsLevel :
                     this.evolutionArrows.ani.frame = this.evolutionArrowsLevel + 1;
@@ -129,7 +131,7 @@ class RedFieldArrows {
     upgradeEvolutionArrows() {
         if (this.evolutionArrowsLevel < 3) {
             this.evolutionArrowsLevel++;
-            this.captureArrows.ani.frame = this.evolutionArrowsLevel;
+            this.evolutionArrows.ani.frame = this.evolutionArrowsLevel;
         }
     }
 
@@ -200,12 +202,14 @@ class RedFieldArrows {
 
     getState() {
         return {
-            captureArrowsLevel: this.captureArrowsLevel
+            captureArrowsLevel: this.captureArrowsLevel,
+            evolutionArrowsLevel: this.evolutionArrowsLevel
         };
     }
 
     setState(state) {
         this.setCaptureArrowsLevel(state.captureArrowsLevel);
+        this.setEvolutionArrowsLevel(state.evolutionArrowsLevel);
     }
 
 
@@ -214,6 +218,8 @@ class RedFieldArrows {
             this.state = RED_FIELD_ARROW_STATE.TRAVEL_LEFT;
         } else if (direction === TRAVEL_DIRECTION.RIGHT) {
             this.state = RED_FIELD_ARROW_STATE.TRAVEL_RIGHT;
+        } else if (direction === TRAVEL_DIRECTION.CAVE) {
+            this.state = RED_FIELD_ARROW_STATE.TRAVEL_CAVE;
         }
     }
 
@@ -221,7 +227,7 @@ class RedFieldArrows {
         this.state = RED_FIELD_ARROW_STATE.NORMAL;
     }
 
-    restart(){
+    restart() {
         this.setCaptureArrowsLevel(2);
         this.setEvolutionArrowsLevel(0);
         this.state = RED_FIELD_ARROW_STATE.NORMAL;

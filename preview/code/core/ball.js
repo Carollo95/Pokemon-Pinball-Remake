@@ -138,6 +138,10 @@ class Ball {
         this.sprite.visible = true;
     }
 
+    isVisible(){
+        return this.sprite.visible;
+    }
+
 
 }
 
