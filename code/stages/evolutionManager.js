@@ -23,8 +23,8 @@ class EvolutionManager {
         this.evolutionItems.forEach(et => et.update(ballSprite, this.evolutionLevel));
     }
 
-    recoverPokemon(){
-        if(this.isTired){
+    recoverPokemon() {
+        if (this.isTired) {
             this.showTargetArrows();
             this.isTired = false;
             this.stageText.setScrollText(I18NManager.translate("pokemon_recovered"));
@@ -44,16 +44,15 @@ class EvolutionManager {
     }
 
     startEvolution(target) {
-        //Pick 3 random target arrows to be evolution, the rest just get the pokemon tired
         this.targetPokemon = target;
-        const pool = [...this.targetArrows];
+        const pool = this.chooseTargetsForTheEvolutionPhase(this.targetArrows);
         for (let i = pool.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [pool[i], pool[j]] = [pool[j], pool[i]];
         }
         this.validTargetArrows = pool.slice(0, Math.min(3, pool.length));
 
-        this.targetArrows.forEach(ta => { ta.setActive(true); });
+        pool.forEach(ta => { ta.setActive(true); });
         this.evolutionItems.forEach(et => et.setEvolutionMethod(getEvolutionMethod(target)));
         this.evolutionLevel = 0;
 
@@ -63,6 +62,18 @@ class EvolutionManager {
             this.stageText.setScrollText(I18NManager.translate("find_items"))
         }
 
+    }
+
+    chooseTargetsForTheEvolutionPhase(allTargetArrows) {
+        if(allTargetArrows.length <=4) return allTargetArrows;
+
+        const allTargetArrowsCopy = [...allTargetArrows];
+        for (let i = allTargetArrowsCopy.length - 1; i > 0; i--) {
+            const j = this.randInt0N(i + 1);
+            [allTargetArrowsCopy[i], allTargetArrowsCopy[j]] = [allTargetArrowsCopy[j], allTargetArrowsCopy[i]];
+        }
+        
+        return allTargetArrowsCopy.slice(0, 4);
     }
 
     hasTiredTimePassed() {
@@ -122,7 +133,7 @@ class EvolutionManager {
         this.evolutionLevel++;
         if (this.evolutionLevel >= 3) {
             this.onFullExperienceCallback();
-        }else{
+        } else {
             this.showTargetArrows();
         }
     }
@@ -132,7 +143,7 @@ class EvolutionManager {
         return Math.floor(Math.random() * (n));
     }
 
-    interruptEvolution(){
+    interruptEvolution() {
         //TODO check if this is only set visible false or also set active false
         this.hideTargetArrows();
     }
