@@ -135,6 +135,7 @@ class ScreenCaptureEvolution {
         if (this.captureAnimationIs(frame)) {
             Audio.playSFX('sfx41');
             ball.sprite.ani.frame = 1;
+            //TODO There's a specific image for this wiggle
         }
         if (this.captureAnimationIs(frame + 4)) {
             ball.sprite.ani.frame = 0;

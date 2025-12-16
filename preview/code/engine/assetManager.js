@@ -121,7 +121,16 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animPokeBall', 'assets/img/ball/poke_ball', 32, 32, 8);
   Asset.registerAnimationTemplate('animPokeBallSmall', 'assets/img/ball/poke_ball_small', 32, 32, 8);
   Asset.registerAnimationTemplate('animPokeBallSmall2', 'assets/img/ball/poke_ball_small_2', 32, 32, 8);
-
+  Asset.registerAnimationTemplate('animGreatBall', 'assets/img/ball/great_ball', 32, 32, 8);
+  Asset.registerAnimationTemplate('animGreatBallSmall', 'assets/img/ball/great_ball_small', 32, 32, 8);
+  Asset.registerAnimationTemplate('animGreatBallSmall2', 'assets/img/ball/great_ball_small_2', 32, 32, 8);
+  Asset.registerAnimationTemplate('animUltraBall', 'assets/img/ball/ultra_ball', 32, 32, 8);
+  Asset.registerAnimationTemplate('animUltraBallSmall', 'assets/img/ball/ultra_ball_small', 32, 32, 8);
+  Asset.registerAnimationTemplate('animUltraBallSmall2', 'assets/img/ball/ultra_ball_small_2', 32, 32, 8);
+  Asset.registerAnimationTemplate('animMasterBall', 'assets/img/ball/master_ball', 32, 32, 8);
+  Asset.registerAnimationTemplate('animMasterBallSmall', 'assets/img/ball/master_ball_small', 32, 32, 8);
+  Asset.registerAnimationTemplate('animMasterBallSmall2', 'assets/img/ball/master_ball_small_2', 32, 32, 8);
+  
   Asset.registerAnimationTemplate('animLeftFlipperUp', 'assets/img/left_flipper_up', 48, 48, 1);
   Asset.registerAnimationTemplate('animLeftFlipperMiddle', 'assets/img/left_flipper_middle', 48, 48, 1);
   Asset.registerAnimationTemplate('animLeftFlipperDown', 'assets/img/left_flipper_down', 48, 48, 1);
@@ -227,6 +236,8 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('evolveThunder', 'assets/img/field/evolve_thunder', 96, 16, 4);
   Asset.registerAnimationTemplate('evolveMoon', 'assets/img/field/evolve_moon', 96, 16, 4);
   Asset.registerAnimationTemplate('evolveCable', 'assets/img/field/evolve_cable', 96, 16, 4);
+
+  Asset.registerAnimationTemplate('ballUpgraderElement', 'assets/img/field/ball_upgrader_element', 12, 26, 2);
 
   Asset.registerAnimationTemplate('catch', 'assets/img/field/catch', 96, 16, 4);
   Asset.registerAnimationTemplate('capture-puff', 'assets/img/field/capture_puff', 96, 112, 4);
