@@ -142,6 +142,11 @@ class Ball {
         return this.sprite.visible;
     }
 
+    upgrade(){
+        console.log("Ball upgraded!");
+        //TODO work on this;
+    }
+
 
 }
 

@@ -192,6 +192,9 @@ class RedField extends Field {
 
 
         this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionItems, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
+
+        this.ballUpgraderManager = new BallUpgraderManager(116, 129, 160, 107, 204, 109);
+
         Audio.playMusic('redField');
     }
 
@@ -446,6 +449,7 @@ class RedField extends Field {
         this.rightMultiplier.update(this.getBall().sprite);
 
         this.updateDitto();
+        this.ballUpgraderManager.update(this.getBall());
         if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE || this.state === RED_FIELD_STATUS.EVOLUTION || this.isTravelState()) {
             this.checkForBallLoss();
 
