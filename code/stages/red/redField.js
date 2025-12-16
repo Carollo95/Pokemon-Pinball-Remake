@@ -106,7 +106,7 @@ class RedField extends Field {
     setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
-        this.attachBall(Ball.spawnStageBall());
+        this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
 
         this.attachFlippers(createTableFlippers());
         this.attachStageText(createStageStatusBanner(this.status));
@@ -198,6 +198,9 @@ class RedField extends Field {
         Audio.playMusic('redField');
     }
 
+    onFullUpgradeAgainCallback = () => {
+        this.status.addPoints(POINTS.BALL_FULLY_UPGRADED, this.getBall());
+    }
 
     addEvolutionExperienceCallback = () => {
         this.screen.progressEvolutionAnimation();
@@ -578,7 +581,7 @@ class RedField extends Field {
 
     createNewBallOrEndStage() {
         if (this.status.balls > 0) {
-            this.attachBall(Ball.spawnStageBall());
+            this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
             this.ditto.open();
             this.arrows.setCaptureArrowsLevel(2);
             this.setState(RED_FIELD_STATUS.NEW_BALL_WAITING);
