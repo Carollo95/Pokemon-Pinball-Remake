@@ -42,7 +42,7 @@ class RedFieldStaryu {
 
         ], "static");
         leftBlocker.debug = DEBUG;
-        leftBlocker.layer = SCENARIO_LAYER;
+        leftBlocker.layer = OVER_SCENARIO_LAYER;
         leftBlocker.addAnimation("blocked", Asset.getAnimation('redFieldUpgradeBlockerLeft'));
 
         return leftBlocker
@@ -60,7 +60,7 @@ class RedFieldStaryu {
 
         ], "static");
         centerBlocker.debug = DEBUG;
-        centerBlocker.layer = SCENARIO_LAYER;
+        centerBlocker.layer = OVER_SCENARIO_LAYER;
         centerBlocker.addAnimation("blocked", Asset.getAnimation('redFieldUpgradeBlockerCenter'));
 
         return centerBlocker;
@@ -79,7 +79,7 @@ class RedFieldStaryu {
             [188, 89]
         ], "static");
         rightBlocker.debug = DEBUG;
-        rightBlocker.layer = SCENARIO_LAYER;
+        rightBlocker.layer = OVER_SCENARIO_LAYER;
         rightBlocker.addAnimation("blocked", Asset.getAnimation('redFieldUpgradeBlockerRight'));
 
         return rightBlocker;

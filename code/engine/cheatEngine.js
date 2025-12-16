@@ -81,6 +81,12 @@ const CheatEngine = {
             stage.ball.sprite.pos.x = 150;
             stage.ball.sprite.pos.y = 300;
         }
+    },
+
+    upgradeBall(){
+        if(stage && stage.getBall()){
+            stage.getBall().upgrade();
+        }   
     }
 
 }
