@@ -362,6 +362,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx4B', 'assets/audio/sfx/SFX-4B')); //Timer 5s
     promises.push(audio.registerSFX('sfx4C', 'assets/audio/sfx/SFX-4C'));
     promises.push(audio.registerSFX('sfx4D', 'assets/audio/sfx/SFX-4D')); //Upgrade master ball
+    
 
     for (let i = 1; i <= 151; i++) {
         promises.push(audio.registerCRY("cry-" + pad3(i), 'assets/audio/cries/' + pad3(i)));

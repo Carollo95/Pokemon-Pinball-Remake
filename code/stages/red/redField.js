@@ -38,6 +38,8 @@ class RedField extends Field {
             this._lastCallbackCall = millis();
             if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
                 this.evolutionScreenChooser.next();
+            } else {
+                this.ballUpgraderManager.displaceRight();
             }
         }
 
@@ -75,6 +77,8 @@ class RedField extends Field {
             this._lastCallbackCall = millis();
             if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
                 this.evolutionScreenChooser.previous();
+            } else {
+                this.ballUpgraderManager.displaceLeft();
             }
         }
         if (this.state !== RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN && this.state !== RED_FIELD_STATUS.BALL_LOST) {
@@ -178,10 +182,10 @@ class RedField extends Field {
 
         this.evolutionItems = [];
         this.evolutionItems.push(new EvolutionItem(97, 368));
-        this.evolutionItems.push(new EvolutionItem(107,325));
-        this.evolutionItems.push(new EvolutionItem(133,316));
-        this.evolutionItems.push(new EvolutionItem(191,316));
-        this.evolutionItems.push(new EvolutionItem(216,325));
+        this.evolutionItems.push(new EvolutionItem(107, 325));
+        this.evolutionItems.push(new EvolutionItem(133, 316));
+        this.evolutionItems.push(new EvolutionItem(191, 316));
+        this.evolutionItems.push(new EvolutionItem(216, 325));
         this.evolutionItems.push(new EvolutionItem(221, 368));
         this.evolutionItems.push(new EvolutionItem(188, 254));
         this.evolutionItems.push(new EvolutionItem(238, 248));
