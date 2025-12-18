@@ -3,28 +3,44 @@ const RIGHT_BUTTON_KEY = 'l'; //Key for the movemenet of the right flipper
 const CENTER_BUTTON_KEY = ' '; //Key for the pressing of the center button
 
 class Controls {
-
-
-    constructor(leftButtonCallback = () => { }, centerButtonCallback = () => { }, rightButtonCallback = () => { }) {
+    constructor(leftIsPressedCallback = () => { }, centerIsPressedCallback = () => { }, rightIsPressedCallback = () => { },
+        leftPressCallback = () => { }, centerPressCallback = () => { }, rightPressCallback = () => { }) {
         this.createHtmlButtonControls();
 
-        this.leftButtonCallback = leftButtonCallback;
-        this.centerButtonCallback = centerButtonCallback;
-        this.rightButtonCallback = rightButtonCallback;
+        this.leftIsPressedCallback = leftIsPressedCallback;
+        this.centerIsPressedCallback = centerIsPressedCallback;
+        this.rightIsPressedCallback = rightIsPressedCallback;
+
+        this.leftPressCallback = leftPressCallback;
+        this.centerPressCallback = centerPressCallback;
+        this.rightPressCallback = rightPressCallback;
+
+        this._leftDownPrev = false;
+        this._rightDownPrev = false;
+        this._centerDownPrev = false;
     }
 
-    update(){
-        if (this.isLeftButtonAction()) {
-            this.leftButtonCallback();
+    update() {
+        const leftDown = this.isLeftButtonAction();
+        if (leftDown) {
+            if (!this._leftDownPrev) this.leftPressCallback();
+            else this.leftButtonCallback();
         }
-        
-        if (this.isRightButtonAction()) {
-            this.rightButtonCallback();
-        }
+        this._leftDownPrev = leftDown;
 
-        if (this.isCenterButtonAction()) {
-            this.centerButtonCallback();
+        const rightDown = this.isRightButtonAction();
+        if (rightDown) {
+            if (!this._rightDownPrev) this.rightPressCallback();
+            else this.rightButtonCallback();
         }
+        this._rightDownPrev = rightDown;
+
+        const centerDown = this.isCenterButtonAction();
+        if (centerDown) {
+            if (!this._centerDownPrev) this.centerPressCallback();
+            else this.centerButtonCallback();
+        }
+        this._centerDownPrev = centerDown;
     }
 
     createHtmlButtonControls() {
