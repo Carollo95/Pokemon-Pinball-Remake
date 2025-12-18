@@ -2,6 +2,8 @@ const LEFT_BUTTON_KEY = 'a'; //Key for the movemenet of the left flipper
 const RIGHT_BUTTON_KEY = 'l'; //Key for the movemenet of the right flipper
 const CENTER_BUTTON_KEY = ' '; //Key for the pressing of the center button
 
+const CALLBACK_DELAY_MS = 200;
+
 class Controls {
     constructor(leftIsPressedCallback = () => { }, centerIsPressedCallback = () => { }, rightIsPressedCallback = () => { },
         leftPressCallback = () => { }, centerPressCallback = () => { }, rightPressCallback = () => { }) {
@@ -18,27 +20,29 @@ class Controls {
         this._leftDownPrev = false;
         this._rightDownPrev = false;
         this._centerDownPrev = false;
+
+        this._lastCallbackCall = 0;
     }
 
     update() {
         const leftDown = this.isLeftButtonAction();
         if (leftDown) {
             if (!this._leftDownPrev) this.leftPressCallback();
-            else this.leftButtonCallback();
+            else this.leftIsPressedCallback();
         }
         this._leftDownPrev = leftDown;
 
         const rightDown = this.isRightButtonAction();
         if (rightDown) {
             if (!this._rightDownPrev) this.rightPressCallback();
-            else this.rightButtonCallback();
+            else this.rightIsPressedCallback();
         }
         this._rightDownPrev = rightDown;
 
         const centerDown = this.isCenterButtonAction();
         if (centerDown) {
             if (!this._centerDownPrev) this.centerPressCallback();
-            else this.centerButtonCallback();
+            else this.centerIsPressedCallback();
         }
         this._centerDownPrev = centerDown;
     }
@@ -124,4 +128,13 @@ class Controls {
     isCenterButtonAction() {
         return kb.pressing(CENTER_BUTTON_KEY) || this.centerButtonPressed;
     }
+
+    hasControlCallbackTimePassed(){
+        return millis() > this._lastCallbackCall + CALLBACK_DELAY_MS   
+    }
+
+    restartPressCallback() {
+        this._lastCallbackCall = millis();
+    }
+    
 }
