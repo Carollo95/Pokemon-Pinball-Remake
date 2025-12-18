@@ -19,13 +19,12 @@ const RED_FIELD_STATUS = {
 
 const RED_FIELD_BONUS_ORDER = [FIELD_BONUS.MOLE, FIELD_BONUS.GHOST, FIELD_BONUS.CLONE];
 
-const CALLBACK_DELAY_MS = 200;
+
 
 class RedField extends Field {
 
     constructor(status) {
         super(status);
-        this._lastCallbackCall = 0;
         this.nextBonusLevelIndex = 0;
 
         this.background = Asset.getBackground('redFieldBackground');
@@ -34,8 +33,8 @@ class RedField extends Field {
     }
 
     rightFlipperCallback = () => {
-        if (millis() > this._lastCallbackCall + CALLBACK_DELAY_MS) {
-            this._lastCallbackCall = millis();
+        if (this.controls.hasControlCallbackTimePassed()) {
+            this.controls.restartPressCallback();
             if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
                 this.evolutionScreenChooser.next();
             }
@@ -56,8 +55,8 @@ class RedField extends Field {
     }
 
     centerButtonCallback = () => {
-        if (millis() > this._lastCallbackCall + CALLBACK_DELAY_MS) {
-            this._lastCallbackCall = millis();
+        if (this.controls.hasControlCallbackTimePassed()) {
+            this.controls.restartPressCallback();
             if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
                 let selected = this.evolutionScreenChooser.getSelected();
                 if (selected !== null) {
@@ -75,8 +74,8 @@ class RedField extends Field {
     }
 
     leftFlipperCallback = () => {
-        if (millis() > this._lastCallbackCall + CALLBACK_DELAY_MS) {
-            this._lastCallbackCall = millis();
+        if (this.controls.hasControlCallbackTimePassed()) {
+            this.controls.restartPressCallback();
             if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
                 this.evolutionScreenChooser.previous();
             }
