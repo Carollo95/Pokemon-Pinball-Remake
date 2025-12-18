@@ -38,8 +38,6 @@ class RedField extends Field {
             this._lastCallbackCall = millis();
             if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
                 this.evolutionScreenChooser.next();
-            } else {
-                this.ballUpgraderManager.displaceRight();
             }
         }
 
@@ -51,6 +49,10 @@ class RedField extends Field {
         } else if (this.state !== RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN && this.state !== RED_FIELD_STATUS.BALL_LOST) {
             this.getFlippers().moveRightFlipper();
         }
+    }
+
+    rightFlipperPressCallback = () => {
+        this.ballUpgraderManager.displaceRight();
     }
 
     centerButtonCallback = () => {
@@ -77,14 +79,17 @@ class RedField extends Field {
             this._lastCallbackCall = millis();
             if (this.state === RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN) {
                 this.evolutionScreenChooser.previous();
-            } else {
-                this.ballUpgraderManager.displaceLeft();
             }
         }
         if (this.state !== RED_FIELD_STATUS.EVOLUTION_CHOOSE_SCREEN && this.state !== RED_FIELD_STATUS.BALL_LOST) {
             this.getFlippers().moveLeftFlipper();
         }
     }
+
+    leftFlipperPressCallback = () => {
+        this.ballUpgraderManager.displaceLeft();
+    }
+
 
     launchNewBallWaiting() {
         if (this.state === RED_FIELD_STATUS.GAME_START) {
@@ -115,7 +120,9 @@ class RedField extends Field {
         this.attachFlippers(createTableFlippers());
         this.attachStageText(createStageStatusBanner(this.status));
 
-        this.attachControls(new Controls(this.leftFlipperCallback, this.centerButtonCallback, this.rightFlipperCallback));
+        this.attachControls(new Controls(this.leftFlipperCallback, this.centerButtonCallback, this.rightFlipperCallback,
+            this.leftFlipperPressCallback, () => { }, this.rightFlipperPressCallback
+        ));
 
         this.ditto = new RedFieldDitto(this.onDittoWellCallback);
 

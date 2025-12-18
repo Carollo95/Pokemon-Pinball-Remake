@@ -1,3 +1,5 @@
+const BALL_UPGRADER_ANIMATION_DURATION = 1000;
+
 class BallUpgraderElement {
 
     constructor(x, y) {
@@ -13,10 +15,20 @@ class BallUpgraderElement {
         this.sensor.debug = DEBUG;
         this.sensor.layer = SCENARIO_LAYER;
         this.sensor.visible = false;
+
+        this.animateTimeStart = -BALL_UPGRADER_ANIMATION_DURATION;
+        this.animating = false;
     }
 
     update(ballSprite) {
-        if(ballSprite.overlaps(this.sensor)) {
+        if (this.animating) {
+            this.sprite.ani.playing = true;
+            if (millis() - this.animateTimeStart > BALL_UPGRADER_ANIMATION_DURATION) {
+                this.animating = false;
+                this.sprite.ani.playing = false;
+                this.setActive(this.active);
+            }
+        } else if (ballSprite.overlaps(this.sensor)) {
             this.setActive(!this.active);
         }
     }
@@ -24,11 +36,16 @@ class BallUpgraderElement {
 
     setActive(active) {
         this.active = active;
-        if(this.active) {
+        if (this.active) {
             this.sprite.ani.frame = 1;
         } else {
             this.sprite.ani.frame = 0;
         }
+    }
+
+    animate() {
+        this.animateTimeStart = millis();
+        this.animating = true;
     }
 
 }
