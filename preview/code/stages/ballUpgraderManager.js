@@ -1,6 +1,6 @@
 class BallUpgraderManager {
 
-    constructor(xl,yl,xc,yc,xr,yr) {
+    constructor(xl, yl, xc, yc, xr, yr) {
         this.leftElement = new BallUpgraderElement(xl, yl);
         this.centerElement = new BallUpgraderElement(xc, yc);
         this.rightElement = new BallUpgraderElement(xr, yr);
@@ -11,7 +11,7 @@ class BallUpgraderManager {
         this.centerElement.update(ball.sprite);
         this.rightElement.update(ball.sprite);
 
-        if(this.leftElement.active && this.centerElement.active && this.rightElement.active) {
+        if (this.leftElement.active && this.centerElement.active && this.rightElement.active) {
             ball.upgrade();
             this.leftElement.setActive(false);
             this.centerElement.setActive(false);
@@ -20,11 +20,17 @@ class BallUpgraderManager {
     }
 
     displaceLeft() {
-        //TODO
+        let pivot = this.leftElement.active;
+        this.leftElement.setActive(this.centerElement.active);
+        this.centerElement.setActive(this.rightElement.active);
+        this.rightElement.setActive(pivot);
     }
 
     displaceRight() {
-        //TODO
+        let pivot = this.rightElement.active;
+        this.rightElement.setActive(this.centerElement.active);
+        this.centerElement.setActive(this.leftElement.active);
+        this.leftElement.setActive(pivot);
     }
 
 }

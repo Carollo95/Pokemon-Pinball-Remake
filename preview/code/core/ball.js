@@ -55,8 +55,6 @@ class Ball {
 
         this.minimizing = false;
         this.lastSizeUpdate = -10000;
-    promises.push(audio.registerSFX('sfx2E', 'assets/audio/sfx/SFX-2E')); //Gengar defated
-    promises.push(audio.registerSFX('sfx2F', 'assets/audio/sfx/SFX-2F')); //Hit gravestone
         this.lastUpgrade = 0;
 
         this.type = BALL_TYPES.POKEBALL;
