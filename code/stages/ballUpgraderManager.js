@@ -16,6 +16,9 @@ class BallUpgraderManager {
             this.leftElement.setActive(false);
             this.centerElement.setActive(false);
             this.rightElement.setActive(false);
+            this.leftElement.animate();
+            this.centerElement.animate();
+            this.rightElement.animate();
         }
     }
 
