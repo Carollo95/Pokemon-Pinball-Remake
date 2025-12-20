@@ -520,7 +520,6 @@ class RedField extends Field {
     }
 
     ballInPositionToCloseDitto() {
-        console.log("CLOSE: " + this._closeBallOnWayDown);
         return this.getBall().getPositionY() > 240 && this.getBall().getPositionX() < 45;
     }
 
