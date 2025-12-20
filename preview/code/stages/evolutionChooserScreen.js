@@ -9,7 +9,7 @@ class EvolutionChooserScreen {
         this.currentLines = [];
 
         this.pokemonList = pokemonList;
-        this.pokemonNamesList = pokemonList.map(e => e.name).concat("exit");
+        this.pokemonNamesList = pokemonList.map(e => I18NManager.translate(e.name)).concat("exit");
 
         this.currentlySelectedIndex = 0;
         this.shownList = this.pokemonNamesList.slice(this.currentlySelectedIndex, this.currentlySelectedIndex + 5);

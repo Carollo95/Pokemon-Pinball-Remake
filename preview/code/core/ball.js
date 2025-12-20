@@ -172,7 +172,6 @@ class Ball {
     }
 
     upgrade() {
-        //TODO play sfx
         this.lastUpgrade = millis();
         if (this.type === BALL_TYPES.MASTERBALL) {
             Audio.playSFX('sfx4D');
