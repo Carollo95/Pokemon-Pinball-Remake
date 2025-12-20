@@ -52,6 +52,7 @@ class RedField extends Field {
 
     rightFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceRight();
+        this.pikachuSaver.moveRight();
     }
 
     centerButtonCallback = () => {
@@ -87,6 +88,7 @@ class RedField extends Field {
 
     leftFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceLeft();
+        this.pikachuSaver.moveLeft();
     }
 
 
@@ -204,6 +206,8 @@ class RedField extends Field {
         this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionItems, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
 
         this.ballUpgraderManager = new BallUpgraderManager(116, 129, 160, 107, 204, 109);
+
+        this.pikachuSaver = new PikachuSaver();
 
         Audio.playMusic('redField');
     }
@@ -460,6 +464,8 @@ class RedField extends Field {
 
         this.leftMultiplier.update(this.getBall().sprite);
         this.rightMultiplier.update(this.getBall().sprite);
+
+        this.pikachuSaver.update(this.getBall().sprite);
 
         this.updateDitto();
         this.ballUpgraderManager.update(this.getBall());
