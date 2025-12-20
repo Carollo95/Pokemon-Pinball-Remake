@@ -224,6 +224,8 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('stageTextRight', 'assets/img/stage-text/right', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextStar', 'assets/img/stage-text/star', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextPokemon', 'assets/img/stage-text/pokemon', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextMale', 'assets/img/stage-text/male', 16, 16, 1);
+  Asset.registerAnimationTemplate('stageTextFemale', 'assets/img/stage-text/female', 16, 16, 1);
   Asset.registerAnimationTemplate('stageTextCommaSeparator', 'assets/img/stage-text/comma_separator', 4, 16, 1);
   Asset.registerAnimationTemplate('stageTextDotSeparator', 'assets/img/stage-text/dot_separator', 4, 16, 1);
   Asset.registerAnimationTemplate('stageTextSeparator', 'assets/img/stage-text/separator', 4, 16, 1);
