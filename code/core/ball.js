@@ -130,6 +130,11 @@ class Ball {
         Audio.playSFX('sfx0A');
     }
 
+    launchFromGutter(){
+        this.sprite.physics = "dynamic";
+        this.sprite.applyForce(0, -700);
+    }
+
     getBallMultiplier() {
         switch (this.type) {
             case BALL_TYPES.POKEBALL: return POKE_BALL_MULTIPLIER;
@@ -140,15 +145,19 @@ class Ball {
         }
     }
 
-    stopOnCoordinates(x, y) {
-        this.sprite.pos.x = x;
-        this.sprite.pos.y = y;
+    stop() {
         this.sprite.velocity.x = 0;
         this.sprite.velocity.y = 0;
         this.sprite.rotation = 0;
         this.sprite.rotationSpeed = 0;
         this.sprite.physics = "none";
         this.sprite.ani.frame = 0;
+    }
+
+    stopOnCoordinates(x, y) {
+        this.sprite.pos.x = x;
+        this.sprite.pos.y = y;
+        this.stop();
     }
 
     regainPhysics() {

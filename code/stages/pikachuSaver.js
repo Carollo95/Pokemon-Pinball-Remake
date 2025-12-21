@@ -1,6 +1,8 @@
 const PIKACHU_LEFT_POSITION_X = 32;
 const PIKACHU_RIGHT_POSITION_X = 294;
 
+const PIKACHU_ANIMATION_LENGTH = 2000;
+
 class PikachuSaver {
 
     constructor() {
@@ -14,13 +16,32 @@ class PikachuSaver {
         this.isCharged = false;
         this.superCharged = false;
 
+        this.animationStart = -10000;
+        this.inAnimation = false;
+
     }
 
-    update(ballSprite) {
-        if (this.sprite.overlaps(ballSprite)) {
+    update(ball) {
+        if (millis() - this.animationStart < PIKACHU_ANIMATION_LENGTH) {
             this.sprite.changeAnimation('hurt')
-            this.sprite.ani.onComplete = () => {
+            return;
+        }
+
+        if (this.sprite.overlapping(ball.sprite)) {
+            this.sprite.changeAnimation('hurt')
+            if (this.inAnimation) {
+                this.inAnimation = false;
+                this.isCharged = false;
+                ball.launchFromGutter();
                 this.sprite.changeAnimation('idle');
+            } else if (this.isCharged) {
+                ball.stop();
+                this.animationStart = millis();
+                this.inAnimation = true;
+            } else {
+                this.sprite.ani.onComplete = () => {
+                    this.sprite.changeAnimation('idle');
+                }
             }
         }
     }

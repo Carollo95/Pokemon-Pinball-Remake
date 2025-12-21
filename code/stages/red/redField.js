@@ -465,7 +465,7 @@ class RedField extends Field {
         this.leftMultiplier.update(this.getBall().sprite);
         this.rightMultiplier.update(this.getBall().sprite);
 
-        this.pikachuSaver.update(this.getBall().sprite);
+        this.pikachuSaver.update(this.getBall());
 
         this.updateDitto();
         this.ballUpgraderManager.update(this.getBall());
