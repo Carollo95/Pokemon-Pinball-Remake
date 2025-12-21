@@ -8,6 +8,7 @@ class PikachuSaver {
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
 
+        this.sprite.addAnimation('hurt', Asset.getAnimation('pikachuSaverHurt'));
         this.sprite.addAnimation('idle', Asset.getAnimation('pikachuSaverIdle'));
 
         this.isCharged = false;
@@ -16,14 +17,19 @@ class PikachuSaver {
     }
 
     update(ballSprite) {
-
+        if (this.sprite.overlaps(ballSprite)) {
+            this.sprite.changeAnimation('hurt')
+            this.sprite.ani.onComplete = () => {
+                this.sprite.changeAnimation('idle');
+            }
+        }
     }
 
-    charge(){
+    charge() {
         this.isCharged = true;
     }
 
-    superCharge(){
+    superCharge() {
         this.isSupercharged = true;
     }
 
