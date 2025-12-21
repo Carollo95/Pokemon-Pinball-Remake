@@ -258,6 +258,7 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('pikachuSaverIdle', 'assets/img/field/pikachu_idle', 32, 32, 2);
   Asset.registerAnimationTemplate('pikachuSaverHurt', 'assets/img/field/pikachu_hurt', 32, 32, 1);
+  Asset.registerAnimationTemplate('pikachuSaverLightning', 'assets/img/field/pikachu_lightning', 32, 48, 17);
 
   Asset.registerAnimationTemplate('redFieldDittoOpen', 'assets/img/red-field/ditto-open', 53, 106, 1);
   Asset.registerAnimationTemplate('redFieldDittoClosed', 'assets/img/red-field/ditto-closed', 78, 140, 1);
