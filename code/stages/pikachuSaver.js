@@ -13,7 +13,7 @@ class PikachuSaver {
         this.sprite.addAnimation('hurt', Asset.getAnimation('pikachuSaverHurt'));
         this.sprite.addAnimation('idle', Asset.getAnimation('pikachuSaverIdle'));
 
-        this.isCharged = false;
+        this.charged = false;
         this.superCharged = false;
 
         this.animationStart = -10000;
@@ -39,10 +39,12 @@ class PikachuSaver {
                 this.inAnimation = false
                 this.lightningSprite.visible = false;;
                 this.lightningSprite.ani.frame = 0;
-                this.isCharged = false;
+                if (!this.superCharged) {
+                    this.charged = false;
+                }
                 ball.launchFromGutter();
                 this.sprite.changeAnimation('idle');
-            } else if (this.isCharged) {
+            } else if (this.isCharged()) {
                 ball.stop();
                 this.animationStart = millis();
                 this.inAnimation = true;
@@ -52,15 +54,31 @@ class PikachuSaver {
                     this.sprite.changeAnimation('idle');
                 }
             }
+        } else if (this.superCharged) {
+            this.blinkSuperChargedPikachu();
+        }
+    }
+
+    isCharged() {
+        return this.charged || this.superCharged;
+    }
+
+    blinkSuperChargedPikachu() {
+        if (!(frameCount % 5)) {
+            if (this.sprite.pos.x === PIKACHU_RIGHT_POSITION_X) {
+                this.moveLeft();
+            } else {
+                this.moveRight();
+            }
         }
     }
 
     charge() {
-        this.isCharged = true;
+        this.charged = true;
     }
 
     superCharge() {
-        this.isSupercharged = true;
+        this.superCharged = true;
     }
 
     moveLeft() {
