@@ -52,6 +52,7 @@ class RedField extends Field {
 
     rightFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceRight();
+        this.pikachuSaver.moveRight();
     }
 
     centerButtonCallback = () => {
@@ -87,6 +88,7 @@ class RedField extends Field {
 
     leftFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceLeft();
+        this.pikachuSaver.moveLeft();
     }
 
 
@@ -204,6 +206,8 @@ class RedField extends Field {
         this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionItems, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
 
         this.ballUpgraderManager = new BallUpgraderManager(116, 129, 160, 107, 204, 109);
+
+        this.pikachuSaver = new PikachuSaver();
 
         Audio.playMusic('redField');
     }
@@ -461,6 +465,8 @@ class RedField extends Field {
         this.leftMultiplier.update(this.getBall().sprite);
         this.rightMultiplier.update(this.getBall().sprite);
 
+        this.pikachuSaver.update(this.getBall());
+
         this.updateDitto();
         this.ballUpgraderManager.update(this.getBall());
         if (this.state === RED_FIELD_STATUS.PLAYING || this.state === RED_FIELD_STATUS.CAPTURE || this.state === RED_FIELD_STATUS.EVOLUTION || this.isTravelState()) {
@@ -547,6 +553,7 @@ class RedField extends Field {
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.status.startNewBall();
+            this.pikachuSaver.fullyDischarge();
             this.setState(RED_FIELD_STATUS.BALL_LOST);
             //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
             this.arrows.restart();
