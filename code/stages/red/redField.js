@@ -115,6 +115,8 @@ class RedField extends Field {
 
     setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
+        
+        this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
 
         this.attachFlippers(createTableFlippers());
         this.attachStageText(createStageStatusBanner(this.status));
