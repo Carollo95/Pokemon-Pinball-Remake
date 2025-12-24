@@ -207,6 +207,7 @@ class RedField extends Field {
 
         this.ballUpgraderManager = new BallUpgraderManager(116, 129, 160, 107, 204, 109);
 
+        this.charger = new Charger();
         this.pikachuSaver = new PikachuSaver();
 
         Audio.playMusic('redField');
@@ -446,6 +447,7 @@ class RedField extends Field {
 
     draw() {
         super.draw();
+
         this.updateScreen();
 
         this.well.update(this.getBall());
@@ -465,6 +467,7 @@ class RedField extends Field {
         this.leftMultiplier.update(this.getBall().sprite);
         this.rightMultiplier.update(this.getBall().sprite);
 
+        this.charger.update(this.getBall().sprite);
         this.pikachuSaver.update(this.getBall());
 
         this.updateDitto();
