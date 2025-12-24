@@ -553,6 +553,7 @@ class RedField extends Field {
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.status.startNewBall();
+            this.pikachuSaver.fullyDischarge();
             this.setState(RED_FIELD_STATUS.BALL_LOST);
             //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
             this.arrows.restart();

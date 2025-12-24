@@ -82,6 +82,11 @@ class PikachuSaver {
         this.superCharged = true;
     }
 
+    fullyDischarge(){
+        this.charged = false;
+        this.superCharged = false;
+    }
+
     moveLeft() {
         this.sprite.pos.x = PIKACHU_LEFT_POSITION_X;
         this.lightningSprite.pos.x = PIKACHU_LEFT_POSITION_X;
