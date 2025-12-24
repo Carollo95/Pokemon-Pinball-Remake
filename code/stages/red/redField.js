@@ -207,11 +207,21 @@ class RedField extends Field {
 
         this.ballUpgraderManager = new BallUpgraderManager(116, 129, 160, 107, 204, 109);
 
-        this.charger = new Charger(286,180, 242, 144);
-        this.pikachuSaver = new PikachuSaver();
+        this.charger = new Charger(286, 180, 242, 144, this.onChargerFullChargeCallback);
+        this.pikachuSaver = new PikachuSaver(this.onPikachuSaverDischargeCallback);
 
         Audio.playMusic('redField');
     }
+
+    onPikachuSaverDischargeCallback = () => {
+        this.status.activeThunder = false;
+    }
+
+    onChargerFullChargeCallback = () => {
+        this.pikachuSaver.charge();
+        this.status.activeThunder = true;
+    }
+
 
     onFullUpgradeAgainCallback = () => {
         this.status.addPoints(POINTS.BALL_FULLY_UPGRADED, this.getBall());
@@ -557,6 +567,7 @@ class RedField extends Field {
             this.rightTravelDiglett.reset();
             this.status.startNewBall();
             this.pikachuSaver.fullyDischarge();
+            this.status.activeThunder = false;
             this.setState(RED_FIELD_STATUS.BALL_LOST);
             //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
             this.arrows.restart();

@@ -5,7 +5,7 @@ const PIKACHU_ANIMATION_LENGTH = 3200;
 
 class PikachuSaver {
 
-    constructor() {
+    constructor(dischargeCallback) {
         this.sprite = new Sprite(PIKACHU_LEFT_POSITION_X, 506, 32, 32, 'none');
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
@@ -25,6 +25,7 @@ class PikachuSaver {
         this.lightningSprite.layer = OVER_BALL_LAYER;
         this.lightningSprite.addAnimation('lightning', Asset.getAnimation('pikachuSaverLightning'));
         this.lightningSprite.visible = false;
+        this.dischargeCallback = dischargeCallback;
     }
 
     update(ball) {
@@ -40,6 +41,7 @@ class PikachuSaver {
                 this.lightningSprite.visible = false;
                 if (!this.superCharged) {
                     this.charged = false;
+                    this.dischargeCallback();
                 }
                 ball.launchFromGutter();
                 this.sprite.changeAnimation('idle');

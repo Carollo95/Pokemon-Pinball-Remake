@@ -1,4 +1,4 @@
-const CHARGER_SPEED_DAMPING = 0.98;
+const CHARGER_SPEED_DAMPING = 0.97;
 const CHARGER_LOW_SPEED_THRESHOLD = 0.5;
 
 const CHARGER_ANI_DELAY_MIN = 2;
@@ -7,13 +7,14 @@ const CHARGER_ANI_SPEED_MAX = 10;
 
 class Charger {
 
-    constructor(paddleX, paddleY, indicatorX, indicatorY) {
+    constructor(paddleX, paddleY, indicatorX, indicatorY, onFullChargeCallback) {
         this.paddleSprite = new Sprite(paddleX, paddleY, 28, 16, "none");
         this.paddleSprite.debug = DEBUG;
         this.paddleSprite.layer = SCENARIO_LAYER;
 
         this.paddleSprite.addAnimation('paddle', Asset.getAnimation('redFieldPaddle'));
         this.paddleSprite.ani.playing = false;
+        this._lastPaddleFrame = 0;
         this.speed = 0;
 
         this.chargeIndicatorSprite = new Sprite(indicatorX, indicatorY, 36, 40, "none");
@@ -24,6 +25,8 @@ class Charger {
         this.chargeIndicatorSprite.ani.playing = false;
 
         this.charge = 0;
+
+        this.onFullChargeCallback = onFullChargeCallback;
     }
 
 
@@ -38,9 +41,12 @@ class Charger {
             }
         }
 
-        console.log(this.speed);
-
         this.updatePaddleSpeed();
+
+        if (this.paddleSprite.ani.playing && this.paddleSprite.ani.frame !== this._lastPaddleFrame) {
+            this.addCharge();
+            this._lastPaddleFrame = this.paddleSprite.ani.frame;
+        }
     }
 
     updatePaddleSpeed() {
@@ -57,6 +63,12 @@ class Charger {
         if (!this.isFullyCharged()) {
             this.charge++;
             this.chargeIndicatorSprite.ani.frame = this.charge;
+
+            if (this.charge == 16) {
+                {
+                    this.onFullChargeCallback();
+                }
+            }
         }
     }
 
