@@ -164,6 +164,18 @@ class AudioManager {
         this._lastSfxTime.set(id, now);
     }
 
+    playSFXsequence(ids) {
+        return ids.reduce((p, id) => p.then(() => new Promise(resolve => {
+            const src = this.audioContext.createBufferSource();
+            src.buffer = this.sfx[id].buffer;
+            const g = this.audioContext.createGain();
+            g.gain.value = this.sfx[id].baseVolume;
+            src.connect(g); g.connect(this.sfxGain);
+            src.onended = () => { try{src.disconnect();}catch{} try{g.disconnect();}catch{} resolve(); };
+            src.start(0);
+        })), Promise.resolve());
+    }
+
     playCry(id) {
         this.playSFX("cry-" + id);
     }
@@ -300,7 +312,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D'));
     promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //red field Voltorb Bumper hit
     promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //red field Travel Diglett hit
-    promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10'));
+    promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10')); //Pikachu lighting
     promises.push(audio.registerSFX('sfx11', 'assets/audio/sfx/SFX-11'));
     promises.push(audio.registerSFX('sfx12', 'assets/audio/sfx/SFX-12'));
     promises.push(audio.registerSFX('sfx13', 'assets/audio/sfx/SFX-13'));
@@ -362,6 +374,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx4B', 'assets/audio/sfx/SFX-4B')); //Timer 5s
     promises.push(audio.registerSFX('sfx4C', 'assets/audio/sfx/SFX-4C'));
     promises.push(audio.registerSFX('sfx4D', 'assets/audio/sfx/SFX-4D')); //Upgrade master ball
+    promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4E')); //Pikachu saver cry
     
 
     for (let i = 1; i <= 151; i++) {
