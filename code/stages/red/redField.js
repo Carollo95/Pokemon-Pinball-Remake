@@ -52,7 +52,7 @@ class RedField extends Field {
 
     rightFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceRight();
-        this.pikachuSaver.moveRight();
+        this.pikachuSaverManager.doOnRightFlipper();
     }
 
     centerButtonCallback = () => {
@@ -88,7 +88,7 @@ class RedField extends Field {
 
     leftFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceLeft();
-        this.pikachuSaver.moveLeft();
+        this.pikachuSaverManager.doOnLeftFlipper();
     }
 
 
@@ -115,8 +115,6 @@ class RedField extends Field {
 
     setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
-
-        this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
 
         this.attachFlippers(createTableFlippers());
         this.attachStageText(createStageStatusBanner(this.status));
@@ -204,33 +202,16 @@ class RedField extends Field {
 
 
         this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionItems, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
-
         this.ballUpgraderManager = new BallUpgraderManager(116, 129, 160, 107, 204, 109);
 
-        this.charger = new Charger(286, 180, 242, 144, this.onSpinnerMoveCallback, this.onChargerFullChargeCallback);
-        this.pikachuSaver = new PikachuSaver(this.onPikachuSaverDischargeCallback);
+        this.pikachuSaverManager = new PikachuSaverManager(this.status);
 
         Audio.playMusic('redField');
     }
 
-    onSpinnerMoveCallback = () => {
-        //TODO check if this is per frame move or per animation completed
-        this.status.spinnerTurnsOnBall++;
-        console.log(this.status);
-    }
-
-    onPikachuSaverDischargeCallback = () => {
-        this.status.activeThunder = false;
-    }
-
-    onChargerFullChargeCallback = () => {
-        this.pikachuSaver.charge();
-        this.status.activeThunder = true;
-    }
-
 
     onFullUpgradeAgainCallback = () => {
-        this.status.addPoints(POINTS.BALL_FULLY_UPGRADED, this.getBall());
+        this.status.addPoints(POINTS.BALL_FULLY_UPGRADED);
     }
 
     addEvolutionExperienceCallback = () => {
@@ -483,8 +464,7 @@ class RedField extends Field {
         this.leftMultiplier.update(this.getBall().sprite);
         this.rightMultiplier.update(this.getBall().sprite);
 
-        this.charger.update(this.getBall().sprite);
-        this.pikachuSaver.update(this.getBall());
+        this.pikachuSaverManager.update(this.getBall());
 
         this.updateDitto();
         this.ballUpgraderManager.update(this.getBall());
@@ -571,10 +551,8 @@ class RedField extends Field {
             this.ditto.removeLauncherDoor();
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
-            this.charger.discharge();
+            this.pikachuSaverManager.reset();
             this.status.startNewBall();
-            this.pikachuSaver.fullyDischarge();
-            this.status.activeThunder = false;
             this.setState(RED_FIELD_STATE.BALL_LOST);
             //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
             this.arrows.restart();
