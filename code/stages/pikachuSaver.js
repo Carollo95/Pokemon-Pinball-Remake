@@ -45,6 +45,7 @@ class PikachuSaver {
                 ball.launchFromGutter();
                 this.sprite.changeAnimation('idle');
             } else if (this.isCharged()) {
+                Audio.playSFXsequence(["sfx4E","sfx10"])
                 ball.stop();
                 this.animationStart = millis();
                 this.inAnimation = true;
