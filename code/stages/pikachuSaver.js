@@ -1,7 +1,7 @@
 const PIKACHU_LEFT_POSITION_X = 32;
 const PIKACHU_RIGHT_POSITION_X = 294;
 
-const PIKACHU_ANIMATION_LENGTH = 2300;
+const PIKACHU_ANIMATION_LENGTH = 3200;
 
 class PikachuSaver {
 
@@ -37,8 +37,7 @@ class PikachuSaver {
             this.sprite.changeAnimation('hurt')
             if (this.inAnimation) {
                 this.inAnimation = false
-                this.lightningSprite.visible = false;;
-                this.lightningSprite.ani.frame = 0;
+                this.lightningSprite.visible = false;
                 if (!this.superCharged) {
                     this.charged = false;
                 }
@@ -48,6 +47,7 @@ class PikachuSaver {
                 Audio.playSFXsequence(["sfx4E","sfx10"])
                 ball.stop();
                 this.animationStart = millis();
+                this.lightningSprite.ani.frame = 0;
                 this.inAnimation = true;
                 this.lightningSprite.visible = true;
             } else {
