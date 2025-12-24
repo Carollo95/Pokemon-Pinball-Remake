@@ -7,14 +7,14 @@ const CHARGER_ANI_SPEED_MAX = 10;
 
 class Charger {
 
-    constructor(paddleX, paddleY, indicatorX, indicatorY, onFullChargeCallback) {
-        this.paddleSprite = new Sprite(paddleX, paddleY, 28, 16, "none");
-        this.paddleSprite.debug = DEBUG;
-        this.paddleSprite.layer = SCENARIO_LAYER;
+    constructor(spinnerX, spinnerY, indicatorX, indicatorY, onSpinnerMoveCallback, onFullChargeCallback) {
+        this.spinnerSprite = new Sprite(spinnerX, spinnerY, 28, 16, "none");
+        this.spinnerSprite.debug = DEBUG;
+        this.spinnerSprite.layer = SCENARIO_LAYER;
 
-        this.paddleSprite.addAnimation('paddle', Asset.getAnimation('redFieldPaddle'));
-        this.paddleSprite.ani.playing = false;
-        this._lastPaddleFrame = 0;
+        this.spinnerSprite.addAnimation('paddle', Asset.getAnimation('redFieldPaddle'));
+        this.spinnerSprite.ani.playing = false;
+        this._lastSpinnerFrame = 0;
         this.speed = 0;
 
         this.chargeIndicatorSprite = new Sprite(indicatorX, indicatorY, 36, 40, "none");
@@ -26,12 +26,13 @@ class Charger {
 
         this.charge = 0;
 
+        this.onSpinnerMoveCallback = onSpinnerMoveCallback;
         this.onFullChargeCallback = onFullChargeCallback;
     }
 
 
     update(ballSprite) {
-        if (this.paddleSprite.overlaps(ballSprite)) {
+        if (this.spinnerSprite.overlaps(ballSprite)) {
             this.speed = Math.max(0, Math.floor(Math.abs(ballSprite.velocity.y)));
         } else if (this.speed > 0) {
             if (this.speed <= CHARGER_LOW_SPEED_THRESHOLD) {
@@ -41,22 +42,27 @@ class Charger {
             }
         }
 
-        this.updatePaddleSpeed();
+        this.updateSpinnerSpeed();
 
-        if (this.paddleSprite.ani.playing && this.paddleSprite.ani.frame !== this._lastPaddleFrame) {
-            this.addCharge();
-            this._lastPaddleFrame = this.paddleSprite.ani.frame;
+        if (this.spinnerSprite.ani.playing && this.spinnerSprite.ani.frame !== this._lastSpinnerFrame) {
+            this.spinnerMove();
         }
     }
 
-    updatePaddleSpeed() {
+    updateSpinnerSpeed() {
         if (this.speed <= CHARGER_LOW_SPEED_THRESHOLD) {
-            this.paddleSprite.ani.playing = false;
+            this.spinnerSprite.ani.playing = false;
         } else {
-            this.paddleSprite.ani.frameDelay = this.getAnimationDelay();
-            this.paddleSprite.ani.playing = true;
+            this.spinnerSprite.ani.frameDelay = this.getAnimationDelay();
+            this.spinnerSprite.ani.playing = true;
         }
 
+    }
+
+    spinnerMove() {
+        this.onSpinnerMoveCallback();
+        this.addCharge();
+        this._lastSpinnerFrame = this.spinnerSprite.ani.frame;
     }
 
     addCharge() {
