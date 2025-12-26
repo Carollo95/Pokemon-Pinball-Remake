@@ -17,8 +17,7 @@ class PikachuSaverManager {
         this.charger.discharge();
     }
 
-    onSpinnerMoveCallback = () => {
-        console.log(this.status);
+    onSpinnerMoveCallback = () => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
         this.status.spinnerTurnsOnBall++;
         //TODO depend on ball. Check that always depends on ball when ading points, I think it is missing on some bosnus stage
         this.status.addPoints(POINTS.SPINNER_SPIN);

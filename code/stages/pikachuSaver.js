@@ -46,7 +46,7 @@ class PikachuSaver {
                 ball.launchFromGutter();
                 this.sprite.changeAnimation('idle');
             } else if (this.isCharged()) {
-                Audio.playSFXsequence(["sfx4E","sfx10"])
+                Audio.playSFXsequence(["sfx4E", "sfx10"])
                 ball.stop();
                 this.animationStart = millis();
                 this.lightningSprite.ani.frame = 0;
@@ -84,18 +84,22 @@ class PikachuSaver {
         this.superCharged = true;
     }
 
-    fullyDischarge(){
+    fullyDischarge() {
         this.charged = false;
         this.superCharged = false;
     }
 
     moveLeft() {
-        this.sprite.pos.x = PIKACHU_LEFT_POSITION_X;
-        this.lightningSprite.pos.x = PIKACHU_LEFT_POSITION_X;
+        if (!this.inAnimation) {
+            this.sprite.pos.x = PIKACHU_LEFT_POSITION_X;
+            this.lightningSprite.pos.x = PIKACHU_LEFT_POSITION_X;
+        }
     }
 
     moveRight() {
-        this.sprite.pos.x = PIKACHU_RIGHT_POSITION_X;
-        this.lightningSprite.pos.x = PIKACHU_RIGHT_POSITION_X;
+        if (!this.inAnimation) {
+            this.sprite.pos.x = PIKACHU_RIGHT_POSITION_X;
+            this.lightningSprite.pos.x = PIKACHU_RIGHT_POSITION_X;
+        }
     }
 }
