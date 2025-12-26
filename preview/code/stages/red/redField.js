@@ -115,7 +115,7 @@ class RedField extends Field {
 
     setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
-        
+
         this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
 
         this.attachFlippers(createTableFlippers());
@@ -166,8 +166,7 @@ class RedField extends Field {
 
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
-        this.leftMultiplier = new MultiplierTarget(85, 298, 75, 281, () => this.onMultiplierHitCallback(false));
-        this.rightMultiplier = new MultiplierTarget(233, 298, 245, 281, () => this.onMultiplierHitCallback(true));
+        this.multiplierManager = new MultiplierManager(this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback, this.onMultiplierUpgradeCallback);
 
         this.arrows = new RedFieldArrows();
         if (arrowsState != undefined) {
@@ -211,6 +210,22 @@ class RedField extends Field {
         Audio.playMusic('redField');
     }
 
+    onLeftMultiplierHitCallback = () => {
+        if(this.state === RED_FIELD_STATE.EVOLUTION) {
+            this.onEvolutionTargetArrowHit(this.leftMultiplierTargetArrow);
+        }
+    }
+
+    onRightMultiplierHitCallback = () => {
+        if(this.state === RED_FIELD_STATE.EVOLUTION) {
+            this.onEvolutionTargetArrowHit(this.rightMultiplierTargetArrow);
+        }
+    }
+
+    onMultiplierUpgradeCallback = () => {
+        this.status.fieldMultiplier = this.multiplierManager.multiplier;
+        this.stageText.setScrollText(I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier, I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier);
+    }
 
     onFullUpgradeAgainCallback = () => {
         this.status.addPoints(POINTS.BALL_FULLY_UPGRADED);
@@ -434,16 +449,6 @@ class RedField extends Field {
         }
     }
 
-    onMultiplierHitCallback = (isRight) => {
-        if (this.state === RED_FIELD_STATE.EVOLUTION) {
-            if (isRight) {
-                this.onEvolutionTargetArrowHit(this.rightMultiplierTargetArrow);
-            } else {
-                this.onEvolutionTargetArrowHit(this.leftMultiplierTargetArrow);
-            }
-        }
-    }
-
     draw() {
         super.draw();
 
@@ -463,8 +468,7 @@ class RedField extends Field {
 
         this.staryu.update(this.getBall().sprite);
 
-        this.leftMultiplier.update(this.getBall().sprite);
-        this.rightMultiplier.update(this.getBall().sprite);
+        this.multiplierManager.update(this.getBall().sprite);
 
         this.pikachuSaverManager.update(this.getBall());
 
@@ -595,6 +599,7 @@ class RedField extends Field {
     createNewBallOrEndStage() {
         if (this.status.balls > 0) {
             this.status.startNewBall()
+            this.multiplierManager.setInitialState();
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.pikachuSaverManager.reset();

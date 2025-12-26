@@ -63,6 +63,8 @@ const I18NManager = {
             "jackpot": "jackpot",
             "you_got_a": "you got a ",
 
+            "bonus_multiplier_times": "bonus multiplier ·",
+
             "bulbasaur": "bulbasaur",
             "ivysaur": "ivysaur",
             "venusaur": "venusaur",
