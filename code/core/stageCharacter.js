@@ -35,6 +35,7 @@ class StageCharacter {
             this.sprite.addAnimation('$*', Asset.getAnimation('stageTextStar'));
             this.sprite.addAnimation('$#', Asset.getAnimation('stageTextMale'));
             this.sprite.addAnimation('$@', Asset.getAnimation('stageTextFemale'));
+            this.sprite.addAnimation('$·', Asset.getAnimation('stageTextCross'));
             this.sprite.addAnimation('$ ', Asset.getAnimation('stageTextSpace'));
         } else {
             this.sprite.addAnimation('$,', Asset.getAnimation('stageTextCommaSeparator'));

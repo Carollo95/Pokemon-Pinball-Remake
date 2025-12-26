@@ -62,7 +62,8 @@ class MultiplierTarget {
 
     setNumber(number) {
         if (number < 10 && number >= 0) {
-            this.sprite.ani.frame = number;
+            this.sprite.animations['active'].frame = number;
+            this.sprite.animations['inactive'].frame = number;
         }
     }
 

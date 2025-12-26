@@ -166,7 +166,7 @@ class RedField extends Field {
 
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
-        this.multiplierManager = new MultiplierManager(this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback);
+        this.multiplierManager = new MultiplierManager(this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback, this.onMultiplierUpgradeCallback);
 
         this.arrows = new RedFieldArrows();
         if (arrowsState != undefined) {
@@ -220,6 +220,11 @@ class RedField extends Field {
         if(this.state === RED_FIELD_STATE.EVOLUTION) {
             this.onEvolutionTargetArrowHit(this.rightMultiplierTargetArrow);
         }
+    }
+
+    onMultiplierUpgradeCallback = () => {
+        this.status.fieldMultiplier = this.multiplierManager.multiplier;
+        this.stageText.setScrollText(I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier, I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier);
     }
 
     onFullUpgradeAgainCallback = () => {
@@ -594,6 +599,7 @@ class RedField extends Field {
     createNewBallOrEndStage() {
         if (this.status.balls > 0) {
             this.status.startNewBall()
+            this.multiplierManager.setInitialState();
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.pikachuSaverManager.reset();
