@@ -215,22 +215,24 @@ class RedField extends Field {
         Audio.playMusic('redField');
     }
 
-    updateCave(){
-        if(this.state === PLAYING && this.caveActive){
+    updateCave() {
+        if (this.state === PLAYING && this.caveActive) {
             console.log("OPEN CAVE");
         }
     }
 
     onOpenCaveManagerCallback = () => {
         this.caveActive = true;
+    }
+
     onLeftMultiplierHitCallback = () => {
-        if(this.state === RED_FIELD_STATE.EVOLUTION) {
+        if (this.state === RED_FIELD_STATE.EVOLUTION) {
             this.onEvolutionTargetArrowHit(this.leftMultiplierTargetArrow);
         }
     }
 
     onRightMultiplierHitCallback = () => {
-        if(this.state === RED_FIELD_STATE.EVOLUTION) {
+        if (this.state === RED_FIELD_STATE.EVOLUTION) {
             this.onEvolutionTargetArrowHit(this.rightMultiplierTargetArrow);
         }
     }
