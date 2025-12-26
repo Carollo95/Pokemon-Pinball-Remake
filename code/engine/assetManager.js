@@ -268,6 +268,9 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldPaddle', 'assets/img/red-field/paddle', 28, 16, 6);
   Asset.registerAnimationTemplate('redFieldChargeIndicator', 'assets/img/red-field/charge_indicator', 36, 40, 17);
 
+  Asset.registerAnimationTemplate('redFieldMultiplier', 'assets/img/red-field/multiplier', 14, 14, 10);
+  Asset.registerAnimationTemplate('redFieldMultiplierActive', 'assets/img/red-field/multiplier_active', 14, 14, 10);
+
   Asset.registerAnimationTemplate('redFieldDiglettIdle', 'assets/img/red-field/diglett_idle', 24, 32, 2);
   Asset.registerAnimationTemplate('redFieldDiglettHurt', 'assets/img/red-field/diglett_hurt', 24, 32, 1);
   Asset.registerAnimationTemplate('redFieldDugtrio', 'assets/img/red-field/dugtrio', 48, 64, 4);
