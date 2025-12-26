@@ -1,3 +1,8 @@
+const CAVE_DETECTOR_BLINK_RATE = 30;
+const CAVE_DETECTOR_BLINK_HALF_RATE = CAVE_DETECTOR_BLINK_RATE / 2;
+
+const CAVE_DETECTOR_BLINK_DURATION = 1500;
+
 class caveDetectorManager {
 
     constructor(onOpenCaveCallback) {
@@ -6,19 +11,39 @@ class caveDetectorManager {
         this.detectorV = new CaveDetector(261, 419, 3);
         this.detectorE = new CaveDetector(293, 419, 4);
         this.onOpenCaveCallback = onOpenCaveCallback;
+        this._onBlinkingAnimation = false;
+        this._timeOfStartBlink = -CAVE_DETECTOR_BLINK_DURATION;
     }
 
 
     update(ballSprite) {
-        this.detectorC.update(ballSprite);
-        this.detectorA.update(ballSprite);
-        this.detectorV.update(ballSprite);
-        this.detectorE.update(ballSprite);
+        if (this._onBlinkingAnimation) {
+            let blinkActive = frameCount % CAVE_DETECTOR_BLINK_RATE > CAVE_DETECTOR_BLINK_HALF_RATE;
+            this.detectorC.setActive(blinkActive);
+            this.detectorA.setActive(blinkActive);
+            this.detectorV.setActive(blinkActive);
+            this.detectorE.setActive(blinkActive);
+
+            if(this.isBlinkingAnimationTimeElapsed()) {
+                this._onBlinkingAnimation = false;
+                this.onOpenCaveCallback();
+            }
+        } else {
+            this.detectorC.update(ballSprite);
+            this.detectorA.update(ballSprite);
+            this.detectorV.update(ballSprite);
+            this.detectorE.update(ballSprite);
 
 
-        if (this.detectorC.active && this.detectorA.active && this.detectorV.active && this.detectorE.active) {
-            this.onOpenCaveCallback();
+            if (this.detectorC.active && this.detectorA.active && this.detectorV.active && this.detectorE.active) {
+                this._timeOfStartBlink = millis();
+                this._onBlinkingAnimation = true;
+            }
         }
+    }
+
+    isBlinkingAnimationTimeElapsed(){
+        return millis() - this._timeOfStartBlink >= CAVE_DETECTOR_BLINK_DURATION;
     }
 
     shiftLeft() {
@@ -37,7 +62,7 @@ class caveDetectorManager {
         this.detectorC.setActive(pivot);
     }
 
-    reset(){
+    reset() {
         this.detectorC.setActive(false);
         this.detectorA.setActive(false);
         this.detectorV.setActive(false);

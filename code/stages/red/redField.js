@@ -216,12 +216,12 @@ class RedField extends Field {
     }
 
     updateCave() {
-        if (this.state === PLAYING && this.caveActive) {
+        if (this.state === RED_FIELD_STATE.PLAYING && this.caveActive) {
             console.log("OPEN CAVE");
         }
     }
 
-    onOpenCaveManagerCallback = () => {
+    onOpenCaveCallback = () => {
         this.caveActive = true;
     }
 
@@ -484,9 +484,8 @@ class RedField extends Field {
         this.staryu.update(this.getBall().sprite);
 
         this.caveDetectorManager.update(this.getBall().sprite);
+        this.updateCave();
 
-        this.leftMultiplier.update(this.getBall().sprite);
-        this.rightMultiplier.update(this.getBall().sprite);
         this.multiplierManager.update(this.getBall().sprite);
 
         this.pikachuSaverManager.update(this.getBall());

@@ -17,8 +17,8 @@ class CaveDetector {
     }
 
     update(ballSprite) {
-        if (ballSprite.overlaps(this.sensor)) {
-            this.invert();
+        if (this.sensor.overlap(ballSprite)) {
+            this.setActive(true);
         }
     }
 
@@ -26,9 +26,9 @@ class CaveDetector {
         this.setActive(!this.active);
     }
 
-    setActive(active){
+    setActive(active) {
         this.active = active;
-                if (this.active) {
+        if (this.active) {
             this.sprite.ani.frame = this.frame;
         } else {
             this.sprite.ani.frame = 0;
