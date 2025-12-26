@@ -53,7 +53,7 @@ class RedField extends Field {
     rightFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceRight();
         this.pikachuSaverManager.doOnRightFlipper();
-        this.caveManager.shiftRight();
+        this.caveDetectorManager.shiftRight();
     }
 
     centerButtonCallback = () => {
@@ -90,7 +90,7 @@ class RedField extends Field {
     leftFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceLeft();
         this.pikachuSaverManager.doOnLeftFlipper();
-        this.caveManager.shiftLeft();
+        this.caveDetectorManager.shiftLeft();
     }
 
 
@@ -134,7 +134,8 @@ class RedField extends Field {
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
 
-        this.caveManager = new caveManager();
+        this.caveDetectorManager = new caveDetectorManager(this.onOpenCaveCallback);
+        this.caveActive = false;
 
         this.screen = new Screen(
             initialLandmark,
@@ -215,6 +216,15 @@ class RedField extends Field {
         Audio.playMusic('redField');
     }
 
+    updateCave(){
+        if(this.state === PLAYING && this.caveActive){
+            console.log("OPEN CAVE");
+        }
+    }
+
+    onOpenCaveManagerCallback = () => {
+        this.caveActive = true;
+    }
 
     onFullUpgradeAgainCallback = () => {
         this.status.addPoints(POINTS.BALL_FULLY_UPGRADED);
@@ -467,7 +477,7 @@ class RedField extends Field {
 
         this.staryu.update(this.getBall().sprite);
 
-        this.caveManager.update(this.getBall().sprite);
+        this.caveDetectorManager.update(this.getBall().sprite);
 
         this.leftMultiplier.update(this.getBall().sprite);
         this.rightMultiplier.update(this.getBall().sprite);
@@ -601,7 +611,7 @@ class RedField extends Field {
     createNewBallOrEndStage() {
         if (this.status.balls > 0) {
             this.status.startNewBall()
-            this.caveManager.reset();
+            this.caveDetectorManager.reset();
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.pikachuSaverManager.reset();

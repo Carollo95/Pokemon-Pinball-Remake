@@ -1,10 +1,11 @@
-class caveManager {
+class caveDetectorManager {
 
-    constructor() {
+    constructor(onOpenCaveCallback) {
         this.detectorC = new CaveDetector(27, 419, 1);
         this.detectorA = new CaveDetector(59, 419, 2);
         this.detectorV = new CaveDetector(261, 419, 3);
         this.detectorE = new CaveDetector(293, 419, 4);
+        this.onOpenCaveCallback = onOpenCaveCallback;
     }
 
 
@@ -16,7 +17,7 @@ class caveManager {
 
 
         if (this.detectorC.active && this.detectorA.active && this.detectorV.active && this.detectorE.active) {
-            console.log("CAVE ACTIVATED!");
+            this.onOpenCaveCallback();
         }
     }
 
