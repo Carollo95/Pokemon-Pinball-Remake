@@ -551,10 +551,6 @@ class RedField extends Field {
             this.closeWell();
             this.ditto.close(true);
             this.ditto.removeLauncherDoor();
-            this.leftTravelDiglett.reset();
-            this.rightTravelDiglett.reset();
-            this.pikachuSaverManager.reset();
-            this.status.startNewBall();
             this.setState(RED_FIELD_STATE.BALL_LOST);
             //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
             this.arrows.restart();
@@ -598,6 +594,10 @@ class RedField extends Field {
 
     createNewBallOrEndStage() {
         if (this.status.balls > 0) {
+            this.status.startNewBall()
+            this.leftTravelDiglett.reset();
+            this.rightTravelDiglett.reset();
+            this.pikachuSaverManager.reset();
             this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
             this.ditto.open();
             this.arrows.setCaptureArrowsLevel(2);
