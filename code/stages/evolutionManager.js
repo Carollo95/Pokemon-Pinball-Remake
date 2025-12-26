@@ -44,6 +44,8 @@ class EvolutionManager {
     }
 
     startEvolution(target) {
+        this.targetArrows.forEach(ta => ta.setActive(false));
+        
         this.targetPokemon = target;
         const pool = this.chooseTargetsForTheEvolutionPhase(this.targetArrows);
         for (let i = pool.length - 1; i > 0; i--) {
