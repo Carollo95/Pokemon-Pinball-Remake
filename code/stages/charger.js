@@ -70,11 +70,67 @@ class Charger {
             this.charge++;
             this.chargeIndicatorSprite.ani.frame = this.charge;
 
+            this.playAudioForChargeLevel();
             if (this.charge == 16) {
                 {
                     this.onFullChargeCallback();
+                    Audio.playSFX('sfx22');
                 }
             }
+        } else {
+            Audio.playSFX('sfx11');
+        }
+    }
+
+    playAudioForChargeLevel(){
+        switch (this.charge) {
+            case 1:
+                Audio.playSFX('sfx12');
+                break;
+            case 2:
+                Audio.playSFX('sfx13');
+                break;
+            case 3:
+                Audio.playSFX('sfx14');
+                break;
+            case 4:
+                Audio.playSFX('sfx15');
+                break;
+            case 5:
+                Audio.playSFX('sfx16');
+                break;
+            case 6:
+                Audio.playSFX('sfx17');
+                break;
+            case 7:
+                Audio.playSFX('sfx18');
+                break;
+            case 8:
+                Audio.playSFX('sfx19');
+                break;
+            case 9:
+                Audio.playSFX('sfx1A');
+                break;
+            case 10:
+                Audio.playSFX('sfx1B');
+                break;
+            case 11:
+                Audio.playSFX('sfx1C');
+                break;
+            case 12:
+                Audio.playSFX('sfx1D');
+                break;
+            case 13:
+                Audio.playSFX('sfx1E');
+                break;
+            case 14:
+                Audio.playSFX('sfx1F');
+                break;
+            case 15:
+                Audio.playSFX('sfx20');
+                break;
+            default:
+                break;
         }
     }
 
