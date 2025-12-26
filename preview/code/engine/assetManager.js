@@ -68,7 +68,7 @@ class AssetManager {
           if (anim.frames && Array.isArray(anim.frames)) anim.frames.length = 0;
           if (anim.spriteSheet) anim.spriteSheet = null;
         }
-      } catch {}
+      } catch { }
     }
     this.animTemplates.clear();
 
@@ -78,7 +78,7 @@ class AssetManager {
           img.canvas.width = 1;
           img.canvas.height = 1;
         }
-      } catch {}
+      } catch { }
     }
     this.imageCache.clear();
     this.backgrounds.clear();
@@ -130,7 +130,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('animMasterBall', 'assets/img/ball/master_ball', 32, 32, 8);
   Asset.registerAnimationTemplate('animMasterBallSmall', 'assets/img/ball/master_ball_small', 32, 32, 8);
   Asset.registerAnimationTemplate('animMasterBallSmall2', 'assets/img/ball/master_ball_small_2', 32, 32, 8);
-  
+
   Asset.registerAnimationTemplate('animLeftFlipperUp', 'assets/img/left_flipper_up', 48, 48, 1);
   Asset.registerAnimationTemplate('animLeftFlipperMiddle', 'assets/img/left_flipper_middle', 48, 48, 1);
   Asset.registerAnimationTemplate('animLeftFlipperDown', 'assets/img/left_flipper_down', 48, 48, 1);
@@ -258,12 +258,15 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('pikachuSaverIdle', 'assets/img/field/pikachu_idle', 32, 32, 2);
   Asset.registerAnimationTemplate('pikachuSaverHurt', 'assets/img/field/pikachu_hurt', 32, 32, 1);
-  Asset.registerAnimationTemplate('pikachuSaverLightning', 'assets/img/field/pikachu_lightning', 32, 48, 23,9);
+  Asset.registerAnimationTemplate('pikachuSaverLightning', 'assets/img/field/pikachu_lightning', 32, 48, 23, 9);
 
   Asset.registerAnimationTemplate('redFieldDittoOpen', 'assets/img/red-field/ditto-open', 53, 106, 1);
   Asset.registerAnimationTemplate('redFieldDittoClosed', 'assets/img/red-field/ditto-closed', 78, 140, 1);
   Asset.registerAnimationTemplate('redFieldDittoFullyOpen', 'assets/img/red-field/ditto-fully-open', 16, 44, 1);
   Asset.registerAnimationTemplate('redFieldOuterLoopDoor', 'assets/img/red-field/outer_loop_door', 104, 104, 1);
+
+  Asset.registerAnimationTemplate('redFieldPaddle', 'assets/img/red-field/paddle', 28, 16, 6);
+  Asset.registerAnimationTemplate('redFieldChargeIndicator', 'assets/img/red-field/charge_indicator', 36, 40, 17);
 
   Asset.registerAnimationTemplate('redFieldDiglettIdle', 'assets/img/red-field/diglett_idle', 24, 32, 2);
   Asset.registerAnimationTemplate('redFieldDiglettHurt', 'assets/img/red-field/diglett_hurt', 24, 32, 1);
@@ -313,12 +316,12 @@ function pad3(num) {
 
 if (typeof window !== 'undefined') {
   if (window.__ASSET_SINGLETON__ && window.__ASSET_SINGLETON__ !== Asset) {
-    try { window.__ASSET_SINGLETON__.dispose(); } catch {}
+    try { window.__ASSET_SINGLETON__.dispose(); } catch { }
   }
   window.__ASSET_SINGLETON__ = Asset;
 
   window.addEventListener('pagehide', () => {
-    try { Asset.dispose(); } catch {}
+    try { Asset.dispose(); } catch { }
   }, { once: true });
 }
 

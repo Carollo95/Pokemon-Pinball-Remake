@@ -313,24 +313,24 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //red field Voltorb Bumper hit
     promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //red field Travel Diglett hit
     promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10')); //Pikachu lighting
-    promises.push(audio.registerSFX('sfx11', 'assets/audio/sfx/SFX-11'));
-    promises.push(audio.registerSFX('sfx12', 'assets/audio/sfx/SFX-12'));
-    promises.push(audio.registerSFX('sfx13', 'assets/audio/sfx/SFX-13'));
-    promises.push(audio.registerSFX('sfx14', 'assets/audio/sfx/SFX-14'));
-    promises.push(audio.registerSFX('sfx15', 'assets/audio/sfx/SFX-15'));
-    promises.push(audio.registerSFX('sfx16', 'assets/audio/sfx/SFX-16'));
-    promises.push(audio.registerSFX('sfx17', 'assets/audio/sfx/SFX-17'));
-    promises.push(audio.registerSFX('sfx18', 'assets/audio/sfx/SFX-18'));
-    promises.push(audio.registerSFX('sfx19', 'assets/audio/sfx/SFX-19'));
-    promises.push(audio.registerSFX('sfx1A', 'assets/audio/sfx/SFX-1A'));
-    promises.push(audio.registerSFX('sfx1B', 'assets/audio/sfx/SFX-1B'));
-    promises.push(audio.registerSFX('sfx1C', 'assets/audio/sfx/SFX-1C'));
-    promises.push(audio.registerSFX('sfx1D', 'assets/audio/sfx/SFX-1D'));
-    promises.push(audio.registerSFX('sfx1E', 'assets/audio/sfx/SFX-1E'));
-    promises.push(audio.registerSFX('sfx1F', 'assets/audio/sfx/SFX-1F'));
-    promises.push(audio.registerSFX('sfx20', 'assets/audio/sfx/SFX-20'));
+    promises.push(audio.registerSFX('sfx11', 'assets/audio/sfx/SFX-11')); //Spinner charge 16
+    promises.push(audio.registerSFX('sfx12', 'assets/audio/sfx/SFX-12')); //Spinner charge 1
+    promises.push(audio.registerSFX('sfx13', 'assets/audio/sfx/SFX-13')); //Spinner charge 2
+    promises.push(audio.registerSFX('sfx14', 'assets/audio/sfx/SFX-14')); //Spinner charge 3
+    promises.push(audio.registerSFX('sfx15', 'assets/audio/sfx/SFX-15')); //Spinner charge 4
+    promises.push(audio.registerSFX('sfx16', 'assets/audio/sfx/SFX-16')); //Spinner charge 5
+    promises.push(audio.registerSFX('sfx17', 'assets/audio/sfx/SFX-17')); //Spinner charge 6
+    promises.push(audio.registerSFX('sfx18', 'assets/audio/sfx/SFX-18')); //Spinner charge 7
+    promises.push(audio.registerSFX('sfx19', 'assets/audio/sfx/SFX-19')); //Spinner charge 8
+    promises.push(audio.registerSFX('sfx1A', 'assets/audio/sfx/SFX-1A')); //Spinner charge 9
+    promises.push(audio.registerSFX('sfx1B', 'assets/audio/sfx/SFX-1B')); //Spinner charge 10
+    promises.push(audio.registerSFX('sfx1C', 'assets/audio/sfx/SFX-1C')); //Spinner charge 11
+    promises.push(audio.registerSFX('sfx1D', 'assets/audio/sfx/SFX-1D')); //Spinner charge 12
+    promises.push(audio.registerSFX('sfx1E', 'assets/audio/sfx/SFX-1E')); //Spinner charge 13
+    promises.push(audio.registerSFX('sfx1F', 'assets/audio/sfx/SFX-1F')); //Spinner charge 14
+    promises.push(audio.registerSFX('sfx20', 'assets/audio/sfx/SFX-20')); //Spinner charge 15
     promises.push(audio.registerSFX('sfx21', 'assets/audio/sfx/SFX-21')); //Well capture ball
-    promises.push(audio.registerSFX('sfx22', 'assets/audio/sfx/SFX-22'));
+    promises.push(audio.registerSFX('sfx22', 'assets/audio/sfx/SFX-22')); //Spinner got full
     promises.push(audio.registerSFX('sfx23', 'assets/audio/sfx/SFX-23')); //Go to bonus stage TODO
     promises.push(audio.registerSFX('sfx24', 'assets/audio/sfx/SFX-24')); //Field ball loss
     promises.push(audio.registerSFX('sfx25', 'assets/audio/sfx/SFX-25')); //Field map travel complete

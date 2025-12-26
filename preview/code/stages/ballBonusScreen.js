@@ -100,7 +100,7 @@ class BallBonusScreen {
 
     createBonusLine() {
         let bonus = 0;
-
+        
         switch (this.state) {
             case BONUS_BALL_SCREEN_LINES.POKEMON_CAUGHT:
                 bonus = this.status.getBonusForCaughtPokemonOnBall();

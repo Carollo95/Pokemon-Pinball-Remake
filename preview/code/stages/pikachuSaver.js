@@ -5,7 +5,7 @@ const PIKACHU_ANIMATION_LENGTH = 3200;
 
 class PikachuSaver {
 
-    constructor() {
+    constructor(dischargeCallback) {
         this.sprite = new Sprite(PIKACHU_LEFT_POSITION_X, 506, 32, 32, 'none');
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
@@ -25,6 +25,7 @@ class PikachuSaver {
         this.lightningSprite.layer = OVER_BALL_LAYER;
         this.lightningSprite.addAnimation('lightning', Asset.getAnimation('pikachuSaverLightning'));
         this.lightningSprite.visible = false;
+        this.dischargeCallback = dischargeCallback;
     }
 
     update(ball) {
@@ -40,11 +41,12 @@ class PikachuSaver {
                 this.lightningSprite.visible = false;
                 if (!this.superCharged) {
                     this.charged = false;
+                    this.dischargeCallback();
                 }
                 ball.launchFromGutter();
                 this.sprite.changeAnimation('idle');
             } else if (this.isCharged()) {
-                Audio.playSFXsequence(["sfx4E","sfx10"])
+                Audio.playSFXsequence(["sfx4E", "sfx10"])
                 ball.stop();
                 this.animationStart = millis();
                 this.lightningSprite.ani.frame = 0;
@@ -82,18 +84,22 @@ class PikachuSaver {
         this.superCharged = true;
     }
 
-    fullyDischarge(){
+    fullyDischarge() {
         this.charged = false;
         this.superCharged = false;
     }
 
     moveLeft() {
-        this.sprite.pos.x = PIKACHU_LEFT_POSITION_X;
-        this.lightningSprite.pos.x = PIKACHU_LEFT_POSITION_X;
+        if (!this.inAnimation) {
+            this.sprite.pos.x = PIKACHU_LEFT_POSITION_X;
+            this.lightningSprite.pos.x = PIKACHU_LEFT_POSITION_X;
+        }
     }
 
     moveRight() {
-        this.sprite.pos.x = PIKACHU_RIGHT_POSITION_X;
-        this.lightningSprite.pos.x = PIKACHU_RIGHT_POSITION_X;
+        if (!this.inAnimation) {
+            this.sprite.pos.x = PIKACHU_RIGHT_POSITION_X;
+            this.lightningSprite.pos.x = PIKACHU_RIGHT_POSITION_X;
+        }
     }
 }
