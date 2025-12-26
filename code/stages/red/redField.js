@@ -53,6 +53,7 @@ class RedField extends Field {
     rightFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceRight();
         this.pikachuSaverManager.doOnRightFlipper();
+        this.caveManager.shiftRight();
     }
 
     centerButtonCallback = () => {
@@ -89,6 +90,7 @@ class RedField extends Field {
     leftFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceLeft();
         this.pikachuSaverManager.doOnLeftFlipper();
+        this.caveManager.shiftLeft();
     }
 
 
@@ -131,6 +133,8 @@ class RedField extends Field {
         this.speedPad.push(new SpeedPad(265, 293));
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
+
+        this.caveManager = new caveManager();
 
         this.screen = new Screen(
             initialLandmark,
@@ -463,6 +467,8 @@ class RedField extends Field {
 
         this.staryu.update(this.getBall().sprite);
 
+        this.caveManager.update(this.getBall().sprite);
+
         this.leftMultiplier.update(this.getBall().sprite);
         this.rightMultiplier.update(this.getBall().sprite);
 
@@ -595,6 +601,7 @@ class RedField extends Field {
     createNewBallOrEndStage() {
         if (this.status.balls > 0) {
             this.status.startNewBall()
+            this.caveManager.reset();
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.pikachuSaverManager.reset();
