@@ -43,7 +43,7 @@ const CheatEngine = {
 
     flipCaptureTile() {
         if ((stage instanceof RedField)) {
-            if (stage.state === RED_FIELD_STATUS.CAPTURE && stage.screen.screenCapture.hideSprite.hideLevel < 6) {
+            if (stage.state === RED_FIELD_STATE.CAPTURE && stage.screen.screenCapture.hideSprite.hideLevel < 6) {
                 stage.screen.screenCapture.flipCapture();
             }
         }
@@ -51,7 +51,7 @@ const CheatEngine = {
 
     hitCapture() {
         if ((stage instanceof RedField)) {
-            if (stage.state === RED_FIELD_STATUS.CAPTURE && stage.screen.screenCapture.animatedPokemon.visible) {
+            if (stage.state === RED_FIELD_STATE.CAPTURE && stage.screen.screenCapture.animatedPokemon.visible) {
                 stage.screen.screenCapture.onPokemonSpriteHit(stage.getBall());
             }
         }
