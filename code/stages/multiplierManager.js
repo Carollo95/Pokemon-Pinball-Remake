@@ -8,7 +8,8 @@ const MULTIPLIER_ANIMATION_DURATION_MS = 3000;
 
 class MultiplierManager {
 
-    constructor(onLeftMultiplierHitCallback, onRightMultiplierHitCallback, onMultiplierUpgradeCallback) {
+    constructor(status, onLeftMultiplierHitCallback, onRightMultiplierHitCallback, onMultiplierUpgradeCallback) {
+        this.status = status;
         this.onLeftMultiplierHitCallback = onLeftMultiplierHitCallback;
         this.onRightMultiplierHitCallback = onRightMultiplierHitCallback;
         this.onMultiplierUpgradeCallback = onMultiplierUpgradeCallback;
@@ -48,6 +49,8 @@ class MultiplierManager {
             this.state = MULTIPLIER_STATE.RIGHT_BLINK;
             this.leftMultiplier.turnOff();
             this.rightMultiplier.blink();
+
+            this.status.addPoints(POINTS.RED_FIELD_LEFT_MULTIPLIER_HIT);
         }
     }
 
@@ -59,6 +62,8 @@ class MultiplierManager {
             this.leftMultiplier.blink();
             this.rightMultiplier.blink();
             this.upgradeMultiplier();
+
+            this.status.addPoints(POINTS.RED_FIELD_RIGHT_MULTIPLIER_HIT);
         }
     }
 

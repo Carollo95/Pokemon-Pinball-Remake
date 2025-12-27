@@ -171,7 +171,7 @@ class RedField extends Field {
 
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
-        this.multiplierManager = new MultiplierManager(this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback, this.onMultiplierUpgradeCallback);
+        this.multiplierManager = new MultiplierManager(this.status, this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback, this.onMultiplierUpgradeCallback);
 
         this.arrows = new RedFieldArrows();
         if (arrowsState != undefined) {
