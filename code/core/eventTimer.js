@@ -1,4 +1,4 @@
-class CooldownTimer{
+class EventTimer{
 
     constructor(cooldownTime){
         this.cooldownTime = cooldownTime;
@@ -9,7 +9,7 @@ class CooldownTimer{
         this.lastActivationTime = millis();
     }
 
-    hasCooldownElapsed(){
+    hasElapsed(){
         return millis() - this.lastActivationTime >= this.cooldownTime;
     }
 

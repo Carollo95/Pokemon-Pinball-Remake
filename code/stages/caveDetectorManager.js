@@ -12,7 +12,7 @@ class caveDetectorManager {
         this.detectorE = new CaveDetector(293, 419, 4);
         this.onOpenCaveCallback = onOpenCaveCallback;
         this._onBlinkingAnimation = false;
-        this.blinkCooldown = new CooldownTimer(CAVE_DETECTOR_BLINK_DURATION);
+        this.blinkCooldown = new EventTimer(CAVE_DETECTOR_BLINK_DURATION);
     }
 
 
@@ -24,7 +24,7 @@ class caveDetectorManager {
             this.detectorV.setActive(blinkActive);
             this.detectorE.setActive(blinkActive);
 
-            if(this.blinkCooldown.hasCooldownElapsed()) {
+            if(this.blinkCooldown.hasElapsed()) {
                 this._onBlinkingAnimation = false;
                 this.onOpenCaveCallback();
             }
