@@ -12,7 +12,7 @@ class caveDetectorManager {
         this.detectorE = new CaveDetector(293, 419, 4);
         this.onOpenCaveCallback = onOpenCaveCallback;
         this._onBlinkingAnimation = false;
-        this._timeOfStartBlink = -CAVE_DETECTOR_BLINK_DURATION;
+        this.blinkCooldown = new CooldownTimer(CAVE_DETECTOR_BLINK_DURATION);
     }
 
 
@@ -24,7 +24,7 @@ class caveDetectorManager {
             this.detectorV.setActive(blinkActive);
             this.detectorE.setActive(blinkActive);
 
-            if(this.isBlinkingAnimationTimeElapsed()) {
+            if(this.blinkCooldown.hasCooldownElapsed()) {
                 this._onBlinkingAnimation = false;
                 this.onOpenCaveCallback();
             }
@@ -36,15 +36,12 @@ class caveDetectorManager {
 
 
             if (this.detectorC.active && this.detectorA.active && this.detectorV.active && this.detectorE.active) {
-                this._timeOfStartBlink = millis();
+                this.blinkCooldown.restart();
                 this._onBlinkingAnimation = true;
             }
         }
     }
 
-    isBlinkingAnimationTimeElapsed(){
-        return millis() - this._timeOfStartBlink >= CAVE_DETECTOR_BLINK_DURATION;
-    }
 
     shiftLeft() {
         let pivot = this.detectorC.active;
