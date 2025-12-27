@@ -179,7 +179,6 @@ class Screen {
         }
     }
 
-
     goToBonusScreen(bonus) {
         this.screenImage.setBonus(bonus);
         this.setState(SCREEN_STATE.IMAGE);
@@ -187,6 +186,11 @@ class Screen {
 
     setTravelDirection(direction) {
         this.screenImage.setTravelDirection(direction);
+        this.setState(SCREEN_STATE.IMAGE);
+    }
+
+    showCaveStart(){
+        this.screenImage.setSlotCave();
         this.setState(SCREEN_STATE.IMAGE);
     }
 

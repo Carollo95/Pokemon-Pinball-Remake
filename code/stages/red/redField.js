@@ -217,8 +217,19 @@ class RedField extends Field {
 
     updateCave() {
         if (this.state === RED_FIELD_STATE.PLAYING && this.caveActive) {
-            console.log("OPEN CAVE");
+            this.screen.showCaveStart();
+            this.well.open(this.onCaveEnterCallback);;
         }
+    }
+
+    onCaveEnterCallback = () => {
+        this.caveActive = false;
+        console.log("Start spinning");
+    }
+
+    interruptCave(){
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        this.well.close();
     }
 
     onOpenCaveCallback = () => {
@@ -429,6 +440,7 @@ class RedField extends Field {
     }
 
     startCaptureSequence() {
+        this.interruptCave();
         this.interruptTravel();
         //TODO close ditto here and on travel if its the case and then open it again
         this.setState(RED_FIELD_STATE.CAPTURE);
@@ -569,7 +581,10 @@ class RedField extends Field {
             } else if (this.isTravelState()) {
                 this.interruptTravel();
             }
+            this.interruptCave();
+            this.caveActive = false;
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            //TODO probably not needed since it is closed on interrupt cave
             this.closeWell();
             this.ditto.close(true);
             this.ditto.removeLauncherDoor();
@@ -650,6 +665,7 @@ class RedField extends Field {
 
     onTravelToLeft() {
         if (this.state === RED_FIELD_STATE.PLAYING) {
+            this.interruptCave();
             //TODO close ditto if open and then open it again if it was closed
             this.setState(RED_FIELD_STATE.TRAVEL_LEFT);
             this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
@@ -661,6 +677,7 @@ class RedField extends Field {
 
     onTravelToRight() {
         if (this.state === RED_FIELD_STATE.PLAYING) {
+            this.interruptCave();
             this.setState(RED_FIELD_STATE.TRAVEL_RIGHT);
             this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
             this.arrows.setTravel(TRAVEL_DIRECTION.RIGHT);
@@ -708,6 +725,7 @@ class RedField extends Field {
 
 
     startEvolutionSequence(pokemon) {
+        this.interruptCave();
         this.setState(RED_FIELD_STATE.EVOLUTION);
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_EVOLUTION_TIMER_MS, this.doOnEvolutionTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("start_training"));
