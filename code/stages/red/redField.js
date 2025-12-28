@@ -224,7 +224,7 @@ class RedField extends Field {
 
     onCaveEnterCallback = () => {
         this.caveActive = false;
-        console.log("Start spinning");
+        this.screen.startSlotMachine();
     }
 
     interruptCave(){

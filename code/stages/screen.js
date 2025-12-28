@@ -1,7 +1,8 @@
 const SCREEN_STATE = {
     LANDSCAPE: "landscape",
     CAPTURE_EVOLUTION: "capture",
-    IMAGE: "image"
+    IMAGE: "image",
+    SLOT: "slot",
 }
 
 const BLINK_TIME_OF_LAST_BALL = 1000;
@@ -61,6 +62,8 @@ class Screen {
 
         this.onThreeBallsCallback = onThreeBallsCallback;
 
+        this.screenSlot = new ScreenSlot();
+
         this.setState(SCREEN_STATE.LANDSCAPE);
     }
 
@@ -72,6 +75,8 @@ class Screen {
             this.blinkLastCaptureBallIfNeeded();
         } else if (this.state === SCREEN_STATE.CAPTURE_EVOLUTION) {
             this.screenCapture.update(ballSprite);
+        } else if( this.state === SCREEN_STATE.SLOT){
+            this.screenSlot.update(ballSprite);
         }
 
     }
@@ -96,18 +101,28 @@ class Screen {
         this.state = state;
         if (state === SCREEN_STATE.LANDSCAPE) {
             this.screenLandscapes.show(true);
-            this.screenCapture.show(false)
+            this.screenCapture.show(false);
+            this.screenSlot.show(false);
             this.screenImage.show(false);
             this.updateBallSpritesVisibility();
             this.evolutionSprite.visible = false;
         } else if (state === SCREEN_STATE.CAPTURE_EVOLUTION) {
             this.screenCapture.show(true);
             this.screenLandscapes.show(false);
+            this.screenSlot.show(false);
             this.screenImage.show(false);
             this.ballSprites.forEach(sprite => sprite.visible = false);
         } else if (state === SCREEN_STATE.IMAGE) {
             this.screenImage.show(true);
             this.screenLandscapes.show(false);
+            this.screenSlot.show(false);
+            this.screenCapture.show(false);
+            this.updateBallSpritesVisibility();
+            this.evolutionSprite.visible = false;
+        } else if (state === SCREEN_STATE.SLOT){
+            this.screenImage.show(false);
+            this.screenLandscapes.show(false);
+            this.screenSlot.show(true);
             this.screenCapture.show(false);
             this.updateBallSpritesVisibility();
             this.evolutionSprite.visible = false;
@@ -192,6 +207,10 @@ class Screen {
     showCaveStart(){
         this.screenImage.setSlotCave();
         this.setState(SCREEN_STATE.IMAGE);
+    }
+
+    startSlotMachine(){
+        this.setState(SCREEN_STATE.SLOT);
     }
 
 }
