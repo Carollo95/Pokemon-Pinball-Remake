@@ -211,6 +211,7 @@ class Screen {
 
     startSlotMachine(){
         this.setState(SCREEN_STATE.SLOT);
+        this.screenSlot.startSlotMachine();
     }
 
 }
