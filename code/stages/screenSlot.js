@@ -1,3 +1,7 @@
+const SLOT_TIME_PER_SPIN_FRAME = 300;
+const SLOT_TIME_SLOW_DOWN_FRAME_RATE = 50;
+const SLOT_SLOW_DOWN_MAX = 2000;
+
 const SLOT_STATES = {
     SMALL: 0,
     BIG: 1,
@@ -26,10 +30,12 @@ class ScreenSlot {
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.addAnimation("slotsBW", Asset.getAnimation('slotsBW'));
         this.sprite.ani.playing = false;
-        
-        this.spinTimer = new EventTimer(500);
+
+        this.spinTimer = new EventTimer(SLOT_TIME_PER_SPIN_FRAME);
         this.index = 0;
+        this.spinning = true;
         this.validIndexes = [];
+        this.slowDown = false;
 
     }
 
@@ -38,17 +44,34 @@ class ScreenSlot {
     }
 
     update(ballSprite) {
-        if (this.spinTimer.hasElapsed()) {
+        if (this.spinning && this.spinTimer.hasElapsed()) {
             this.index = (this.index + 1) % this.validIndexes.length;
             this.sprite.ani.frame = this.index;
             this.spinTimer.restart();
+
+            if (this.slowDown) {
+                this.spinTimer.addToInterval(SLOT_TIME_SLOW_DOWN_FRAME_RATE);
+
+                if (this.spinTimer.timeAdded >= SLOT_SLOW_DOWN_MAX) {
+                    this.spinning = false;
+                }
+            }
+        }else{
+         //TODO flash in color   
         }
+    }
+
+    startSlowingDown() {
+        this.slowDown = true;
     }
 
     startSlotMachine() {
         this.sprite.changeAnimation("slotsBW");
+        this.slowDown = false;
         this.validIndexes = this.selectValidSlots();
+        this.spinning = true;
         this.spinTimer.restart();
+        this.spinTimer.restartTimeAdded();
     }
 
     selectValidSlots() {

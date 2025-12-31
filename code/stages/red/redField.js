@@ -54,6 +54,7 @@ class RedField extends Field {
         this.ballUpgraderManager.displaceRight();
         this.pikachuSaverManager.doOnRightFlipper();
         this.caveDetectorManager.shiftRight();
+        this.screen.slowDownSlotMachine();
     }
 
     centerButtonCallback = () => {

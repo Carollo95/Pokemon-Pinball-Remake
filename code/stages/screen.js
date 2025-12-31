@@ -75,7 +75,7 @@ class Screen {
             this.blinkLastCaptureBallIfNeeded();
         } else if (this.state === SCREEN_STATE.CAPTURE_EVOLUTION) {
             this.screenCapture.update(ballSprite);
-        } else if( this.state === SCREEN_STATE.SLOT){
+        } else if (this.state === SCREEN_STATE.SLOT) {
             this.screenSlot.update(ballSprite);
         }
 
@@ -119,7 +119,7 @@ class Screen {
             this.screenCapture.show(false);
             this.updateBallSpritesVisibility();
             this.evolutionSprite.visible = false;
-        } else if (state === SCREEN_STATE.SLOT){
+        } else if (state === SCREEN_STATE.SLOT) {
             this.screenImage.show(false);
             this.screenLandscapes.show(false);
             this.screenSlot.show(true);
@@ -204,14 +204,20 @@ class Screen {
         this.setState(SCREEN_STATE.IMAGE);
     }
 
-    showCaveStart(){
+    showCaveStart() {
         this.screenImage.setSlotCave();
         this.setState(SCREEN_STATE.IMAGE);
     }
 
-    startSlotMachine(){
+    startSlotMachine() {
         this.setState(SCREEN_STATE.SLOT);
         this.screenSlot.startSlotMachine();
+    }
+
+    slowDownSlotMachine() {
+        if (this.state === SCREEN_STATE.SLOT) {
+            this.screenSlot.startSlowingDown();
+        }
     }
 
 }
