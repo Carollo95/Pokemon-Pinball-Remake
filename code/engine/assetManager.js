@@ -302,7 +302,7 @@ function preloadAnimations() {
   
   Asset.registerAnimationTemplate('slotCave', 'assets/img/slot-machine/slot_cave', 96, 64, 1);
   Asset.registerAnimationTemplate('slotsBW', 'assets/img/slot-machine/slots_bw', 96, 64, 18);
-  for(let i=1; i<=18; i++){
+  for(let i=0; i<18; i++){
     Asset.registerAnimationTemplate('slots'+i, 'assets/img/slot-machine/slots_'+i, 96, 64, 2);
   }
 

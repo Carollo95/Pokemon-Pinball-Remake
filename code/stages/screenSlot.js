@@ -28,7 +28,7 @@ class ScreenSlot {
         this.sprite = new Sprite(160, 364, 96, 64, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
-        for (let i = 1; i <= 18; i++) {
+        for (let i = 0; i < 18; i++) {
             this.sprite.addAnimation("slots" + i, Asset.getAnimation('slots' + i));
         }
         this.sprite.addAnimation("slotsBW", Asset.getAnimation('slotsBW'));
@@ -57,7 +57,7 @@ class ScreenSlot {
 
                 if (this.spinTimer.timeAdded >= SLOT_SLOW_DOWN_MAX) {
                     this.spinning = false;
-                    this.sprite.changeAni("slots" + this.sprite.ani.frame);
+                    this.sprite.changeAni("slots" + (this.sprite.ani.frame));
                 }
             }
         }
