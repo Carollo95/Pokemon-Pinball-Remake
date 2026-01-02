@@ -23,6 +23,11 @@ const SLOT_STATES = {
     GO_TO_BONUS_MEWTWO: 17
 }
 
+const SLOT_STATUS = {
+    SPINNING: 0,
+    STOPPED: 1
+}
+
 class ScreenSlot {
     constructor() {
         this.sprite = new Sprite(160, 364, 96, 64, "none");
@@ -31,14 +36,20 @@ class ScreenSlot {
         for (let i = 0; i < 18; i++) {
             this.sprite.addAnimation("slots" + i, Asset.getAnimation('slots' + i));
         }
+        for (let i = 1; i <= 5; i++) {
+            this.sprite.addAnimation("multi" + i, Asset.getAnimation('multi' + i));
+        }
         this.sprite.addAnimation("slotsBW", Asset.getAnimation('slotsBW'));
         this.sprite.ani.playing = false;
 
         this.spinTimer = new EventTimer(SLOT_TIME_PER_SPIN_FRAME);
+        this.slotPhaseTimer = new EventTimer(1000);
+        this.slotRewardTimer = new EventTimer(2000);
         this.index = 0;
-        this.spinning = true;
         this.validIndexes = [];
         this.slowDown = false;
+
+        this.status = SLOT_STATUS.STOPPED;
 
     }
 
@@ -47,19 +58,39 @@ class ScreenSlot {
     }
 
     update(ballSprite) {
-        if (this.spinning && this.spinTimer.hasElapsed()) {
+        if (this.status === SLOT_STATUS.SPINNING && this.spinTimer.hasElapsed()) {
             this.index = (this.index + 1) % this.validIndexes.length;
-            this.sprite.ani.frame = this.index;
+            let pos = this.validIndexes[this.index];
+            this.sprite.ani.frame = pos;
             this.spinTimer.restart();
 
             if (this.slowDown) {
                 this.spinTimer.addToInterval(SLOT_TIME_SLOW_DOWN_FRAME_RATE);
 
                 if (this.spinTimer.timeAdded >= SLOT_SLOW_DOWN_MAX) {
-                    this.spinning = false;
-                    this.sprite.changeAni("slots" + (this.sprite.ani.frame));
+                    this.status = SLOT_STATUS.STOPPED;
+                    this.slotPhaseTimer.restart();
+                    this.slotRewardTimer.restart();
+                    this.sprite.changeAni("slots" + (pos));
                 }
             }
+        } else if (this.status === SLOT_STATUS.STOPPED) {
+            let pos = this.validIndexes[this.index];
+            if (this.stoppedHasSecondPhase(pos) && this.slotPhaseTimer.hasElapsed()) {
+                this.changePhase(pos);
+            } else if (this.slotRewardTimer.hasElapsed()) {
+
+            }
+        }
+    }
+
+    callAction(actionNuber) {
+        switch (actionNuber) {
+            case SLOT_STATES.SMALL:
+                smallAction();
+                break;
+            default:
+                break;
         }
     }
 
@@ -71,14 +102,36 @@ class ScreenSlot {
         this.sprite.changeAnimation("slotsBW");
         this.slowDown = false;
         this.validIndexes = this.selectValidSlots();
-        this.spinning = true;
+        this.status = SLOT_STATUS.SPINNING;
         this.spinTimer.restart();
         this.spinTimer.restartTimeAdded();
     }
 
     selectValidSlots() {
         //TODO add some logic here
-        return [0, 3, 8];
+        return [SLOT_STATES.BONUS_MULTIPLIER];
+    }
+
+    smallAction() {
+
+    }
+
+    stoppedHasSecondPhase(slot) {
+        return slot === SLOT_STATES.SMALL || slot === SLOT_STATES.BIG || slot === SLOT_STATES.BONUS_MULTIPLIER;
+    }
+
+    changePhase(slot) {
+        switch (slot) {
+            case SLOT_STATES.SMALL:
+                break;
+            case SLOT_STATES.BIG:
+                break;
+            case SLOT_STATES.BONUS_MULTIPLIER:
+                this.sprite.changeAni("multi2");//TODO set random
+                break;
+            default:
+                break;
+        }
     }
 
 }

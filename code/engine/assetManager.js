@@ -305,6 +305,9 @@ function preloadAnimations() {
   for(let i=0; i<18; i++){
     Asset.registerAnimationTemplate('slots'+i, 'assets/img/slot-machine/slots_'+i, 96, 64, 2);
   }
+  for(let i=1; i<=5; i++){
+    Asset.registerAnimationTemplate('multi'+i, 'assets/img/slot-machine/multi_'+i, 96, 64, 2);
+  }
 
   Asset.registerAnimationTemplate('openWell', 'assets/img/field/open_well', 30, 30, 1);
   Asset.registerAnimationTemplate('closedWell', 'assets/img/field/closed_well', 30, 30, 1);
