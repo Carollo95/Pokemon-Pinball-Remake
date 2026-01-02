@@ -1,6 +1,6 @@
 const SLOT_TIME_PER_SPIN_FRAME = 300;
-const SLOT_TIME_SLOW_DOWN_FRAME_RATE = 50;
-const SLOT_SLOW_DOWN_MAX = 2000;
+const SLOT_TIME_SLOW_DOWN_FRAME_RATE = 200;
+const SLOT_SLOW_DOWN_MAX = 1000;
 
 const SLOT_STATES = {
     SMALL: 0,
@@ -28,6 +28,9 @@ class ScreenSlot {
         this.sprite = new Sprite(160, 364, 96, 64, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
+        for (let i = 1; i <= 18; i++) {
+            this.sprite.addAnimation("slots" + i, Asset.getAnimation('slots' + i));
+        }
         this.sprite.addAnimation("slotsBW", Asset.getAnimation('slotsBW'));
         this.sprite.ani.playing = false;
 
@@ -54,10 +57,9 @@ class ScreenSlot {
 
                 if (this.spinTimer.timeAdded >= SLOT_SLOW_DOWN_MAX) {
                     this.spinning = false;
+                    this.sprite.changeAni("slots" + this.sprite.ani.frame);
                 }
             }
-        }else{
-         //TODO flash in color   
         }
     }
 
