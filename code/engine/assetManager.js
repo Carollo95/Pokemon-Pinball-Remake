@@ -310,6 +310,7 @@ function preloadAnimations() {
   }
   for(let i=1; i<=9; i++){
     Asset.registerAnimationTemplate('big'+i, 'assets/img/slot-machine/big_'+i, 96, 64, 2);
+    Asset.registerAnimationTemplate('small'+i, 'assets/img/slot-machine/small_'+i, 96, 64, 2);
   }
 
   Asset.registerAnimationTemplate('openWell', 'assets/img/field/open_well', 30, 30, 1);

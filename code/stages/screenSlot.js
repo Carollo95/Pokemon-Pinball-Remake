@@ -40,6 +40,7 @@ class ScreenSlot {
             this.sprite.addAnimation("multi" + i, Asset.getAnimation('multi' + i));
         }
         for (let i = 1; i <= 9; i++) {
+            this.sprite.addAnimation("small" + i, Asset.getAnimation('small' + i))
             this.sprite.addAnimation("big" + i, Asset.getAnimation('big' + i));
         }
         this.sprite.addAnimation("slotsBW", Asset.getAnimation('slotsBW'));
@@ -126,6 +127,7 @@ class ScreenSlot {
     changePhase(slot) {
         switch (slot) {
             case SLOT_STATES.SMALL:
+                this.sprite.changeAni("small3");//TODO set random
                 break;
             case SLOT_STATES.BIG:
                 this.sprite.changeAni("big5");//TODO set random
