@@ -15,7 +15,8 @@ class Screen {
         captureStartAnimatedSpritePhaseCallback,
         captureCompleteAnimationStartedCallback,
         capturePhaseFinishedCallback,
-        captureOnPokemonAnimatedHitCallback
+        captureOnPokemonAnimatedHitCallback,
+        slotCallback
     ) {
         this.screenLandscapes = new ScreenLandscapes();
         if (initialLandmark === undefined || initialLandmark === null) {
@@ -62,7 +63,7 @@ class Screen {
 
         this.onThreeBallsCallback = onThreeBallsCallback;
 
-        this.screenSlot = new ScreenSlot();
+        this.screenSlot = new ScreenSlot(slotCallback);
 
         this.setState(SCREEN_STATE.LANDSCAPE);
     }

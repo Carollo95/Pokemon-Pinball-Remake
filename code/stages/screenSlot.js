@@ -2,6 +2,9 @@ const SLOT_TIME_PER_SPIN_FRAME = 300;
 const SLOT_TIME_SLOW_DOWN_FRAME_RATE = 200;
 const SLOT_SLOW_DOWN_MAX = 1000;
 
+const SLOT_REWARD_TIME = 4000;
+const SLOT_PHASE_TIME = SLOT_REWARD_TIME / 2
+
 const SLOT_STATES = {
     SMALL: 0,
     BIG: 1,
@@ -29,7 +32,8 @@ const SLOT_STATUS = {
 }
 
 class ScreenSlot {
-    constructor() {
+    constructor(slotFinishCallback) {
+        this.slotFinishCallback = slotFinishCallback;
         this.sprite = new Sprite(160, 364, 96, 64, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
@@ -47,9 +51,10 @@ class ScreenSlot {
         this.sprite.ani.playing = false;
 
         this.spinTimer = new EventTimer(SLOT_TIME_PER_SPIN_FRAME);
-        this.slotPhaseTimer = new EventTimer(1000);
-        this.slotRewardTimer = new EventTimer(2000);
+        this.slotPhaseTimer = new EventTimer(SLOT_PHASE_TIME);
+        this.slotRewardTimer = new EventTimer(SLOT_REWARD_TIME);
         this.index = 0;
+        this.subIndex = 0;
         this.validIndexes = [];
         this.slowDown = false;
 
@@ -76,14 +81,15 @@ class ScreenSlot {
                     this.slotPhaseTimer.restart();
                     this.slotRewardTimer.restart();
                     this.sprite.changeAni("slots" + (pos));
+                    //TODO play some sfx?
                 }
             }
         } else if (this.status === SLOT_STATUS.STOPPED) {
             let pos = this.validIndexes[this.index];
-            if (this.stoppedHasSecondPhase(pos) && this.slotPhaseTimer.hasElapsed()) {
+            if (this.stoppedHasSecondPhase(pos) && this.slotPhaseTimer.hasElapsed() && this.sprite.ani.name.startsWith("slots")) {
                 this.changePhase(pos);
             } else if (this.slotRewardTimer.hasElapsed()) {
-
+                this.slotFinishCallback(this.index, this.subIndex);
             }
         }
     }
@@ -113,7 +119,7 @@ class ScreenSlot {
 
     selectValidSlots() {
         //TODO add some logic here
-        return [SLOT_STATES.BONUS_MULTIPLIER];
+        return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     }
 
     smallAction() {
@@ -127,17 +133,24 @@ class ScreenSlot {
     changePhase(slot) {
         switch (slot) {
             case SLOT_STATES.SMALL:
-                this.sprite.changeAni("small3");//TODO set random
+                this.subIndex = this.randIntBetween(1, 9);
+                this.sprite.changeAni("small" + this.subIndex);
                 break;
             case SLOT_STATES.BIG:
-                this.sprite.changeAni("big5");//TODO set random
+                this.subIndex = this.randIntBetween(1, 9);
+                this.sprite.changeAni("big" + this.subIndex);
                 break;
             case SLOT_STATES.BONUS_MULTIPLIER:
-                this.sprite.changeAni("multi2");//TODO set random
+                this.subIndex = this.randIntBetween(1, 5);
+                this.sprite.changeAni("multi" + this.subIndex);
                 break;
             default:
                 break;
         }
+    }
+
+    randIntBetween(a, b) {
+        return Math.floor(Math.random() * (b - a + 1)) + a;
     }
 
 }

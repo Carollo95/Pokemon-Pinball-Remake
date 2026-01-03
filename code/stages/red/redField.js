@@ -145,7 +145,8 @@ class RedField extends Field {
             this.onCaptureStartAnimatedSpritePhaseCallback,
             this.onCaptureCompleteAnimationStartedCallback,
             this.onCapturePhaseFinishedCallback,
-            this.captureOnPokemonAnimatedHitCallback
+            this.captureOnPokemonAnimatedHitCallback,
+            this.slotCallback
         );
 
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
@@ -228,7 +229,7 @@ class RedField extends Field {
         this.screen.startSlotMachine();
     }
 
-    interruptCave(){
+    interruptCave() {
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
         this.well.close();
     }
@@ -752,6 +753,62 @@ class RedField extends Field {
 
     onEvolutionTargetArrowHit(targetArrow) {
         this.evolutionManager.onEvolutionTargetArrowHit(targetArrow);
+    }
+
+    slotCallback = (index, subindex) => {
+        this.spitAndCloseWell();
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+
+        //TODO fill
+        switch (index) {
+            case SLOT_STATES.SMALL:
+                this.status.addPoints(subindex * 100, this.getBall());
+                break;
+            case SLOT_STATES.BIG:
+                this.status.addPoints(subindex * 1000000, this.getBall());
+                break;
+            case SLOT_STATES.BONUS_MULTIPLIER:
+                for (let i = 0; i <= subindex; i++) {
+                    this.multiplierManager.increaseMultiplier();
+                }
+                break;
+            case SLOT_STATES.SMALL_SAVER:
+                //TODO
+                break;
+            case SLOT_STATES.GREAT_SAVER:
+                //TODO
+                break;
+            case SLOT_STATES.ULTRA_SAVER:
+                //TODO
+                break;
+            case SLOT_STATES.PIKACHU:
+                this.pikachuSaverManager.superCharge();
+                break;
+            case SLOT_STATES.GREAT_UPGRADE:
+            case SLOT_STATES.ULTRA_UPGRADE:
+            case SLOT_STATES.MASTER_UPGRADE:
+                this.ball.upgrade();
+                break;
+            case SLOT_STATES.EXTRA_BALL:
+                this.status.balls++;
+                break;
+            case SLOT_STATES.CATCHEM_STARTER:
+                break;
+            case SLOT_STATES.EVOLUTION_STARTER:
+                break;
+            case SLOT_STATES.GO_TO_BONUS_DUGTRIO:
+                break;
+            case SLOT_STATES.GO_TO_BONUS_GASTLY:
+                break;
+            case SLOT_STATES.GO_TO_BONUS_MEOWTH:
+                break;
+            case SLOT_STATES.GO_TO_BONUS_SEAL:
+                break;
+            case SLOT_STATES.GO_TO_BONUS_MEWTWO:
+                break;
+            default:
+                break;
+        }
     }
 
     setState(state) {

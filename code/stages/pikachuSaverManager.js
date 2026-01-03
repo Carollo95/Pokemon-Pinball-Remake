@@ -42,4 +42,8 @@ class PikachuSaverManager {
         this.status.activeThunder = false;
     }
 
+    superCharge(){
+        this.pikachuSaver.superCharge();
+    }
+
 }
