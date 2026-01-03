@@ -61,19 +61,22 @@ class RedField extends Field {
         if (this.controls.hasControlCallbackTimePassed()) {
             this.controls.restartPressCallback();
             if (this.state === RED_FIELD_STATE.EVOLUTION_CHOOSE_SCREEN) {
-                let selected = this.evolutionScreenChooser.getSelected();
-                if (selected !== null) {
-                    this.startEvolutionSequence(selected);
-                } else {
-                    this.setState(RED_FIELD_STATE.PLAYING);
-                }
-
-                this.evolutionScreenChooser.remove();
-                this._closeBallOnWayDown = true;
-                this.ditto.spitBall(this.getBall());
-                this.arrows.evolutionArrowsLevel = 0;
+                this.evolutionScreenChooser.selectCurrent();
             }
         }
+    }
+
+    onEvolutionTargetSelectedOnDitto = (selected) => {
+        if (selected !== null) {
+            this.startEvolutionSequence(selected);
+        } else {
+            this.setState(RED_FIELD_STATE.PLAYING);
+        }
+
+        this.evolutionScreenChooser.remove();
+        this._closeBallOnWayDown = true;
+        this.ditto.spitBall(this.getBall());
+        this.arrows.evolutionArrowsLevel = 0;
     }
 
     leftFlipperCallback = () => {
@@ -720,11 +723,14 @@ class RedField extends Field {
     }
 
     onDittoWellCallback = () => {
-        this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.captured);
+        this.openEvolutionChooserScreen(this.onEvolutionTargetSelectedOnDitto);
+    }
+
+    openEvolutionChooserScreen = (onEvolutionTargetSelectedCallback) => {
+        this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.captured, onEvolutionTargetSelectedCallback);
         this.evolutionScreenChooser.show();
         this.setState(RED_FIELD_STATE.EVOLUTION_CHOOSE_SCREEN);
     }
-
 
     startEvolutionSequence(pokemon) {
         this.interruptCave();
@@ -756,59 +762,87 @@ class RedField extends Field {
     }
 
     slotCallback = (index, subindex) => {
-        this.spitAndCloseWell();
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
-
         //TODO fill
         switch (index) {
             case SLOT_STATES.SMALL:
                 this.status.addPoints(subindex * 100, this.getBall());
+                this.spitAndCloseWell();
                 break;
             case SLOT_STATES.BIG:
                 this.status.addPoints(subindex * 1000000, this.getBall());
+                this.spitAndCloseWell();
                 break;
             case SLOT_STATES.BONUS_MULTIPLIER:
                 for (let i = 0; i <= subindex; i++) {
                     this.multiplierManager.upgradeMultiplier();
                 }
+                this.spitAndCloseWell();
                 break;
             case SLOT_STATES.SMALL_SAVER:
+                this.spitAndCloseWell();
                 //TODO
                 break;
             case SLOT_STATES.GREAT_SAVER:
+                this.spitAndCloseWell();
                 //TODO
                 break;
             case SLOT_STATES.ULTRA_SAVER:
+                this.spitAndCloseWell();
                 //TODO
                 break;
             case SLOT_STATES.PIKACHU:
                 this.pikachuSaverManager.superCharge();
+                this.spitAndCloseWell();
                 break;
             case SLOT_STATES.GREAT_UPGRADE:
             case SLOT_STATES.ULTRA_UPGRADE:
             case SLOT_STATES.MASTER_UPGRADE:
                 this.ball.upgrade();
+                this.spitAndCloseWell();
                 break;
             case SLOT_STATES.EXTRA_BALL:
                 this.status.balls++;
+                this.spitAndCloseWell();
                 break;
             case SLOT_STATES.CATCHEM_STARTER:
+                this.startCaptureSequence();
+                this.spitAndCloseWell();
                 break;
             case SLOT_STATES.EVOLUTION_STARTER:
+                this.openEvolutionChooserScreen(this.onEvolutionModeSelectedOnSlots);
+                //TODO
                 break;
             case SLOT_STATES.GO_TO_BONUS_DUGTRIO:
+                EngineUtils.startMoleStage(this.onBackFromBonusStageCallback);
                 break;
             case SLOT_STATES.GO_TO_BONUS_GASTLY:
+                EngineUtils.startGhostStage(this.onBackFromBonusStageCallback);
                 break;
             case SLOT_STATES.GO_TO_BONUS_MEOWTH:
+                EngineUtils.startCatStage(this.onBackFromBonusStageCallback);
                 break;
             case SLOT_STATES.GO_TO_BONUS_SEAL:
+                EngineUtils.startSealStage(this.onBackFromBonusStageCallback);
                 break;
             case SLOT_STATES.GO_TO_BONUS_MEWTWO:
+                EngineUtils.startCloneStage(this.onBackFromBonusStageCallback);
                 break;
             default:
                 break;
         }
+    }
+
+    onEvolutionModeSelectedOnSlots = (selected) => {
+        if (selected !== null) {
+            this.startEvolutionSequence(selected);
+        } else {
+            this.setState(RED_FIELD_STATE.PLAYING);
+        }
+
+        this.evolutionScreenChooser.remove();
+        this.arrows.evolutionArrowsLevel = 0;
+        this.spitAndCloseWell();
     }
 
     setState(state) {

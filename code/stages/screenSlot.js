@@ -66,7 +66,7 @@ class ScreenSlot {
         this.sprite.visible = visible;
     }
 
-    update(ballSprite) {
+    update() {
         if (this.status === SLOT_STATUS.SPINNING && this.spinTimer.hasElapsed()) {
             this.index = (this.index + 1) % this.validIndexes.length;
             let pos = this.validIndexes[this.index];
@@ -89,18 +89,8 @@ class ScreenSlot {
             if (this.stoppedHasSecondPhase(pos) && this.slotPhaseTimer.hasElapsed() && this.sprite.ani.name.startsWith("slots")) {
                 this.changePhase(pos);
             } else if (this.slotRewardTimer.hasElapsed()) {
-                this.slotFinishCallback(this.index, this.subIndex);
+                this.slotFinishCallback(pos, this.subIndex);
             }
-        }
-    }
-
-    callAction(actionNuber) {
-        switch (actionNuber) {
-            case SLOT_STATES.SMALL:
-                smallAction();
-                break;
-            default:
-                break;
         }
     }
 
@@ -109,9 +99,11 @@ class ScreenSlot {
     }
 
     startSlotMachine() {
-        this.sprite.changeAnimation("slotsBW");
         this.slowDown = false;
         this.validIndexes = this.selectValidSlots();
+        this.index = 0;
+        this.sprite.ani.frame = this.validIndexes[this.index];
+        this.sprite.changeAnimation("slotsBW");
         this.status = SLOT_STATUS.SPINNING;
         this.spinTimer.restart();
         this.spinTimer.restartTimeAdded();
@@ -119,12 +111,10 @@ class ScreenSlot {
 
     selectValidSlots() {
         //TODO add some logic here
+        return[SLOT_STATES.EVOLUTION_STARTER];
         return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     }
 
-    smallAction() {
-
-    }
 
     stoppedHasSecondPhase(slot) {
         return slot === SLOT_STATES.SMALL || slot === SLOT_STATES.BIG || slot === SLOT_STATES.BONUS_MULTIPLIER;

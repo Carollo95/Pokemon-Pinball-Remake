@@ -77,7 +77,7 @@ class Screen {
         } else if (this.state === SCREEN_STATE.CAPTURE_EVOLUTION) {
             this.screenCapture.update(ballSprite);
         } else if (this.state === SCREEN_STATE.SLOT) {
-            this.screenSlot.update(ballSprite);
+            this.screenSlot.update();
         }
 
     }
