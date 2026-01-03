@@ -39,6 +39,9 @@ class ScreenSlot {
         for (let i = 1; i <= 5; i++) {
             this.sprite.addAnimation("multi" + i, Asset.getAnimation('multi' + i));
         }
+        for (let i = 1; i <= 9; i++) {
+            this.sprite.addAnimation("big" + i, Asset.getAnimation('big' + i));
+        }
         this.sprite.addAnimation("slotsBW", Asset.getAnimation('slotsBW'));
         this.sprite.ani.playing = false;
 
@@ -125,6 +128,7 @@ class ScreenSlot {
             case SLOT_STATES.SMALL:
                 break;
             case SLOT_STATES.BIG:
+                this.sprite.changeAni("big5");//TODO set random
                 break;
             case SLOT_STATES.BONUS_MULTIPLIER:
                 this.sprite.changeAni("multi2");//TODO set random
