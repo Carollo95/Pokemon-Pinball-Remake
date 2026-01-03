@@ -769,7 +769,7 @@ class RedField extends Field {
                 break;
             case SLOT_STATES.BONUS_MULTIPLIER:
                 for (let i = 0; i <= subindex; i++) {
-                    this.multiplierManager.increaseMultiplier();
+                    this.multiplierManager.upgradeMultiplier();
                 }
                 break;
             case SLOT_STATES.SMALL_SAVER:
