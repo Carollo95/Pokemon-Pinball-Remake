@@ -229,7 +229,11 @@ class RedField extends Field {
 
     onCaveEnterCallback = () => {
         this.caveActive = false;
-        this.screen.startSlotMachine();
+        this.screen.startSlotMachine(this.getStartSlotMachineParams());
+    }
+
+    getStartSlotMachineParams(){
+        return new StartSlotMachineParams(this.pikachuSaverManager.isSuperCharged(),this.arrows.captureArrowsLevel, this.arrows.evolutionArrowsLevel,this.getBall().type, this.getNextBonusLevel());
     }
 
     interruptCave() {
@@ -588,6 +592,7 @@ class RedField extends Field {
             }
             this.interruptCave();
             this.caveActive = false;
+            this.screen.restartSlotNumber();
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
             //TODO probably not needed since it is closed on interrupt cave
             this.closeWell();
@@ -811,7 +816,6 @@ class RedField extends Field {
                 break;
             case SLOT_STATES.EVOLUTION_STARTER:
                 this.openEvolutionChooserScreen(this.onEvolutionModeSelectedOnSlots);
-                //TODO
                 break;
             case SLOT_STATES.GO_TO_BONUS_DUGTRIO:
                 EngineUtils.startMoleStage(this.onBackFromBonusStageCallback);

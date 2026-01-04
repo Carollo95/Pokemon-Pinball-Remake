@@ -46,4 +46,8 @@ class PikachuSaverManager {
         this.pikachuSaver.superCharge();
     }
 
+    isSuperCharged(){
+        return this.pikachuSaver.isSuperCharged();
+    }
+
 }

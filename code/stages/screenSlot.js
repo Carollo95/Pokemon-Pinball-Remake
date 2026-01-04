@@ -22,7 +22,7 @@ const SLOT_STATES = {
     GO_TO_BONUS_DUGTRIO: 13,
     GO_TO_BONUS_GASTLY: 14,
     GO_TO_BONUS_MEOWTH: 15,
-    GO_TO_BONUS_SEAL: 16,
+    GO_TO_BONUS_SEEL: 16,
     GO_TO_BONUS_MEWTWO: 17
 }
 
@@ -60,6 +60,8 @@ class ScreenSlot {
 
         this.status = SLOT_STATUS.STOPPED;
 
+        this.slotNumber = 0;
+
     }
 
     show(visible) {
@@ -90,6 +92,7 @@ class ScreenSlot {
                 this.changePhase(pos);
             } else if (this.slotRewardTimer.hasElapsed()) {
                 this.slotFinishCallback(pos, this.subIndex);
+                this.slotNumber++;
             }
         }
     }
@@ -98,9 +101,9 @@ class ScreenSlot {
         this.slowDown = true;
     }
 
-    startSlotMachine() {
+    startSlotMachine(startSlotMachineParams) {
         this.slowDown = false;
-        this.validIndexes = this.selectValidSlots();
+        this.validIndexes = this.selectValidSlots(startSlotMachineParams);
         this.index = 0;
         this.sprite.ani.frame = this.validIndexes[this.index];
         this.sprite.changeAnimation("slotsBW");
@@ -109,12 +112,74 @@ class ScreenSlot {
         this.spinTimer.restartTimeAdded();
     }
 
-    selectValidSlots() {
-        //TODO add some logic here
-        return[SLOT_STATES.EVOLUTION_STARTER];
-        return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    selectValidSlots(startSlotMachineParams) {
+        let validSlots = [];
+
+        if (this.slotNumber <= 2) {
+            validSlots.push(SLOT_STATES.SMALL);
+            validSlots.push(SLOT_STATES.BONUS_MULTIPLIER);
+            validSlots.push(SLOT_STATES.SMALL_SAVER);
+        } else if (this.slotNumber <= 4) {
+            validSlots.push(SLOT_STATES.SMALL);
+            validSlots.push(SLOT_STATES.BIG);
+            validSlots.push(SLOT_STATES.BONUS_MULTIPLIER);
+            validSlots.push(SLOT_STATES.SMALL_SAVER);
+        } else if (this.slotNumber <= 8) {
+            validSlots.push(SLOT_STATES.BIG);
+            validSlots.push(SLOT_STATES.BONUS_MULTIPLIER);
+            validSlots.push(SLOT_STATES.GREAT_SAVER);
+            validSlots.push(this.getNextBallUpgrade(startSlotMachineParams.ballType));
+            validSlots.push(this.getNextGoToBonusLevel(startSlotMachineParams.nextBonusLevel));
+        } else {
+            validSlots.push(SLOT_STATES.BIG);
+            validSlots.push(SLOT_STATES.BONUS_MULTIPLIER);
+            validSlots.push(SLOT_STATES.ULTRA_SAVER);
+            validSlots.push(SLOT_STATES.EXTRA_BALL);
+            validSlots.push(this.getNextBallUpgrade(startSlotMachineParams.ballType));
+            validSlots.push(this.getNextGoToBonusLevel(startSlotMachineParams.nextBonusLevel));
+        }
+
+        if (!startSlotMachineParams.pikachuSaverActive) {
+            validSlots.push(SLOT_STATES.PIKACHU);
+        }
+
+        if (startSlotMachineParams.catchemArrowsLevel === 3) {
+            validSlots.push(SLOT_STATES.CATCHEM_STARTER);
+        }
+
+        if (startSlotMachineParams.evolutionArrowsLevel === 3) {
+            validSlots.push(SLOT_STATES.EVOLUTION_STARTER);
+        }
+
+        return validSlots;
     }
 
+    getNextBallUpgrade(ballType) {
+        if (ballType === BALL_TYPES.POKEBALL) {
+            return SLOT_STATES.GREAT_UPGRADE;
+        } else if (ballType === BALL_TYPES.GREATBALL) {
+            return SLOT_STATES.ULTRA_UPGRADE;
+        } else if (ballType === BALL_TYPES.ULTRABALL) {
+            return SLOT_STATES.MASTER_UPGRADE;
+        }
+    }
+
+    getNextGoToBonusLevel(nextBonusLevel) {
+        switch (nextBonusLevel) {
+            case FIELD_BONUS.MOLE:
+                return SLOT_STATES.GO_TO_BONUS_DUGTRIO;
+            case FIELD_BONUS.GHOST:
+                return SLOT_STATES.GO_TO_BONUS_GASTLY;
+            case FIELD_BONUS.CLONE:
+                return SLOT_STATES.GO_TO_BONUS_MEWTWO;
+            case FIELD_BONUS.SEAL:
+                return SLOT_STATES.GO_TO_BONUS_SEEL;
+            case FIELD_BONUS.CAT:
+                return SLOT_STATES.GO_TO_BONUS_MEOWTH;
+            default:
+                break;
+        }
+    }
 
     stoppedHasSecondPhase(slot) {
         return slot === SLOT_STATES.SMALL || slot === SLOT_STATES.BIG || slot === SLOT_STATES.BONUS_MULTIPLIER;
@@ -143,4 +208,19 @@ class ScreenSlot {
         return Math.floor(Math.random() * (b - a + 1)) + a;
     }
 
+    restartSlotNumber() {
+        this.slotNumber = 0;
+    }
+
+}
+
+
+class StartSlotMachineParams {
+    constructor(pikachuSaverActive, catchemArrowsLevel, evolutionArrowsLevel, ballType, nextBonusLevel) {
+        this.pikachuSaverActive = pikachuSaverActive;
+        this.catchemArrowsLevel = catchemArrowsLevel;
+        this.evolutionArrowsLevel = evolutionArrowsLevel;
+        this.ballType = ballType;
+        this.nextBonusLevel = nextBonusLevel;
+    }
 }

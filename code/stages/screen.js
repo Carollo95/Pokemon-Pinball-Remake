@@ -210,15 +210,19 @@ class Screen {
         this.setState(SCREEN_STATE.IMAGE);
     }
 
-    startSlotMachine() {
+    startSlotMachine(startSlotMachineParams) {
         this.setState(SCREEN_STATE.SLOT);
-        this.screenSlot.startSlotMachine();
+        this.screenSlot.startSlotMachine(startSlotMachineParams);
     }
 
     slowDownSlotMachine() {
         if (this.state === SCREEN_STATE.SLOT) {
             this.screenSlot.startSlowingDown();
         }
+    }
+
+    restartSlotNumber(){
+        this.screenSlot.restartSlotNumber();
     }
 
 }
