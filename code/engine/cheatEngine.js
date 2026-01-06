@@ -70,23 +70,33 @@ const CheatEngine = {
     },
 
     activateStaryu() {
-        if ((stage instanceof RedField)) {
+        if (stage instanceof RedField) {
             stage.staryu.invert();
 
         }
     },
 
     unstuckBall() {
-        if (stage && stage.getBall()) {
+        if ((stage instanceof RedField) && stage && stage.getBall()) {
             stage.ball.sprite.pos.x = 150;
             stage.ball.sprite.pos.y = 300;
         }
     },
 
-    upgradeBall(){
-        if(stage && stage.getBall()){
+    upgradeBall() {
+        if ((stage instanceof RedField) && stage && stage.getBall()) {
             stage.getBall().upgrade();
-        }   
+        }
+    },
+
+    openCave() {
+        if (stage instanceof RedField) {
+            CheatEngine.blockBallLoss();
+            stage.caveDetectorManager.detectorE.setActive(true);
+            stage.caveDetectorManager.detectorA.setActive(true);
+            stage.caveDetectorManager.detectorV.setActive(true);
+            stage.caveDetectorManager.detectorC.setActive(true);
+        }
     }
 
 }
