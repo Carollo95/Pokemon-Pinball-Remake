@@ -138,7 +138,7 @@ class RedField extends Field {
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
 
-        this.caveDetectorManager = new caveDetectorManager(this.onOpenCaveCallback);
+        this.caveDetectorManager = new CaveDetectorManager(this.onOpenCaveCallback);
         this.caveActive = false;
 
         this.screen = new Screen(
@@ -223,17 +223,17 @@ class RedField extends Field {
     updateCave() {
         if (this.state === RED_FIELD_STATE.PLAYING && this.caveActive) {
             this.screen.showCaveStart();
-            this.well.open(this.onCaveEnterCallback);;
+            this.openWell(this.onCaveEnterCallback);
+            this.caveActive = false;
         }
     }
 
     onCaveEnterCallback = () => {
-        this.caveActive = false;
         this.screen.startSlotMachine(this.getStartSlotMachineParams());
     }
 
-    getStartSlotMachineParams(){
-        return new StartSlotMachineParams(this.pikachuSaverManager.isSuperCharged(),this.arrows.captureArrowsLevel, this.arrows.evolutionArrowsLevel,this.getBall().type, this.getNextBonusLevel());
+    getStartSlotMachineParams() {
+        return new StartSlotMachineParams(this.pikachuSaverManager.isSuperCharged(), this.arrows.captureArrowsLevel, this.arrows.evolutionArrowsLevel, this.getBall().type, this.getNextBonusLevel());
     }
 
     interruptCave() {
@@ -271,7 +271,7 @@ class RedField extends Field {
     }
 
     onFullExperienceCallback = () => {
-        this.well.open(this.onEvolutionCompletedCallback);
+        this.openWell(this.onEvolutionCompletedCallback);
     }
 
     onEvolutionCompletedCallback = () => {

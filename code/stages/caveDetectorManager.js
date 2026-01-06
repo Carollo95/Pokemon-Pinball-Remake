@@ -3,7 +3,7 @@ const CAVE_DETECTOR_BLINK_HALF_RATE = CAVE_DETECTOR_BLINK_RATE / 2;
 
 const CAVE_DETECTOR_BLINK_DURATION = 1500;
 
-class caveDetectorManager {
+class CaveDetectorManager {
 
     constructor(onOpenCaveCallback) {
         this.detectorC = new CaveDetector(27, 419, 1);
@@ -27,6 +27,7 @@ class caveDetectorManager {
             if(this.blinkCooldown.hasElapsed()) {
                 this._onBlinkingAnimation = false;
                 this.onOpenCaveCallback();
+                this.reset();
             }
         } else {
             this.detectorC.update(ballSprite);

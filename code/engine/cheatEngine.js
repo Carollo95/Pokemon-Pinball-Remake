@@ -91,7 +91,6 @@ const CheatEngine = {
 
     openCave() {
         if (stage instanceof RedField) {
-            CheatEngine.blockBallLoss();
             stage.caveDetectorManager.detectorE.setActive(true);
             stage.caveDetectorManager.detectorA.setActive(true);
             stage.caveDetectorManager.detectorV.setActive(true);
