@@ -807,6 +807,7 @@ class RedField extends Field {
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.EXTRA_BALL:
+                //TODO is this correct??? should just lit the again thing???
                 this.status.balls++;
                 this.spitAndCloseWell();
                 break;
