@@ -217,6 +217,8 @@ class RedField extends Field {
 
         this.pikachuSaverManager = new PikachuSaverManager(this.status);
 
+        this.saverAgain = new SaverAgain();
+
         Audio.playMusic('redField');
     }
 
@@ -492,6 +494,8 @@ class RedField extends Field {
 
         this.well.update(this.getBall());
         this.updateSensors();
+
+        this.saverAgain.update();
 
         this.targetArrows.forEach(ta => ta.update());
 

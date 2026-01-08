@@ -299,6 +299,9 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusClone', 'assets/img/field/go_to_bonus_clone', 96, 64, 1);
+
+  Asset.registerAnimationTemplate('again', 'assets/img/field/again', 64, 16, 2);
+  Asset.registerAnimationTemplate('saver', 'assets/img/field/saver', 64, 16, 2);
   
   Asset.registerAnimationTemplate('slotCave', 'assets/img/slot-machine/slot_cave', 96, 64, 1);
   Asset.registerAnimationTemplate('slotsBW', 'assets/img/slot-machine/slots_bw', 96, 64, 18);

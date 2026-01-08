@@ -23,4 +23,8 @@ class EventTimer {
         this.timeAdded = 0;
     }
 
+    changeCooldown(newCooldown){
+        this.cooldownTime = newCooldown;
+    }
+
 }
