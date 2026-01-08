@@ -309,7 +309,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx0A', 'assets/audio/sfx/SFX-0A')); //Ball launch
     promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B')); //Pokemon entering ball
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
-    promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D'));
+    promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D')); //Multiplier hit
     promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //red field Voltorb Bumper hit
     promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //red field Travel Diglett hit
     promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10')); //Pikachu lighting
