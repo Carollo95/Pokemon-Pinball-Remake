@@ -97,4 +97,8 @@ class EvolutionChooserScreen {
             this.currentLines = [];
         }
     }
+
+    selectCurrent(){
+        this.onScreenEndCallback(this.getSelected());
+    }
 }

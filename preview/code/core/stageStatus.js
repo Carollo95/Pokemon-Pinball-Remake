@@ -80,6 +80,7 @@ class StageStatus {
     }
 
     addPoints(pts) {
+        //TODO should this always be with ball?
         this.points += pts;
     }
 

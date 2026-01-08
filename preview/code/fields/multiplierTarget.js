@@ -20,7 +20,7 @@ class MultiplierTarget {
         this.target.layer = SCENARIO_LAYER;
         this.target.visible = false;
 
-        this.blinking = false;
+        this._blinking = false;
 
         this.callback = callback;
         this.lastHitTime = -10000;
@@ -31,9 +31,10 @@ class MultiplierTarget {
         if (this.target.overlaps(ballSprite) && this.hasCooldownTimePassed()) {
             this.callback();
             this.lastHitTime = millis();
+            Audio.playSFX('sfx0D');
         }
 
-        if (this.blinking) {
+        if (this._blinking) {
             frameCount % MULTIPLIER_BLINK_RATE > MULTIPLIER_BLINK_HALF_RATE ?
                 this.sprite.changeAni("active") :
                 this.sprite.changeAni("inactive");
@@ -46,17 +47,17 @@ class MultiplierTarget {
     }
 
     blink() {
-        this.blinking = true;
+        this._blinking = true;
     }
 
     turnOn() {
-        this.blinking = false;
+        this._blinking = false;
         this.sprite.changeAni("active");
     }
 
     turnOff() {
 
-        this.blinking = false;
+        this._blinking = false;
         this.sprite.changeAni("inactive");
     }
 

@@ -249,6 +249,8 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('travelRight', 'assets/img/field/travel_right', 96, 64, 1);
   Asset.registerAnimationTemplate('travelCave', 'assets/img/field/travel_cave', 96, 64, 1);
 
+  Asset.registerAnimationTemplate('caveDetector', 'assets/img/field/cave_detectors', 14, 14, 5);
+
   Asset.registerAnimationTemplate('redArea1Landmarks', 'assets/img/landmarks/red_landmarks_area_1', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea1LandmarksBW', 'assets/img/landmarks/red_landmarks_area_1_bw', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea2Landmarks', 'assets/img/landmarks/red_landmarks_area_2', 96, 64, 4);
@@ -297,6 +299,19 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusClone', 'assets/img/field/go_to_bonus_clone', 96, 64, 1);
+  
+  Asset.registerAnimationTemplate('slotCave', 'assets/img/slot-machine/slot_cave', 96, 64, 1);
+  Asset.registerAnimationTemplate('slotsBW', 'assets/img/slot-machine/slots_bw', 96, 64, 18);
+  for(let i=0; i<18; i++){
+    Asset.registerAnimationTemplate('slots'+i, 'assets/img/slot-machine/slots_'+i, 96, 64, 2);
+  }
+  for(let i=1; i<=5; i++){
+    Asset.registerAnimationTemplate('multi'+i, 'assets/img/slot-machine/multi_'+i, 96, 64, 2);
+  }
+  for(let i=1; i<=9; i++){
+    Asset.registerAnimationTemplate('big'+i, 'assets/img/slot-machine/big_'+i, 96, 64, 2);
+    Asset.registerAnimationTemplate('small'+i, 'assets/img/slot-machine/small_'+i, 96, 64, 2);
+  }
 
   Asset.registerAnimationTemplate('openWell', 'assets/img/field/open_well', 30, 30, 1);
   Asset.registerAnimationTemplate('closedWell', 'assets/img/field/closed_well', 30, 30, 1);

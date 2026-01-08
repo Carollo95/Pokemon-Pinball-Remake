@@ -47,6 +47,10 @@ class StageWell {
         this.auraSprite.animation.visible = false;
     }
 
+    isClosed(){
+        return !this.isOpen;
+    }
+
     spitBall(ball) {
         this.close();
         ball.stopOnCoordinates(this.sprite.x, this.sprite.y);

@@ -83,6 +83,10 @@ class PikachuSaver {
     superCharge() {
         this.superCharged = true;
     }
+    
+    isSuperCharged() {
+        return this.superCharged;
+    }
 
     fullyDischarge() {
         this.charged = false;

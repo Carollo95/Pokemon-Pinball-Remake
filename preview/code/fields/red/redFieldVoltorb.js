@@ -22,7 +22,7 @@ class RedFieldVoltorb {
         this.sprite = new Sprite(x, y, 28, "static");
         this.sprite.debug = DEBUG;
         this.sprite.layer = FIELD_ELEMENTS_LAYER;
-        this.lastHitTime = 0;
+        this.lastHitTimer = new EventTimer(VOLTORB_COOLDOWN_TIME);
         this.nextShakeTime = this.getNextShakeTime();
         this.state = STATE.STILL;
 
@@ -31,14 +31,14 @@ class RedFieldVoltorb {
     }
 
     update(ball) {
-        if (this.sprite.collide(ball) && this.hasPassedHitCooldown()) {
+        if (this.sprite.collide(ball) && this.lastHitTimer.hasElapsed()) {
 
             this.bounceBall(ball);
             this.onHitCallback();
             this.sprite.changeAnimation("hurt");
             Audio.playSFX('sfx0E');
 
-            this.lastHitTime = millis();
+            this.lastHitTimer.restart();
             this.nextShakeTime = millis();
 
             this.sprite.ani.frame = 0;
@@ -51,10 +51,6 @@ class RedFieldVoltorb {
         }
 
         this.updateShake();
-    }
-
-    hasPassedHitCooldown(){
-        return millis() - this.lastHitTime > VOLTORB_COOLDOWN_TIME;
     }
 
     getNextShakeTime() {

@@ -13,6 +13,7 @@ class ScreenImage {
         this.sprite.addAnimation(TRAVEL_DIRECTION.LEFT, Asset.getAnimation('travelLeft'));
         this.sprite.addAnimation(TRAVEL_DIRECTION.RIGHT, Asset.getAnimation('travelRight'));
         this.sprite.addAnimation(TRAVEL_DIRECTION.CAVE, Asset.getAnimation('travelCave'));
+        this.sprite.addAnimation("slotCave", Asset.getAnimation('slotCave'));
 
     }
 
@@ -26,6 +27,10 @@ class ScreenImage {
 
     setTravelDirection(direction) {
         this.sprite.changeAnimation(direction);
+    }
+
+    setSlotCave(){
+        this.sprite.changeAnimation("slotCave");
     }
 
 }
