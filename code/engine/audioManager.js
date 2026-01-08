@@ -305,7 +305,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //Red field Bellsprout spit AND capture pokemon hit
     promises.push(audio.registerSFX('sfx07', 'assets/audio/sfx/SFX-07')); //Red field Staryu active
     promises.push(audio.registerSFX('sfx08', 'assets/audio/sfx/SFX-08')); //Bonus scenario hit
-    promises.push(audio.registerSFX('sfx09', 'assets/audio/sfx/SFX-09'));
+    promises.push(audio.registerSFX('sfx09', 'assets/audio/sfx/SFX-09')); //Slot machin spin
     promises.push(audio.registerSFX('sfx0A', 'assets/audio/sfx/SFX-0A')); //Ball launch
     promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B')); //Pokemon entering ball
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
@@ -362,8 +362,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx3F', 'assets/audio/sfx/SFX-3F')); //Close gate on bonus level
     promises.push(audio.registerSFX('sfx40', 'assets/audio/sfx/SFX-40'));
     promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41')); //Ball Wiggle
-    promises.push(audio.registerSFX('sfx42', 'assets/audio/sfx/SFX-42'));
-    promises.push(audio.registerSFX('sfx43', 'assets/audio/sfx/SFX-43'));
+    promises.push(audio.registerSFX('sfx42', 'assets/audio/sfx/SFX-42')); //Slots small
+    promises.push(audio.registerSFX('sfx43', 'assets/audio/sfx/SFX-43')); //Slots saver, multiplier, evolution, pika...
     promises.push(audio.registerSFX('sfx44', 'assets/audio/sfx/SFX-44')); //Evolution item collected
     promises.push(audio.registerSFX('sfx45', 'assets/audio/sfx/SFX-45')); //Evolution last item collected
     promises.push(audio.registerSFX('sfx46', 'assets/audio/sfx/SFX-46')); //Evolution item appears
@@ -375,6 +375,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx4C', 'assets/audio/sfx/SFX-4C'));
     promises.push(audio.registerSFX('sfx4D', 'assets/audio/sfx/SFX-4D')); //Upgrade master ball
     promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4E')); //Pikachu saver cry
+    promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4F')); //Pikachu double kickback
     
 
     for (let i = 1; i <= 151; i++) {

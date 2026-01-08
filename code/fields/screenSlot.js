@@ -1,6 +1,6 @@
-const SLOT_TIME_PER_SPIN_FRAME = 300;
-const SLOT_TIME_SLOW_DOWN_FRAME_RATE = 200;
-const SLOT_SLOW_DOWN_MAX = 1000;
+const SLOT_TIME_PER_SPIN_FRAME = 100;
+const SLOT_TIME_SLOW_DOWN_FRAME_RATE = 80;
+const SLOT_SLOW_DOWN_MAX = 700;
 
 const SLOT_REWARD_TIME = 4000;
 const SLOT_PHASE_TIME = SLOT_REWARD_TIME / 2
@@ -70,22 +70,7 @@ class ScreenSlot {
 
     update() {
         if (this.status === SLOT_STATUS.SPINNING && this.spinTimer.hasElapsed()) {
-            this.index = (this.index + 1) % this.validIndexes.length;
-            let pos = this.validIndexes[this.index];
-            this.sprite.ani.frame = pos;
-            this.spinTimer.restart();
-
-            if (this.slowDown) {
-                this.spinTimer.addToInterval(SLOT_TIME_SLOW_DOWN_FRAME_RATE);
-
-                if (this.spinTimer.timeAdded >= SLOT_SLOW_DOWN_MAX) {
-                    this.status = SLOT_STATUS.STOPPED;
-                    this.slotPhaseTimer.restart();
-                    this.slotRewardTimer.restart();
-                    this.sprite.changeAni("slots" + (pos));
-                    //TODO play some sfx?
-                }
-            }
+            this.spinSlots();
         } else if (this.status === SLOT_STATUS.STOPPED) {
             let pos = this.validIndexes[this.index];
             if (this.stoppedHasSecondPhase(pos) && this.slotPhaseTimer.hasElapsed() && this.sprite.ani.name.startsWith("slots")) {
@@ -94,6 +79,66 @@ class ScreenSlot {
                 this.slotFinishCallback(pos, this.subIndex);
                 this.slotNumber++;
             }
+        }
+    }
+
+    spinSlots() {
+        this.index = (this.index + 1) % this.validIndexes.length;
+        let pos = this.validIndexes[this.index];
+        this.sprite.ani.frame = pos;
+        this.spinTimer.restart();
+
+        if (this.slowDown) {
+            this.spinTimer.addToInterval(SLOT_TIME_SLOW_DOWN_FRAME_RATE);
+            if (this.spinTimer.timeAdded >= SLOT_SLOW_DOWN_MAX) {
+                this.stopSlotMachine(pos)
+            } else {
+                Audio.playSFX('sfx09');
+            }
+        } else {
+            Audio.playSFX('sfx09');
+        }
+    }
+
+    stopSlotMachine(pos) {
+        this.status = SLOT_STATUS.STOPPED;
+        this.slotPhaseTimer.restart();
+        this.slotRewardTimer.restart();
+        this.sprite.changeAni("slots" + (pos));
+        this.playSlotResultSFX(pos);
+    }
+
+
+    playSlotResultSFX(index) {
+        switch (index) {
+            case SLOT_STATES.SMALL:
+                Audio.playSFX('sfx42');
+                break;
+            case SLOT_STATES.GREAT_UPGRADE:
+            case SLOT_STATES.ULTRA_UPGRADE:
+            case SLOT_STATES.MASTER_UPGRADE:
+            case SLOT_STATES.BIG:
+            case SLOT_STATES.BONUS_MULTIPLIER:
+            case SLOT_STATES.SMALL_SAVER:
+            case SLOT_STATES.GREAT_SAVER:
+            case SLOT_STATES.EXTRA_BALL:
+            case SLOT_STATES.ULTRA_SAVER:
+            case SLOT_STATES.CATCHEM_STARTER:
+            case SLOT_STATES.EVOLUTION_STARTER:
+                Audio.playSFX('sfx43');
+                break;
+            case SLOT_STATES.PIKACHU:
+                Audio.playSFXsequence(["sfx43", "sfx4E"]);
+                break;
+            case SLOT_STATES.GO_TO_BONUS_DUGTRIO:
+            case SLOT_STATES.GO_TO_BONUS_GASTLY:
+            case SLOT_STATES.GO_TO_BONUS_MEOWTH:
+            case SLOT_STATES.GO_TO_BONUS_SEEL:
+            case SLOT_STATES.GO_TO_BONUS_MEWTWO:
+                Audio.playSFXsequence(["sfx43", "sfx23"]);
+                break;
+            default:
+                break;
         }
     }
 

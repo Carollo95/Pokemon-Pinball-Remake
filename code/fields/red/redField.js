@@ -221,14 +221,14 @@ class RedField extends Field {
     }
 
     updateCave() {
-        if (this.state === RED_FIELD_STATE.PLAYING && this.caveActive) {
+        if (this.state === RED_FIELD_STATE.PLAYING && this.caveActive && this.well.isClosed()) {
             this.screen.showCaveStart();
             this.openWell(this.onCaveEnterCallback);
-            this.caveActive = false;
         }
     }
 
     onCaveEnterCallback = () => {
+        this.caveActive = false;
         this.screen.startSlotMachine(this.getStartSlotMachineParams());
     }
 

@@ -36,7 +36,7 @@ class BonusStage extends Stage {
         this.attachBall(Ball.spawnBonusBall());
         this.attachFlippers(createBonusFlippers());
         this.attachStageText(createBonusStageStatusBanner(this.status));
-        this.attachControls(new Controls(this.leftFlipperCallback(), () => { }, this.rightFlipperCallback));
+        this.attachControls(new Controls(this.leftFlipperCallback, () => { }, this.rightFlipperCallback, ()=>{}, ()=> {}));
 
 
         this.gateIsOpen = true;

@@ -31,7 +31,7 @@ class MultiplierTarget {
         if (this.target.overlaps(ballSprite) && this.hasCooldownTimePassed()) {
             this.callback();
             this.lastHitTime = millis();
-            AudioManager.playSFX('sfx0D');
+            Audio.playSFX('sfx0D');
         }
 
         if (this._blinking) {
