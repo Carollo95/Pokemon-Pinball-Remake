@@ -50,4 +50,20 @@ class PikachuSaverManager {
         return this.pikachuSaver.isSuperCharged();
     }
 
+    setState(state){
+        if(state !== undefined){
+            this.charger.setCharge(state.chargerCharge);
+            this.pikachuSaver.charged = state.pikachuCharged;
+            this.pikachuSaver.superCharged = state.pikachuSuperCharged;
+        } 
+    }
+
+    getState(){
+        return {
+            chargerCharge: this.charger.charge,
+            pikachuCharged: this.pikachuSaver.charged,
+            pikachuSuperCharged: this.pikachuSaver.superCharged
+        };
+    }
+
 }

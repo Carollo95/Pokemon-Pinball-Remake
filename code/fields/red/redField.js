@@ -123,7 +123,7 @@ class RedField extends Field {
         this.createNewBallOrEndStage();
     }
 
-    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false) {
+    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false, pikachuSaverState = undefined, multiplierLevel = undefined) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
         this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
@@ -181,6 +181,7 @@ class RedField extends Field {
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
         this.multiplierManager = new MultiplierManager(this.status, this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback, this.onMultiplierUpgradeCallback);
+        this.multiplierManager.setMultiplierLevel(multiplierLevel);
 
         this.arrows = new RedFieldArrows();
         if (arrowsState != undefined) {
@@ -220,6 +221,7 @@ class RedField extends Field {
         this.ballUpgraderManager = new BallUpgraderManager(116, 129, 160, 107, 204, 109);
 
         this.pikachuSaverManager = new PikachuSaverManager(this.status);
+        this.pikachuSaverManager.setState(pikachuSaverState);
 
         this.saverAgain = new SaverAgain();
 
@@ -239,7 +241,7 @@ class RedField extends Field {
     }
 
     getStartSlotMachineParams() {
-        return new StartSlotMachineParams(this.pikachuSaverManager.isSuperCharged(), this.arrows.captureArrowsLevel, this.arrows.evolutionArrowsLevel, this.getBall().type, this.getNextBonusLevel());
+        return new StartSlotMachineParams(this.pikachuSaverManager.isSuperCharged(), this.arrows.captureArrowsLevel, this.arrows.evolutionArrowsLevel, this.getBall().type, this.getNextBonusLevel(), this.saverAgain.isExtra());
     }
 
     interruptCave() {
@@ -407,7 +409,7 @@ class RedField extends Field {
         allSprites.remove();
         stage = this;
         this.nextBonusLevelIndex++;
-        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true);
+        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true, this.pikachuSaverManager.getState());
         EngineUtils.flashWhite();
     }
 
