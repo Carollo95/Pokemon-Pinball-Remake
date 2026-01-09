@@ -151,4 +151,9 @@ class Charger {
         return Math.round(maxDelay - (maxDelay - minDelay) * (s / maxSpeed));
     }
 
+    setCharge(charge){
+        this.charge = charge;
+        this.chargeIndicatorSprite.ani.frame = this.charge;
+    }
+
 }

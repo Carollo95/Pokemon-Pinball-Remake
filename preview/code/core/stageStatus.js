@@ -65,6 +65,11 @@ class StageStatus {
 
     startNewBall() {
         this.balls--;
+        this.startExtraBall();
+    }
+    
+    startExtraBall() {
+        this.balls--;
 
         this.pokemonCaughtOnBall = 0;
         this.pokemonEvolvedOnBall = 0;

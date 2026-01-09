@@ -68,12 +68,19 @@ class MultiplierManager {
     }
 
     upgradeMultiplier() {
-        this.multiplier += 1;
-        let nextMultiplier = this.multiplier + 1;
-        this.leftMultiplier.setNumber(Math.floor(nextMultiplier / 10));
-        this.rightMultiplier.setNumber(nextMultiplier % 10);
+        this.setMultiplierLevel(this.multiplier + 1);
         this._lastmultiplierUpgradeTime = millis();
         this.onMultiplierUpgradeCallback();
+    }
+
+    setMultiplierLevel(level) {
+        if (level !== undefined) {
+            this.multiplier = level;
+            let nextMultiplier = this.multiplier + 1;
+            this.leftMultiplier.setNumber(Math.floor(nextMultiplier / 10));
+            this.rightMultiplier.setNumber(nextMultiplier % 10);
+
+        }
     }
 
 }

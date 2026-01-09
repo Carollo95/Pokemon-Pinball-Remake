@@ -173,14 +173,20 @@ class ScreenSlot {
             validSlots.push(SLOT_STATES.BIG);
             validSlots.push(SLOT_STATES.BONUS_MULTIPLIER);
             validSlots.push(SLOT_STATES.GREAT_SAVER);
-            validSlots.push(this.getNextBallUpgrade(startSlotMachineParams.ballType));
+            if (this.ballType !== BALL_TYPES.MASTERBALL) {
+                validSlots.push(this.getNextBallUpgrade(startSlotMachineParams.ballType));
+            }
             validSlots.push(this.getNextGoToBonusLevel(startSlotMachineParams.nextBonusLevel));
         } else {
             validSlots.push(SLOT_STATES.BIG);
             validSlots.push(SLOT_STATES.BONUS_MULTIPLIER);
             validSlots.push(SLOT_STATES.ULTRA_SAVER);
-            validSlots.push(SLOT_STATES.EXTRA_BALL);
-            validSlots.push(this.getNextBallUpgrade(startSlotMachineParams.ballType));
+            if(!startSlotMachineParams.extraActive){
+                validSlots.push(SLOT_STATES.EXTRA_BALL);
+            }
+            if (this.ballType !== BALL_TYPES.MASTERBALL) {
+                validSlots.push(this.getNextBallUpgrade(startSlotMachineParams.ballType));
+            }
             validSlots.push(this.getNextGoToBonusLevel(startSlotMachineParams.nextBonusLevel));
         }
 
@@ -256,16 +262,17 @@ class ScreenSlot {
     restartSlotNumber() {
         this.slotNumber = 0;
     }
-
+startSlotMachineParams
 }
 
 
 class StartSlotMachineParams {
-    constructor(pikachuSaverActive, catchemArrowsLevel, evolutionArrowsLevel, ballType, nextBonusLevel) {
+    constructor(pikachuSaverActive, catchemArrowsLevel, evolutionArrowsLevel, ballType, nextBonusLevel, extraActive) {
         this.pikachuSaverActive = pikachuSaverActive;
         this.catchemArrowsLevel = catchemArrowsLevel;
         this.evolutionArrowsLevel = evolutionArrowsLevel;
         this.ballType = ballType;
         this.nextBonusLevel = nextBonusLevel;
+        this.extraActive = extraActive;
     }
 }
