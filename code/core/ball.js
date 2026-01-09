@@ -97,7 +97,7 @@ class Ball {
             } else if (this.sprite.animation.name.endsWith("BallSmall")) {
                 this.sprite.changeAnimation(this.type + "Small2");
             } else if (this.sprite.animation.name.endsWith("BallSmall2")) {
-                this.sprite.visible = false;
+                //this.sprite.visible = false;
                 this.minimizing = false;
 
                 //Called only once

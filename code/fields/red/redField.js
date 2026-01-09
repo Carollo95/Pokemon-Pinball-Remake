@@ -8,7 +8,6 @@ const RED_FIELD_STATE = {
     BALL_LOST: "ball_lost",
     GAME_OVER: "game_over",
     NEW_BALL_WAITING: "new_ball_waiting",
-    SAVER_BALL_WAITING: "saver_ball_waiting",
     CAPTURE: "capture",
     TRAVEL_LEFT: "travel_left",
     TRAVEL_RIGHT: "travel_right",
@@ -38,22 +37,21 @@ class RedField extends Field {
             }
         }
 
-        if (this.state === RED_FIELD_STATE.GAME_START || this.isBallWaiting()) {
+        if (this.state === RED_FIELD_STATE.GAME_START || this.state === RED_FIELD_STATE.NEW_BALL_WAITING) {
             this.launchNewBallWaiting();
-            if (this.state === RED_FIELD_STATE.GAME_START || this.state === RED_FIELD_STATE.NEW_BALL_WAITING) {
-                this.saverAgain.set30sSaver();
-            }
-            //FIXME not always, could be anything
+            this.saverAgain.set30sSaver();
             this.setState(RED_FIELD_STATE.PLAYING);
         } else if (this.state === RED_FIELD_STATE.BALL_LOST) {
             this.progressBonusBallScreen();
+        } else if (this.ballIsWaitingOnLauncher()) {
+            this.launchNewBallWaiting();
         } else if (this.state !== RED_FIELD_STATE.EVOLUTION_CHOOSE_SCREEN && this.state !== RED_FIELD_STATE.BALL_LOST) {
             this.getFlippers().moveRightFlipper();
         }
     }
 
-    isBallWaiting() {
-        return this.state === RED_FIELD_STATE.NEW_BALL_WAITING || this.state === RED_FIELD_STATE.SAVER_BALL_WAITING;
+    ballIsWaitingOnLauncher() {
+        return this.getBall().sprite.pos.x > 330 && this.getBall().sprite.vel.y === 0;
     }
 
     rightFlipperPressCallback = () => {
@@ -596,7 +594,6 @@ class RedField extends Field {
     checkForBallLoss() {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
             if (this.saverAgain.isSaver()) {
-                this.setState(RED_FIELD_STATE.SAVER_BALL_WAITING);
                 this.launchNewBall();
                 this.playNewSaverBallEffects();
             } else {
