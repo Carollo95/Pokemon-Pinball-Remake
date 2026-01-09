@@ -135,8 +135,7 @@ class BonusStage extends Stage {
     }
 
     createNewBonusBall(bonusGateBackground) {
-        Audio.playSFX('sfx02');
-        EngineUtils.flashWhite();
+        this.playNewSaverBallEffects();
         this.attachBall(Ball.spawnBonusBall());
         this.openBonusGate(bonusGateBackground);
     }

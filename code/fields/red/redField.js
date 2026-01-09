@@ -3,23 +3,20 @@ const RED_FIELD_EVOLUTION_TIMER_MS = 121000;
 const RED_FIELD_TRAVEL_TIMER_MS = 31000;
 
 const RED_FIELD_STATE = {
-    PLAYING: 0,
-    GAME_START: 1,
-    BALL_LOST: 2,
-    GAME_OVER: 3,
-    NEW_BALL_WAITING: 4,
-    CAPTURE: 5,
-    TRAVEL_LEFT: 6,
-    TRAVEL_RIGHT: 7,
-    TRAVEL_CAVE: 8,
-    EVOLUTION_CHOOSE_SCREEN: 9,
-    EVOLUTION: 10
+    PLAYING: "playing",
+    GAME_START: "game_start",
+    BALL_LOST: "ball_lost",
+    GAME_OVER: "game_over",
+    NEW_BALL_WAITING: "new_ball_waiting",
+    CAPTURE: "capture",
+    TRAVEL_LEFT: "travel_left",
+    TRAVEL_RIGHT: "travel_right",
+    TRAVEL_CAVE: "travel_cave",
+    EVOLUTION_CHOOSE_SCREEN: "evolution_choose_screen",
+    EVOLUTION: "evolution"
 }
 
-
 const RED_FIELD_BONUS_ORDER = [FIELD_BONUS.MOLE, FIELD_BONUS.GHOST, FIELD_BONUS.CLONE];
-
-
 
 class RedField extends Field {
 
@@ -42,12 +39,19 @@ class RedField extends Field {
 
         if (this.state === RED_FIELD_STATE.GAME_START || this.state === RED_FIELD_STATE.NEW_BALL_WAITING) {
             this.launchNewBallWaiting();
+            this.saverAgain.set30sSaver();
             this.setState(RED_FIELD_STATE.PLAYING);
         } else if (this.state === RED_FIELD_STATE.BALL_LOST) {
             this.progressBonusBallScreen();
+        } else if (this.ballIsWaitingOnLauncher()) {
+            this.launchNewBallWaiting();
         } else if (this.state !== RED_FIELD_STATE.EVOLUTION_CHOOSE_SCREEN && this.state !== RED_FIELD_STATE.BALL_LOST) {
             this.getFlippers().moveRightFlipper();
         }
+    }
+
+    ballIsWaitingOnLauncher() {
+        return this.getBall().sprite.pos.x > 330 && this.getBall().sprite.vel.y === 0;
     }
 
     rightFlipperPressCallback = () => {
@@ -119,7 +123,7 @@ class RedField extends Field {
         this.createNewBallOrEndStage();
     }
 
-    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false) {
+    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false, pikachuSaverState = undefined, multiplierLevel = undefined) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
         this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
@@ -177,6 +181,7 @@ class RedField extends Field {
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
         this.multiplierManager = new MultiplierManager(this.status, this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback, this.onMultiplierUpgradeCallback);
+        this.multiplierManager.setMultiplierLevel(multiplierLevel);
 
         this.arrows = new RedFieldArrows();
         if (arrowsState != undefined) {
@@ -216,6 +221,9 @@ class RedField extends Field {
         this.ballUpgraderManager = new BallUpgraderManager(116, 129, 160, 107, 204, 109);
 
         this.pikachuSaverManager = new PikachuSaverManager(this.status);
+        this.pikachuSaverManager.setState(pikachuSaverState);
+
+        this.saverAgain = new SaverAgain();
 
         Audio.playMusic('redField');
     }
@@ -233,7 +241,7 @@ class RedField extends Field {
     }
 
     getStartSlotMachineParams() {
-        return new StartSlotMachineParams(this.pikachuSaverManager.isSuperCharged(), this.arrows.captureArrowsLevel, this.arrows.evolutionArrowsLevel, this.getBall().type, this.getNextBonusLevel());
+        return new StartSlotMachineParams(this.pikachuSaverManager.isSuperCharged(), this.arrows.captureArrowsLevel, this.arrows.evolutionArrowsLevel, this.getBall().type, this.getNextBonusLevel(), this.saverAgain.isExtra());
     }
 
     interruptCave() {
@@ -401,7 +409,7 @@ class RedField extends Field {
         allSprites.remove();
         stage = this;
         this.nextBonusLevelIndex++;
-        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true);
+        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true, this.pikachuSaverManager.getState());
         EngineUtils.flashWhite();
     }
 
@@ -461,6 +469,8 @@ class RedField extends Field {
         this.voltorbsTargetArrow.setVisible(true);
         this.voltorbsTargetArrow.setActive(true);
 
+        this.saverAgain.set60sSaver();
+
         Audio.playMusic('catchEmEvolutionModeRedField');
     }
 
@@ -492,6 +502,8 @@ class RedField extends Field {
 
         this.well.update(this.getBall());
         this.updateSensors();
+
+        this.saverAgain.update();
 
         this.targetArrows.forEach(ta => ta.update());
 
@@ -583,28 +595,42 @@ class RedField extends Field {
 
     checkForBallLoss() {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
-            if (this.state === RED_FIELD_STATE.CAPTURE) {
-                this.interruptCapture();
-            } else if (this.state === RED_FIELD_STATE.EVOLUTION) {
-                this.interruptEvolution();
-            } else if (this.isTravelState()) {
-                this.interruptTravel();
+            if (this.saverAgain.isSaver()) {
+                this.launchNewBall();
+                this.playNewSaverBallEffects();
+            } else {
+                this.startNewBall();
             }
-            this.interruptCave();
-            this.caveActive = false;
-            this.screen.restartSlotNumber();
-            this.screen.setState(SCREEN_STATE.LANDSCAPE);
-            //TODO probably not needed since it is closed on interrupt cave
-            this.closeWell();
-            this.ditto.close(true);
-            this.ditto.removeLauncherDoor();
-            this.setState(RED_FIELD_STATE.BALL_LOST);
-            //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
-            this.arrows.restart();
-            Audio.playSFX('sfx24');
-            this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
-            Audio.stopMusic();
         }
+    }
+
+    launchNewBall() {
+        this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
+        this.ditto.open();
+    }
+
+    startNewBall() {
+        if (this.state === RED_FIELD_STATE.CAPTURE) {
+            this.interruptCapture();
+        } else if (this.state === RED_FIELD_STATE.EVOLUTION) {
+            this.interruptEvolution();
+        } else if (this.isTravelState()) {
+            this.interruptTravel();
+        }
+        this.interruptCave();
+        this.caveActive = false;
+        this.screen.restartSlotNumber();
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        //TODO probably not needed since it is closed on interrupt cave
+        this.closeWell();
+        this.ditto.close(true);
+        this.ditto.removeLauncherDoor();
+        this.setState(RED_FIELD_STATE.BALL_LOST);
+        //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
+        this.arrows.restart();
+        Audio.playSFX('sfx24');
+        this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
+        Audio.stopMusic();
     }
 
     interruptCapture() {
@@ -640,15 +666,19 @@ class RedField extends Field {
     }
 
     createNewBallOrEndStage() {
-        if (this.status.balls > 0) {
-            this.status.startNewBall()
+        if (this.status.balls > 0 || this.saverAgain.isExtra()) {
+            if (this.saverAgain.isExtra()) {
+                this.status.startExtraBall()
+                this.saverAgain.disableExtra();
+            } else {
+                this.status.startNewBall()
+            }
             this.caveDetectorManager.reset();
             this.multiplierManager.setInitialState();
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.pikachuSaverManager.reset();
-            this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
-            this.ditto.open();
+            this.launchNewBall();
             this.arrows.setCaptureArrowsLevel(2);
             this.setState(RED_FIELD_STATE.NEW_BALL_WAITING);
             Audio.playMusic('redField');
@@ -745,6 +775,8 @@ class RedField extends Field {
         this.screen.startEvolution(pokemon);
         Audio.playMusic('catchEmEvolutionModeRedField');
 
+        this.saverAgain.set60sSaver();
+
         this.evolutionManager.startEvolution(pokemon);
     }
 
@@ -768,7 +800,6 @@ class RedField extends Field {
 
     slotCallback = (index, subindex) => {
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
-        //TODO fill
         switch (index) {
             case SLOT_STATES.SMALL:
                 this.status.addPoints(subindex * 100, this.getBall());
@@ -785,16 +816,16 @@ class RedField extends Field {
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.SMALL_SAVER:
+                this.saverAgain.set30sSaver();
                 this.spitAndCloseWell();
-                //TODO
                 break;
             case SLOT_STATES.GREAT_SAVER:
+                this.saverAgain.set60sSaver();
                 this.spitAndCloseWell();
-                //TODO
                 break;
             case SLOT_STATES.ULTRA_SAVER:
                 this.spitAndCloseWell();
-                //TODO
+                this.saverAgain.set90sSaver();
                 break;
             case SLOT_STATES.PIKACHU:
                 this.pikachuSaverManager.superCharge();
@@ -807,8 +838,7 @@ class RedField extends Field {
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.EXTRA_BALL:
-                //TODO is this correct??? should just lit the again thing???
-                this.status.balls++;
+                this.saverAgain.setExtra();
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.CATCHEM_STARTER:
