@@ -1,3 +1,8 @@
+const SAVER_10_BLINK_RATE = 30;
+const SAVER_10_BLINK_HALF_RATE = SAVER_10_BLINK_RATE / 2;
+const SAVER_5_BLINK_RATE = 15;
+const SAVER_5_BLINK_HALF_RATE = SAVER_5_BLINK_RATE / 2;
+
 class SaverAgain {
 
     constructor() {
@@ -24,6 +29,14 @@ class SaverAgain {
         if (this.saverTimer.hasElapsed()) {
             //TODO flashing in an increase rate on 10 and then on 5 seconds
             this.saverSprite.ani.frame = 0;
+        } else if (this.saverTimer.hasLessThanMillisPending(5000)) {
+            frameCount % SAVER_5_BLINK_RATE > SAVER_5_BLINK_HALF_RATE ?
+                    this.saverSprite.ani.frame = 0 :
+                    this.saverSprite.ani.frame = 1;
+        } else if (this.saverTimer.hasLessThanMillisPending(10000)) {
+            frameCount % SAVER_10_BLINK_RATE > SAVER_10_BLINK_HALF_RATE ?
+                    this.saverSprite.ani.frame = 0 :
+                    this.saverSprite.ani.frame = 1;
         }
     }
 

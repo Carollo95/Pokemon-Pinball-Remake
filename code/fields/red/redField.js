@@ -17,10 +17,7 @@ const RED_FIELD_STATE = {
     EVOLUTION: 11
 }
 
-
 const RED_FIELD_BONUS_ORDER = [FIELD_BONUS.MOLE, FIELD_BONUS.GHOST, FIELD_BONUS.CLONE];
-
-
 
 class RedField extends Field {
 
