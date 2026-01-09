@@ -8,12 +8,13 @@ const RED_FIELD_STATE = {
     BALL_LOST: 2,
     GAME_OVER: 3,
     NEW_BALL_WAITING: 4,
-    CAPTURE: 5,
-    TRAVEL_LEFT: 6,
-    TRAVEL_RIGHT: 7,
-    TRAVEL_CAVE: 8,
-    EVOLUTION_CHOOSE_SCREEN: 9,
-    EVOLUTION: 10
+    SAVER_BALL_WAITING: 5,
+    CAPTURE: 6,
+    TRAVEL_LEFT: 7,
+    TRAVEL_RIGHT: 8,
+    TRAVEL_CAVE: 9,
+    EVOLUTION_CHOOSE_SCREEN: 10,
+    EVOLUTION: 11
 }
 
 
@@ -40,14 +41,21 @@ class RedField extends Field {
             }
         }
 
-        if (this.state === RED_FIELD_STATE.GAME_START || this.state === RED_FIELD_STATE.NEW_BALL_WAITING) {
+        if (this.state === RED_FIELD_STATE.GAME_START || this.isBallWaiting()) {
             this.launchNewBallWaiting();
+            if (this.state === RED_FIELD_STATE.GAME_START || this.state === RED_FIELD_STATE.NEW_BALL_WAITING) {
+                this.saverAgain.set30sSaver();
+            }
             this.setState(RED_FIELD_STATE.PLAYING);
         } else if (this.state === RED_FIELD_STATE.BALL_LOST) {
             this.progressBonusBallScreen();
         } else if (this.state !== RED_FIELD_STATE.EVOLUTION_CHOOSE_SCREEN && this.state !== RED_FIELD_STATE.BALL_LOST) {
             this.getFlippers().moveRightFlipper();
         }
+    }
+
+    isBallWaiting() {
+        return this.state === RED_FIELD_STATE.NEW_BALL_WAITING || this.state === RED_FIELD_STATE.SAVER_BALL_WAITING;
     }
 
     rightFlipperPressCallback = () => {
@@ -463,6 +471,8 @@ class RedField extends Field {
         this.voltorbsTargetArrow.setVisible(true);
         this.voltorbsTargetArrow.setActive(true);
 
+        this.saverAgain.set60sSaver();
+
         Audio.playMusic('catchEmEvolutionModeRedField');
     }
 
@@ -587,28 +597,40 @@ class RedField extends Field {
 
     checkForBallLoss() {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
-            if (this.state === RED_FIELD_STATE.CAPTURE) {
-                this.interruptCapture();
-            } else if (this.state === RED_FIELD_STATE.EVOLUTION) {
-                this.interruptEvolution();
-            } else if (this.isTravelState()) {
-                this.interruptTravel();
+            if (this.saverAgain.isSaver()) {
+                //TODO sfw or whatever
+                //TODO Extract common with start new ball
+                this.setState(RED_FIELD_STATE.SAVER_BALL_WAITING);
+                this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
+                this.ditto.open();
+            } else {
+                this.startNewBall();
             }
-            this.interruptCave();
-            this.caveActive = false;
-            this.screen.restartSlotNumber();
-            this.screen.setState(SCREEN_STATE.LANDSCAPE);
-            //TODO probably not needed since it is closed on interrupt cave
-            this.closeWell();
-            this.ditto.close(true);
-            this.ditto.removeLauncherDoor();
-            this.setState(RED_FIELD_STATE.BALL_LOST);
-            //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
-            this.arrows.restart();
-            Audio.playSFX('sfx24');
-            this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
-            Audio.stopMusic();
         }
+    }
+
+    startNewBall() {
+        if (this.state === RED_FIELD_STATE.CAPTURE) {
+            this.interruptCapture();
+        } else if (this.state === RED_FIELD_STATE.EVOLUTION) {
+            this.interruptEvolution();
+        } else if (this.isTravelState()) {
+            this.interruptTravel();
+        }
+        this.interruptCave();
+        this.caveActive = false;
+        this.screen.restartSlotNumber();
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        //TODO probably not needed since it is closed on interrupt cave
+        this.closeWell();
+        this.ditto.close(true);
+        this.ditto.removeLauncherDoor();
+        this.setState(RED_FIELD_STATE.BALL_LOST);
+        //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
+        this.arrows.restart();
+        Audio.playSFX('sfx24');
+        this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
+        Audio.stopMusic();
     }
 
     interruptCapture() {
@@ -644,8 +666,13 @@ class RedField extends Field {
     }
 
     createNewBallOrEndStage() {
-        if (this.status.balls > 0) {
-            this.status.startNewBall()
+        if (this.status.balls > 0 || this.saverAgain.isExtra()) {
+            if (this.saverAgain.isExtra()) {
+                this.status.startExtraBall()
+                this.saverAgain.disableExtra();
+            } else {
+                this.status.startNewBall()
+            }
             this.caveDetectorManager.reset();
             this.multiplierManager.setInitialState();
             this.leftTravelDiglett.reset();
@@ -749,6 +776,8 @@ class RedField extends Field {
         this.screen.startEvolution(pokemon);
         Audio.playMusic('catchEmEvolutionModeRedField');
 
+        this.saverAgain.set60sSaver();
+
         this.evolutionManager.startEvolution(pokemon);
     }
 
@@ -772,7 +801,6 @@ class RedField extends Field {
 
     slotCallback = (index, subindex) => {
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
-        //TODO fill
         switch (index) {
             case SLOT_STATES.SMALL:
                 this.status.addPoints(subindex * 100, this.getBall());
@@ -789,16 +817,16 @@ class RedField extends Field {
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.SMALL_SAVER:
+                this.saverAgain.set30sSaver();
                 this.spitAndCloseWell();
-                //TODO
                 break;
             case SLOT_STATES.GREAT_SAVER:
+                this.saverAgain.set60sSaver();
                 this.spitAndCloseWell();
-                //TODO
                 break;
             case SLOT_STATES.ULTRA_SAVER:
                 this.spitAndCloseWell();
-                //TODO
+                this.saverAgain.set90sSaver();
                 break;
             case SLOT_STATES.PIKACHU:
                 this.pikachuSaverManager.superCharge();
@@ -811,8 +839,7 @@ class RedField extends Field {
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.EXTRA_BALL:
-                //TODO is this correct??? should just lit the again thing???
-                this.status.balls++;
+                this.saverAgain.setExtra();
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.CATCHEM_STARTER:

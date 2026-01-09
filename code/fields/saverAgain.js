@@ -6,6 +6,8 @@ class SaverAgain {
         this.saverSprite.layer = SCENARIO_LAYER;
         this.saverSprite.addAnimation('saver', Asset.getAnimation('saver'));
         this.saverSprite.ani.playing = false;
+        //Fields start with the save active until the ball is launched
+        this.saverSprite.ani.frame = 1;
 
 
         this.againSprite = new Sprite(160, 501, 64, 16, 'none');
@@ -14,11 +16,13 @@ class SaverAgain {
         this.againSprite.addAnimation('again', Asset.getAnimation('again'));
         this.againSprite.ani.playing = false;
 
-        this.saverTimer = new EventTimer(0);
+        this.saverTimer = new EventTimer(Number.MAX_SAFE_INTEGER);
+        this.saverTimer.restart();
     }
 
     update() {
         if (this.saverTimer.hasElapsed()) {
+            //TODO flashing in an increase rate on 10 and then on 5 seconds
             this.saverSprite.ani.frame = 0;
         }
     }
@@ -27,8 +31,17 @@ class SaverAgain {
         this.setSaver(30000);
     }
 
+    set60sSaver() {
+        this.setSaver(60000);
+    }
+
+    set90sSaver() {
+        this.setSaver(90000);
+    }
+
     setSaver(time) {
         this.saverTimer.changeCooldown(time);
+        this.saverTimer.restart();
         this.saverSprite.ani.frame = 1;
     }
 
@@ -36,6 +49,16 @@ class SaverAgain {
         return this.saverSprite.ani.frame === 1;
     }
 
+    isExtra() {
+        return this.againSprite.ani.frame === 1;
+    }
 
+    setExtra() {
+        this.againSprite.ani.frame = 1;
+    }
+
+    disableExtra() {
+        this.againSprite.ani.frame = 0;
+    }
 
 }
