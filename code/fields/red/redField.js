@@ -461,7 +461,7 @@ class RedField extends Field {
         this.interruptTravel();
         //TODO close ditto here and on travel if its the case and then open it again
         this.setState(RED_FIELD_STATE.CAPTURE);
-        this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
+        this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnºupCallback));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
 
         this.screen.startCapture(this.arrows.captureArrowsLevel);
@@ -482,6 +482,7 @@ class RedField extends Field {
                 this.setState(RED_FIELD_STATE.PLAYING);
             });
             Audio.playMusic('redField');
+            this.voltorbsTargetArrow.setVisible(false);
         }
     }
 
