@@ -3,18 +3,18 @@ const RED_FIELD_EVOLUTION_TIMER_MS = 121000;
 const RED_FIELD_TRAVEL_TIMER_MS = 31000;
 
 const RED_FIELD_STATE = {
-    PLAYING: 0,
-    GAME_START: 1,
-    BALL_LOST: 2,
-    GAME_OVER: 3,
-    NEW_BALL_WAITING: 4,
-    SAVER_BALL_WAITING: 5,
-    CAPTURE: 6,
-    TRAVEL_LEFT: 7,
-    TRAVEL_RIGHT: 8,
-    TRAVEL_CAVE: 9,
-    EVOLUTION_CHOOSE_SCREEN: 10,
-    EVOLUTION: 11
+    PLAYING: "playing",
+    GAME_START: "game_start",
+    BALL_LOST: "ball_lost",
+    GAME_OVER: "game_over",
+    NEW_BALL_WAITING: "new_ball_waiting",
+    SAVER_BALL_WAITING: "saver_ball_waiting",
+    CAPTURE: "capture",
+    TRAVEL_LEFT: "travel_left",
+    TRAVEL_RIGHT: "travel_right",
+    TRAVEL_CAVE: "travel_cave",
+    EVOLUTION_CHOOSE_SCREEN: "evolution_choose_screen",
+    EVOLUTION: "evolution"
 }
 
 const RED_FIELD_BONUS_ORDER = [FIELD_BONUS.MOLE, FIELD_BONUS.GHOST, FIELD_BONUS.CLONE];
@@ -43,6 +43,7 @@ class RedField extends Field {
             if (this.state === RED_FIELD_STATE.GAME_START || this.state === RED_FIELD_STATE.NEW_BALL_WAITING) {
                 this.saverAgain.set30sSaver();
             }
+            //FIXME not always, could be anything
             this.setState(RED_FIELD_STATE.PLAYING);
         } else if (this.state === RED_FIELD_STATE.BALL_LOST) {
             this.progressBonusBallScreen();
@@ -595,15 +596,18 @@ class RedField extends Field {
     checkForBallLoss() {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
             if (this.saverAgain.isSaver()) {
-                //TODO sfw or whatever
-                //TODO Extract common with start new ball
                 this.setState(RED_FIELD_STATE.SAVER_BALL_WAITING);
-                this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
-                this.ditto.open();
+                this.launchNewBall();
+                this.playNewSaverBallEffects();
             } else {
                 this.startNewBall();
             }
         }
+    }
+
+    launchNewBall() {
+        this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
+        this.ditto.open();
     }
 
     startNewBall() {
@@ -675,8 +679,7 @@ class RedField extends Field {
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.pikachuSaverManager.reset();
-            this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
-            this.ditto.open();
+            this.launchNewBall();
             this.arrows.setCaptureArrowsLevel(2);
             this.setState(RED_FIELD_STATE.NEW_BALL_WAITING);
             Audio.playMusic('redField');

@@ -96,6 +96,11 @@ class Stage {
         return scenario;
     }
 
+    playNewSaverBallEffects(){
+        Audio.playSFX('sfx02');
+        EngineUtils.flashWhite();
+    }
+
 
     // --- helpers to attach common per-stage components ---
     attachControls(controlsInstance) { this.controls = controlsInstance; }
