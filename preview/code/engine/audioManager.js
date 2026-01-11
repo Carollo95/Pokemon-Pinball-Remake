@@ -361,7 +361,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx3E', 'assets/audio/sfx/SFX-3E')); //Bonus ball screen progress
     promises.push(audio.registerSFX('sfx3F', 'assets/audio/sfx/SFX-3F')); //Close gate on bonus level
     promises.push(audio.registerSFX('sfx40', 'assets/audio/sfx/SFX-40'));
-    promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41')); //Ball Wiggle
+    promises.push(audio.registerSFX('sfx41', 'assets/audio/sfx/SFX-41')); //Ball Wiggle AND Rubber band
     promises.push(audio.registerSFX('sfx42', 'assets/audio/sfx/SFX-42')); //Slots small
     promises.push(audio.registerSFX('sfx43', 'assets/audio/sfx/SFX-43')); //Slots saver, multiplier, evolution, pika...
     promises.push(audio.registerSFX('sfx44', 'assets/audio/sfx/SFX-44')); //Evolution item collected
