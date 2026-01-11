@@ -225,6 +225,9 @@ class RedField extends Field {
 
         this.saverAgain = new SaverAgain();
 
+        this.rightRubberBand = new RubberBand(235, 446, true);
+        this.leftRubberBand = new RubberBand(85, 446, false);
+
         Audio.playMusic('redField');
     }
 
@@ -523,6 +526,9 @@ class RedField extends Field {
         this.multiplierManager.update(this.getBall().sprite);
 
         this.pikachuSaverManager.update(this.getBall());
+
+        this.leftRubberBand.update(this.getBall().sprite);
+        this.rightRubberBand.update(this.getBall().sprite);    
 
         this.updateDitto();
         this.ballUpgraderManager.update(this.getBall());
