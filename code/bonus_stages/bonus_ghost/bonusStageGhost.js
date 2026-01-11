@@ -1,9 +1,3 @@
-const GRAVESTONE_HIT_POINTS = 1000;
-const GASTLY_DEFEATED_POINTS = 1000000;
-const HAUNTER_DEFEATED_POINTS = 5000000;
-const GENGAR_HIT_POINTS = 50000000;
-
-
 const GHOST_STAGE_TIME_MILLIS = 91000; //Duration of the ghost stage
 
 const GHOST_GRAVESTONE_HEIGHT = 26;
@@ -33,11 +27,11 @@ const GENGAR_SPAWN_Y = 120;
 
 class BonusStageGhost extends BonusStage {
 
-  constructor(status) {
-    super(status);
+  constructor(status, onEndCallback) {
+    super(status, onEndCallback);
 
     // create and attach timer so Stage API exposes it
-    this.attachTimer(new Timer(TIMER_POSITION_BONUS_HIGH_Y, GHOST_STAGE_TIME_MILLIS));
+    this.attachTimer(Timer.createBonusHighTimer(GHOST_STAGE_TIME_MILLIS));
 
     // canonical state/phase
     this.state = BONUS_STAGE_STATE.PLAYING;
@@ -68,6 +62,8 @@ class BonusStageGhost extends BonusStage {
     this.state = BONUS_STAGE_STATE.PLAYING;
 
     this.createBonusNewBallIfBallLoss(this.getOpenGateBackground());
+
+    EngineUtils.flashWhite();
   }
 
   createBonusScenarioGeometry() {
@@ -106,7 +102,7 @@ class BonusStageGhost extends BonusStage {
 
     if (this.state === BONUS_STAGE_STATE.WON || this.state === BONUS_STAGE_STATE.LOST) {
       if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-        // TODO: end stage sequence (return to main stage, award points, etc.)
+        super.finishStageSuccessfully();
       }
     }
   }
@@ -156,7 +152,7 @@ class BonusStageGhost extends BonusStage {
     this.millisSinceStageComplete = millis();
 
     const key = resultState === BONUS_STAGE_STATE.WON ? "gengar_stage_clear" : "end_gengar_stage";
-    this.getStageText().setText(I18NManager.translate(key), (STAGE_RESULT_SHOW_MILLS / 2));
+    this.getStageText().setScrollText(I18NManager.translate(key), "", (STAGE_RESULT_SHOW_MILLS / 2));
 
     Audio.playSFX('sfx2A');
   }
@@ -165,7 +161,7 @@ class BonusStageGhost extends BonusStage {
     for (const gravestone of this.gravestones) {
       if (gravestone.collide(this.getBallSprite())) {
         Audio.playSFX('sfx2F');
-        this.addPoints(GRAVESTONE_HIT_POINTS);
+        this.addPoints(POINTS.GRAVESTONE_HIT_POINTS);
         break;
       }
     }
@@ -232,7 +228,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   doOnGastlyHitCallback = () => {
-    this.addPoints(GASTLY_DEFEATED_POINTS);
+    this.addPoints(POINTS.GASTLY_DEFEATED_POINTS);
   }
 
   setupHaunterPhase() {
@@ -243,7 +239,7 @@ class BonusStageGhost extends BonusStage {
   }
 
   doOnHaunterHitCallback = () => {
-    this.addPoints(HAUNTER_DEFEATED_POINTS);
+    this.addPoints(POINTS.HAUNTER_DEFEATED_POINTS);
   }
 
   createDisabledGhost(clazz, x, y) {
@@ -329,16 +325,16 @@ class BonusStageGhost extends BonusStage {
 
     //TODO review this condition, why did I do this???
     if (this.gengar.isDefeated && this.gengar.isDefeated()) {
-      this.finishStageSuccessfully();
+      this.finishGhostStageSuccessfully();
     } else if (this.gengar.readyToRespawn && this.gengar.readyToRespawn()) {
-      this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y, () => {this.addPoints(GENGAR_HIT_POINTS);});
-      Audio.playSFX('sfx4E');
+      this.gengar = new Gengar(GENGAR_SPAWN_X, GENGAR_SPAWN_Y, () => { this.addPoints(POINTS.GENGAR_HIT_POINTS); });
+      Audio.playCry('094');
     }
 
     return this.gengar;
   }
 
-  finishStageSuccessfully() {
+  finishGhostStageSuccessfully() {
     Audio.stopMusic();
     this.getTimer().disable();
     this.getFlippers().disableFlippers();
@@ -357,7 +353,7 @@ class BonusStageGhost extends BonusStage {
     this.state = BONUS_STAGE_STATE.WON;
     this.millisSinceStageComplete = millis();
     const stageText = this.getStageText();
-    stageText.setText(I18NManager.translate("gengar_stage_clear"), (STAGE_RESULT_SHOW_MILLS / 2));
+    stageText.setScrollText(I18NManager.translate("gengar_stage_clear"), "", (STAGE_RESULT_SHOW_MILLS / 2));
   }
 
 }

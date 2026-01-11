@@ -1,19 +1,16 @@
-const SHIELD_HIT_POINTS = 1000000;
-const MEWTWO_HIT_POINTS = 50000000;
-
 const CLONE_STAGE_TIME_MILLIS = 121000;
 const MEWTWO_POS_X = 188;
 const MEWTWO_POS_Y = 136;
 
 class BonusStageClone extends BonusStage {
 
-  constructor(status) {
-    super(status);
+  constructor(status, onEndCallback) {
+    super(status, onEndCallback);
 
     this.state = BONUS_STAGE_STATE.PLAYING;
     this.mewtwo = new Mewtwo(MEWTWO_POS_X, MEWTWO_POS_Y, this.doOnCheckCreateShield, this.doOnMewtwoDefeat);
 
-    this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, CLONE_STAGE_TIME_MILLIS));
+    this.attachTimer(Timer.createBonusLowTimer(CLONE_STAGE_TIME_MILLIS));
 
     this.shields = [];
     this.createShields();
@@ -21,7 +18,7 @@ class BonusStageClone extends BonusStage {
 
   createShields() {
     for (const point of this.mewtwo.getShieldPoints()) {
-      this.shields.push(new Shield(point[0], point[1], () => { this.addPoints(SHIELD_HIT_POINTS); }));
+      this.shields.push(new Shield(point[0], point[1], () => { this.addPoints(POINTS.SHIELD_HIT_POINTS); }));
     }
   }
 
@@ -37,6 +34,8 @@ class BonusStageClone extends BonusStage {
     super.createBonusScenarioGeometry(true);
 
     Audio.playMusic('cloneStage');
+
+    EngineUtils.flashWhite();
   }
 
   draw() {
@@ -45,8 +44,7 @@ class BonusStageClone extends BonusStage {
 
     if (this.state === BONUS_STAGE_STATE.LOST || this.state === BONUS_STAGE_STATE.WON) {
       if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-        //TODO end stage
-        console.log("Finish!");
+        super.finishStageSuccessfully();
       }
     }
   }
@@ -81,7 +79,7 @@ class BonusStageClone extends BonusStage {
   onMewtwoHurtCallback = () => {
     this.destroyShields();
     this.createShields();
-    this.addPoints(MEWTWO_HIT_POINTS);
+    this.addPoints(POINTS.MEWTWO_HIT_POINTS);
   }
 
   getBackground() {

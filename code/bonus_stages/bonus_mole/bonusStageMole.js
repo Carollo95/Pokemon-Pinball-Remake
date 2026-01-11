@@ -1,6 +1,3 @@
-const DIGLETT_HIT_POINTS = 1000000;
-const DUGTRIO_HIT_POINTS = 50000000;
-
 const MOLE_PHASE = {
   DIGLETTS: 0,
   DUGTRIO: 1,
@@ -9,10 +6,9 @@ const MOLE_PHASE = {
 
 class BonusStageMole extends BonusStage {
 
-  constructor(status) {
-    super(status);
+  constructor(status, onEndCallback) {
+    super(status, onEndCallback);
     this.phase = MOLE_PHASE.DIGLETTS;
-    this.millisSinceStageComplete = 0;
 
     this.diglettMatrix = [];
     this.dugtrio = null;
@@ -23,9 +19,11 @@ class BonusStageMole extends BonusStage {
     super.createBonusScenarioGeometry(true);
 
     this.createDigletts();
-    this.dugtrio = new Dugtrio(188, 130, () => {this.addPoints(DUGTRIO_HIT_POINTS);});
+    this.dugtrio = new Dugtrio(188, 130, () => { this.addPoints(POINTS.DUGTRIO_HIT_POINTS); });
 
     Audio.playMusic('moleDiglett');
+
+    EngineUtils.flashWhite();
   }
 
   createDigletts() {
@@ -44,7 +42,7 @@ class BonusStageMole extends BonusStage {
     ];
 
     this.diglettMatrix = diglettConfig.map(([x, ys, delays]) =>
-      ys.map((y, i) => new Diglett(x, y, timeOfDiggletCreation, delays[i],  () => {this.addPoints(DIGLETT_HIT_POINTS);} ))
+      ys.map((y, i) => new Diglett(x, y, timeOfDiggletCreation, delays[i], () => { this.addPoints(POINTS.DIGLETT_HIT_POINTS); }))
     );
   }
 
@@ -53,7 +51,7 @@ class BonusStageMole extends BonusStage {
     this.drawStage();
 
     if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-      //TODO end stage
+      super.finishStageSuccessfully();
     }
   }
 

@@ -22,6 +22,7 @@ class Stage {
         this.timer = null;
         this.flippers = null;
         this.stageText = null;
+        this.controls = null;
     }
 
     replaceBackground(newBackgroundImage) { this.background = newBackgroundImage; }
@@ -66,26 +67,58 @@ class Stage {
 
         EngineUtils.drawWhiteFlash();
 
-        if (this.ball) this.ball.update();
+        if (this.getBall()) this.getBall().update();
+        if (this.getFlippers()) this.getFlippers().update();
+        if (this.getTimer()) this.getTimer().update();
+        if (this.getStageText()) this.getStageText().draw();
+        if (this.controls) this.controls.update();
     }
 
     addPoints(pts) {
         if (this.status && this.ball) {
             this.status.addPoints(pts, this.ball);
-        }else{
+        } else {
             console.log("Unable to add points, missing status or ball reference.");
         }
     }
 
+    addPointsAndShowText(text, pts, peristence = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
+        if (this.getStageText()) this.stageText.showTextWithPoints(text, pts, peristence, callback);
+        this.addPoints(pts);
+    }
+
+    createScenarioGeometry(positions) {
+        let scenario = new Sprite(positions, "static");
+        scenario.layer = SCENARIO_LAYER;
+        scenario.debug = DEBUG;
+        scenario.visible = DEBUG;
+
+        return scenario;
+    }
+
+    playNewSaverBallEffects(){
+        Audio.playSFX('sfx02');
+        EngineUtils.flashWhite();
+    }
+
+
     // --- helpers to attach common per-stage components ---
+    attachControls(controlsInstance) { this.controls = controlsInstance; }
     attachBall(ballInstance) { this.ball = ballInstance; }
     attachTimer(timerInstance) { this.timer = timerInstance; }
     attachFlippers(flippersInstance) { this.flippers = flippersInstance; }
     attachStageText(stageTextInstance) { this.stageText = stageTextInstance; }
 
+    getControls() { return this.controls; }
     getBall() { return this.ball; }
     getTimer() { return this.timer; }
     getFlippers() { return this.flippers; }
     getStageText() { return this.stageText; }
     getBallSprite() { return this.getBall().sprite; }
+
+    disableTimer() {
+        if (this.getTimer()) {
+            this.getTimer().disable();
+        }
+    }
 }

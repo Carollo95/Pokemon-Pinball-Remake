@@ -7,9 +7,15 @@ function preload() {
 }
 
 function setup() {
+  // Quick fix to reduce spritesheet bleeding
+  pixelDensity(1);
+  noSmooth();
   //Create canvas and asign it to its div on html
   let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   cnv.parent("canvas-container");
+  
+  // Ensure the 2D context doesn't smooth scaled images
+  drawingContext.imageSmoothingEnabled = false;
 
   //Start I18N
   let userLang = navigator.language || navigator.userLanguage;
@@ -19,7 +25,7 @@ function setup() {
   EngineUtils.initPhysics();
 
   // Start level
-  CheatEngine.startCloneStage();
+  CheatEngine.startRedField();
 }
 
 function draw() {

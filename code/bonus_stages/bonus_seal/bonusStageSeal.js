@@ -1,5 +1,3 @@
-const SEAL_HIT_POINTS = 1000000;
-
 const VICTORY_STAGE_PEARLS = 20;
 const SEAL_MULTIPLIER_THRESHOLD_MS = 3000;
 const SEAL_STAGE_TIME_MILLIS = 91000;
@@ -17,8 +15,8 @@ const SEAL_LAST_ACTION = {
 
 class BonusStageSeal extends BonusStage {
 
-    constructor(status) {
-        super(status);
+    constructor(status, onEndCallback) {
+        super(status, onEndCallback);
         this.millisSinceStageComplete = 0;
         this.state = BONUS_STAGE_STATE.PLAYING;
 
@@ -42,7 +40,7 @@ class BonusStageSeal extends BonusStage {
         this.createNewBonusBall(bonusGateBackground);
         this.applyBallLossPenalty();
     }
-    
+
     applyBallLossPenalty() {
         this.seal1.swim();
         this.seal2.swim();
@@ -57,9 +55,11 @@ class BonusStageSeal extends BonusStage {
         super.replaceBackground(Asset.getBackground('bonusSealBackgroundOpen'));
         super.createBonusScenarioGeometry();
 
-        this.attachTimer(new Timer(TIMER_POSITION_BONUS_LOW_Y, SEAL_STAGE_TIME_MILLIS));
+        this.attachTimer(Timer.createBonusLowTimer(SEAL_STAGE_TIME_MILLIS));
 
         Audio.playMusic('sealStage');
+
+        EngineUtils.flashWhite();
     }
 
     draw() {
@@ -68,8 +68,7 @@ class BonusStageSeal extends BonusStage {
 
         if (this.state === BONUS_STAGE_STATE.LOST || (this.state === BONUS_STAGE_STATE.WON && super.checkBonusBallLoss())) {
             if ((millis() - this.millisSinceStageComplete) > STAGE_RESULT_SHOW_MILLS) {
-                //TODO end stage
-                console.log("LEVEL COMPLETE");
+                super.finishStageSuccessfully();
             }
         }
     }
@@ -113,7 +112,7 @@ class BonusStageSeal extends BonusStage {
     onHurtCallback = () => {
         this.lastAction = SEAL_LAST_ACTION.SEAL_HIT;
         this.pearlCounter.addPearls(this.pearlMultiplier);
-        this.addPoints(this.pearlMultiplier * SEAL_HIT_POINTS);
+        this.addPoints(this.pearlMultiplier * POINTS.SEAL_HIT_POINTS);
         this.upgradePearlMultiplier();
         if (this.state === BONUS_STAGE_STATE.PLAYING && this.pearlCounter.getCount() >= VICTORY_STAGE_PEARLS) {
             this.clearStage();
@@ -124,7 +123,7 @@ class BonusStageSeal extends BonusStage {
         Audio.interruptWithSFX('sfx2A');
 
         this.state = BONUS_STAGE_STATE.WON;
-        this.getStageText().setText(I18NManager.translate("seal_stage_clear"), (STAGE_RESULT_SHOW_MILLS / 2));
+        this.getStageText().setScrollText(I18NManager.translate("seal_stage_clear"), "", (STAGE_RESULT_SHOW_MILLS / 2));
     }
 
     upgradePearlMultiplier() {

@@ -29,20 +29,32 @@ const SCENARIO_TOP_DOME_POINTS = [
 ];
 
 class BonusStage extends Stage {
-    constructor(status) {
+    constructor(status, onEndCallback) {
         super(status);
+        this.onEndCallback = onEndCallback;
 
         this.attachBall(Ball.spawnBonusBall());
         this.attachFlippers(createBonusFlippers());
         this.attachStageText(createBonusStageStatusBanner(this.status));
+        this.attachControls(new Controls(this.leftFlipperCallback, () => { }, this.rightFlipperCallback, ()=>{}, ()=> {}));
+
 
         this.gateIsOpen = true;
 
         this.state = BONUS_STAGE_STATE.PLAYING;
-        this.millisSinceStageComplete = 0;
+        this.millisSinceStageComplete = Number.MAX_SAFE_INTEGER;
 
         this.playableStages = [BONUS_STAGE_STATE.PLAYING];
         this.createFrame();
+    }
+
+    rightFlipperCallback = () => {
+        this.getFlippers().moveRightFlipper();
+    }
+
+
+    leftFlipperCallback = () => {
+        this.getFlippers().moveLeftFlipper();
     }
 
     createBonusScenarioGeometry(dome = false) {
@@ -93,15 +105,6 @@ class BonusStage extends Stage {
             [SCREEN_WIDTH, 212]]);
     }
 
-    createScenarioGeometry(positions) {
-        let scenario = new Sprite(positions, "static");
-        scenario.layer = SCENARIO_LAYER;
-        scenario.debug = DEBUG;
-        scenario.visible = DEBUG;
-
-        return scenario;
-    }
-
     createFrame() {
         const frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
         const bg = Asset.getBackground('bonusStageFrame');
@@ -112,10 +115,6 @@ class BonusStage extends Stage {
 
     draw() {
         super.draw();
-        // use getters so subclasses that override attachments still work
-        this.getFlippers().update();
-        this.getStageText().draw();
-
         if (this.scenarioTop.collide(this.getBall().sprite)) {
             Audio.playSFX('sfx08');
         }
@@ -136,8 +135,7 @@ class BonusStage extends Stage {
     }
 
     createNewBonusBall(bonusGateBackground) {
-        Audio.playSFX('sfx02');
-        EngineUtils.flashWhite();
+        this.playNewSaverBallEffects();
         this.attachBall(Ball.spawnBonusBall());
         this.openBonusGate(bonusGateBackground);
     }
@@ -177,16 +175,19 @@ class BonusStage extends Stage {
         this.state = resultState;
         this.millisSinceStageComplete = millis();
 
-        this.stageText.setText(I18NManager.translate(i18nKey), (STAGE_RESULT_SHOW_MILLS / 2));
+        this.stageText.setScrollText(I18NManager.translate(i18nKey), "", (STAGE_RESULT_SHOW_MILLS / 2));
 
         Audio.playSFX('sfx2A');
     }
-
 
     loseBonusStage() {
         this.flippers.disableFlippers();
         this.timer.stop();
         this.endStage(BONUS_STAGE_STATE.LOST);
+    }
+
+    finishStageSuccessfully() {
+        if (this.onEndCallback) this.onEndCallback();
     }
 
 }
