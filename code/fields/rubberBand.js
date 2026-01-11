@@ -1,12 +1,11 @@
 const RUBBER_BAND_ANGLE = 63;
-const RUBBER_BAND_RESTITUTION = 2;
+const RUBBER_BAND_RESTITUTION = 4;
 const RUBBER_BAND_ANIMATION_TIME = 200;
-const RUBBER_BAND_MAX_BOUNCE_ANGLE_DEG = 80;
+const RUBBER_BAND_MAX_BOUNCE_ANGLE_DEG = 70;
 
 class RubberBand {
-
     constructor(x, y, facingRight = true) {
-        this.sprite = new Sprite(x, y, 30, 56, 'none');
+        this.sprite = new Sprite(x, y, 25, 56, 'none');
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.addAnimation('rubberBand', Asset.getAnimation('redFieldRubberBand'));
@@ -15,15 +14,11 @@ class RubberBand {
 
         this.animationTimer = new EventTimer(RUBBER_BAND_ANIMATION_TIME);
 
-        this.collider = new Sprite(x, y, 35, 3, 'static');
+        this.collider = new Sprite(x, y - 5, 35, 3, 'static');
         this.collider.debug = DEBUG;
         this.collider.layer = SCENARIO_LAYER;
         this.collider.visible = DEBUG;
-        if (facingRight) {
-            this.collider.rotation = -RUBBER_BAND_ANGLE;
-        } else {
-            this.collider.rotation = RUBBER_BAND_ANGLE;
-        }
+        this.collider.rotation = facingRight ? -RUBBER_BAND_ANGLE : RUBBER_BAND_ANGLE;
     }
 
     update(ballSprite) {
@@ -34,41 +29,95 @@ class RubberBand {
             Audio.playSFX('sfx41');
         }
 
+        if (DEBUG) this.drawNormal();
+
         if (this.sprite.ani.frame === 1 && this.animationTimer.hasElapsed()) {
             this.sprite.ani.frame = 0;
         }
     }
 
+    colliderAngleRad() {
+        return this.collider.rotation * Math.PI / 180;
+    }
+
+    normal() {
+        const a = this.colliderAngleRad();
+        return { normalX: -Math.sin(a), normalY: Math.cos(a) };
+    }
+
+    thresholdCos() {
+        return Math.cos(RUBBER_BAND_MAX_BOUNCE_ANGLE_DEG * Math.PI / 180);
+    }
+
+    velocity(ballSprite) {
+        const velocityX = ballSprite.velocity.x, velocityY = ballSprite.velocity.y;
+        const velocity = Math.hypot(velocityX, velocityY);
+        return { velocityX, velocityY, velocity };
+    }
+
+    reflect(velocityX, velocityY, normalX, normalY, restitution) {
+        const dot = velocityX * normalX + velocityY * normalY;
+        let reflectionAngleX = velocityX - 2 * dot * normalX;
+        let reflectionAngleY = velocityY - 2 * dot * normalY;
+        reflectionAngleX *= restitution; reflectionAngleY *= restitution;
+        return { reflectionAngleX, reflectionAngleY, dot };
+    }
+
     isValidBounceAngle(ballSprite) {
-        const ang = this.collider.rotation * Math.PI / 180;
-        const nx = -Math.sin(ang), ny = Math.cos(ang);
-        const vx = ballSprite.velocity.x, vy = ballSprite.velocity.y;
-        const vmag = Math.hypot(vx, vy);
-        if (vmag === 0) return false;
-        const cosTheta = Math.abs((vx * nx + vy * ny) / vmag);
-        const thresholdCos = Math.cos(RUBBER_BAND_MAX_BOUNCE_ANGLE_DEG * Math.PI / 180);
-        return cosTheta >= thresholdCos;
+        const { normalX, normalY } = this.normal();
+        const { velocityX, velocityY, velocity } = this.velocity(ballSprite);
+        if (velocity === 0) return false;
+
+        const dot = velocityX * normalX + velocityY * normalY;
+        if (dot >= 0) return false;
+        const cosIncidence = (-dot) / velocity;
+        return cosIncidence >= this.thresholdCos();
     }
 
     bounceBall(ballSprite) {
-        const ang = this.collider.rotation * Math.PI / 180;
-        const nx = -Math.sin(ang), ny = Math.cos(ang);
-        const vx = ballSprite.velocity.x, vy = ballSprite.velocity.y;
+        const { normalX, normalY } = this.normal();
+        const { velocityX, velocityY } = this.velocity(ballSprite);
+        const { reflectionAngleX, reflectionAngleY } = this.reflect(velocityX, velocityY, normalX, normalY, RUBBER_BAND_RESTITUTION);
 
-        const vmag = Math.hypot(vx, vy);
-        if (vmag === 0) return;
+        ballSprite.pos.x += normalX * 2;
+        ballSprite.pos.y += normalY * 2;
 
-        const dot = vx * nx + vy * ny;
-        let rx = vx - 2 * dot * nx;
-        let ry = vy - 2 * dot * ny;
+        ballSprite.velocity.x = reflectionAngleX;
+        ballSprite.velocity.y = reflectionAngleY;
+    }
 
-        rx *= RUBBER_BAND_RESTITUTION;
-        ry *= RUBBER_BAND_RESTITUTION;
+    maxBounceAngleRad() {
+        return RUBBER_BAND_MAX_BOUNCE_ANGLE_DEG * Math.PI / 180;
+    }
 
-        ballSprite.pos.x += nx * 2;
-        ballSprite.pos.y += ny * 2;
+    drawRay(cx, cy, angle, len) {
+        line(cx, cy, cx + Math.cos(angle) * len, cy + Math.sin(angle) * len);
+    }
 
-        ballSprite.velocity.x = rx;
-        ballSprite.velocity.y = ry;
+    drawNormal() {
+        const { normalX, normalY } = this.normal();
+        const length = 30;
+
+        const normalAngle = Math.atan2(normalY, normalX);
+        const incidenceAngle = normalAngle + Math.PI;
+        const theta = this.maxBounceAngleRad();
+        const angle1 = incidenceAngle - theta;
+        const angle2 = incidenceAngle + theta;
+
+        push();
+        strokeWeight(2);
+
+        // borders
+        stroke(255, 200, 0);
+        this.drawRay(this.collider.pos.x, this.collider.pos.y, angle1, length);
+        this.drawRay(this.collider.pos.x, this.collider.pos.y, angle2, length);
+        noFill();
+        arc(this.collider.pos.x, this.collider.pos.y, length * 2, length * 2, angle1, angle2);
+
+        // conce center
+        stroke(255, 60, 60);
+        this.drawRay(this.collider.pos.x, this.collider.pos.y, incidenceAngle, length);
+
+        pop();
     }
 }
