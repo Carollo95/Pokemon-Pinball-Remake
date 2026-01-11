@@ -1,8 +1,23 @@
 const RED_FIELD_STATYU_COOLDOWN = 1000;
+const SENSOR_SPRITE_TIMER_DURATION = 200;
 
 class RedFieldStaryu {
 
     constructor() {
+
+        this.sensorSprite = new Sprite(113, 244, 42, 32, "none");
+        this.sensorSprite.debug = DEBUG;
+        this.sensorSprite.layer = SCENARIO_LAYER;
+        this.sensorSprite.addAnimation("staryuButton", Asset.getAnimation('redFieldStaryuButton'));
+        this.sensorSprite.ani.playing = false;
+
+        this.sensor = new Sprite(120, 246, 20, 20, "none");
+        this.sensor.debug = DEBUG;
+        this.sensor.layer = SCENARIO_LAYER;
+        this.sensor.visible = false;
+
+
+        this.sensorSpriteTimer = new EventTimer(SENSOR_SPRITE_TIMER_DURATION);
         this.sprite = new Sprite(110, 230, 48, 48, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
@@ -14,12 +29,7 @@ class RedFieldStaryu {
         this.miniSprite.layer = SCENARIO_LAYER;
         this.miniSprite.addAnimation("inactive", Asset.getAnimation('redFieldSmallStaryuInactive'));
         this.miniSprite.addAnimation("active", Asset.getAnimation('redFieldSmallStaryuActive'));
-
-        this.sensor = new Sprite(120, 246, 20, 20, "none");
-        this.sensor.debug = DEBUG;
-        this.sensor.layer = SCENARIO_LAYER;
-        this.sensor.visible = false;
-
+        
         this.active = false;
 
         this.leftBlocker = this.createLeftBlocker();
@@ -88,7 +98,13 @@ class RedFieldStaryu {
 
     update(ballSprite) {
         if (ballSprite.overlaps(this.sensor) && this.hasPassedCooldown()) {
+            this.sensorSprite.ani.frame = 1;
+            this.sensorSpriteTimer.restart();
             this.invert();
+        }
+
+        if (this.sensorSprite.ani.frame === 1 && this.sensorSpriteTimer.hasElapsed()) {
+            this.sensorSprite.ani.frame = 0;
         }
     }
 
