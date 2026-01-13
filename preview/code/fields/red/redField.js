@@ -274,7 +274,7 @@ class RedField extends Field {
     }
 
     onFullUpgradeAgainCallback = () => {
-        this.status.addPoints(POINTS.BALL_FULLY_UPGRADED);
+        EngineUtils.addPointsForBallHelper(POINTS.BALL_FULLY_UPGRADED);
     }
 
     addEvolutionExperienceCallback = () => {
@@ -306,7 +306,7 @@ class RedField extends Field {
     }
 
     onDiglettHitCallback = (isRight) => {
-        this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS);
+        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_TRAVEL_DIGLETT);
         if (this.state === RED_FIELD_STATE.EVOLUTION) {
             if (isRight) {
                 this.onEvolutionTargetArrowHit(this.rightDiglettTargetArrow);
@@ -451,7 +451,7 @@ class RedField extends Field {
     onBellsproutEatCallback = () => {
         //TODO this should increates on travel???
         this.status.bellsproutOnBall++;
-        this.status.addPoints(POINTS.BELLSPROUT_POINTS);
+        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_BELLSPROUT);
         if (this.state === RED_FIELD_STATE.TRAVEL_RIGHT) {
             this.startTravelCave();
         } else if (this.state === RED_FIELD_STATE.PLAYING && this.arrows.captureArrowsLevel >= 2) {
@@ -490,7 +490,7 @@ class RedField extends Field {
     }
 
     onVoltorbHitCallback = () => {
-        this.status.addPoints(POINTS.VOLTORB_BUMPER);
+        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_VOLTORB_BUMPER);
         if (this.state === RED_FIELD_STATE.CAPTURE && this.voltorbsTargetArrow.visible) {
             this.screen.flipCapture();
             this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
@@ -765,6 +765,7 @@ class RedField extends Field {
     }
 
     onDittoWellCallback = () => {
+        EngineUtils.addPointsForBallHelper(POINTS.EVOLUTION_HOLE);
         this.openEvolutionChooserScreen(this.onEvolutionTargetSelectedOnDitto);
     }
 
@@ -809,11 +810,11 @@ class RedField extends Field {
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
         switch (index) {
             case SLOT_STATES.SMALL:
-                this.status.addPoints(subindex * 100, this.getBall());
+                EngineUtils.addPointsForBallHelper(subindex * 100);
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.BIG:
-                this.status.addPoints(subindex * 1000000, this.getBall());
+                EngineUtils.addPointsForBallHelper(subindex * 1000000);
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.BONUS_MULTIPLIER:

@@ -50,7 +50,7 @@ class MultiplierManager {
             this.leftMultiplier.turnOff();
             this.rightMultiplier.blink();
 
-            this.status.addPoints(POINTS.RED_FIELD_LEFT_MULTIPLIER_HIT);
+            EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_MULTIPLIER_LIGHT_UP);
         }
     }
 
@@ -63,7 +63,7 @@ class MultiplierManager {
             this.rightMultiplier.blink();
             this.upgradeMultiplier();
 
-            this.status.addPoints(POINTS.RED_FIELD_RIGHT_MULTIPLIER_HIT);
+            EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_MULTIPLIER_MATCH_UP);
         }
     }
 

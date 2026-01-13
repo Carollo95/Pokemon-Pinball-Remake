@@ -240,4 +240,8 @@ const EngineUtils = {
         stage.setup();
     },
 
+    addPointsForBallHelper(points){
+        stage.status.addPoints(points, stage.ball);
+    }
+
 }

@@ -74,17 +74,9 @@ class Stage {
         if (this.controls) this.controls.update();
     }
 
-    addPoints(pts) {
-        if (this.status && this.ball) {
-            this.status.addPoints(pts, this.ball);
-        } else {
-            console.log("Unable to add points, missing status or ball reference.");
-        }
-    }
-
     addPointsAndShowText(text, pts, peristence = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {
         if (this.getStageText()) this.stageText.showTextWithPoints(text, pts, peristence, callback);
-        this.addPoints(pts);
+        EngineUtils.addPointsForBallHelper(pts);
     }
 
     createScenarioGeometry(positions) {
