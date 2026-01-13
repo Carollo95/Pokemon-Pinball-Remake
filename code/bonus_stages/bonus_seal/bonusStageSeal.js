@@ -112,7 +112,7 @@ class BonusStageSeal extends BonusStage {
     onHurtCallback = () => {
         this.lastAction = SEAL_LAST_ACTION.SEAL_HIT;
         this.pearlCounter.addPearls(this.pearlMultiplier);
-        this.addPoints(this.pearlMultiplier * POINTS.SEAL_HIT_POINTS);
+        EngineUtils.addPointsForBallHelper(this.pearlMultiplier * POINTS.SEAL_HIT_POINTS);
         this.upgradePearlMultiplier();
         if (this.state === BONUS_STAGE_STATE.PLAYING && this.pearlCounter.getCount() >= VICTORY_STAGE_PEARLS) {
             this.clearStage();

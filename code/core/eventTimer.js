@@ -15,6 +15,10 @@ class EventTimer {
         return millis() - this.lastActivationTime >= (this.cooldownTime + this.timeAdded);
     }
 
+    waitingToElapse(){
+        return !this.hasElapsed();
+    }
+
     hasLessThanMillisPending(ms) {
         const elapsed = millis() - this.lastActivationTime;
         const remaining = (this.cooldownTime + this.timeAdded) - elapsed;

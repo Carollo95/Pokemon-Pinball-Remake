@@ -54,6 +54,7 @@ class PikachuSaver {
                 this.lightningSprite.visible = true;
             } else {
                 this.sprite.ani.onComplete = () => {
+                    EngineUtils.addPointsForBallHelper(POINTS.PIKACHU_SAVER);
                     this.sprite.changeAnimation('idle');
                 }
             }

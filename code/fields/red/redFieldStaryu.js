@@ -115,6 +115,7 @@ class RedFieldStaryu {
     invert() {
         this.lastChange = millis();
         this.active = !this.active;
+        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_STARYU_SWITCH);
         Audio.playSFX('sfx07');
         if (this.active) {
             this.sprite.changeAnimation('active');

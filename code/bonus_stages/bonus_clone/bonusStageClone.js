@@ -18,7 +18,7 @@ class BonusStageClone extends BonusStage {
 
   createShields() {
     for (const point of this.mewtwo.getShieldPoints()) {
-      this.shields.push(new Shield(point[0], point[1], () => { this.addPoints(POINTS.SHIELD_HIT_POINTS); }));
+      this.shields.push(new Shield(point[0], point[1], () => { EngineUtils.addPointsForBallHelper(POINTS.MEWTWO_SHIELD_HIT_POINTS); }));
     }
   }
 
@@ -79,7 +79,7 @@ class BonusStageClone extends BonusStage {
   onMewtwoHurtCallback = () => {
     this.destroyShields();
     this.createShields();
-    this.addPoints(POINTS.MEWTWO_HIT_POINTS);
+    EngineUtils.addPointsForBallHelper(POINTS.MEWTWO_HIT_POINTS);
   }
 
   getBackground() {
