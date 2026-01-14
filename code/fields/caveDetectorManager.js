@@ -16,12 +16,13 @@ class CaveDetectorManager {
         this.detectorE.setCompanionDetector(this.detectorV);
         
         this.onOpenCaveCallback = onOpenCaveCallback;
+        this._blinking = false;
         this.blinkCooldown = new EventTimer(CAVE_DETECTOR_BLINK_DURATION);
     }
 
 
     update(ballSprite) {
-        if (this.blinkCooldown.waitingToElapse()) {
+        if (this._blinking) {
             let blinkActive = frameCount % CAVE_DETECTOR_BLINK_RATE > CAVE_DETECTOR_BLINK_HALF_RATE;
             this.detectorC.setActive(blinkActive);
             this.detectorA.setActive(blinkActive);
@@ -29,6 +30,7 @@ class CaveDetectorManager {
             this.detectorE.setActive(blinkActive);
 
             if(this.blinkCooldown.hasElapsed()) {
+                this._blinking = false;
                 this.onOpenCaveCallback();
                 this.reset();
             }
@@ -40,6 +42,7 @@ class CaveDetectorManager {
 
 
             if (this.detectorC.active && this.detectorA.active && this.detectorV.active && this.detectorE.active) {
+                this._blinking = true;
                 this.blinkCooldown.restart();
             }
         }
