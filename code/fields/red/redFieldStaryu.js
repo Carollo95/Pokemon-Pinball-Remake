@@ -61,8 +61,8 @@ class RedFieldStaryu {
     createCenterBlocker() {
         let centerBlocker = new Sprite([
             [144, 94],
-            [160, 89],
-            [175, 88],
+            [160, 90],
+            [183, 86],
             [175, 115],
             [160, 120],
             [144, 126],
