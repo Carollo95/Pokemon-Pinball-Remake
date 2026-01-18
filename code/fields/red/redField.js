@@ -123,7 +123,7 @@ class RedField extends Field {
         this.createNewBallOrEndStage();
     }
 
-    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false, pikachuSaverState = undefined, multiplierLevel = undefined) {
+    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false, pikachuSaverState = undefined, multiplierLevel = undefined, caveActive = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
         this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
@@ -143,7 +143,7 @@ class RedField extends Field {
         this.speedPad.push(new SpeedPad(89, 259));
 
         this.caveDetectorManager = new CaveDetectorManager(this.onOpenCaveCallback);
-        this.caveActive = false;
+        this.caveActive = caveActive;
 
         this.screen = new Screen(
             initialLandmark,
@@ -413,7 +413,7 @@ class RedField extends Field {
         allSprites.remove();
         stage = this;
         this.nextBonusLevelIndex++;
-        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true, this.pikachuSaverManager.getState());
+        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true, this.pikachuSaverManager.getState(), this.caveActive);
         EngineUtils.flashWhite();
     }
 
