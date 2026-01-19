@@ -65,6 +65,8 @@ const I18NManager = {
 
             "bonus_multiplier_times": "bonus multiplier ·",
 
+            "extra_ball": "extra ball",
+
             "bulbasaur": "bulbasaur",
             "ivysaur": "ivysaur",
             "venusaur": "venusaur",

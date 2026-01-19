@@ -529,7 +529,7 @@ class RedField extends Field {
         this.pikachuSaverManager.update(this.getBall());
 
         this.leftRubberBand.update(this.getBall().sprite);
-        this.rightRubberBand.update(this.getBall().sprite);    
+        this.rightRubberBand.update(this.getBall().sprite);
 
         this.updateDitto();
         this.ballUpgraderManager.update(this.getBall());
@@ -891,6 +891,13 @@ class RedField extends Field {
 
     setState(state) {
         this.state = state;
+    }
+
+    setExtraBall() {
+        if (!this.saverAgain.isExtra()) {
+            this.saverAgain.setExtra();
+            this.stageText.setScrollText(I18NManager.translate("extra_ball"),I18NManager.translate("extra_ball"));
+        }
     }
 
 }
