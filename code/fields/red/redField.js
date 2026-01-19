@@ -462,7 +462,6 @@ class RedField extends Field {
     startCaptureSequence() {
         this.interruptCave();
         this.interruptTravel();
-        //TODO close ditto here and on travel if its the case and then open it again
         this.setState(RED_FIELD_STATE.CAPTURE);
         this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
@@ -633,7 +632,6 @@ class RedField extends Field {
         this.ditto.close(true);
         this.ditto.removeLauncherDoor();
         this.setState(RED_FIELD_STATE.BALL_LOST);
-        //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
         this.arrows.restart();
         Audio.playSFX('sfx24');
         this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
@@ -713,7 +711,6 @@ class RedField extends Field {
     onTravelToLeft() {
         if (this.state === RED_FIELD_STATE.PLAYING) {
             this.interruptCave();
-            //TODO close ditto if open and then open it again if it was closed
             this.setState(RED_FIELD_STATE.TRAVEL_LEFT);
             this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
             this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);

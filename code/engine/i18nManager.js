@@ -1,6 +1,5 @@
 const I18NManager = {
     translations: {
-        //TODO nidorans need a new character
         "en": {
             "gengar_stage_clear": "gengar stage cleared",
             "end_gengar_stage": " end gengar stage ",
