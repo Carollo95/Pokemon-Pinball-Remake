@@ -144,6 +144,7 @@ class RedField extends Field {
 
         this.caveDetectorManager = new CaveDetectorManager(this.onOpenCaveCallback);
         this.caveActive = caveActive;
+        console.log("Cave active: " + this.caveActive);
 
         this.screen = new Screen(
             initialLandmark,
@@ -413,7 +414,7 @@ class RedField extends Field {
         allSprites.remove();
         stage = this;
         this.nextBonusLevelIndex++;
-        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true, this.pikachuSaverManager.getState(), this.caveActive);
+        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true, this.pikachuSaverManager.getState(), this.multiplierManager.multiplier ,this.caveActive);
         EngineUtils.flashWhite();
     }
 
