@@ -45,6 +45,8 @@ const I18NManager = {
             "flipped": "flipped",
             "pokemon_ran_away": "pokémon ran away",
 
+            "shoot_again": "shoot again",
+
             "start_training": "start training",
             "find_items": "find items",
             "pokemon_is_tired": "pokémon is tired",

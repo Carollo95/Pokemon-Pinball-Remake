@@ -119,8 +119,7 @@ class RedField extends Field {
     }
 
     onBonusScreenCompleteCallback = () => {
-        //TODO Shoot again text
-        this.createNewBallOrEndStage();
+        this.stageText.setScrollText(I18NManager.translate("shoot_again"), I18NManager.translate("shoot_again"), 1000, () => this.createNewBallOrEndStage());
     }
 
     setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false, pikachuSaverState = undefined, multiplierLevel = undefined, caveActive = false) {
