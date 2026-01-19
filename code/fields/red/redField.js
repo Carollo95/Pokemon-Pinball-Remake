@@ -144,8 +144,7 @@ class RedField extends Field {
 
         this.caveDetectorManager = new CaveDetectorManager(this.onOpenCaveCallback);
         this.caveActive = caveActive;
-        console.log("Cave active: " + this.caveActive);
-
+        
         this.screen = new Screen(
             initialLandmark,
             this.onCaptureThreeBallsCallback,
