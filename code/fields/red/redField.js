@@ -30,15 +30,6 @@ class RedField extends Field {
         this.getBall().launchFromSpawn();
     }
 
-    progressBonusBallScreen() {
-        if (this.ballBonusScreen.isVisible()) {
-            this.ballBonusScreen.progress();
-        }
-    }
-
-    onBonusScreenCompleteCallback = () => {
-        this.stageText.setScrollText(I18NManager.translate("shoot_again"), I18NManager.translate("shoot_again"), 1000, () => this.createNewBallOrEndStage());
-    }
 
     setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false, pikachuSaverState = undefined, multiplierLevel = undefined, caveActive = false) {
         super.setup(initialLandmark, arrowsState, spawnOnWell, pikachuSaverState, multiplierLevel, caveActive);
@@ -62,12 +53,12 @@ class RedField extends Field {
         this.voltorbs.push(new RedFieldVoltorb(182, 154, this.onVoltorbHitCallback));
         this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
 
-        this.targetArrows = [];
         this.voltorbsTargetArrow = new TargetArrow(130, 210, 6);
         this.leftDiglettTargetArrow = new TargetArrow(83, 364, 0);
         this.rightDiglettTargetArrow = new TargetArrow(238, 364, 1);
         this.leftMultiplierTargetArrow = new TargetArrow(96, 308, 4);
         this.rightMultiplierTargetArrow = new TargetArrow(224, 308, 5);
+        
         this.targetArrows.push(this.leftDiglettTargetArrow);
         this.targetArrows.push(this.rightDiglettTargetArrow);
         this.targetArrows.push(this.voltorbsTargetArrow);
@@ -93,7 +84,6 @@ class RedField extends Field {
             this.setState(FIELD_STATE.GAME_START);
         }
 
-
         this.evolutionItems.push(new EvolutionItem(97, 368));
         this.evolutionItems.push(new EvolutionItem(107, 325));
         this.evolutionItems.push(new EvolutionItem(133, 316));
@@ -111,38 +101,6 @@ class RedField extends Field {
         this.rightRubberBand = RedFieldRubberBand.createLeftRubberBand();
         this.leftRubberBand = RedFieldRubberBand.createRightRubberBand();
         
-    }
-
-    onOpenCaveCallback = () => {
-        this.caveActive = true;
-    }
-
-    addEvolutionExperienceCallback = () => {
-        this.screen.progressEvolutionAnimation();
-    }
-
-    onFullExperienceCallback = () => {
-        this.openWell(this.onEvolutionCompletedCallback);
-    }
-
-    onEvolutionCompletedCallback = () => {
-        this.getTimer().stop();
-        //TODO how many points on jackpot
-        let targetEvolution = this.screen.showTargetEvolution();
-        this.status.addPokemonEvolved(targetEvolution);
-        this.stageText.setScrollText(I18NManager.translate("it_evolved_into") + I18NManager.translate(targetEvolution.name), I18NManager.translate(targetEvolution.name), 1000, this.showAfterEvolutionJackpot);
-    }
-
-    showAfterEvolutionJackpot = () => {
-        Audio.stopMusic();
-        Audio.playSFX('sfx26');
-        this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 3000, this.finishEvolutionPhaseCallback);
-    }
-
-    finishEvolutionPhaseCallback = () => {
-        this.spitAndCloseWell();
-        this.screen.addPokeballsToList(2);
-        this.finishEvolutionPhase();
     }
 
     onDiglettHitCallback = (isRight) => {
@@ -265,6 +223,10 @@ class RedField extends Field {
 
         this.saverAgain.set60sSaver();
 
+        this.playCatchemEvolutionMusic();
+    }
+
+    playCatchemEvolutionMusic() {
         Audio.playMusic('catchEmEvolutionModeRedField');
     }
 
@@ -294,8 +256,6 @@ class RedField extends Field {
         super.draw();
 
         this.updateSensors();
-
-        this.targetArrows.forEach(ta => ta.update());
 
         this.leftTravelDiglett.update(this.getBall().sprite);
         this.rightTravelDiglett.update(this.getBall().sprite);
@@ -350,10 +310,6 @@ class RedField extends Field {
 
     ballInPositionToCloseDitto() {
         return this.getBall().getPositionY() > 240 && this.getBall().getPositionX() < 45;
-    }
-
-    shouldOpenEvolutionCave() {
-        return this.arrows.evolutionArrowsLevel === 3;
     }
 
     checkForBallLoss() {
@@ -423,7 +379,7 @@ class RedField extends Field {
             this.leftTravelDiglett.reset();
             this.rightTravelDiglett.reset();
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
-            Audio.playMusic('redField');
+            this.playMusic();
         }
     }
 

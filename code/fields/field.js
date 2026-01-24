@@ -77,6 +77,9 @@ class Field extends Stage {
         this.saverAgain = new SaverAgain();
 
         this.evolutionItems = [];
+
+        this.targetArrows = [];
+
         this.playMusic();
 
     }
@@ -99,6 +102,8 @@ class Field extends Stage {
 
         this.leftRubberBand.update(this.getBall().sprite);
         this.rightRubberBand.update(this.getBall().sprite);
+
+        this.targetArrows.forEach(ta => ta.update());
 
         if (this.state === FIELD_STATE.PLAYING || this.state === FIELD_STATE.CAPTURE || this.state === FIELD_STATE.EVOLUTION || this.isTravelState()) {
             this.checkForBallLoss();
@@ -260,6 +265,25 @@ class Field extends Stage {
         return new StartSlotMachineParams(this.pikachuSaverManager.isSuperCharged(), this.arrows.captureArrowsLevel, this.arrows.evolutionArrowsLevel, this.getBall().type, this.getNextBonusLevel(), this.saverAgain.isExtra());
     }
 
+    /**
+     * Show the result of the evolution jackpot
+    */
+    showAfterEvolutionJackpot = () => {
+        Audio.stopMusic();
+        Audio.playSFX('sfx26');
+        //TODO how much points on jackpot
+        this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 3000, this.finishEvolutionPhaseCallback);
+    }
+
+    /**
+     * Checks if the evolution cave should be opened
+     * @returns true if it should be opened, false otherwise
+     */
+    shouldOpenEvolutionCave() {
+        return this.arrows.evolutionArrowsLevel === 3;
+    }
+
+
     //Updates
 
     /**
@@ -296,6 +320,14 @@ class Field extends Stage {
         this.screen.update(this.getBall());
     }
 
+    /**
+     * Progresses the bonus ball screen if visible
+     */
+    progressBonusBallScreen() {
+        if (this.ballBonusScreen.isVisible()) {
+            this.ballBonusScreen.progress();
+        }
+    }
 
     //Callbacks
 
@@ -389,9 +421,45 @@ class Field extends Stage {
     captureOnPokemonAnimatedHitCallback = () => {
         this.addPointsAndShowText(I18NManager.translate("hit"), POINTS.CAPTURE_HIT);
     }
+
+
+    /**
+     * Callback to add experience during evolution phase
+     */
+    addEvolutionExperienceCallback = () => {
+        this.screen.progressEvolutionAnimation();
+    }
+
+    /**
+     * Callback for when 3 evolution items are gathered during evolution phase
+     */
+    onFullExperienceCallback = () => {
+        this.openWell(this.onEvolutionCompletedCallback);
+    }
+
+    /**
+     * Callback for when evolution mode is evolution animation is finished
+     */
+    onEvolutionCompletedCallback = () => {
+        this.getTimer().stop();
+        //TODO how many points on jackpot
+        let targetEvolution = this.screen.showTargetEvolution();
+        this.status.addPokemonEvolved(targetEvolution);
+        this.stageText.setScrollText(I18NManager.translate("it_evolved_into") + I18NManager.translate(targetEvolution.name), I18NManager.translate(targetEvolution.name), 1000, this.showAfterEvolutionJackpot);
+    }
+
+    /**
+     * Callback for when evolution mode is finished
+     */
+    finishEvolutionPhaseCallback = () => {
+        this.spitAndCloseWell();
+        this.screen.addPokeballsToList(2);
+        this.finishEvolutionPhase();
+    }
+
     /** 
      * Callback for when the cave is entered
-    */
+     */
     onCaveEnterCallback = () => {
         this.caveActive = false;
         this.status.caveShotsOnBall++;
@@ -498,6 +566,20 @@ class Field extends Stage {
         this.stageText.setScrollText(I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier, I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier);
     }
 
+
+    /**
+     * Callback for when the cave must be opened
+     */
+    onOpenCaveCallback = () => {
+        this.caveActive = true;
+    }
+
+    /**
+     * Callback for when the bonus ball screen is complete
+     */
+    onBonusScreenCompleteCallback = () => {
+        this.stageText.setScrollText(I18NManager.translate("shoot_again"), I18NManager.translate("shoot_again"), 1000, () => this.createNewBallOrEndStage());
+    }
 
     //Interface
 
