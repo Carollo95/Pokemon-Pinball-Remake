@@ -7,8 +7,7 @@ class RubberBand {
     constructor(x, y, facingRight = true) {
         this.sprite = new Sprite(x, y, 25, 56, 'none');
         this.sprite.debug = DEBUG;
-        this.sprite.layer = SCENARIO_LAYER;
-        this.sprite.addAnimation('rubberBand', Asset.getAnimation('redFieldRubberBand'));
+        this.sprite.layer = SCENARIO_LAYER;this.sprite.addAnimation('rubberBand', this.getAnimation());
         this.sprite.ani.playing = false;
         this.sprite.mirror.x = facingRight;
 
@@ -20,6 +19,8 @@ class RubberBand {
         this.collider.visible = DEBUG;
         this.collider.rotation = facingRight ? -RUBBER_BAND_ANGLE : RUBBER_BAND_ANGLE;
     }
+
+    getAnimation(){}
 
     update(ballSprite) {
         if (this.collider.collides(ballSprite) && this.isValidBounceAngle(ballSprite)) {
