@@ -1,11 +1,3 @@
-const BONUS_FOR_POKEMON_CAUGHT_ON_BALL = 500000;
-const BONUS_FOR_POKEMON_EVOLVED_ON_BALL = 750000;
-const BONUS_FOR_CAVE_SHOTS_ON_BALL = 25000;
-const BONUS_FOR_BELLSPROUT_ON_BALL = 75000;
-const BONUS_FOR_SPINNER_TURNS_ON_BALL = 100000;
-const BONUS_FOR_DUGTRIO_ON_BALL = 50000;
-//TODO move to points
-
 class StageStatus {
 
     constructor() {
@@ -24,27 +16,27 @@ class StageStatus {
     }
 
     getBonusForCaughtPokemonOnBall() {
-        return this.pokemonCaughtOnBall * BONUS_FOR_POKEMON_CAUGHT_ON_BALL;
+        return this.pokemonCaughtOnBall * POINTS.END_OF_BALL_BONUS_POKEMON_CAUGHT;
     }
 
     getBonusForEvolvedPokemonOnBall() {
-        return this.pokemonEvolvedOnBall * BONUS_FOR_POKEMON_EVOLVED_ON_BALL;
+        return this.pokemonEvolvedOnBall * POINTS.END_OF_BALL_BONUS_POKEMON_EVOLVED;
     }
 
     getBonusForBellsproutOnBall() {
-        return this.bellsproutOnBall * BONUS_FOR_BELLSPROUT_ON_BALL;
+        return this.bellsproutOnBall * POINTS.END_OF_BALL_BONUS_BELLSPROUT;
     }
 
     getBonusForDugtrioOnBall() {
-        return this.dugtrioOnBall * BONUS_FOR_DUGTRIO_ON_BALL;
+        return this.dugtrioOnBall * POINTS.END_OF_BALL_BONUS_DUGTRIO;
     }
 
     getBonusForCaveShotsOnBall() {
-        return this.caveShotsOnBall * BONUS_FOR_CAVE_SHOTS_ON_BALL;
+        return this.caveShotsOnBall * POINTS.END_OF_BALL_BONUS_CAVE_SHOT;
     }
 
     getBonusForSpinnerTurnsOnBall() {
-        return this.spinnerTurnsOnBall * BONUS_FOR_SPINNER_TURNS_ON_BALL;
+        return this.spinnerTurnsOnBall * POINTS.END_OF_BALL_BONUS_SPINNER_TURNS;
     }
 
     addPokemonCaught(pokemon) {
@@ -80,13 +72,8 @@ class StageStatus {
         this.fieldMultiplier = 0;
     }
 
-    addPoints(pts, ball) {
-        this.points += ball.multiplyPoints(pts);
-    }
-
-    addPoints(pts) {
-        //TODO should this always be with ball?
-        this.points += pts;
+    addPoints(pts, ball = null) {
+        this.points += ball ? ball.multiplyPoints(pts) : pts;
     }
 
 }

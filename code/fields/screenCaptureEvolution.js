@@ -105,6 +105,7 @@ class ScreenCaptureEvolution {
             this.captureAnimationWiggleBall(ball, 160);
 
             if(this.captureAnimationIs(220)){
+                Audio.stopMusic();
                 Audio.playSFX('sfx29');
             }
 

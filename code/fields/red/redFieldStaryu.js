@@ -61,8 +61,8 @@ class RedFieldStaryu {
     createCenterBlocker() {
         let centerBlocker = new Sprite([
             [144, 94],
-            [160, 89],
-            [175, 88],
+            [160, 90],
+            [183, 86],
             [175, 115],
             [160, 120],
             [144, 126],
@@ -115,6 +115,7 @@ class RedFieldStaryu {
     invert() {
         this.lastChange = millis();
         this.active = !this.active;
+        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_STARYU_SWITCH);
         Audio.playSFX('sfx07');
         if (this.active) {
             this.sprite.changeAnimation('active');

@@ -61,7 +61,7 @@ class AudioManager {
     // --- Playback Control ---
 
 
-    playMusic(id, { restart = true, fade = true } = {}) {
+    playMusic(id, { restart = true, fade = false } = {}) {
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
         }

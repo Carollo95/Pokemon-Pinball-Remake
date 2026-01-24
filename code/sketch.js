@@ -32,6 +32,11 @@ function draw() {
   EngineUtils.drawStage();
 }
 
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("red-field").addEventListener("click", CheatEngine.startRedField);
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("ghost-stage").addEventListener("click", CheatEngine.startGhostStage);
 });

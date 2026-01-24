@@ -1,6 +1,5 @@
 const I18NManager = {
     translations: {
-        //TODO nidorans need a new character
         "en": {
             "gengar_stage_clear": "gengar stage cleared",
             "end_gengar_stage": " end gengar stage ",
@@ -45,6 +44,8 @@ const I18NManager = {
             "flipped": "flipped",
             "pokemon_ran_away": "pokémon ran away",
 
+            "shoot_again": "shoot again",
+
             "start_training": "start training",
             "find_items": "find items",
             "pokemon_is_tired": "pokémon is tired",
@@ -64,6 +65,8 @@ const I18NManager = {
             "you_got_a": "you got a ",
 
             "bonus_multiplier_times": "bonus multiplier ·",
+
+            "extra_ball": "extra ball",
 
             "bulbasaur": "bulbasaur",
             "ivysaur": "ivysaur",

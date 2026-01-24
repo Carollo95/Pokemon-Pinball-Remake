@@ -119,11 +119,10 @@ class RedField extends Field {
     }
 
     onBonusScreenCompleteCallback = () => {
-        //TODO Shoot again text
-        this.createNewBallOrEndStage();
+        this.stageText.setScrollText(I18NManager.translate("shoot_again"), I18NManager.translate("shoot_again"), 1000, () => this.createNewBallOrEndStage());
     }
 
-    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false, pikachuSaverState = undefined, multiplierLevel = undefined) {
+    setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false, pikachuSaverState = undefined, multiplierLevel = undefined, caveActive = false) {
         RED_FIELD_GEOMETRY.forEach(p => this.createScenarioGeometry(p));
 
         this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
@@ -143,8 +142,8 @@ class RedField extends Field {
         this.speedPad.push(new SpeedPad(89, 259));
 
         this.caveDetectorManager = new CaveDetectorManager(this.onOpenCaveCallback);
-        this.caveActive = false;
-
+        this.caveActive = caveActive;
+        
         this.screen = new Screen(
             initialLandmark,
             this.onCaptureThreeBallsCallback,
@@ -240,6 +239,7 @@ class RedField extends Field {
 
     onCaveEnterCallback = () => {
         this.caveActive = false;
+        this.status.caveShotsOnBall++;
         this.screen.startSlotMachine(this.getStartSlotMachineParams());
     }
 
@@ -274,7 +274,7 @@ class RedField extends Field {
     }
 
     onFullUpgradeAgainCallback = () => {
-        this.status.addPoints(POINTS.BALL_FULLY_UPGRADED);
+        EngineUtils.addPointsForBallHelper(POINTS.BALL_FULLY_UPGRADED);
     }
 
     addEvolutionExperienceCallback = () => {
@@ -306,7 +306,7 @@ class RedField extends Field {
     }
 
     onDiglettHitCallback = (isRight) => {
-        this.status.addPoints(POINTS.TRAVEL_DIGLETT_POINTS);
+        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_TRAVEL_DIGLETT);
         if (this.state === RED_FIELD_STATE.EVOLUTION) {
             if (isRight) {
                 this.onEvolutionTargetArrowHit(this.rightDiglettTargetArrow);
@@ -412,7 +412,7 @@ class RedField extends Field {
         allSprites.remove();
         stage = this;
         this.nextBonusLevelIndex++;
-        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true, this.pikachuSaverManager.getState());
+        stage.setup(this.screen.screenLandscapes.currentLandmark, this.arrows.getState(), true, this.pikachuSaverManager.getState(), this.multiplierManager.multiplier ,this.caveActive);
         EngineUtils.flashWhite();
     }
 
@@ -451,7 +451,7 @@ class RedField extends Field {
     onBellsproutEatCallback = () => {
         //TODO this should increates on travel???
         this.status.bellsproutOnBall++;
-        this.status.addPoints(POINTS.BELLSPROUT_POINTS);
+        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_BELLSPROUT);
         if (this.state === RED_FIELD_STATE.TRAVEL_RIGHT) {
             this.startTravelCave();
         } else if (this.state === RED_FIELD_STATE.PLAYING && this.arrows.captureArrowsLevel >= 2) {
@@ -462,9 +462,8 @@ class RedField extends Field {
     startCaptureSequence() {
         this.interruptCave();
         this.interruptTravel();
-        //TODO close ditto here and on travel if its the case and then open it again
         this.setState(RED_FIELD_STATE.CAPTURE);
-        this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnºupCallback));
+        this.attachTimer(Timer.createFieldTimer(RED_FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
 
         this.screen.startCapture(this.arrows.captureArrowsLevel);
@@ -490,7 +489,7 @@ class RedField extends Field {
     }
 
     onVoltorbHitCallback = () => {
-        this.status.addPoints(POINTS.VOLTORB_BUMPER);
+        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_VOLTORB_BUMPER);
         if (this.state === RED_FIELD_STATE.CAPTURE && this.voltorbsTargetArrow.visible) {
             this.screen.flipCapture();
             this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
@@ -528,7 +527,7 @@ class RedField extends Field {
         this.pikachuSaverManager.update(this.getBall());
 
         this.leftRubberBand.update(this.getBall().sprite);
-        this.rightRubberBand.update(this.getBall().sprite);    
+        this.rightRubberBand.update(this.getBall().sprite);
 
         this.updateDitto();
         this.ballUpgraderManager.update(this.getBall());
@@ -633,7 +632,6 @@ class RedField extends Field {
         this.ditto.close(true);
         this.ditto.removeLauncherDoor();
         this.setState(RED_FIELD_STATE.BALL_LOST);
-        //TODO after ball loss, what happens with the capture level, goes to 0 or to 2?
         this.arrows.restart();
         Audio.playSFX('sfx24');
         this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
@@ -713,7 +711,6 @@ class RedField extends Field {
     onTravelToLeft() {
         if (this.state === RED_FIELD_STATE.PLAYING) {
             this.interruptCave();
-            //TODO close ditto if open and then open it again if it was closed
             this.setState(RED_FIELD_STATE.TRAVEL_LEFT);
             this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
             this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
@@ -765,6 +762,7 @@ class RedField extends Field {
     }
 
     onDittoWellCallback = () => {
+        EngineUtils.addPointsForBallHelper(POINTS.EVOLUTION_HOLE);
         this.openEvolutionChooserScreen(this.onEvolutionTargetSelectedOnDitto);
     }
 
@@ -809,11 +807,11 @@ class RedField extends Field {
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
         switch (index) {
             case SLOT_STATES.SMALL:
-                this.status.addPoints(subindex * 100, this.getBall());
+                EngineUtils.addPointsForBallHelper(subindex * 100);
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.BIG:
-                this.status.addPoints(subindex * 1000000, this.getBall());
+                EngineUtils.addPointsForBallHelper(subindex * 1000000);
                 this.spitAndCloseWell();
                 break;
             case SLOT_STATES.BONUS_MULTIPLIER:
@@ -889,6 +887,13 @@ class RedField extends Field {
 
     setState(state) {
         this.state = state;
+    }
+
+    setExtraBall() {
+        if (!this.saverAgain.isExtra()) {
+            this.saverAgain.setExtra();
+            this.stageText.setScrollText(I18NManager.translate("extra_ball"),I18NManager.translate("extra_ball"));
+        }
     }
 
 }

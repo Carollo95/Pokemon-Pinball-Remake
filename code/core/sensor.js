@@ -10,6 +10,7 @@ class Sensor {
 
     update(ballSprite) {
         if (this.sprite.overlaps(ballSprite)) {
+            EngineUtils.addPointsForBallHelper(POINTS.PASS_THROUGH_SWITCH);
             this.callback();
         }
     }
