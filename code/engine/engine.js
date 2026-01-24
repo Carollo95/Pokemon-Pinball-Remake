@@ -240,7 +240,13 @@ const EngineUtils = {
         stage.setup();
     },
 
-    addPointsForBallHelper(points){
+    startBlueField() {
+        allSprites.remove();
+        stage = new BlueField(EngineUtils.getGameStatus());
+        stage.setup();
+    },
+
+    addPointsForBallHelper(points) {
         stage.status.addPoints(points, stage.ball);
     }
 

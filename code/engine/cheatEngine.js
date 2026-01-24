@@ -35,36 +35,40 @@ const CheatEngine = {
         EngineUtils.startRedField();
     },
 
+    startBlueField() {
+        EngineUtils.startBlueField();
+    },
+
     startCapture() {
-        if ((stage instanceof RedField)) {
+        if ((stage instanceof Field)) {
             stage.onBellsproutEatCallback();
         }
     },
 
     flipCaptureTile() {
-        if ((stage instanceof RedField)) {
-            if (stage.state === RED_FIELD_STATE.CAPTURE && stage.screen.screenCapture.hideSprite.hideLevel < 6) {
+        if ((stage instanceof Field)) {
+            if (stage.state === FIELD_STATE.CAPTURE && stage.screen.screenCapture.hideSprite.hideLevel < 6) {
                 stage.screen.screenCapture.flipCapture();
             }
         }
     },
 
     hitCapture() {
-        if ((stage instanceof RedField)) {
-            if (stage.state === RED_FIELD_STATE.CAPTURE && stage.screen.screenCapture.animatedPokemon.visible) {
+        if ((stage instanceof Field)) {
+            if (stage.state === FIELD_STATE.CAPTURE && stage.screen.screenCapture.animatedPokemon.visible) {
                 stage.screen.screenCapture.onPokemonSpriteHit(stage.getBall());
             }
         }
     },
 
     blockBallLoss() {
-        if ((stage instanceof RedField)) {
+        if ((stage instanceof Field)) {
             stage.createScenarioGeometry([[110, 532], [207, 532], [207, 540], [110, 540], [110, 532]]);
         }
     },
 
     upgradeCaptureLevel() {
-        if ((stage instanceof RedField)) {
+        if ((stage instanceof Field)) {
             stage.arrows.upgradeCaptureArrows();
         }
     },
@@ -77,20 +81,20 @@ const CheatEngine = {
     },
 
     unstuckBall() {
-        if ((stage instanceof RedField) && stage && stage.getBall()) {
+        if ((stage instanceof Field) && stage && stage.getBall()) {
             stage.ball.sprite.pos.x = 150;
             stage.ball.sprite.pos.y = 300;
         }
     },
 
     upgradeBall() {
-        if ((stage instanceof RedField) && stage && stage.getBall()) {
+        if ((stage instanceof Field) && stage && stage.getBall()) {
             stage.getBall().upgrade();
         }
     },
 
     openCave() {
-        if (stage instanceof RedField) {
+        if (stage instanceof Field) {
             stage.caveDetectorManager.detectorE.setActive(true);
             stage.caveDetectorManager.detectorA.setActive(true);
             stage.caveDetectorManager.detectorV.setActive(true);

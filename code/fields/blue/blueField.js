@@ -1,6 +1,6 @@
-const RED_FIELD_BONUS_ORDER = [FIELD_BONUS.MOLE, FIELD_BONUS.GHOST, FIELD_BONUS.CLONE];
+const BLUE_FIELD_BONUS_ORDER = [FIELD_BONUS.CAT, FIELD_BONUS.SEAL, FIELD_BONUS.CLONE];
 
-class RedField extends Field {
+class BlueField extends Field {
 
     constructor(status) {
         super(status);
