@@ -35,9 +35,12 @@ class AudioManager {
     }
 
     registerMusic(id, path, { loop = true, baseVolume = MUSIC_VOLUME } = {}) {
-        return this._loadAudio(`${path}.mp3`).then(buffer => {
-            if (buffer) {
-                this.musicTracks[id] = { buffer, loop, baseVolume };
+        return Promise.all([
+            this._loadAudio(`${path}_intro.mp3`),
+            this._loadAudio(`${path}_loop.mp3`)
+        ]).then(([introBuffer, loopBuffer]) => {
+            if (introBuffer && loopBuffer) {
+                this.musicTracks[id] = { introBuffer, loopBuffer, baseVolume };
             }
         });
     }
@@ -70,7 +73,7 @@ class AudioManager {
             return;
         }
 
-        this.stopMusic({ fade });
+        this.stopMusic({ fade: false });
 
         const track = this.musicTracks[id];
         if (!track) {
@@ -78,29 +81,48 @@ class AudioManager {
             return;
         }
 
-        const source = this.audioContext.createBufferSource();
-        source.buffer = track.buffer;
-        source.loop = track.loop;
+        // Create intro source
+        const introSource = this.audioContext.createBufferSource();
+        introSource.buffer = track.introBuffer;
+        introSource.loop = false;
 
         const gainNode = this.audioContext.createGain();
+        gainNode.gain.value = track.baseVolume;
         gainNode.connect(this.musicGain);
 
-        source.connect(gainNode);
-        source.start(0);
+        introSource.connect(gainNode);
+        introSource.start(0);
 
-        if (fade) {
-            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(track.baseVolume, this.audioContext.currentTime + 1.0);
-        } else {
-            gainNode.gain.value = track.baseVolume;
-        }
+        // Store current music info
+        this.currentMusic = { id, introSource, gainNode, baseVolume: track.baseVolume };
 
-        source.onended = () => {
-            try { source.disconnect(); } catch {}
-            try { gainNode.disconnect(); } catch {}
+        // When intro ends, start loop
+        introSource.onended = () => {
+            try { introSource.disconnect(); } catch {}
+
+            // Check if music was stopped during intro
+            if (!this.currentMusic || this.currentMusic.id !== id) {
+                try { gainNode.disconnect(); } catch {}
+                return;
+            }
+
+            // Create loop source
+            const loopSource = this.audioContext.createBufferSource();
+            loopSource.buffer = track.loopBuffer;
+            loopSource.loop = true;
+
+            loopSource.connect(gainNode);
+            loopSource.start(0);
+
+            // Update current music reference
+            this.currentMusic.loopSource = loopSource;
+            delete this.currentMusic.introSource;
+
+            loopSource.onended = () => {
+                try { loopSource.disconnect(); } catch {}
+                try { gainNode.disconnect(); } catch {}
+            };
         };
-
-        this.currentMusic = { id, source, gainNode, baseVolume: track.baseVolume };
     }
 
     stopMusic({ fade = true } = {}) {
@@ -110,22 +132,18 @@ class AudioManager {
         this.currentMusic = null;
 
         const doStopAndDisconnect = () => {
-            try { music.source.stop(); } catch {}
-            try { music.source.disconnect(); } catch {}
+            if (music.introSource) {
+                try { music.introSource.stop(); } catch {}
+                try { music.introSource.disconnect(); } catch {}
+            }
+            if (music.loopSource) {
+                try { music.loopSource.stop(); } catch {}
+                try { music.loopSource.disconnect(); } catch {}
+            }
             try { music.gainNode.disconnect(); } catch {}
         };
 
-        if (fade) {
-            music.gainNode.gain.setValueAtTime(music.gainNode.gain.value, this.audioContext.currentTime);
-            music.gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + 1.0);
-            setTimeout(() => {
-                if (music.source.context && music.source.context.state !== 'closed') {
-                    doStopAndDisconnect();
-                }
-            }, 1000);
-        } else {
-            doStopAndDisconnect();
-        }
+        doStopAndDisconnect();
     }
 
     playSFX(id, cooldown = 0) {
@@ -236,7 +254,10 @@ class AudioManager {
         try { this.sfxGain.disconnect(); } catch {}
 
         for (const k in this.musicTracks) {
-            if (this.musicTracks[k]) this.musicTracks[k].buffer = null;
+            if (this.musicTracks[k]) {
+                this.musicTracks[k].introBuffer = null;
+                this.musicTracks[k].loopBuffer = null;
+            }
             delete this.musicTracks[k];
         }
         for (const k in this.sfx) {
