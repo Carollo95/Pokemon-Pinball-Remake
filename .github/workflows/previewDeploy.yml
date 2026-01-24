@@ -3,7 +3,7 @@ name: Deploy Preview Environment to GitHub Pages
 on:
   push:
     branches:
-      - feature/red-stage
+      - feature/blue-stage
 
 jobs:
   deploy-preview:
