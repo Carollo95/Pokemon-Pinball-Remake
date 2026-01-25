@@ -68,7 +68,7 @@ class Field extends Stage {
 
         this.well = new StageWell();
 
-        this.pikachuSaverManager = new PikachuSaverManager(this.status);
+        this.pikachuSaverManager = this.getPikachuSaverManager();
         this.pikachuSaverManager.setState(pikachuSaverState);
 
         this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionItems, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
@@ -585,6 +585,8 @@ class Field extends Stage {
     getRightMultiplierTarget() { }
 
     getBallUpgraderManager() { }
+
+    getPikachuSaverManager() { }
 
     /**
      * Disables the capture target arrow

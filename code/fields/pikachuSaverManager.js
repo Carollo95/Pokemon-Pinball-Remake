@@ -2,9 +2,12 @@ class PikachuSaverManager {
 
     constructor(status) {
         this.pikachuSaver = new PikachuSaver(this.onPikachuSaverDischargeCallback);
-        this.charger = new Charger(286, 180, 242, 144, this.onSpinnerMoveCallback, this.onChargerFullChargeCallback);
 
         this.status = status;
+    }
+
+    setCharger(charger) {
+        this.charger = charger;
     }
 
     update(ball) {
@@ -17,7 +20,7 @@ class PikachuSaverManager {
         this.charger.discharge();
     }
 
-    onSpinnerMoveCallback = () => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+    onSpinnerMoveCallback = () => {
         this.status.spinnerTurnsOnBall++;
         EngineUtils.addPointsForBallHelper(POINTS.SPINNER_SPIN);
     }
@@ -41,28 +44,40 @@ class PikachuSaverManager {
         this.status.activeThunder = false;
     }
 
-    superCharge(){
+    superCharge() {
         this.pikachuSaver.superCharge();
     }
 
-    isSuperCharged(){
+    isSuperCharged() {
         return this.pikachuSaver.isSuperCharged();
     }
 
-    setState(state){
-        if(state !== undefined){
+    setState(state) {
+        if (state !== undefined) {
             this.charger.setCharge(state.chargerCharge);
             this.pikachuSaver.charged = state.pikachuCharged;
             this.pikachuSaver.superCharged = state.pikachuSuperCharged;
-        } 
+        }
     }
 
-    getState(){
+    getState() {
         return {
             chargerCharge: this.charger.charge,
             pikachuCharged: this.pikachuSaver.charged,
             pikachuSuperCharged: this.pikachuSaver.superCharged
         };
+    }
+
+    static createRedFieldPikachuSaverManager(status) {
+        const manager = new PikachuSaverManager(status);
+        manager.setCharger(new RedFieldCharger(manager.onSpinnerMoveCallback, manager.onChargerFullChargeCallback));
+        return manager;
+    }
+
+    static createBlueFieldPikachuSaverManager(status) {
+        const manager = new PikachuSaverManager(status);
+        manager.setCharger(new BlueFieldCharger(manager.onSpinnerMoveCallback, manager.onChargerFullChargeCallback));
+        return manager;
     }
 
 }

@@ -307,6 +307,9 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('blueFieldBallUpgraderElement', 'assets/img/blue-field/ball_upgrader_element', 12, 26, 2, 7);
 
+  Asset.registerAnimationTemplate('blueFieldPaddle', 'assets/img/blue-field/paddle', 32, 16, 6);
+  Asset.registerAnimationTemplate('blueFieldChargeIndicator', 'assets/img/blue-field/charge_indicator', 36, 40, 17);
+
 
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);

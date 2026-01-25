@@ -12,7 +12,7 @@ class Charger {
         this.spinnerSprite.debug = DEBUG;
         this.spinnerSprite.layer = SCENARIO_LAYER;
 
-        this.spinnerSprite.addAnimation('paddle', Asset.getAnimation('redFieldPaddle'));
+        this.spinnerSprite.addAnimation('paddle', this.getPaddleAnimation());
         this.spinnerSprite.ani.playing = false;
         this._lastSpinnerFrame = 0;
         this.speed = 0;
@@ -21,7 +21,7 @@ class Charger {
         this.chargeIndicatorSprite.debug = DEBUG;
         this.chargeIndicatorSprite.layer = SCENARIO_LAYER;
 
-        this.chargeIndicatorSprite.addAnimation('chargeIndicator', Asset.getAnimation('redFieldChargeIndicator'));
+        this.chargeIndicatorSprite.addAnimation('chargeIndicator', this.getChargerIndicatorAnimation());
         this.chargeIndicatorSprite.ani.playing = false;
 
         this.charge = 0;

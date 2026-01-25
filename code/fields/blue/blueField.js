@@ -25,5 +25,6 @@ class BlueField extends Field {
     getLeftMultiplierTarget() { return BlueFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
     getRightMultiplierTarget() { return BlueFieldMultiplierTarget.createRightMultiplierTarget(this.onRightMultiplierHitCallback); }
     getBallUpgraderManager() { return BallUpgraderManager.createBlueFieldBallUpgraderManager();}
+    getPikachuSaverManager() { return PikachuSaverManager.createBlueFieldPikachuSaverManager(this.status); }
 
 }
