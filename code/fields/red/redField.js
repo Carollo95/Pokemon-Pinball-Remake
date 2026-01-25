@@ -509,5 +509,7 @@ class RedField extends Field {
         this.spitAndCloseWell();
     }
 
+    getLeftMultiplierTarget() { return RedFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
+    getRightMultiplierTarget() { return RedFieldMultiplierTarget.createRightMultiplierTarget(this.onRightMultiplierHitCallback); }
 
 }

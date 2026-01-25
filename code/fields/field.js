@@ -63,7 +63,7 @@ class Field extends Stage {
 
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
 
-        this.multiplierManager = new MultiplierManager(this.status, this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback, this.onMultiplierUpgradeCallback);
+        this.multiplierManager = new MultiplierManager(this.status, this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback, this.onMultiplierUpgradeCallback, this.getLeftMultiplierTarget(), this.getRightMultiplierTarget());
         this.multiplierManager.setMultiplierLevel(multiplierLevel);
 
         this.well = new StageWell();
@@ -582,6 +582,8 @@ class Field extends Stage {
     }
 
     //Interface
+    getLeftMultiplierTarget() { }
+    getRightMultiplierTarget() { }
 
     /**
      * Disables the capture target arrow

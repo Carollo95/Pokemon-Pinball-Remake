@@ -10,9 +10,9 @@ class MultiplierTarget {
         this.sprite = new Sprite(displayX, displayY, 14, 14, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
-        this.sprite.addAnimation('active', Asset.getAnimation('redFieldMultiplierActive'));
+        this.sprite.addAnimation('active', this.getActiveMultiplierAnimation());
         this.sprite.ani.playing = false;
-        this.sprite.addAnimation('inactive', Asset.getAnimation('redFieldMultiplier'));
+        this.sprite.addAnimation('inactive', this.getInactiveMultiplierAnimation());
         this.sprite.ani.playing = false;
 
         this.target = new Sprite(colliderX, colliderY, 6, 9, "none");
