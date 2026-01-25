@@ -240,8 +240,6 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('evolveMoon', 'assets/img/field/evolve_moon', 96, 16, 4);
   Asset.registerAnimationTemplate('evolveCable', 'assets/img/field/evolve_cable', 96, 16, 4);
 
-  Asset.registerAnimationTemplate('ballUpgraderElement', 'assets/img/field/ball_upgrader_element', 12, 26, 2, 7);
-
   Asset.registerAnimationTemplate('catch', 'assets/img/field/catch', 96, 16, 4);
   Asset.registerAnimationTemplate('capture-puff', 'assets/img/field/capture_puff', 96, 112, 4);
   Asset.registerAnimationTemplate('captured-ball', 'assets/img/field/captured_ball', 32, 16, 1);
@@ -300,10 +298,14 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
   Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 3);
 
+  Asset.registerAnimationTemplate('redFieldBallUpgraderElement', 'assets/img/red-field/ball_upgrader_element', 12, 26, 2, 7);
+
   Asset.registerAnimationTemplate('blueFieldRubberBand', 'assets/img/blue-field/rubber_band', 30, 56, 2);
 
   Asset.registerAnimationTemplate('blueFieldMultiplier', 'assets/img/blue-field/multiplier', 14, 14, 10);
   Asset.registerAnimationTemplate('blueFieldMultiplierActive', 'assets/img/blue-field/multiplier_active', 14, 14, 10);
+
+  Asset.registerAnimationTemplate('blueFieldBallUpgraderElement', 'assets/img/blue-field/ball_upgrader_element', 12, 26, 2, 7);
 
 
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);

@@ -511,5 +511,5 @@ class RedField extends Field {
 
     getLeftMultiplierTarget() { return RedFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
     getRightMultiplierTarget() { return RedFieldMultiplierTarget.createRightMultiplierTarget(this.onRightMultiplierHitCallback); }
-
+    getBallUpgraderManager() { return BallUpgraderManager.createRedFieldBallUpgraderManager();}
 }

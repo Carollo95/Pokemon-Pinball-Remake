@@ -72,7 +72,7 @@ class Field extends Stage {
         this.pikachuSaverManager.setState(pikachuSaverState);
 
         this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionItems, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
-        this.ballUpgraderManager = new BallUpgraderManager(116, 129, 160, 107, 204, 109);
+        this.ballUpgraderManager = this.getBallUpgraderManager();
 
         this.saverAgain = new SaverAgain();
 
@@ -94,7 +94,6 @@ class Field extends Stage {
         this.caveDetectorManager.update(this.getBall().sprite);
         this.updateCave();
 
-        //TODO blue field multiplier manager
         this.multiplierManager.update(this.getBall().sprite);
         this.pikachuSaverManager.update(this.getBall());
         //TODO blue field ball upgrader manager
@@ -584,6 +583,8 @@ class Field extends Stage {
     //Interface
     getLeftMultiplierTarget() { }
     getRightMultiplierTarget() { }
+
+    getBallUpgraderManager() { }
 
     /**
      * Disables the capture target arrow
