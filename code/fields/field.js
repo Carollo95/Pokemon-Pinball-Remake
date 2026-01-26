@@ -68,6 +68,14 @@ class Field extends Stage {
 
         this.well = new StageWell();
 
+        if (spawnOnWell) {
+            this.setState(FIELD_STATE.PLAYING);
+            this.onSpawnOnWell();
+            this.spitAndCloseWell();
+        } else {
+            this.setState(FIELD_STATE.GAME_START);
+        }
+
         this.pikachuSaverManager = this.getPikachuSaverManager();
         this.pikachuSaverManager.setState(pikachuSaverState);
 
@@ -79,6 +87,8 @@ class Field extends Stage {
         this.evolutionItems = [];
 
         this.targetArrows = [];
+
+        this.speedPad = [];
 
         this.playMusic();
 
@@ -340,6 +350,122 @@ class Field extends Stage {
         }
     }
 
+    /**
+     * Checks for the ball loss, if lossed starts new ball or launch new ball if saver is active
+     */
+    checkForBallLoss() {
+        if (this.ball.getPositionY() > SCREEN_HEIGHT) {
+            if (this.saverAgain.isSaver()) {
+                this.launchNewBall();
+                this.playNewSaverBallEffects();
+            } else {
+                this.startNewBall();
+            }
+        }
+    }
+
+    /**
+     * Interrupts the capture state
+     */
+    interruptCapture() {
+        if (this.state === FIELD_STATE.CAPTURE) {
+            this.disableTimer()
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            this.setState(FIELD_STATE.PLAYING);
+            this.onInterruptCapture();
+        }
+    }
+
+
+    /**
+     * Interrupts the evolution state
+     */
+    interruptEvolution() {
+        if (this.state === FIELD_STATE.EVOLUTION) {
+            this.disableTimer()
+            this.evolutionManager.interruptEvolution();
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            this.setState(FIELD_STATE.PLAYING);
+            this.onInterruptEvolution();
+        }
+    }
+
+    /**
+     * Creates a new ball or ends the stage if no balls are left
+     */
+    createNewBallOrEndStage() {
+        if (this.status.balls > 0 || this.saverAgain.isExtra()) {
+            if (this.saverAgain.isExtra()) {
+                this.status.startExtraBall()
+                this.saverAgain.disableExtra();
+            } else {
+                this.status.startNewBall()
+            }
+            this.caveDetectorManager.reset();
+            this.multiplierManager.setInitialState();
+            this.onCreateNewBall();
+            this.pikachuSaverManager.reset();
+            this.launchNewBall();
+            this.arrows.setCaptureArrowsLevel(2);
+            this.setState(FIELD_STATE.NEW_BALL_WAITING);
+            this.playMusic
+        } else {
+            this.setState(FIELD_STATE.GAME_OVER);
+            console.log("GAME OVER");
+        }
+    }
+
+    /**
+     *  Launchs an new ball waiting
+     */
+    launchNewBallWaiting() {
+        if (this.state === FIELD_STATE.GAME_START) {
+            this.screen.stopSpin();
+            this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText(), this.screen.getLandmarkText());
+        }
+        this._closeBallOnWayDown = true;
+        this.onLaunchNewBallWaiting();
+        this.getBall().launchFromSpawn();
+    }
+
+
+    /**
+     * Launchs a new ball
+     */
+    launchNewBall() {
+        this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
+        this.onLaunchNewBall();
+    }
+
+
+
+    /**
+     * Starts a new ball
+     */
+    startNewBall() {
+        if (this.state === FIELD_STATE.CAPTURE) {
+            this.interruptCapture();
+        } else if (this.state === FIELD_STATE.EVOLUTION) {
+            this.interruptEvolution();
+        } else if (this.isTravelState()) {
+            this.interruptTravel();
+        }
+        this.interruptCave();
+        this.caveActive = false;
+        this.screen.restartSlotNumber();
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        //TODO probably not needed since it is closed on interrupt cave
+        this.closeWell();
+        this.onStartNewBall();
+        this.setState(FIELD_STATE.BALL_LOST);
+        this.arrows.restart();
+        Audio.playSFX('sfx24');
+        this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
+        Audio.stopMusic();
+    }
+
+
+
     //Callbacks
 
     /**
@@ -600,16 +726,17 @@ class Field extends Stage {
 
     getPikachuSaverManager() { }
 
-    onLaunchNewBallWaiting() {}
+    onLaunchNewBallWaiting() { }
 
-    /**
-     * Disables the capture target arrow
-     */
+    onStartNewBall() { }
+
     disableCaptureTargetArrow() { }
 
-    /**
-     * Plays the field music
-     */
+    onInterruptCapture() { }
+    onInterruptEvolution() { }
+    onCreateNewBall() { }
+    onSpawnOnWell() { }
+
     playMusic() { }
 
 }
