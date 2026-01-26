@@ -282,6 +282,18 @@ class Field extends Stage {
         return this.arrows.evolutionArrowsLevel === 3;
     }
 
+    /**
+     * Launchs a new ball waiting on the launcher
+     */
+    launchNewBallWaiting() {
+        if (this.state === FIELD_STATE.GAME_START) {
+            this.screen.stopSpin();
+            this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText(), this.screen.getLandmarkText());
+        }
+        this._closeBallOnWayDown = true;
+        this.onLaunchNewBallWaiting();
+        this.getBall().launchFromSpawn();
+    }
 
     //Updates
 
@@ -587,6 +599,8 @@ class Field extends Stage {
     getBallUpgraderManager() { }
 
     getPikachuSaverManager() { }
+
+    onLaunchNewBallWaiting() {}
 
     /**
      * Disables the capture target arrow

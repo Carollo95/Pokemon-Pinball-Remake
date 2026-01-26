@@ -26,8 +26,12 @@ class RedField extends Field {
             this.stageText.setScrollText(I18NManager.translate("start_from") + this.screen.getLandmarkText(), this.screen.getLandmarkText());
         }
         this._closeBallOnWayDown = true;
-        this.ditto.removeLauncherDoor();
+        this.onLaunchNewBallWaiting();
         this.getBall().launchFromSpawn();
+    }
+
+    onLaunchNewBallWaiting(){
+        this.ditto.removeLauncherDoor();
     }
 
 
