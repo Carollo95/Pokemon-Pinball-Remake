@@ -103,6 +103,77 @@ const BLUE_FIELD_TOP_LEFT = [
     [0, 326]
 ];
 
+const BLUE_FIELD_CENTRAL_LEFT = [
+    [73, 300],
+    [51, 266],
+    [43, 230],
+    [43, 164],
+    [50, 129],
+    [63, 97],
+    [94, 64],
+    [94, 108],
+    [85, 120],
+    [78, 148],
+    [92, 168],
+    [138, 193],
+    [78, 193],
+    [67, 208],
+    [78, 223],
+    [138, 223],
+    [97, 251],
+    [88, 264],
+    [95, 287],
+
+    [73, 300]
+];
+
+const BLUE_FIELD_CENTRAL_RIGHT = [
+    [247, 300],
+    [269, 266],
+    [277, 230],
+    [277, 164],
+    [270, 129],
+    [257, 97],
+    [226, 64],
+    [226, 108],
+    [235, 120],
+    [242, 148],
+    [228, 168],
+    [181, 193],
+    [242, 193],
+    [253, 208],
+    [242, 223],
+    [181, 223],
+    [223, 251],
+    [232, 264],
+    [225, 287],
+
+    [247, 300]
+];
+
+
+const BLUE_FIELD_BALL_UPGRADE_SEPARATOR_LEFT = [
+    [130, 81],
+    [130, 50],
+    [135, 47],
+    [141, 50],
+    [141, 80],
+    [135, 84],
+    [130, 81]
+];
+
+
+const BLUE_FIELD_BALL_UPGRADE_SEPARATOR_RIGHT = [
+    [180, 81],
+    [180, 50],
+    [185, 47],
+    [191, 50],
+    [191, 80],
+    [185, 84],
+    [180, 81]
+];
+
+
 const BLUE_FIELD_GEOMETRY = [
     BLUE_FIELD_LEFT_PIKACHU_WELL_AND_POLIWAG,
     BLUE_FIELD_RIGHT_SCENARIO_BORDER,
@@ -110,6 +181,10 @@ const BLUE_FIELD_GEOMETRY = [
     BLUE_FIELD_TOP_LEFT,
     BLUE_FIELD_RIGHT_PIKACHU_WELL_AND_PSYDUCK,
     BLUE_FIELD_LEFT_SIDE_FLIPPERS,
-    BLUE_FIELD_RIGHT_SIDE_FLIPPERS
+    BLUE_FIELD_CENTRAL_LEFT,
+    BLUE_FIELD_CENTRAL_RIGHT,
+    BLUE_FIELD_RIGHT_SIDE_FLIPPERS,
+    BLUE_FIELD_BALL_UPGRADE_SEPARATOR_LEFT,
+    BLUE_FIELD_BALL_UPGRADE_SEPARATOR_RIGHT
 ];
 
