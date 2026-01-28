@@ -314,6 +314,11 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('blueFieldPaddle', 'assets/img/blue-field/paddle', 32, 16, 6);
   Asset.registerAnimationTemplate('blueFieldChargeIndicator', 'assets/img/blue-field/charge_indicator', 36, 40, 17);
 
+  Asset.registerAnimationTemplate('blueFieldCaptureArrows', 'assets/img/blue-field/capture_arrows', 30, 50, 4);
+  Asset.registerAnimationTemplate('blueFieldEvolutionArrows', 'assets/img/blue-field/evolution_arrows', 30, 50, 4);
+  Asset.registerAnimationTemplate('blueFieldBellsproutArrow', 'assets/img/blue-field/right_inner_arrow', 15, 10, 4);
+  Asset.registerAnimationTemplate('blueFieldLeftInnerArrow', 'assets/img/blue-field/left_inner_arrow', 15, 10, 4);
+  Asset.registerAnimationTemplate('blueFieldCaveArrow', 'assets/img/blue-field/cave_arrow', 26, 26, 4);
 
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);
