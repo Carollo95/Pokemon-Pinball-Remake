@@ -254,6 +254,10 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redArea1LandmarksBW', 'assets/img/landmarks/red_landmarks_area_1_bw', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea2Landmarks', 'assets/img/landmarks/red_landmarks_area_2', 96, 64, 4);
   Asset.registerAnimationTemplate('redArea2LandmarksBW', 'assets/img/landmarks/red_landmarks_area_2_bw', 96, 64, 4);
+  Asset.registerAnimationTemplate('blueArea1Landmarks', 'assets/img/landmarks/blue_landmarks_area_1', 96, 64, 7);
+  Asset.registerAnimationTemplate('blueArea1LandmarksBW', 'assets/img/landmarks/blue_landmarks_area_1_bw', 96, 64, 7);
+  Asset.registerAnimationTemplate('blueArea2Landmarks', 'assets/img/landmarks/blue_landmarks_area_2', 96, 64, 4);
+  Asset.registerAnimationTemplate('blueArea2LandmarksBW', 'assets/img/landmarks/blue_landmarks_area_2_bw', 96, 64, 4);
   Asset.registerAnimationTemplate('Area3Landmarks', 'assets/img/landmarks/landmarks_area_3', 96, 64, 1);
   Asset.registerAnimationTemplate('Area3LandmarksBW', 'assets/img/landmarks/landmarks_area_3_bw', 96, 64, 1);
 
@@ -317,18 +321,18 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('again', 'assets/img/field/again', 64, 16, 2);
   Asset.registerAnimationTemplate('saver', 'assets/img/field/saver', 64, 16, 2);
-  
+
   Asset.registerAnimationTemplate('slotCave', 'assets/img/slot-machine/slot_cave', 96, 64, 1);
   Asset.registerAnimationTemplate('slotsBW', 'assets/img/slot-machine/slots_bw', 96, 64, 18);
-  for(let i=0; i<18; i++){
-    Asset.registerAnimationTemplate('slots'+i, 'assets/img/slot-machine/slots_'+i, 96, 64, 2);
+  for (let i = 0; i < 18; i++) {
+    Asset.registerAnimationTemplate('slots' + i, 'assets/img/slot-machine/slots_' + i, 96, 64, 2);
   }
-  for(let i=1; i<=5; i++){
-    Asset.registerAnimationTemplate('multi'+i, 'assets/img/slot-machine/multi_'+i, 96, 64, 2);
+  for (let i = 1; i <= 5; i++) {
+    Asset.registerAnimationTemplate('multi' + i, 'assets/img/slot-machine/multi_' + i, 96, 64, 2);
   }
-  for(let i=1; i<=9; i++){
-    Asset.registerAnimationTemplate('big'+i, 'assets/img/slot-machine/big_'+i, 96, 64, 2);
-    Asset.registerAnimationTemplate('small'+i, 'assets/img/slot-machine/small_'+i, 96, 64, 2);
+  for (let i = 1; i <= 9; i++) {
+    Asset.registerAnimationTemplate('big' + i, 'assets/img/slot-machine/big_' + i, 96, 64, 2);
+    Asset.registerAnimationTemplate('small' + i, 'assets/img/slot-machine/small_' + i, 96, 64, 2);
   }
 
   Asset.registerAnimationTemplate('openWell', 'assets/img/field/open_well', 30, 30, 1);

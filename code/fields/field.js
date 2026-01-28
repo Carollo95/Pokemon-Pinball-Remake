@@ -50,6 +50,11 @@ class Field extends Stage {
         this.caveDetectorManager = new CaveDetectorManager(this.onOpenCaveCallback);
         this.caveActive = caveActive;
 
+        this.arrows = this.getArrows();
+        if (arrowsState != undefined) {
+            this.arrows.setState(arrowsState);
+        }
+
         this.screen = new Screen(
             initialLandmark,
             this.onCaptureThreeBallsCallback,
@@ -58,7 +63,8 @@ class Field extends Stage {
             this.onCaptureCompleteAnimationStartedCallback,
             this.onCapturePhaseFinishedCallback,
             this.captureOnPokemonAnimatedHitCallback,
-            this.slotCallback
+            this.slotCallback,
+            this.getScreenLandscapes()
         );
 
         this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
@@ -112,6 +118,8 @@ class Field extends Stage {
         this.leftRubberBand.update(this.getBall().sprite);
         this.rightRubberBand.update(this.getBall().sprite);
 
+        this.updateArrows();
+
         this.targetArrows.forEach(ta => ta.update());
 
         if (this.state === FIELD_STATE.PLAYING || this.state === FIELD_STATE.CAPTURE || this.state === FIELD_STATE.EVOLUTION || this.isTravelState()) {
@@ -130,9 +138,6 @@ class Field extends Stage {
     }
 
     //Controls
-    /**
-     * Callback for the left flipper is held down
-     */
     leftFlipperCallback = () => {
         if (this.controls.hasControlCallbackTimePassed()) {
             this.controls.restartPressCallback();
@@ -145,9 +150,6 @@ class Field extends Stage {
         }
     }
 
-    /**
-     * Callback for the center button
-     */
     centerButtonCallback = () => {
         if (this.controls.hasControlCallbackTimePassed()) {
             this.controls.restartPressCallback();
@@ -157,9 +159,6 @@ class Field extends Stage {
         }
     }
 
-    /**
-     * Callback for the right flipper is held down
-     */
     rightFlipperCallback = () => {
         if (this.controls.hasControlCallbackTimePassed()) {
             this.controls.restartPressCallback();
@@ -181,18 +180,12 @@ class Field extends Stage {
         }
     }
 
-    /**
-     * Callback for the left flipper is pressed
-     */
     leftFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceLeft();
         this.pikachuSaverManager.doOnLeftFlipper();
         this.caveDetectorManager.shiftLeft();
     }
 
-    /**
-     * Callback for the right flipper is pressed
-     */
     rightFlipperPressCallback = () => {
         this.ballUpgraderManager.displaceRight();
         this.pikachuSaverManager.doOnRightFlipper();
@@ -201,82 +194,46 @@ class Field extends Stage {
     }
 
     //Utils
-    /**
-     * Checks if the ball is waiting on the ball launcher
-     * @returns true if it is waiting, false otherwise
-     */
     ballIsWaitingOnLauncher() {
         return this.getBall().sprite.pos.x > 330 && this.getBall().sprite.vel.y === 0;
     }
 
-    /**
-     * Sets the new state of the field
-     * @param {*} state  the new state to set
-     */
     setState(state) {
         this.state = state;
     }
 
-    /**
-     * Returns the next bonus stage
-     * @returns the next bonus stage
-     */
     getNextBonusLevel() {
         return this.bonusStages[this.nextBonusLevelIndex % this.bonusStages.length];
     }
 
-    /**
-     * Checks if the current state is a travel state
-     * @returns true if it is a travel state, false otherwise
-     */
     isTravelState() {
         return this.state === FIELD_STATE.TRAVEL_LEFT || this.state === FIELD_STATE.TRAVEL_RIGHT || this.state === FIELD_STATE.TRAVEL_CAVE;
     }
 
-    /**
-     * Opens the well
-     * @param {*} callback the callback for when the well captures an arrow 
-     */
     openWell(callback) {
         this.well.open(callback);
         this.arrows.turnOnCaveArrow();
     }
 
-    /**
-     * Closes the well
-     */
     closeWell() {
         this.well.close();
         this.arrows.turnOffCaveArrow();
     }
 
-    /**
-     * Spits the ball from the well and closes it
-     */
     spitAndCloseWell() {
         this.well.spitBall(this.getBall());
         this.arrows.turnOffCaveArrow();
     }
 
-    /**
-     * Interrupts the cave state
-     */
     interruptCave() {
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
         this.well.close();
     }
 
-    /**
-    * Gets the parameters for starting the slot machine
-    * @returns The starting slots for the slot machine
-     */
     getStartSlotMachineParams() {
         return new StartSlotMachineParams(this.pikachuSaverManager.isSuperCharged(), this.arrows.captureArrowsLevel, this.arrows.evolutionArrowsLevel, this.getBall().type, this.getNextBonusLevel(), this.saverAgain.isExtra());
     }
 
-    /**
-     * Show the result of the evolution jackpot
-    */
     showAfterEvolutionJackpot = () => {
         Audio.stopMusic();
         Audio.playSFX('sfx26');
@@ -284,17 +241,10 @@ class Field extends Stage {
         this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 3000, this.finishEvolutionPhaseCallback);
     }
 
-    /**
-     * Checks if the evolution cave should be opened
-     * @returns true if it should be opened, false otherwise
-     */
     shouldOpenEvolutionCave() {
         return this.arrows.evolutionArrowsLevel === 3;
     }
 
-    /**
-     * Launchs a new ball waiting on the launcher
-     */
     launchNewBallWaiting() {
         if (this.state === FIELD_STATE.GAME_START) {
             this.screen.stopSpin();
@@ -305,11 +255,30 @@ class Field extends Stage {
         this.getBall().launchFromSpawn();
     }
 
+        startTravelCave() {
+        this.setState(FIELD_STATE.TRAVEL_CAVE);
+        this.screen.setTravelDirection(TRAVEL_DIRECTION.CAVE);
+        this.arrows.setTravel(TRAVEL_DIRECTION.CAVE);
+        this.openWell(this.onTravelCaveCallback);
+    }
+
+
+
+     interruptTravel() {
+        if (this.isTravelState()) {
+            this.disableTimer()
+            this.closeWell();
+            this.arrows.resetFromTravel();
+            this.setState(FIELD_STATE.PLAYING);
+            this.resetTravelTriggers();
+            this.screen.setState(SCREEN_STATE.LANDSCAPE);
+            this.playMusic();
+        }
+    }
+
+
     //Updates
 
-    /**
-     * Updates the cave state 
-     */
     updateCave() {
         if (this.state === FIELD_STATE.PLAYING && this.caveActive && this.well.isClosed()) {
             this.screen.showCaveStart();
@@ -317,16 +286,10 @@ class Field extends Stage {
         }
     }
 
-    /**
-     * Updates the arrows
-     */
     updateArrows() {
         this.arrows.update(this.state !== FIELD_STATE.CAPTURE && this.state !== FIELD_STATE.EVOLUTION);
     }
 
-    /**
-     * Sets active the extra ball
-     */
     setExtraBall() {
         if (!this.saverAgain.isExtra()) {
             this.saverAgain.setExtra();
@@ -334,25 +297,16 @@ class Field extends Stage {
         }
     }
 
-    /**
-     * Updates the screen
-     */
     updateScreen() {
         this.screen.update(this.getBall());
     }
 
-    /**
-     * Progresses the bonus ball screen if visible
-     */
     progressBonusBallScreen() {
         if (this.ballBonusScreen.isVisible()) {
             this.ballBonusScreen.progress();
         }
     }
 
-    /**
-     * Checks for the ball loss, if lossed starts new ball or launch new ball if saver is active
-     */
     checkForBallLoss() {
         if (this.ball.getPositionY() > SCREEN_HEIGHT) {
             if (this.saverAgain.isSaver()) {
@@ -364,9 +318,6 @@ class Field extends Stage {
         }
     }
 
-    /**
-     * Interrupts the capture state
-     */
     interruptCapture() {
         if (this.state === FIELD_STATE.CAPTURE) {
             this.disableTimer()
@@ -377,9 +328,6 @@ class Field extends Stage {
     }
 
 
-    /**
-     * Interrupts the evolution state
-     */
     interruptEvolution() {
         if (this.state === FIELD_STATE.EVOLUTION) {
             this.disableTimer()
@@ -390,9 +338,6 @@ class Field extends Stage {
         }
     }
 
-    /**
-     * Creates a new ball or ends the stage if no balls are left
-     */
     createNewBallOrEndStage() {
         if (this.status.balls > 0 || this.saverAgain.isExtra()) {
             if (this.saverAgain.isExtra()) {
@@ -403,7 +348,7 @@ class Field extends Stage {
             }
             this.caveDetectorManager.reset();
             this.multiplierManager.setInitialState();
-            this.onCreateNewBall();
+            this.resetTravelTriggers();
             this.pikachuSaverManager.reset();
             this.launchNewBall();
             this.arrows.setCaptureArrowsLevel(2);
@@ -415,9 +360,6 @@ class Field extends Stage {
         }
     }
 
-    /**
-     *  Launchs an new ball waiting
-     */
     launchNewBallWaiting() {
         if (this.state === FIELD_STATE.GAME_START) {
             this.screen.stopSpin();
@@ -429,19 +371,13 @@ class Field extends Stage {
     }
 
 
-    /**
-     * Launchs a new ball
-     */
     launchNewBall() {
         this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
-        this.onLaunchNewBall();
+        this.resetTravelTriggers();
     }
 
 
 
-    /**
-     * Starts a new ball
-     */
     startNewBall() {
         if (this.state === FIELD_STATE.CAPTURE) {
             this.interruptCapture();
@@ -465,28 +401,29 @@ class Field extends Stage {
     }
 
 
+    finishEvolutionPhase() {
+        this.getTimer().disable();
+        this.setState(FIELD_STATE.PLAYING);
+        this.onFinishEvolutionPhase();
+        this.arrows.resetEvolutionArrows();
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        this.playMusic();
+    }
+
+
 
     //Callbacks
 
-    /**
-     * Callback for when the ball is upgraded while it is already a fully upgraded
-     */
     onFullUpgradeAgainCallback = () => {
         EngineUtils.addPointsForBallHelper(POINTS.BALL_FULLY_UPGRADED);
     }
 
 
-    /**
-     * Callback for when there are three captured balls
-     */
     onCaptureThreeBallsCallback = () => {
         this.screen.goToBonusScreen(this.getNextBonusLevel());
         this.openWell(this.goToBonusStageCallback);
     }
 
-    /**
-     * Callback to go to the next bonus stage
-     */
     goToBonusStageCallback = () => {
         //TODO scroll text "go to X stage" and SFX
         let nextLevel = this.getNextBonusLevel();
@@ -503,9 +440,6 @@ class Field extends Stage {
         }
     }
 
-    /**
-     * Callback for when coming back from a bonus stage
-     */
     onBackFromBonusStageCallback = () => {
         allSprites.remove();
         stage = this;
@@ -514,69 +448,41 @@ class Field extends Stage {
         EngineUtils.flashWhite();
     }
 
-    /**
-     * Callback for the capture state when the capture animation starts
-     */
     onCaptureStartCaptureAnimationCallback = () => {
         this.disableTimer()
     }
 
-    /**
-     * Callback for the capture state when the animated sprite phase starts
-     */
     onCaptureStartAnimatedSpritePhaseCallback = () => {
         this.disableCaptureTargetArrow();
     }
 
-    /**
-     * Callback for when the capture complete animation starts
-     * @param {*} pokemonCaught the instance of the caught pokemon
-     */
     onCaptureCompleteAnimationStartedCallback = (pokemonCaught) => {
         //TODO how many points on jackpot
         this.stageText.setScrollText(I18NManager.translate("you_got_a") + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name), 1000, this.showAfterCaptureJackpot);
         this.status.addPokemonCaught(pokemonCaught);
     }
 
-    /**
-     * Callback to show jackpot after capture animation is complete
-     */
     showAfterCaptureJackpot = () => {
         this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 1000);
     }
 
-    /**
-     * Callback for when the capture phase is finished
-     */
     onCapturePhaseFinishedCallback = () => {
         this.setState(FIELD_STATE.PLAYING);
         this.playMusic();
     }
-    /**
-     * Callback for when the pokemon animated sprite is hit
-     */
     captureOnPokemonAnimatedHitCallback = () => {
         this.addPointsAndShowText(I18NManager.translate("hit"), POINTS.CAPTURE_HIT);
     }
 
 
-    /**
-     * Callback to add experience during evolution phase
-     */
     addEvolutionExperienceCallback = () => {
         this.screen.progressEvolutionAnimation();
     }
 
-    /**
-     * Callback for when 3 evolution items are gathered during evolution phase
-     */
     onFullExperienceCallback = () => {
         this.openWell(this.onEvolutionCompletedCallback);
     }
 
-    /**
-     * Callback for when evolution mode is evolution animation is finished
-     */
     onEvolutionCompletedCallback = () => {
         this.getTimer().stop();
         //TODO how many points on jackpot
@@ -585,29 +491,18 @@ class Field extends Stage {
         this.stageText.setScrollText(I18NManager.translate("it_evolved_into") + I18NManager.translate(targetEvolution.name), I18NManager.translate(targetEvolution.name), 1000, this.showAfterEvolutionJackpot);
     }
 
-    /**
-     * Callback for when evolution mode is finished
-     */
     finishEvolutionPhaseCallback = () => {
         this.spitAndCloseWell();
         this.screen.addPokeballsToList(2);
         this.finishEvolutionPhase();
     }
 
-    /** 
-     * Callback for when the cave is entered
-     */
     onCaveEnterCallback = () => {
         this.caveActive = false;
         this.status.caveShotsOnBall++;
         this.screen.startSlotMachine(this.getStartSlotMachineParams());
     }
 
-    /**
-     * Callback for the slot machine result
-     * @param {*} index the result index
-     * @param {*} subindex the result subindex for small, big or multiplier
-     */
     slotCallback = (index, subindex) => {
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
         switch (index) {
@@ -678,63 +573,90 @@ class Field extends Stage {
         }
     }
 
-    /**
-     * Callback for when the left multiplier is hit
-     */
     onLeftMultiplierHitCallback = () => {
         if (this.state === FIELD_STATE.EVOLUTION) {
             this.onEvolutionTargetArrowHit(this.leftMultiplierTargetArrow);
         }
     }
 
-    /**
-     * Callback for when the right multiplier is hit
-     */
     onRightMultiplierHitCallback = () => {
         if (this.state === FIELD_STATE.EVOLUTION) {
             this.onEvolutionTargetArrowHit(this.rightMultiplierTargetArrow);
         }
     }
-    /**
-     * Callback for when the multiplier is upgraded
-     */
     onMultiplierUpgradeCallback = () => {
         this.status.fieldMultiplier = this.multiplierManager.multiplier;
         this.stageText.setScrollText(I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier, I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier);
     }
 
 
-    /**
-     * Callback for when the cave must be opened
-     */
     onOpenCaveCallback = () => {
         this.caveActive = true;
     }
 
-    /**
-     * Callback for when the bonus ball screen is complete
-     */
     onBonusScreenCompleteCallback = () => {
         this.stageText.setScrollText(I18NManager.translate("shoot_again"), I18NManager.translate("shoot_again"), 1000, () => this.createNewBallOrEndStage());
+    }
+
+    onTravelToLeft() {
+        if (this.state === FIELD_STATE.PLAYING) {
+            this.interruptCave();
+            this.setState(FIELD_STATE.TRAVEL_LEFT);
+            this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
+            this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
+            this.attachTimer(Timer.createFieldTimer(FIELD_TRAVEL_TIMER_MS, this.doOnTravelTimeupCallback));
+            Audio.playMusic('mapMode');
+        }
+    }
+
+    onTravelToRight() {
+        if (this.state === FIELD_STATE.PLAYING) {
+            this.interruptCave();
+            this.setState(FIELD_STATE.TRAVEL_RIGHT);
+            this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
+            this.arrows.setTravel(TRAVEL_DIRECTION.RIGHT);
+            this.attachTimer(Timer.createFieldTimer(FIELD_TRAVEL_TIMER_MS, this.doOnTravelTimeupCallback));
+            Audio.playMusic('mapMode');
+        }
+    }
+
+    doOnTravelTimeupCallback = () => {
+        this.interruptTravel();
+    }
+
+    onTravelCaveCallback = () => {
+        this.disableTimer()
+        this.screen.setState(SCREEN_STATE.LANDSCAPE);
+        Audio.stopMusic();
+        Audio.playSFX('sfx25');
+        this.screen.progressLandmark();
+        this.stageText.setScrollText(I18NManager.translate("arrived_at") + this.screen.getLandmarkText(), this.screen.getLandmarkText(), DEFAULT_TEXT_PERSISTENCE_MILLIS, () => {
+            this.setState(FIELD_STATE.PLAYING);
+            this.arrows.resetFromTravel();
+            this.spitAndCloseWell();
+            this.resetTravelTriggers();
+            this.playMusic();
+        });
     }
 
     //Interface
     getLeftMultiplierTarget() { }
     getRightMultiplierTarget() { }
+    getArrows() { }
+    getScreenLandscapes() { }
 
     getBallUpgraderManager() { }
 
     getPikachuSaverManager() { }
 
-    onLaunchNewBallWaiting() { }
-
-    onStartNewBall() { }
-
     disableCaptureTargetArrow() { }
 
+    onLaunchNewBallWaiting() { }
+    resetTravelTriggers() { }
+    onStartNewBall() { }
     onInterruptCapture() { }
     onInterruptEvolution() { }
-    onCreateNewBall() { }
+    onFinishEvolutionPhase() { }
     onSpawnOnWell() { }
 
     playMusic() { }

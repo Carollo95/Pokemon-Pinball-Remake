@@ -60,11 +60,6 @@ class RedField extends Field {
 
         this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
-        this.arrows = new RedFieldArrows();
-        if (arrowsState != undefined) {
-            this.arrows.setState(arrowsState);
-        }
-
         this.staryu = new RedFieldStaryu();
 
         this.setupSensors();
@@ -227,7 +222,7 @@ class RedField extends Field {
                 this.screen.setState(SCREEN_STATE.LANDSCAPE);
                 this.setState(FIELD_STATE.PLAYING);
             });
-            Audio.playMusic('redField');
+            this.playMusic();
             this.voltorbsTargetArrow.setVisible(false);
         }
     }
@@ -251,7 +246,6 @@ class RedField extends Field {
         this.rightTravelDiglett.update(this.getBall().sprite);
 
         this.voltorbs.forEach(v => v.update(this.getBall().sprite));
-        this.updateArrows();
         this.bellsprout.update(this.getBall().sprite);
 
         this.staryu.update(this.getBall().sprite);
@@ -325,71 +319,9 @@ class RedField extends Field {
 
     }
 
-    interruptTravel() {
-        if (this.isTravelState()) {
-            this.disableTimer()
-            this.closeWell();
-            this.arrows.resetFromTravel();
-            this.setState(FIELD_STATE.PLAYING);
-            this.leftTravelDiglett.reset();
-            this.rightTravelDiglett.reset();
-            this.screen.setState(SCREEN_STATE.LANDSCAPE);
-            this.playMusic();
-        }
-    }
-
-    onCreateNewBall() {
+    resetTravelTriggers() {
         this.leftTravelDiglett.reset();
         this.rightTravelDiglett.reset();
-    }
-
-    onTravelToLeft() {
-        if (this.state === FIELD_STATE.PLAYING) {
-            this.interruptCave();
-            this.setState(FIELD_STATE.TRAVEL_LEFT);
-            this.screen.setTravelDirection(TRAVEL_DIRECTION.LEFT);
-            this.arrows.setTravel(TRAVEL_DIRECTION.LEFT);
-            this.attachTimer(Timer.createFieldTimer(FIELD_TRAVEL_TIMER_MS, this.doOnTravelTimeupCallback));
-            Audio.playMusic('mapMode');
-        }
-    }
-
-    onTravelToRight() {
-        if (this.state === FIELD_STATE.PLAYING) {
-            this.interruptCave();
-            this.setState(FIELD_STATE.TRAVEL_RIGHT);
-            this.screen.setTravelDirection(TRAVEL_DIRECTION.RIGHT);
-            this.arrows.setTravel(TRAVEL_DIRECTION.RIGHT);
-            this.attachTimer(Timer.createFieldTimer(FIELD_TRAVEL_TIMER_MS, this.doOnTravelTimeupCallback));
-            Audio.playMusic('mapMode');
-        }
-    }
-
-    doOnTravelTimeupCallback = () => {
-        this.interruptTravel();
-    }
-
-    startTravelCave() {
-        this.setState(FIELD_STATE.TRAVEL_CAVE);
-        this.screen.setTravelDirection(TRAVEL_DIRECTION.CAVE);
-        this.arrows.setTravel(TRAVEL_DIRECTION.CAVE);
-        this.openWell(this.onTravelCaveCallback);
-    }
-
-    onTravelCaveCallback = () => {
-        this.disableTimer()
-        this.screen.setState(SCREEN_STATE.LANDSCAPE);
-        Audio.stopMusic();
-        Audio.playSFX('sfx25');
-        this.screen.progressLandmark();
-        this.stageText.setScrollText(I18NManager.translate("arrived_at") + this.screen.getLandmarkText(), this.screen.getLandmarkText(), DEFAULT_TEXT_PERSISTENCE_MILLIS, () => {
-            this.setState(FIELD_STATE.PLAYING);
-            this.arrows.resetFromTravel();
-            this.spitAndCloseWell();
-            this.leftTravelDiglett.reset();
-            this.rightTravelDiglett.reset();
-            this.playMusic();
-        });
     }
 
     onDittoWellCallback = () => {
@@ -420,14 +352,8 @@ class RedField extends Field {
         this.finishEvolutionPhase();
     }
 
-    finishEvolutionPhase() {
-        this.getTimer().disable();
-        this.setState(FIELD_STATE.PLAYING);
+    onFinishEvolutionPhase() {
         this.ditto.close();
-        this.arrows.resetEvolutionArrows();
-        this.screen.setState(SCREEN_STATE.LANDSCAPE);
-        this.playMusic();
-
     }
 
     onEvolutionTargetArrowHit(targetArrow) {
@@ -447,7 +373,9 @@ class RedField extends Field {
     }
 
     getLeftMultiplierTarget() { return RedFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
+    getArrows() { return new RedFieldArrows(); }
     getRightMultiplierTarget() { return RedFieldMultiplierTarget.createRightMultiplierTarget(this.onRightMultiplierHitCallback); }
     getBallUpgraderManager() { return BallUpgraderManager.createRedFieldBallUpgraderManager(); }
     getPikachuSaverManager() { return PikachuSaverManager.createRedFieldPikachuSaverManager(this.status); }
+    getScreenLandscapes() { return new RedFieldScreenLandscapes(); }
 }
