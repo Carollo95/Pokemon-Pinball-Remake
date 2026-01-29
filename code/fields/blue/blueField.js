@@ -16,8 +16,25 @@ class BlueField extends Field {
 
         this.setupSensors();
 
+        this.bumpers.push(new BlueFieldShellder(117, 140, this.onShellderHitCallback));
+        this.bumpers.push(new BlueFieldShellder(160, 107, this.onShellderHitCallback));
+        this.bumpers.push(new BlueFieldShellder(202, 141, this.onShellderHitCallback));
+
+        this.shelldersTargetArrow = new TargetArrow(130, 210, 6);
+        this.targetArrows.push(this.shelldersTargetArrow);
+
         this.rightRubberBand = BlueFieldRubberBand.createLeftRubberBand();
         this.leftRubberBand = BlueFieldRubberBand.createRightRubberBand();
+    }
+
+    onShellderHitCallback = () => {
+        EngineUtils.addPointsForBallHelper(POINTS.BLUE_FIELD_SHELLDER_BUMPER);
+        if (this.state === FIELD_STATE.CAPTURE && this.shelldersTargetArrow.visible) {
+            this.screen.flipCapture();
+            this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
+        } else if (this.state === FIELD_STATE.EVOLUTION && this.shelldersTargetArrow.active) {
+            this.onEvolutionTargetArrowHit(this.shelldersTargetArrow);
+        }
     }
 
     setupSensors() {
@@ -57,7 +74,7 @@ class BlueField extends Field {
 
     }
 
-    
+
     updateSensors() {
         this.rightLowerSensor.update(this.getBall().sprite);
         this.rightUpperSensor.update(this.getBall().sprite);

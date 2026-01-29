@@ -41,10 +41,10 @@ class RedField extends Field {
         this.leftTravelDiglett = new TravelDiglett(() => { this.onDiglettHitCallback(false) }, () => { this.status.dugtrioOnBall++; this.onTravelToLeft(); }, false);
         this.rightTravelDiglett = new TravelDiglett(() => { this.onDiglettHitCallback(true) }, () => { this.status.dugtrioOnBall++; this.onTravelToRight(); }, true);
 
-        this.voltorbs = [];
-        this.voltorbs.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
-        this.voltorbs.push(new RedFieldVoltorb(182, 154, this.onVoltorbHitCallback));
-        this.voltorbs.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
+        this.bumpers = [];
+        this.bumpers.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
+        this.bumpers.push(new RedFieldVoltorb(182, 154, this.onVoltorbHitCallback));
+        this.bumpers.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
 
         this.voltorbsTargetArrow = new TargetArrow(130, 210, 6);
         this.leftDiglettTargetArrow = new TargetArrow(83, 364, 0);
@@ -243,7 +243,6 @@ class RedField extends Field {
         this.leftTravelDiglett.update(this.getBall().sprite);
         this.rightTravelDiglett.update(this.getBall().sprite);
 
-        this.voltorbs.forEach(v => v.update(this.getBall().sprite));
         this.bellsprout.update(this.getBall().sprite);
 
         this.staryu.update(this.getBall().sprite);

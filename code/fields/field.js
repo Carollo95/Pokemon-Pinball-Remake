@@ -96,6 +96,8 @@ class Field extends Stage {
 
         this.speedPad = [];
 
+        this.bumpers = [];
+
         this.playMusic();
 
     }
@@ -120,6 +122,8 @@ class Field extends Stage {
         this.rightRubberBand.update(this.getBall().sprite);
 
         this.updateArrows();
+
+        this.bumpers.forEach(bumper => bumper.update(this.getBall().sprite));
 
         this.targetArrows.forEach(ta => ta.update());
 
