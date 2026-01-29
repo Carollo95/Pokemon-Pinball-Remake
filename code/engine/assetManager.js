@@ -323,6 +323,10 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('blueFieldLeftInnerArrow', 'assets/img/blue-field/left_inner_arrow', 20, 30, 4);
   Asset.registerAnimationTemplate('blueFieldCaveArrow', 'assets/img/blue-field/cave_arrow', 26, 26, 4);
 
+  Asset.registerAnimationTemplate('blueFieldPoliwagIdle', 'assets/img/blue-field/poliwag_idle', 60, 34, 1);
+  Asset.registerAnimationTemplate('blueFieldPoliwagHurt', 'assets/img/blue-field/poliwag_hurt', 60, 34, 1, 30);
+  Asset.registerAnimationTemplate('blueFieldPoliwagCounter', 'assets/img/blue-field/poliwag_counter', 42, 20, 4);
+
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusClone', 'assets/img/field/go_to_bonus_clone', 96, 64, 1);

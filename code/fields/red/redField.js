@@ -38,10 +38,9 @@ class RedField extends Field {
         this.speedPad.push(new SpeedPad(53, 293));
         this.speedPad.push(new SpeedPad(89, 259));
 
-        this.leftTravelDiglett = new TravelDiglett(() => { this.onDiglettHitCallback(false) }, () => { this.status.dugtrioOnBall++; this.onTravelToLeft(); }, false);
-        this.rightTravelDiglett = new TravelDiglett(() => { this.onDiglettHitCallback(true) }, () => { this.status.dugtrioOnBall++; this.onTravelToRight(); }, true);
+        this.leftTravelDiglett = new TravelDiglett(() => { this.onTravelHitCallback(false) }, () => { this.status.dugtrioOnBall++; this.onTravelToLeft(); }, false);
+        this.rightTravelDiglett = new TravelDiglett(() => { this.onTravelHitCallback(true) }, () => { this.status.dugtrioOnBall++; this.onTravelToRight(); }, true);
 
-        this.bumpers = [];
         this.bumpers.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
         this.bumpers.push(new RedFieldVoltorb(182, 154, this.onVoltorbHitCallback));
         this.bumpers.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
@@ -63,7 +62,6 @@ class RedField extends Field {
         this.staryu = new RedFieldStaryu();
 
         this.setupSensors();
-
 
         this.evolutionItems.push(new EvolutionItem(97, 368));
         this.evolutionItems.push(new EvolutionItem(107, 325));
@@ -88,16 +86,6 @@ class RedField extends Field {
         this.ditto.close(true);
     }
 
-    onDiglettHitCallback = (isRight) => {
-        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_TRAVEL_DIGLETT);
-        if (this.state === FIELD_STATE.EVOLUTION) {
-            if (isRight) {
-                this.onEvolutionTargetArrowHit(this.rightDiglettTargetArrow);
-            } else {
-                this.onEvolutionTargetArrowHit(this.leftDiglettTargetArrow);
-            }
-        }
-    }
 
     setupSensors() {
         this.lastSensor;

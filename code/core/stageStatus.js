@@ -8,8 +8,12 @@ class StageStatus {
 
         this.pokemonCaughtOnBall = 0;
         this.pokemonEvolvedOnBall = 0;
+
         this.bellsproutOnBall = 0;
         this.dugtrioOnBall = 0;
+
+        this.poliwagOnBall = 0;
+
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
         this.fieldMultiplier = 0;
@@ -67,6 +71,9 @@ class StageStatus {
         this.pokemonEvolvedOnBall = 0;
         this.bellsproutOnBall = 0;
         this.dugtrioOnBall = 0;
+
+        this.poliwagOnBall = 0;
+
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
         this.fieldMultiplier = 0;

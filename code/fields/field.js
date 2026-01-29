@@ -260,7 +260,7 @@ class Field extends Stage {
         this.getBall().launchFromSpawn();
     }
 
-        startTravelCave() {
+    startTravelCave() {
         this.setState(FIELD_STATE.TRAVEL_CAVE);
         this.screen.setTravelDirection(TRAVEL_DIRECTION.CAVE);
         this.arrows.setTravel(TRAVEL_DIRECTION.CAVE);
@@ -269,7 +269,7 @@ class Field extends Stage {
 
 
 
-     interruptTravel() {
+    interruptTravel() {
         if (this.isTravelState()) {
             this.disableTimer()
             this.closeWell();
@@ -645,6 +645,18 @@ class Field extends Stage {
         });
     }
 
+    onTravelHitCallback = (isRight) => {
+        //TODO rename this
+        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_TRAVEL_DIGLETT);
+        if (this.state === FIELD_STATE.EVOLUTION) {
+            if (isRight) {
+                this.onEvolutionTargetArrowHit(this.rightDiglettTargetArrow);
+            } else {
+                this.onEvolutionTargetArrowHit(this.leftDiglettTargetArrow);
+            }
+        }
+    }
+
     //Interface
     getLeftMultiplierTarget() { }
     getRightMultiplierTarget() { }
@@ -667,6 +679,6 @@ class Field extends Stage {
 
     playMusic() { }
 
-    updateSensors() {}
+    updateSensors() { }
 
 }

@@ -16,6 +16,8 @@ class BlueField extends Field {
 
         this.setupSensors();
 
+        this.leftTravelPoliwag = new BlueFieldTravelPoliwag(() => { this.onTravelHitCallback(false) }, () => { this.status.poliwag++; this.onTravelToLeft(); });
+        
         this.bumpers.push(new BlueFieldShellder(117, 140, this.onShellderHitCallback));
         this.bumpers.push(new BlueFieldShellder(160, 107, this.onShellderHitCallback));
         this.bumpers.push(new BlueFieldShellder(202, 141, this.onShellderHitCallback));
@@ -84,6 +86,8 @@ class BlueField extends Field {
 
     draw() {
         super.draw();
+
+        this.leftTravelPoliwag.update(this.getBall().sprite);
     }
 
     getLeftMultiplierTarget() { return BlueFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
