@@ -240,8 +240,6 @@ class RedField extends Field {
     draw() {
         super.draw();
 
-        this.updateSensors();
-
         this.leftTravelDiglett.update(this.getBall().sprite);
         this.rightTravelDiglett.update(this.getBall().sprite);
 
@@ -252,7 +250,6 @@ class RedField extends Field {
 
         this.updateDitto();
     }
-
 
 
     updateSensors() {

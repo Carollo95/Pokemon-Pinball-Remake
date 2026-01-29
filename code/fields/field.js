@@ -110,9 +110,10 @@ class Field extends Stage {
         this.caveDetectorManager.update(this.getBall().sprite);
         this.updateCave();
 
+        this.updateSensors();
+
         this.multiplierManager.update(this.getBall().sprite);
         this.pikachuSaverManager.update(this.getBall());
-        //TODO blue field ball upgrader manager
         this.ballUpgraderManager.update(this.getBall());
 
         this.leftRubberBand.update(this.getBall().sprite);
@@ -350,6 +351,7 @@ class Field extends Stage {
             this.multiplierManager.setInitialState();
             this.resetTravelTriggers();
             this.pikachuSaverManager.reset();
+            this.lastSensor = undefined;
             this.launchNewBall();
             this.arrows.setCaptureArrowsLevel(2);
             this.setState(FIELD_STATE.NEW_BALL_WAITING);
@@ -660,5 +662,7 @@ class Field extends Stage {
     onSpawnOnWell() { }
 
     playMusic() { }
+
+    updateSensors() {}
 
 }
