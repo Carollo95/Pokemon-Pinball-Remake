@@ -36,7 +36,7 @@ class TravelButton {
         if (this.collider.collide(ball)) {
             this.updateCounter();
             this.onHitCallback();
-            this.buttonSprite.changeAnimation('hurt');
+            this.changeAnimationToHurt();
             Audio.playSFX(this.getHitSFX());
 
             this.buttonSprite.ani.frame = 0;
@@ -54,7 +54,9 @@ class TravelButton {
 
     }
 
-
+    changeAnimationToHurt() {
+        this.buttonSprite.changeAnimation('hurt');
+    }
 
     updateCounter() {
         if (this.buttonSprite.ani.name === 'idle' && this.counterLevel < 3) {

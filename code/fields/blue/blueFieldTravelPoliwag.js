@@ -28,6 +28,7 @@ class BlueFieldTravelPoliwag extends TravelButton {
     }
 
     getHitSFX() {
+        //TODO change
         return 'sfx0F';
     }
 
