@@ -13,6 +13,8 @@ class StageStatus {
         this.dugtrioOnBall = 0;
 
         this.poliwagOnBall = 0;
+        this.psyduckOnBall = 0;
+        this.cloysterOnBall = 0;
 
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
@@ -73,6 +75,8 @@ class StageStatus {
         this.dugtrioOnBall = 0;
 
         this.poliwagOnBall = 0;
+        this.psyduckOnBall = 0;
+        this.cloysterOnBall = 0;
 
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;

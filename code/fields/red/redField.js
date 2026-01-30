@@ -57,7 +57,7 @@ class RedField extends Field {
         this.targetArrows.push(this.leftMultiplierTargetArrow);
         this.targetArrows.push(this.rightMultiplierTargetArrow);
 
-        this.bellsprout = new RedFieldBellsprout(this.onBellsproutEatCallback);
+        this.captureWell = new RedFieldBellsprout(this.onBellsproutEatCallback);
 
         this.staryu = new RedFieldStaryu();
 
@@ -182,23 +182,6 @@ class RedField extends Field {
         }
     }
 
-    startCaptureSequence() {
-        this.interruptCave();
-        this.interruptTravel();
-        this.setState(FIELD_STATE.CAPTURE);
-        this.attachTimer(Timer.createFieldTimer(FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
-        this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
-
-        this.screen.startCapture(this.arrows.captureArrowsLevel);
-        this.arrows.resetCaptureArrows();
-        this.bumpersTargetArrow.setVisible(true);
-        this.bumpersTargetArrow.setActive(true);
-
-        this.saverAgain.set60sSaver();
-
-        this.playCatchemEvolutionMusic();
-    }
-
     playCatchemEvolutionMusic() {
         Audio.playMusic('catchEmEvolutionModeRedField');
     }
@@ -231,7 +214,6 @@ class RedField extends Field {
         this.leftTravelDiglett.update(this.getBall().sprite);
         this.rightTravelDiglett.update(this.getBall().sprite);
 
-        this.bellsprout.update(this.getBall().sprite);
         this.updateDitto();
 
         this.staryu.update(this.getBall().sprite);

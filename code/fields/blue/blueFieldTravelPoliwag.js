@@ -4,7 +4,7 @@ class BlueFieldTravelPoliwag extends TravelButton {
     }
 
     getColliderSprite() {
-        return new Sprite(54, 364, 16, 16, "static");
+        return new Sprite(54, 364, 16, "static");
     }
 
     getButtonSprite() {

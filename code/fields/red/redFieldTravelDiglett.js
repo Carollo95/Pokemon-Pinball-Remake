@@ -10,7 +10,7 @@ class TravelDiglett extends TravelButton {
     }
 
     getColliderSprite() {
-        return new Sprite(0, 364, 16, 16, "static");
+        return new Sprite(0, 364, 16, "static");
     }
 
     getButtonSprite() {

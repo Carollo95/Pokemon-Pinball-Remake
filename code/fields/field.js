@@ -123,6 +123,8 @@ class Field extends Stage {
 
         this.updateArrows();
 
+        this.captureWell.update(this.getBall().sprite);
+
         this.bumpers.forEach(bumper => bumper.update(this.getBall().sprite));
 
         this.targetArrows.forEach(ta => ta.update());
@@ -379,7 +381,7 @@ class Field extends Stage {
 
     launchNewBall() {
         this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
-        this.resetTravelTriggers();
+        this.onLaunchNewBall();
     }
 
 
@@ -417,9 +419,24 @@ class Field extends Stage {
     }
 
 
+    startCaptureSequence() {
+        this.interruptCave();
+        this.interruptTravel();
+        this.setState(FIELD_STATE.CAPTURE);
+        this.attachTimer(Timer.createFieldTimer(FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
+        this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
+
+        this.screen.startCapture(this.arrows.captureArrowsLevel);
+        this.arrows.resetCaptureArrows();
+        this.bumpersTargetArrow.setVisible(true);
+        this.bumpersTargetArrow.setActive(true);
+
+        this.saverAgain.set60sSaver();
+
+        this.playCatchemEvolutionMusic();
+    }
 
     //Callbacks
-
     onFullUpgradeAgainCallback = () => {
         EngineUtils.addPointsForBallHelper(POINTS.BALL_FULLY_UPGRADED);
     }
@@ -675,6 +692,7 @@ class Field extends Stage {
     onInterruptEvolution() { }
     onFinishEvolutionPhase() { }
     onSpawnOnWell() { }
+    onLaunchNewBall() { }
 
     playMusic() { }
 

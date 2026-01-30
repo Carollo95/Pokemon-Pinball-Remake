@@ -18,7 +18,7 @@ class BlueFieldTravelPsyduck extends TravelButton {
     }
 
     getColliderSprite() {
-        return new Sprite(268, 365, 16, 16, "static");
+        return new Sprite(268, 365, 16, "static");
     }
 
     getButtonSprite() {

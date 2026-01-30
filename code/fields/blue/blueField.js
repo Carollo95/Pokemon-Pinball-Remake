@@ -26,12 +26,26 @@ class BlueField extends Field {
         this.shelldersTargetArrow = new TargetArrow(130, 210, 6);
         this.targetArrows.push(this.shelldersTargetArrow);
 
+        this.captureWell = new BlueFieldCloyster(this.onCloysterEatCallback);
+
         this.speedPad.push(new SpeedPad(48, 298));
         this.speedPad.push(new SpeedPad(272, 296));
 
         this.rightRubberBand = BlueFieldRubberBand.createLeftRubberBand();
         this.leftRubberBand = BlueFieldRubberBand.createRightRubberBand();
     }
+
+    onCloysterEatCallback = () => {
+        //TODO this should increates on travel???
+        this.status.cloysterOnBall++;
+        EngineUtils.addPointsForBallHelper(POINTS.BLUE_FIELD_CLOYSTER);
+        if (this.state === FIELD_STATE.TRAVEL_RIGHT) {
+            this.startTravelCave();
+        } else if (this.state === FIELD_STATE.PLAYING && this.arrows.captureArrowsLevel >= 2) {
+            this.startCaptureSequence();
+        }
+    }
+
 
     onShellderHitCallback = () => {
         EngineUtils.addPointsForBallHelper(POINTS.BLUE_FIELD_SHELLDER_BUMPER);
@@ -73,9 +87,9 @@ class BlueField extends Field {
                     this.evolutionManager.recoverPokemon();
                 } else if (this.state === FIELD_STATE.PLAYING) {
                     this.arrows.upgradeEvolutionArrows();
-                }else if(this.state===FIELD_STATE.TRAVEL_LEFT){
+                } else if (this.state === FIELD_STATE.TRAVEL_LEFT) {
                     this.startTravelCave();
-                }   
+                }
             }
             this.lastSensor = this.leftUpperSensor;
         });
