@@ -328,7 +328,7 @@ class Field extends Stage {
             this.disableTimer()
             this.screen.setState(SCREEN_STATE.LANDSCAPE);
             this.setState(FIELD_STATE.PLAYING);
-            this.onInterruptCapture();
+            this.bumpersTargetArrow.setVisible(false);
         }
     }
 
@@ -672,7 +672,6 @@ class Field extends Stage {
     onLaunchNewBallWaiting() { }
     resetTravelTriggers() { }
     onStartNewBall() { }
-    onInterruptCapture() { }
     onInterruptEvolution() { }
     onFinishEvolutionPhase() { }
     onSpawnOnWell() { }

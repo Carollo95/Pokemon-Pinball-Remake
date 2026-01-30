@@ -18,13 +18,16 @@ class BlueField extends Field {
 
         this.leftTravelPoliwag = new BlueFieldTravelPoliwag(() => { this.onTravelHitCallback(false) }, () => { this.status.poliwag++; this.onTravelToLeft(); });
         this.leftTravelPsyduck = new BlueFieldTravelPsyduck(() => { this.onTravelHitCallback(true) }, () => { this.status.psyduck++; this.onTravelToRight(); });
-        
+
         this.bumpers.push(new BlueFieldShellder(117, 140, this.onShellderHitCallback));
         this.bumpers.push(new BlueFieldShellder(160, 107, this.onShellderHitCallback));
         this.bumpers.push(new BlueFieldShellder(202, 141, this.onShellderHitCallback));
 
         this.shelldersTargetArrow = new TargetArrow(130, 210, 6);
         this.targetArrows.push(this.shelldersTargetArrow);
+
+        this.speedPad.push(new SpeedPad(48, 298));
+        this.speedPad.push(new SpeedPad(272, 296));
 
         this.rightRubberBand = BlueFieldRubberBand.createLeftRubberBand();
         this.leftRubberBand = BlueFieldRubberBand.createRightRubberBand();
@@ -70,7 +73,9 @@ class BlueField extends Field {
                     this.evolutionManager.recoverPokemon();
                 } else if (this.state === FIELD_STATE.PLAYING) {
                     this.arrows.upgradeEvolutionArrows();
-                }
+                }else if(this.state===FIELD_STATE.TRAVEL_LEFT){
+                    this.startTravelCave();
+                }   
             }
             this.lastSensor = this.leftUpperSensor;
         });

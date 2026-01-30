@@ -45,7 +45,7 @@ class RedField extends Field {
         this.bumpers.push(new RedFieldVoltorb(182, 154, this.onVoltorbHitCallback));
         this.bumpers.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
 
-        this.voltorbsTargetArrow = new TargetArrow(130, 210, 6);
+        this.bumpersTargetArrow = new TargetArrow(130, 210, 6);
         this.leftDiglettTargetArrow = new TargetArrow(83, 364, 0);
         this.rightDiglettTargetArrow = new TargetArrow(238, 364, 1);
         this.leftMultiplierTargetArrow = new TargetArrow(96, 308, 4);
@@ -53,7 +53,7 @@ class RedField extends Field {
 
         this.targetArrows.push(this.leftDiglettTargetArrow);
         this.targetArrows.push(this.rightDiglettTargetArrow);
-        this.targetArrows.push(this.voltorbsTargetArrow);
+        this.targetArrows.push(this.bumpersTargetArrow);
         this.targetArrows.push(this.leftMultiplierTargetArrow);
         this.targetArrows.push(this.rightMultiplierTargetArrow);
 
@@ -164,7 +164,7 @@ class RedField extends Field {
 
 
     disableCaptureTargetArrow() {
-        this.voltorbsTargetArrow.setActive(false);
+        this.bumpersTargetArrow.setActive(false);
     }
 
     playMusic() {
@@ -191,8 +191,8 @@ class RedField extends Field {
 
         this.screen.startCapture(this.arrows.captureArrowsLevel);
         this.arrows.resetCaptureArrows();
-        this.voltorbsTargetArrow.setVisible(true);
-        this.voltorbsTargetArrow.setActive(true);
+        this.bumpersTargetArrow.setVisible(true);
+        this.bumpersTargetArrow.setActive(true);
 
         this.saverAgain.set60sSaver();
 
@@ -211,17 +211,17 @@ class RedField extends Field {
                 this.setState(FIELD_STATE.PLAYING);
             });
             this.playMusic();
-            this.voltorbsTargetArrow.setVisible(false);
+            this.bumpersTargetArrow.setVisible(false);
         }
     }
 
     onVoltorbHitCallback = () => {
         EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_VOLTORB_BUMPER);
-        if (this.state === FIELD_STATE.CAPTURE && this.voltorbsTargetArrow.visible) {
+        if (this.state === FIELD_STATE.CAPTURE && this.bumpersTargetArrow.visible) {
             this.screen.flipCapture();
             this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
-        } else if (this.state === FIELD_STATE.EVOLUTION && this.voltorbsTargetArrow.active) {
-            this.onEvolutionTargetArrowHit(this.voltorbsTargetArrow);
+        } else if (this.state === FIELD_STATE.EVOLUTION && this.bumpersTargetArrow.active) {
+            this.onEvolutionTargetArrowHit(this.bumpersTargetArrow);
         }
     }
 
@@ -232,10 +232,9 @@ class RedField extends Field {
         this.rightTravelDiglett.update(this.getBall().sprite);
 
         this.bellsprout.update(this.getBall().sprite);
+        this.updateDitto();
 
         this.staryu.update(this.getBall().sprite);
-
-        this.updateDitto();
     }
 
 
@@ -292,15 +291,8 @@ class RedField extends Field {
         this.ditto.removeLauncherDoor();
     }
 
-
-    onInterruptCapture() {
-        this.voltorbsTargetArrow.setVisible(false);
-
-    }
-
     onInterruptEvolution() {
         this.ditto.close(true);
-
     }
 
     resetTravelTriggers() {
