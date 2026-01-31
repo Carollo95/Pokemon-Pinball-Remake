@@ -265,6 +265,8 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('pikachuSaverHurt', 'assets/img/field/pikachu_hurt', 32, 32, 1);
   Asset.registerAnimationTemplate('pikachuSaverLightning', 'assets/img/field/pikachu_lightning', 32, 48, 23, 9);
 
+  Asset.registerAnimationTemplate('targetArrows', 'assets/img/field/target_arrows', 16, 16, 14);
+
   Asset.registerAnimationTemplate('redFieldDittoOpen', 'assets/img/red-field/ditto-open', 53, 106, 1);
   Asset.registerAnimationTemplate('redFieldDittoClosed', 'assets/img/red-field/ditto-closed', 78, 140, 1);
   Asset.registerAnimationTemplate('redFieldDittoFullyOpen', 'assets/img/red-field/ditto-fully-open', 16, 44, 1);
@@ -297,7 +299,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldLeftInnerArrow', 'assets/img/red-field/left_inner_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldCaveArrow', 'assets/img/red-field/cave_arrow', 26, 22, 2);
-  Asset.registerAnimationTemplate('redFieldTargetArrows', 'assets/img/red-field/target_arrows', 16, 16, 14);
+
   Asset.registerAnimationTemplate('redFieldBellsproutIdle', 'assets/img/red-field/bellsprout_idle', 64, 80, 2);
   Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
   Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 3);

@@ -23,7 +23,7 @@ class BlueField extends Field {
         this.bumpers.push(new BlueFieldShellder(160, 107, this.onBumperHitCallback));
         this.bumpers.push(new BlueFieldShellder(202, 141, this.onBumperHitCallback));
 
-        this.bumpersTargetArrow = new TargetArrow(130, 210, 6);
+        this.bumpersTargetArrow = new TargetArrow(159, 152, 2);
         this.targetArrows.push(this.bumpersTargetArrow);
 
         this.captureWell = new BlueFieldCloyster(this.onCloysterEatCallback);
