@@ -1,11 +1,12 @@
-const CLOYSTER_WELL_RADIUS_X = 20;
-const CLOYSTER_WELL_RADIUS_Y = 50;
+const CLOYSTER_WELL_RADIUS_EAST = 20;
+const CLOYSTER_WELL_RADIUS_WEST = 65;
+const CLOYSTER_WELL_RADIUS_Y = 20;
 const CLOYSTER_WELL_STRENGHT = 10;
 
-class BlueFieldCloyster extends CaptureWell{
+class BlueFieldCloyster extends CaptureWell {
 
     constructor(eatCallback) {
-        super(eatCallback)
+        super(eatCallback, (ballSprite) => {ballSprite.velocity.x = -5;});
     }
 
     getSprite() {
@@ -17,7 +18,7 @@ class BlueFieldCloyster extends CaptureWell{
     }
 
     getWell() {
-        return new Well(248, 208, CLOYSTER_WELL_STRENGHT, CLOYSTER_WELL_RADIUS_X, CLOYSTER_WELL_RADIUS_Y);
+        return new Well(248, 208, CLOYSTER_WELL_STRENGHT, CLOYSTER_WELL_RADIUS_EAST, CLOYSTER_WELL_RADIUS_Y, CLOYSTER_WELL_RADIUS_WEST, CLOYSTER_WELL_RADIUS_Y);
     }
 
 

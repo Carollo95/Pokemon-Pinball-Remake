@@ -41,9 +41,9 @@ class RedField extends Field {
         this.leftTravelDiglett = new TravelDiglett(() => { this.onTravelHitCallback(false) }, () => { this.status.dugtrioOnBall++; this.onTravelToLeft(); }, false);
         this.rightTravelDiglett = new TravelDiglett(() => { this.onTravelHitCallback(true) }, () => { this.status.dugtrioOnBall++; this.onTravelToRight(); }, true);
 
-        this.bumpers.push(new RedFieldVoltorb(132, 172, this.onVoltorbHitCallback));
-        this.bumpers.push(new RedFieldVoltorb(182, 154, this.onVoltorbHitCallback));
-        this.bumpers.push(new RedFieldVoltorb(170, 208, this.onVoltorbHitCallback));
+        this.bumpers.push(new RedFieldVoltorb(132, 172, this.onBumperHitCallback));
+        this.bumpers.push(new RedFieldVoltorb(182, 154, this.onBumperHitCallback));
+        this.bumpers.push(new RedFieldVoltorb(170, 208, this.onBumperHitCallback));
 
         this.bumpersTargetArrow = new TargetArrow(130, 210, 6);
         this.leftDiglettTargetArrow = new TargetArrow(83, 364, 0);
@@ -195,16 +195,6 @@ class RedField extends Field {
             });
             this.playMusic();
             this.bumpersTargetArrow.setVisible(false);
-        }
-    }
-
-    onVoltorbHitCallback = () => {
-        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_VOLTORB_BUMPER);
-        if (this.state === FIELD_STATE.CAPTURE && this.bumpersTargetArrow.visible) {
-            this.screen.flipCapture();
-            this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
-        } else if (this.state === FIELD_STATE.EVOLUTION && this.bumpersTargetArrow.active) {
-            this.onEvolutionTargetArrowHit(this.bumpersTargetArrow);
         }
     }
 

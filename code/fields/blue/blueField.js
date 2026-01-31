@@ -19,14 +19,16 @@ class BlueField extends Field {
         this.leftTravelPoliwag = new BlueFieldTravelPoliwag(() => { this.onTravelHitCallback(false) }, () => { this.status.poliwag++; this.onTravelToLeft(); });
         this.leftTravelPsyduck = new BlueFieldTravelPsyduck(() => { this.onTravelHitCallback(true) }, () => { this.status.psyduck++; this.onTravelToRight(); });
 
-        this.bumpers.push(new BlueFieldShellder(117, 140, this.onShellderHitCallback));
-        this.bumpers.push(new BlueFieldShellder(160, 107, this.onShellderHitCallback));
-        this.bumpers.push(new BlueFieldShellder(202, 141, this.onShellderHitCallback));
+        this.bumpers.push(new BlueFieldShellder(117, 140, this.onBumperHitCallback));
+        this.bumpers.push(new BlueFieldShellder(160, 107, this.onBumperHitCallback));
+        this.bumpers.push(new BlueFieldShellder(202, 141, this.onBumperHitCallback));
 
-        this.shelldersTargetArrow = new TargetArrow(130, 210, 6);
-        this.targetArrows.push(this.shelldersTargetArrow);
+        this.bumpersTargetArrow = new TargetArrow(130, 210, 6);
+        this.targetArrows.push(this.bumpersTargetArrow);
 
         this.captureWell = new BlueFieldCloyster(this.onCloysterEatCallback);
+
+        //TODO change position and sprite
 
         this.speedPad.push(new SpeedPad(48, 298));
         this.speedPad.push(new SpeedPad(272, 296));
@@ -43,17 +45,6 @@ class BlueField extends Field {
             this.startTravelCave();
         } else if (this.state === FIELD_STATE.PLAYING && this.arrows.captureArrowsLevel >= 2) {
             this.startCaptureSequence();
-        }
-    }
-
-
-    onShellderHitCallback = () => {
-        EngineUtils.addPointsForBallHelper(POINTS.BLUE_FIELD_SHELLDER_BUMPER);
-        if (this.state === FIELD_STATE.CAPTURE && this.shelldersTargetArrow.visible) {
-            this.screen.flipCapture();
-            this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
-        } else if (this.state === FIELD_STATE.EVOLUTION && this.shelldersTargetArrow.active) {
-            this.onEvolutionTargetArrowHit(this.shelldersTargetArrow);
         }
     }
 

@@ -441,6 +441,16 @@ class Field extends Stage {
         EngineUtils.addPointsForBallHelper(POINTS.BALL_FULLY_UPGRADED);
     }
 
+    onBumperHitCallback = () => {
+        EngineUtils.addPointsForBallHelper(POINTS.BUMPER);
+        if (this.state === FIELD_STATE.CAPTURE && this.bumpersTargetArrow.visible) {
+            this.screen.flipCapture();
+            this.addPointsAndShowText(I18NManager.translate("flipped"), POINTS.CAPTURE_FLIPPED);
+        } else if (this.state === FIELD_STATE.EVOLUTION && this.bumpersTargetArrow.active) {
+            this.onEvolutionTargetArrowHit(this.bumpersTargetArrow);
+        }
+    }
+
 
     onCaptureThreeBallsCallback = () => {
         this.screen.goToBonusScreen(this.getNextBonusLevel());
@@ -695,6 +705,7 @@ class Field extends Stage {
     onLaunchNewBall() { }
 
     playMusic() { }
+    playCatchemEvolutionMusic() { }
 
     updateSensors() { }
 

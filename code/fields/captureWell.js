@@ -1,12 +1,12 @@
 class CaptureWell {
 
-    constructor(eatCallback) {
+    constructor(eatCallback, spitCallback= () => {}) {
         this.sprite = this.getSprite();
         this.sprite.debug = DEBUG;
         this.sprite.layer = FIELD_ELEMENTS_LAYER;
 
         this.eatCallback = eatCallback;
-
+        this.spitCallback = spitCallback;
         this.well = this.getWell();
         this.gravityActive = true;
     }
@@ -24,6 +24,7 @@ class CaptureWell {
                 this.gravityActive = false;
                 this.sprite.changeAni('spit');
                 Audio.playSFX(this.getSpitSFX());
+                this.spitCallback(ballSprite);
                 ballSprite.visible = true;
                 this.sprite.ani.onComplete = () => {
                     this.sprite.changeAni('idle');
