@@ -436,6 +436,30 @@ class Field extends Stage {
         this.playCatchemEvolutionMusic();
     }
 
+    onEvolutionWellCallback = () => {
+        EngineUtils.addPointsForBallHelper(POINTS.EVOLUTION_HOLE);
+        this.openEvolutionChooserScreen(this.onEvolutionTargetSelectedOnEvolutionHole);
+    }
+
+    openEvolutionChooserScreen = (onEvolutionTargetSelectedCallback) => {
+        this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.captured, onEvolutionTargetSelectedCallback);
+        this.evolutionScreenChooser.show();
+        this.setState(FIELD_STATE.EVOLUTION_CHOOSE_SCREEN);
+    }
+
+    onEvolutionTargetSelectedOnEvolutionHole = (selected) => {
+        if (selected !== null) {
+            this.startEvolutionSequence(selected);
+        } else {
+            this.setState(FIELD_STATE.PLAYING);
+        }
+
+        this.onAfterEvolutionTargetSelectedOnEvolutionHole();
+
+        this.evolutionScreenChooser.remove();
+        this.arrows.evolutionArrowsLevel = 0;
+    }
+
     //Callbacks
     onFullUpgradeAgainCallback = () => {
         EngineUtils.addPointsForBallHelper(POINTS.BALL_FULLY_UPGRADED);
@@ -702,6 +726,7 @@ class Field extends Stage {
     onInterruptEvolution() { }
     onFinishEvolutionPhase() { }
     onSpawnOnWell() { }
+    onAfterEvolutionTargetSelectedOnEvolutionHole() { }
     onLaunchNewBall() { }
 
     playMusic() { }

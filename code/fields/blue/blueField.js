@@ -27,6 +27,7 @@ class BlueField extends Field {
         this.targetArrows.push(this.bumpersTargetArrow);
 
         this.captureWell = new BlueFieldCloyster(this.onCloysterEatCallback);
+        this.evolutionWell = new BlueFieldSlowbro(this.onEvolutionWellCallback);
 
         //TODO change position and sprite
 
@@ -98,9 +99,16 @@ class BlueField extends Field {
     draw() {
         super.draw();
 
+        this.evolutionWell.update(this.getBall());
+
         this.leftTravelPoliwag.update(this.getBall().sprite);
         this.leftTravelPsyduck.update(this.getBall().sprite);
     }
+
+    onAfterEvolutionTargetSelectedOnEvolutionHole() {
+        this.evolutionWell.spitBall(this.getBall());
+    }
+
 
     getLeftMultiplierTarget() { return BlueFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
     getArrows() { return new BlueFieldArrows(); }

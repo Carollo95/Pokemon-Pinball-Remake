@@ -7,17 +7,9 @@ class RedField extends Field {
         this.background = Asset.getBackground('redFieldBackground');
     }
 
-    onEvolutionTargetSelectedOnDitto = (selected) => {
-        if (selected !== null) {
-            this.startEvolutionSequence(selected);
-        } else {
-            this.setState(FIELD_STATE.PLAYING);
-        }
-
-        this.evolutionScreenChooser.remove();
+    onAfterEvolutionTargetSelectedOnEvolutionHole() {
         this._closeBallOnWayDown = true;
         this.ditto.spitBall(this.getBall());
-        this.arrows.evolutionArrowsLevel = 0;
     }
 
     onLaunchNewBallWaiting() {
@@ -32,7 +24,7 @@ class RedField extends Field {
         this.bonusStages = RED_FIELD_BONUS_ORDER;
 
 
-        this.ditto = new RedFieldDitto(this.onDittoWellCallback);
+        this.ditto = new RedFieldDitto(this.onEvolutionWellCallback);
 
         this.speedPad.push(new SpeedPad(265, 293));
         this.speedPad.push(new SpeedPad(53, 293));
@@ -270,17 +262,6 @@ class RedField extends Field {
     resetTravelTriggers() {
         this.leftTravelDiglett.reset();
         this.rightTravelDiglett.reset();
-    }
-
-    onDittoWellCallback = () => {
-        EngineUtils.addPointsForBallHelper(POINTS.EVOLUTION_HOLE);
-        this.openEvolutionChooserScreen(this.onEvolutionTargetSelectedOnDitto);
-    }
-
-    openEvolutionChooserScreen = (onEvolutionTargetSelectedCallback) => {
-        this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.captured, onEvolutionTargetSelectedCallback);
-        this.evolutionScreenChooser.show();
-        this.setState(FIELD_STATE.EVOLUTION_CHOOSE_SCREEN);
     }
 
     startEvolutionSequence(pokemon) {
