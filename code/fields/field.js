@@ -67,7 +67,7 @@ class Field extends Stage {
             this.getScreenLandscapes()
         );
 
-        this.ballBonusScreen = new BallBonusScreen(this.status, this.onBonusScreenCompleteCallback);
+        this.ballBonusScreen = new BallBonusScreen(this.status, this.getBonusStateStates(), this.onBonusScreenCompleteCallback);
 
         this.multiplierManager = new MultiplierManager(this.status, this.onLeftMultiplierHitCallback, this.onRightMultiplierHitCallback, this.onMultiplierUpgradeCallback, this.getLeftMultiplierTarget(), this.getRightMultiplierTarget());
         this.multiplierManager.setMultiplierLevel(multiplierLevel);
@@ -713,6 +713,7 @@ class Field extends Stage {
     getRightMultiplierTarget() { }
     getArrows() { }
     getScreenLandscapes() { }
+    getBonusStateStates() {}
 
     getBallUpgraderManager() { }
 
@@ -733,5 +734,7 @@ class Field extends Stage {
     playCatchemEvolutionMusic() { }
 
     updateSensors() { }
+
+    
 
 }

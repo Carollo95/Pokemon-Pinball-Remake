@@ -16,8 +16,8 @@ class BlueField extends Field {
 
         this.setupSensors();
 
-        this.leftTravelPoliwag = new BlueFieldTravelPoliwag(() => { this.onTravelHitCallback(false) }, () => { this.status.poliwag++; this.onTravelToLeft(); });
-        this.leftTravelPsyduck = new BlueFieldTravelPsyduck(() => { this.onTravelHitCallback(true) }, () => { this.status.psyduck++; this.onTravelToRight(); });
+        this.leftTravelPoliwag = new BlueFieldTravelPoliwag(() => { this.onTravelHitCallback(false) }, () => { this.status.poliwagOnBall++; this.onTravelToLeft(); });
+        this.leftTravelPsyduck = new BlueFieldTravelPsyduck(() => { this.onTravelHitCallback(true) }, () => { this.status.psyduckOnBall++; this.onTravelToRight(); });
 
         this.bumpers.push(new BlueFieldShellder(117, 140, this.onBumperHitCallback));
         this.bumpers.push(new BlueFieldShellder(160, 107, this.onBumperHitCallback));
@@ -116,5 +116,6 @@ class BlueField extends Field {
     getBallUpgraderManager() { return BallUpgraderManager.createBlueFieldBallUpgraderManager(); }
     getPikachuSaverManager() { return PikachuSaverManager.createBlueFieldPikachuSaverManager(this.status); }
     getScreenLandscapes() { return new BlueFieldScreenLandscapes(); }
+    getBonusStateStates() { return BLUE_FIELD_BALL_SCREEN_LINES_ORDER; }
 
 }

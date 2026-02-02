@@ -307,4 +307,5 @@ class RedField extends Field {
     getBallUpgraderManager() { return BallUpgraderManager.createRedFieldBallUpgraderManager(); }
     getPikachuSaverManager() { return PikachuSaverManager.createRedFieldPikachuSaverManager(this.status); }
     getScreenLandscapes() { return new RedFieldScreenLandscapes(); }
+    getBonusStateStates() { return RED_FIELD_BALL_SCREEN_LINES_ORDER; }
 }

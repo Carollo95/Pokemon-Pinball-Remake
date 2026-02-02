@@ -15,6 +15,7 @@ class StageStatus {
         this.poliwagOnBall = 0;
         this.psyduckOnBall = 0;
         this.cloysterOnBall = 0;
+        this.slowbroOnBall = 0;
 
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
@@ -35,6 +36,22 @@ class StageStatus {
 
     getBonusForDugtrioOnBall() {
         return this.dugtrioOnBall * POINTS.END_OF_BALL_BONUS_DUGTRIO;
+    }
+
+    getBonusForSlowbroOnBall() {
+        return this.slowbroOnBall * POINTS.END_OF_BALL_BONUS_SLOWBRO;
+    }
+
+    getBonusForCloysterOnBall() {
+        return this.cloysterOnBall * POINTS.END_OF_BALL_BONUS_CLOYSTER;
+    }
+
+    getBonusForPsyduckOnBall() {
+        return this.psyduckOnBall * POINTS.END_OF_BALL_BONUS_PSYDUCK;
+    }
+
+    getBonusForPoliwagOnBall() {
+        return this.poliwagOnBall * POINTS.END_OF_BALL_BONUS_POLIWAG;
     }
 
     getBonusForCaveShotsOnBall() {
@@ -65,7 +82,7 @@ class StageStatus {
         this.balls--;
         this.startExtraBall();
     }
-    
+
     startExtraBall() {
         this.balls--;
 
@@ -77,6 +94,7 @@ class StageStatus {
         this.poliwagOnBall = 0;
         this.psyduckOnBall = 0;
         this.cloysterOnBall = 0;
+        this.slowbroOnBall = 0;
 
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
