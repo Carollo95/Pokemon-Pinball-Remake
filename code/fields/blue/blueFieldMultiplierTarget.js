@@ -13,11 +13,13 @@ class BlueFieldMultiplierTarget extends MultiplierTarget {
 
 
     static createLeftMultiplierTarget(callback) {
-        return new BlueFieldMultiplierTarget(85, 298, 75, 277, callback);
+        const collider = new Sprite(87, 302, 15, 15, "none");
+        return new BlueFieldMultiplierTarget(collider, 75, 277, callback);
     }
 
     static createRightMultiplierTarget(callback) {
-        return new BlueFieldMultiplierTarget(233, 298, 245, 277, callback);
+        const collider = new Sprite(231, 302, 15, 15, "none");
+        return new BlueFieldMultiplierTarget(collider, 245, 277, callback);
     }
 
 }

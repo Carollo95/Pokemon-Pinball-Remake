@@ -15,7 +15,9 @@ class MultiplierManager {
         this.onMultiplierUpgradeCallback = onMultiplierUpgradeCallback;
 
         this.leftMultiplier = leftMultiplier;
+        this.leftMultiplier.callback = this.leftMultiplierHitCallback;
         this.rightMultiplier = rightMultiplier;
+        this.rightMultiplier.callback = this.rightMultiplierHitCallback;
 
         this._lastmultiplierUpgradeTime = -MULTIPLIER_ANIMATION_DURATION_MS;
         this.setInitialState();

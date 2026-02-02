@@ -6,7 +6,7 @@ const MULTIPLIER_BLINK_HALF_RATE = MULTIPLIER_BLINK_RATE / 2;
 class MultiplierTarget {
 
 
-    constructor(colliderX, colliderY, displayX, displayY, callback) {
+    constructor(collider, displayX, displayY, callback) {
         this.sprite = new Sprite(displayX, displayY, 14, 14, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
@@ -15,22 +15,22 @@ class MultiplierTarget {
         this.sprite.addAnimation('inactive', this.getInactiveMultiplierAnimation());
         this.sprite.ani.playing = false;
 
-        this.target = new Sprite(colliderX, colliderY, 6, 9, "none");
+        this.target = collider;
         this.target.debug = DEBUG;
         this.target.layer = SCENARIO_LAYER;
-        this.target.visible = false;
+        this.target.visible = true;
 
         this._blinking = false;
 
         this.callback = callback;
-        this.lastHitTime = -10000;
+        this.timer = new EventTimer(MULTIPLIER_TARGET_COOLDOWN_TIME);
     }
 
 
     update(ballSprite) {
-        if (this.target.overlaps(ballSprite) && this.hasCooldownTimePassed()) {
+        if (this.target.overlaps(ballSprite) && this.timer.hasElapsed()) {
             this.callback();
-            this.lastHitTime = millis();
+            this.timer.restart();
             Audio.playSFX('sfx0D');
         }
 
@@ -40,10 +40,6 @@ class MultiplierTarget {
                 this.sprite.changeAni("inactive");
         }
 
-    }
-
-    hasCooldownTimePassed() {
-        return millis() - this.lastHitTime >= MULTIPLIER_TARGET_COOLDOWN_TIME;
     }
 
     blink() {
@@ -67,6 +63,5 @@ class MultiplierTarget {
             this.sprite.animations['inactive'].frame = number;
         }
     }
-
 
 }

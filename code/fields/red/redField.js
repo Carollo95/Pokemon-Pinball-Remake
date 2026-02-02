@@ -302,8 +302,8 @@ class RedField extends Field {
     }
 
     getLeftMultiplierTarget() { return RedFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
-    getArrows() { return new RedFieldArrows(); }
     getRightMultiplierTarget() { return RedFieldMultiplierTarget.createRightMultiplierTarget(this.onRightMultiplierHitCallback); }
+    getArrows() { return new RedFieldArrows(); }
     getBallUpgraderManager() { return BallUpgraderManager.createRedFieldBallUpgraderManager(); }
     getPikachuSaverManager() { return PikachuSaverManager.createRedFieldPikachuSaverManager(this.status); }
     getScreenLandscapes() { return new RedFieldScreenLandscapes(); }
