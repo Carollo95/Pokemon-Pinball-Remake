@@ -18,7 +18,7 @@ class MultiplierTarget {
         this.target = collider;
         this.target.debug = DEBUG;
         this.target.layer = SCENARIO_LAYER;
-        this.target.visible = true;
+        this.target.visible = false;
 
         this._blinking = false;
 
