@@ -310,6 +310,7 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('blueFieldMultiplier', 'assets/img/blue-field/multiplier', 14, 14, 10);
   Asset.registerAnimationTemplate('blueFieldMultiplierActive', 'assets/img/blue-field/multiplier_active', 14, 14, 10);
+  Asset.registerAnimationTemplate('blueFieldMultiplierButton', 'assets/img/blue-field/multiplier_button', 28, 20, 2);
 
   Asset.registerAnimationTemplate('blueFieldBallUpgraderElement', 'assets/img/blue-field/ball_upgrader_element', 12, 26, 2, 7);
 

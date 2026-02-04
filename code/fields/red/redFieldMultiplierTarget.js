@@ -13,12 +13,12 @@ class RedFieldMultiplierTarget extends MultiplierTarget {
 
     static createLeftMultiplierTarget(callback) {
         let collider = new Sprite(85, 300, 6, 9, "none");
-        return new RedFieldMultiplierTarget(collider, 75, 281, callback);
+        return new RedFieldMultiplierTarget(collider, undefined, 75, 281, callback);
     }
     
     static createRightMultiplierTarget(callback) {
         let collider = new Sprite(233, 298, 6, 9, "none");
-        return new RedFieldMultiplierTarget(collider, 245, 281, callback);
+        return new RedFieldMultiplierTarget(collider, undefined, 245, 281, callback);
     }
 
 }

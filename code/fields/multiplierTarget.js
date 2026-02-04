@@ -6,7 +6,7 @@ const MULTIPLIER_BLINK_HALF_RATE = MULTIPLIER_BLINK_RATE / 2;
 class MultiplierTarget {
 
 
-    constructor(collider, displayX, displayY, callback) {
+    constructor(collider, buttonSprite, displayX, displayY, callback) {
         this.sprite = new Sprite(displayX, displayY, 14, 14, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
@@ -14,6 +14,8 @@ class MultiplierTarget {
         this.sprite.ani.playing = false;
         this.sprite.addAnimation('inactive', this.getInactiveMultiplierAnimation());
         this.sprite.ani.playing = false;
+
+        this.buttonSprite = buttonSprite;
 
         this.target = collider;
         this.target.debug = DEBUG;
@@ -32,6 +34,14 @@ class MultiplierTarget {
             this.callback();
             this.timer.restart();
             Audio.playSFX('sfx0D');
+            if (this.buttonSprite !== undefined) {
+                this.buttonSprite.ani.playing = true;
+                this.buttonSprite.ani.frame = 1;
+                this.buttonSprite.ani.onComplete = () => {
+                    console.log("animation complete");
+                    this.buttonSprite.ani.playing = false;
+                }
+            }
         }
 
         if (this._blinking) {
