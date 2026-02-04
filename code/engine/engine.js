@@ -247,7 +247,6 @@ const EngineUtils = {
     },
 
     addPointsForBallHelper(points) {
-        console.trace();
         stage.status.addPoints(points, stage.ball);
     }
 

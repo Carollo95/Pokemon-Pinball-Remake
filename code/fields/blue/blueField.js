@@ -36,6 +36,8 @@ class BlueField extends Field {
 
         this.rightRubberBand = BlueFieldRubberBand.createLeftRubberBand();
         this.leftRubberBand = BlueFieldRubberBand.createRightRubberBand();
+
+        this._closeBallOnWayDown = true;
     }
 
     onCloysterEatCallback = () => {
@@ -70,6 +72,11 @@ class BlueField extends Field {
         });
 
         this.leftLowerSensor = new Sensor(38, 278, () => {
+            if (this._closeBallOnWayDown) {
+                this.createLauncherDoor();
+                this._closeBallOnWayDown = false;
+            }
+
             this.lastSensor = this.leftLowerSensor;
         });
 
@@ -109,6 +116,33 @@ class BlueField extends Field {
         this.evolutionWell.spitBall(this.getBall());
     }
 
+    createLauncherDoor() {
+        if (this.launcherDoor) return;
+
+        this.launcherDoor = new Sprite([
+            [175, 11],
+            [223, 25],
+            [255, 48],
+            [273, 68],
+            [290, 92],
+            [290, 11],
+            [175, 11]
+        ], "static");
+        this.launcherDoor.layer = SCENARIO_LAYER;
+        this.launcherDoor.debug = DEBUG;
+        this.launcherDoor.visible = false;
+    }
+
+
+    removeLauncherDoor() {
+        this.launcherDoor && this.launcherDoor.remove();
+        this.launcherDoor = undefined;
+    }
+
+    onLaunchNewBallWaiting() {
+        this._closeBallOnWayDown = true;
+        this.removeLauncherDoor();
+    }
 
     getLeftMultiplierTarget() { return BlueFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
     getArrows() { return new BlueFieldArrows(); }

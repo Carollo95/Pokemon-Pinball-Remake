@@ -38,7 +38,6 @@ class MultiplierTarget {
                 this.buttonSprite.ani.playing = true;
                 this.buttonSprite.ani.frame = 1;
                 this.buttonSprite.ani.onComplete = () => {
-                    console.log("animation complete");
                     this.buttonSprite.ani.playing = false;
                 }
             }
