@@ -24,16 +24,16 @@ class BallUpgraderManager {
 
     displaceLeft() {
         let pivot = this.leftElement.active;
-        this.leftElement.setActive(this.centerElement.active);
-        this.centerElement.setActive(this.rightElement.active);
-        this.rightElement.setActive(pivot);
+        this.leftElement.setActive(this.centerElement.active, false);
+        this.centerElement.setActive(this.rightElement.active, false);
+        this.rightElement.setActive(pivot, false);
     }
 
     displaceRight() {
         let pivot = this.rightElement.active;
-        this.rightElement.setActive(this.centerElement.active);
-        this.centerElement.setActive(this.leftElement.active);
-        this.leftElement.setActive(pivot);
+        this.rightElement.setActive(this.centerElement.active, false);
+        this.centerElement.setActive(this.leftElement.active, false);
+        this.leftElement.setActive(pivot, false);
     }
 
     static createBlueFieldBallUpgraderManager() {

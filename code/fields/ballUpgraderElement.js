@@ -34,9 +34,11 @@ class BallUpgraderElement {
     }
 
 
-    setActive(active) {
+    setActive(active, addPoints = true) {
         this.active = active;
-        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_BALL_MULTIPLIER_SWITCH);
+        if (addPoints) {
+            EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_BALL_MULTIPLIER_SWITCH);
+        }
         if (this.active) {
             this.sprite.ani.frame = 1;
         } else {
