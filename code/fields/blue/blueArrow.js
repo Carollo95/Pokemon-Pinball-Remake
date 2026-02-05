@@ -34,23 +34,24 @@ class BlueArrow {
         if (ballSprite.overlaps(this.sprite)) {
             switch (this.direction) {
                 case BLUE_ARROW_DIRECTION.NORTH:
-                    ballSprite.velocity.y *= BLUE_ARROW_SPEED_PUSH_MULTIPLIER;
-                    ballSprite.velocity.x *= BLUE_ARROW_SPEED_DECREASE_MULTIPLIER;
+                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, BLUE_ARROW_SPEED_PUSH_MULTIPLIER);
                     break;
                 case BLUE_ARROW_DIRECTION.SOUTH:
-                    ballSprite.velocity.y *= BLUE_ARROW_SPEED_PUSH_MULTIPLIER / 2;
-                    ballSprite.velocity.x *= BLUE_ARROW_SPEED_DECREASE_MULTIPLIER;
+                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, BLUE_ARROW_SPEED_PUSH_MULTIPLIER / 2);
                     break;
                 case BLUE_ARROW_DIRECTION.EAST:
-                    ballSprite.velocity.x = BLUE_ARROW_SPEED_PUSH_MULTIPLIER;
-                    ballSprite.velocity.y *= BLUE_ARROW_SPEED_DECREASE_MULTIPLIER;
+                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_PUSH_MULTIPLIER, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER);
                     break;
                 case BLUE_ARROW_DIRECTION.WEST:
-                    ballSprite.velocity.x = BLUE_ARROW_SPEED_PUSH_MULTIPLIER;
-                    ballSprite.velocity.y *= BLUE_ARROW_SPEED_DECREASE_MULTIPLIER;
+                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_PUSH_MULTIPLIER, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER);
                     break;
             }
         }
+    }
+
+    multiplyBallVelocity(ballSprite, multiplierX, multiplierY, maxSpeed = 10) {
+        ballSprite.velocity.x = Math.max(ballSprite.velocity.x * multiplierX, maxSpeed * Math.sign(ballSprite.velocity.x));
+        ballSprite.velocity.y = Math.max(ballSprite.velocity.y * multiplierY, maxSpeed * Math.sign(ballSprite.velocity.y));
     }
 
     restartTimer() {

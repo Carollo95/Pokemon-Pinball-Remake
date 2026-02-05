@@ -31,10 +31,9 @@ class BlueField extends Field {
 
         this.blueArrow = new BlueArrow(this.onBlueFieldArrowCallback);
 
-        //TODO change position and sprite
-
         this.speedPad.push(new SpeedPad(48, 298));
         this.speedPad.push(new SpeedPad(272, 296));
+        this.speedPad.push(new SpeedPad(159, 245, 12, 0.2));
 
         this.rightRubberBand = BlueFieldRubberBand.createLeftRubberBand();
         this.leftRubberBand = BlueFieldRubberBand.createRightRubberBand();
