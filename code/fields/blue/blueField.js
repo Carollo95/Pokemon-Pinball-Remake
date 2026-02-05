@@ -29,6 +29,8 @@ class BlueField extends Field {
         this.captureWell = new BlueFieldCloyster(this.onCloysterEatCallback);
         this.evolutionWell = new BlueFieldSlowbro(this.onEvolutionWellCallback);
 
+        this.blueArrow = new BlueArrow(this.onBlueFieldArrowCallback);
+
         //TODO change position and sprite
 
         this.speedPad.push(new SpeedPad(48, 298));
@@ -40,6 +42,10 @@ class BlueField extends Field {
         this._closeBallOnWayDown = true;
     }
 
+    onBlueFieldArrowCallback(direction) {
+        console.log("new direction:", direction);
+    }
+
     onCloysterEatCallback = () => {
         //TODO this should increates on travel???
         this.status.cloysterOnBall++;
@@ -49,6 +55,7 @@ class BlueField extends Field {
         } else if (this.state === FIELD_STATE.PLAYING && this.arrows.captureArrowsLevel >= 2) {
             this.startCaptureSequence();
         }
+        this.blueArrow.restartTimer();
     }
 
     setupSensors() {
@@ -110,9 +117,12 @@ class BlueField extends Field {
 
         this.leftTravelPoliwag.update(this.getBall().sprite);
         this.leftTravelPsyduck.update(this.getBall().sprite);
+
+        this.blueArrow.update(this.getBall().sprite, this.arrows.captureArrowsLevel >= 2, this.arrows.evolutionArrowsLevel >= 3);
     }
 
     onAfterEvolutionTargetSelectedOnEvolutionHole() {
+        this.blueArrow.restartTimer();
         this.evolutionWell.spitBall(this.getBall());
     }
 

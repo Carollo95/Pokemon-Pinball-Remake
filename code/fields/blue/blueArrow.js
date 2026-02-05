@@ -1,0 +1,108 @@
+const BLUE_ARROW_DIRECTION = {
+    NORTH: "NORTH",
+    SOUTH: "SOUTH",
+    EAST: "EAST",
+    WEST: "WEST"
+}
+
+const UPDATE_EVENT_TIMER = 2000;
+const BLUE_ARROW_SPEED_PUSH_MULTIPLIER = 3;
+const BLUE_ARROW_SPEED_DECREASE_MULTIPLIER = 0.25;
+
+class BlueArrow {
+
+    constructor(callback) {
+        this.callback = callback;
+
+        this.sprite = new Sprite(159, 210, 1, 1, "none");
+        this.sprite.debug = DEBUG;
+        this.sprite.layer = SCENARIO_LAYER;
+        this.sprite.addAnimation('blueArrow', Asset.getAnimation('blueFieldBlueArrow'));
+        this.sprite.ani.playing = false;
+
+        this.updateTimer = new EventTimer(UPDATE_EVENT_TIMER);
+        this.changeDirection(BLUE_ARROW_DIRECTION.NORTH);
+    }
+
+    update(ballSprite, captureGateOpen, evolutionGateOpen) {
+        if (this.updateTimer.hasElapsed()) {
+            this.updateTimer.restart();
+            const direction = this.getRandomDirection(this.getValidDirections(captureGateOpen, evolutionGateOpen, ballSprite));
+            this.changeDirection(direction);
+        }
+
+        if (ballSprite.overlaps(this.sprite)) {
+            switch (this.direction) {
+                case BLUE_ARROW_DIRECTION.NORTH:
+                    ballSprite.velocity.y *= BLUE_ARROW_SPEED_PUSH_MULTIPLIER;
+                    ballSprite.velocity.x *= BLUE_ARROW_SPEED_DECREASE_MULTIPLIER;
+                    break;
+                case BLUE_ARROW_DIRECTION.SOUTH:
+                    ballSprite.velocity.y *= BLUE_ARROW_SPEED_PUSH_MULTIPLIER / 2;
+                    ballSprite.velocity.x *= BLUE_ARROW_SPEED_DECREASE_MULTIPLIER;
+                    break;
+                case BLUE_ARROW_DIRECTION.EAST:
+                    ballSprite.velocity.x = BLUE_ARROW_SPEED_PUSH_MULTIPLIER;
+                    ballSprite.velocity.y *= BLUE_ARROW_SPEED_DECREASE_MULTIPLIER;
+                    break;
+                case BLUE_ARROW_DIRECTION.WEST:
+                    ballSprite.velocity.x = BLUE_ARROW_SPEED_PUSH_MULTIPLIER;
+                    ballSprite.velocity.y *= BLUE_ARROW_SPEED_DECREASE_MULTIPLIER;
+                    break;
+            }
+        }
+    }
+
+    restartTimer() {
+        this.updateTimer.restart();
+    }
+
+    getValidDirections(captureGateOpen, evolutionGateOpen, ballSprite) {
+        let validDirections = [];
+
+        if (captureGateOpen) {
+            validDirections.push(BLUE_ARROW_DIRECTION.EAST);
+        }
+
+        if (evolutionGateOpen) {
+            validDirections.push(BLUE_ARROW_DIRECTION.WEST);
+        }
+
+        //TODO extract variable
+        if (ballSprite.y < this.sprite.y - 10) {
+            validDirections = [];
+            validDirections.push(BLUE_ARROW_DIRECTION.SOUTH);
+        } else {
+            validDirections.push(BLUE_ARROW_DIRECTION.NORTH);
+        }
+
+        return validDirections;
+    }
+
+    getRandomDirection(directions) {
+        return directions[Math.floor(Math.random() * directions.length)];
+    }
+
+    changeDirection(newDirection) {
+        {
+            this.direction = newDirection;
+            this.callback(newDirection);
+
+            switch (newDirection) {
+                case BLUE_ARROW_DIRECTION.NORTH:
+                    this.sprite.ani.frame = 0;
+                    break;
+                case BLUE_ARROW_DIRECTION.EAST:
+                    this.sprite.ani.frame = 1;
+                    break;
+                case BLUE_ARROW_DIRECTION.SOUTH:
+                    this.sprite.ani.frame = 2;
+                    break;
+                case BLUE_ARROW_DIRECTION.WEST:
+                    this.sprite.ani.frame = 3;
+                    break;
+            }
+        }
+
+    }
+}
