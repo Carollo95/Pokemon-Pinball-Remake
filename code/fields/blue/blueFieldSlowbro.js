@@ -26,7 +26,7 @@ class BlueFieldSlowbro {
         if (this.sprite.ani.name === 'idle' && this.well.capturedBall(ball.sprite)) {
             this.sprite.changeAni('eat');
             //TODO change SFX
-            Audio.playSFX('sfx21');
+            Audio.playSFX('sfx05');
             this.gravityActive = false;
             ball.sprite.visible = false;
             this.onCapturedBallCallback();

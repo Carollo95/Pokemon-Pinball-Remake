@@ -25,7 +25,7 @@ class Bumper {
             this.bounceBall(ball);
             this.onHitCallback();
             this.sprite.changeAnimation("hurt");
-            Audio.playSFX(this.getHitSFX());
+            Audio.playSFX('sfx0E');
 
             this.lastHitTimer.restart();
             this.nextShakeTime = millis();

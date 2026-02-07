@@ -21,14 +21,4 @@ class RedFieldBellsprout extends CaptureWell {
         return new Well(248, 178, BELLSPROUT_WELL_STRENGHT, BELLSPROUT_WELL_RADIUS_X, BELLSPROUT_WELL_RADIUS_NORTH, BELLSPROUT_WELL_RADIUS_X, BELLSPROUT_WELL_RADIUS_SOUTH);
     }
 
-
-    getEatSFX() {
-        return 'sfx05';
-    }
-
-    getSpitSFX() {
-        return 'sfx06';
-    }
-
-
 }

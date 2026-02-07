@@ -32,10 +32,4 @@ class TravelDiglett extends TravelButton {
     getCounterAnimation() {
         return Asset.getAnimation('redFieldDugtrio');
     }
-
-    getHitSFX() {
-        return 'sfx0F';
-    }
-
-
 }

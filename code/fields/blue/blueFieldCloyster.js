@@ -21,15 +21,4 @@ class BlueFieldCloyster extends CaptureWell {
         return new Well(248, 208, CLOYSTER_WELL_STRENGHT, CLOYSTER_WELL_RADIUS_EAST, CLOYSTER_WELL_RADIUS_Y, CLOYSTER_WELL_RADIUS_WEST, CLOYSTER_WELL_RADIUS_Y);
     }
 
-
-    //TODO change these
-    getEatSFX() {
-        return 'sfx05';
-    }
-
-    getSpitSFX() {
-        return 'sfx06';
-    }
-
-
 }

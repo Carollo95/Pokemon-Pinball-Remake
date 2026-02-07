@@ -15,10 +15,6 @@ class RedFieldVoltorb extends Bumper {
         this.state = STATE.STILL;
     }
 
-    getHitSFX() {
-        return 'sfx0E';
-    }
-
     getIdleAnimation() {
         return Asset.getAnimation('redFieldVoltorbIdle')
     }

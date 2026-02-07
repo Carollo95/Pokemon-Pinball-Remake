@@ -4,11 +4,6 @@ class BlueFieldShellder extends Bumper {
         super(x, y, onHitCallback);
     }
 
-    getHitSFX() {
-        //TODO change SFX
-        return 'sfx0E';
-    }
-
     getIdleAnimation() {
         return Asset.getAnimation('blueFieldShellderIdle');
     }

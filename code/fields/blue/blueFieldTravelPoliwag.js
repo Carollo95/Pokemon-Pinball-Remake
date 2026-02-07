@@ -27,10 +27,4 @@ class BlueFieldTravelPoliwag extends TravelButton {
         return Asset.getAnimation('blueFieldPoliwagCounter');
     }
 
-    getHitSFX() {
-        //TODO change
-        return 'sfx0F';
-    }
-
-
 }

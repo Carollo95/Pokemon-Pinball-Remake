@@ -37,7 +37,7 @@ class TravelButton {
             this.updateCounter();
             this.onHitCallback();
             this.changeAnimationToHurt();
-            Audio.playSFX(this.getHitSFX());
+            Audio.playSFX('sfx0F');
 
             this.buttonSprite.ani.frame = 0;
             this.buttonSprite.ani.playing = true;

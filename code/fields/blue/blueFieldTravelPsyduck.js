@@ -41,10 +41,4 @@ class BlueFieldTravelPsyduck extends TravelButton {
         return Asset.getAnimation('blueFieldPsyduckCounter');
     }
 
-    getHitSFX() {
-        //TODO change
-        return 'sfx0F';
-    }
-
-
 }

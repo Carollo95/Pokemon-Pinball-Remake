@@ -17,13 +17,13 @@ class CaptureWell {
         }
         if (this.sprite.ani.name === 'idle' && this.well.capturedBall(ballSprite)) {
             this.sprite.changeAni('eat');
-            Audio.playSFX(this.getEatSFX());
+            Audio.playSFX('sfx05');
             ballSprite.visible = false;
             this.sprite.ani.onComplete = () => {
                 this.eatCallback();
                 this.gravityActive = false;
                 this.sprite.changeAni('spit');
-                Audio.playSFX(this.getSpitSFX());
+                Audio.playSFX('sfx06');
                 this.spitCallback(ballSprite);
                 ballSprite.visible = true;
                 this.sprite.ani.onComplete = () => {
