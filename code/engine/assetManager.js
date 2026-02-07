@@ -296,7 +296,6 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 46, 68, 4);
   Asset.registerAnimationTemplate('redFieldEvolutionArrows', 'assets/img/red-field/evolution_arrows', 46, 68, 5);
-  Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldLeftInnerArrow', 'assets/img/red-field/left_inner_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldCaveArrow', 'assets/img/red-field/cave_arrow', 26, 22, 2);
 
@@ -322,7 +321,6 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('blueFieldCaptureArrows', 'assets/img/blue-field/capture_arrows', 30, 50, 4);
   Asset.registerAnimationTemplate('blueFieldEvolutionArrows', 'assets/img/blue-field/evolution_arrows', 30, 50, 4);
-  Asset.registerAnimationTemplate('blueFieldRightInnerArrow', 'assets/img/blue-field/right_inner_arrow', 20, 30, 4);
   Asset.registerAnimationTemplate('blueFieldLeftInnerArrow', 'assets/img/blue-field/left_inner_arrow', 20, 30, 4);
   Asset.registerAnimationTemplate('blueFieldCaveArrow', 'assets/img/blue-field/cave_arrow', 26, 26, 4);
 

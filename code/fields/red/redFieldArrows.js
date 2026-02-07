@@ -11,8 +11,7 @@ class RedFieldArrows extends Arrows {
     getRightInnerArrow(){return new Sprite(207, 284, 34, 32, "none");}
     
     getCaveArrowAnimation(){return Asset.getAnimation("redFieldCaveArrow")}
-    getRightInnerArrowAnimation(){return Asset.getAnimation("redFieldBellsproutArrow")}
-    getLeftInnerArrowAnimation(){return Asset.getAnimation("redFieldLeftInnerArrow")}
+    getInnerArrowAnimation(){return Asset.getAnimation("redFieldLeftInnerArrow")}
     getCaptureArrowAnimation(){return Asset.getAnimation("redFieldCaptureArrows")}
     getEvolutionArrowAnimation(){return Asset.getAnimation("redFieldEvolutionArrows")}
 

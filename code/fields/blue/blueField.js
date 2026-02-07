@@ -41,8 +41,8 @@ class BlueField extends Field {
         this._closeBallOnWayDown = true;
     }
 
-    onBlueFieldArrowCallback(direction) {
-        console.log("new direction:", direction);
+    onBlueFieldArrowCallback = (direction) => {
+        this.arrows.flipCentralArrow(direction);
     }
 
     onCloysterEatCallback = () => {

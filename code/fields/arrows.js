@@ -19,8 +19,9 @@ class Arrows {
         this.rightInnerArrow = this.getRightInnerArrow();
         this.rightInnerArrow.debug = DEBUG;
         this.rightInnerArrow.layer = SCENARIO_LAYER;
-        this.rightInnerArrow.addAni("rightInnerArrow", this.getRightInnerArrowAnimation());
+        this.rightInnerArrow.addAni("rightInnerArrow", this.getInnerArrowAnimation());
         this.rightInnerArrow.ani.playing = false;
+        this.rightInnerArrow.mirror.x = true
 
         this.caveArrow = this.getCaveArrows();
         this.caveArrow.debug = DEBUG;
@@ -32,7 +33,7 @@ class Arrows {
         this.leftInnerArrow = this.getLeftInnerArrow();
         this.leftInnerArrow.debug = DEBUG;
         this.leftInnerArrow.layer = SCENARIO_LAYER;
-        this.leftInnerArrow.addAni("leftInnerArrow", this.getLeftInnerArrowAnimation());
+        this.leftInnerArrow.addAni("leftInnerArrow", this.getInnerArrowAnimation());
         this.leftInnerArrow.ani.playing = false;
 
         this.evolutionArrows = this.getEvolutionArrows();
@@ -41,6 +42,10 @@ class Arrows {
         this.evolutionArrows.addAni("evolutionArrows", this.getEvolutionArrowAnimation());
         this.evolutionArrows.ani.playing = false;
 
+        this.rightInnerArrowExtraFrames = 0;
+        this.leftInnerArrowExtraFrames = 0;
+        this.caveArrowExtraFrames = 0;
+
         this.restart();
     }
 
@@ -48,7 +53,7 @@ class Arrows {
         if (this.state === FIELD_ARROW_STATE.NORMAL) {
             this.blinkCaptureArrows(visible);
             this.blinkEvolutionArrows(visible);
-            this.blinkBellsproutArrow(visible);
+            this.blinkRightInnerArrow(visible);
             this.blinkCaveArrow(visible);
             this.blinkLeftInnerArrow(visible);
         } else if (this.state === FIELD_ARROW_STATE.TRAVEL_LEFT) {
@@ -56,7 +61,7 @@ class Arrows {
         } else if (this.state === FIELD_ARROW_STATE.TRAVEL_RIGHT) {
             this.blinkTravelRightArrows(visible);
         } else if (this.state === FIELD_ARROW_STATE.TRAVEL_CAVE) {
-            this.blinkTravelCaveArrows(visible);
+            this.blinkCaveArrows(visible);
         }
     }
 
@@ -66,7 +71,7 @@ class Arrows {
                 frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
                     this.captureArrows.ani.frame = this.captureArrowsLevel :
                     this.captureArrows.ani.frame = this.captureArrowsLevel + 1;
-            }else{
+            } else {
                 this.captureArrows.ani.frame = this.captureArrowsLevel;
             }
         } else {
@@ -76,13 +81,14 @@ class Arrows {
 
 
     blinkLeftInnerArrow(visible) {
-        this.leftInnerArrow.ani.frame = 0;
+        //TODO this is not blinking on slowbro, instead right inner arrow is???
+        this.leftInnerArrow.ani.frame = 0 + this.leftInnerArrowExtraFrames;
     }
 
 
     blinkEvolutionArrows(visible) {
         if (visible) {
-            if (this.evolutionArrowsLevel < this.evolutionArrows.ani.length -1) {
+            if (this.evolutionArrowsLevel < this.evolutionArrows.ani.length - 1) {
                 frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
                     this.evolutionArrows.ani.frame = this.evolutionArrowsLevel :
                     this.evolutionArrows.ani.frame = this.evolutionArrowsLevel + 1;
@@ -92,23 +98,23 @@ class Arrows {
         }
     }
 
-    blinkBellsproutArrow(visible) {
+    blinkRightInnerArrow(visible) {
         if (visible) {
             frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
-                this.rightInnerArrow.ani.frame = 0 :
-                this.rightInnerArrow.ani.frame = (this.captureArrowsLevel >= 2 ? 1 : 0);
+                this.rightInnerArrow.ani.frame = 0 + this.rightInnerArrowExtraFrames :
+                this.rightInnerArrow.ani.frame = (this.captureArrowsLevel >= 2 ? 1 + this.rightInnerArrowExtraFrames : 0 + this.rightInnerArrowExtraFrames);
         } else {
-            this.rightInnerArrow.ani.frame = 0;
+            this.rightInnerArrow.ani.frame = 0 + this.rightInnerArrowExtraFrames;
         }
     }
 
     blinkCaveArrow(visible) {
         if (visible) {
             frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
-                this.caveArrow.ani.frame = 0 :
-                this.caveArrow.ani.frame = this.caveActive ? 1 : 0;
+                this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames:
+                this.caveArrow.ani.frame = this.caveActive ? 1 + this.caveArrowExtraFrames : 0 + this.caveArrowExtraFrames;
         } else {
-            this.caveArrow.ani.frame = 0;
+            this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames;
         }
     }
 
@@ -190,13 +196,13 @@ class Arrows {
         this.caveArrow.ani.frame = 0;
     }
 
-    blinkTravelCaveArrows(visible) {
+    blinkCaveArrows(visible) {
         if (visible) {
             frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
-                this.caveArrow.ani.frame = 0 :
-                this.caveArrow.ani.frame = 1;
+                this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames :
+                this.caveArrow.ani.frame = 1 + this.caveArrowExtraFrames;
         } else {
-            this.caveArrow.ani.frame = 0;
+            this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames;
         }
     }
 
@@ -233,10 +239,10 @@ class Arrows {
         this.state = FIELD_ARROW_STATE.NORMAL;
     }
 
-    getCaveArrowAnimation(){}
-    getCaptureArrowAnimation(){}
-    getRightInnerArrowAnimation(){}
-    getEvolutionArrowAnimation(){}
-    getLeftInnerArrowAnimation(){}
+    getCaveArrowAnimation() { }
+    getCaptureArrowAnimation() { }
+    getRightInnerArrowAnimation() { }
+    getEvolutionArrowAnimation() { }
+    getInnerArrowAnimation() { }
 
 }

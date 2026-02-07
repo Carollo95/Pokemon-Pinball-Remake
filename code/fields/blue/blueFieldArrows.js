@@ -11,13 +11,30 @@ class BlueFieldArrows extends Arrows {
     getRightInnerArrow(){return new Sprite(186, 312, 20, 30, "none");}
 
     getCaveArrowAnimation(){return Asset.getAnimation("blueFieldCaveArrow")}
-    getRightInnerArrowAnimation(){return Asset.getAnimation("blueFieldRightInnerArrow")}
-    getLeftInnerArrowAnimation(){return Asset.getAnimation("blueFieldLeftInnerArrow")}
+    getInnerArrowAnimation(){return Asset.getAnimation("blueFieldLeftInnerArrow")}
     getCaptureArrowAnimation(){return Asset.getAnimation("blueFieldCaptureArrows")}
     getEvolutionArrowAnimation(){return Asset.getAnimation("blueFieldEvolutionArrows")}
     
-    flipCentralArrow(){
-        //TODO
+    flipCentralArrow(direction){
+        switch (direction) {
+            case BLUE_ARROW_DIRECTION.NORTH:
+                this.caveArrowExtraFrames = 2;
+                this.rightInnerArrowExtraFrames = 0;
+                this.leftInnerArrowExtraFrames = 0;
+                break;
+            case BLUE_ARROW_DIRECTION.EAST:
+                this.caveArrowExtraFrames = 0;
+                this.rightInnerArrowExtraFrames = 2;
+                this.leftInnerArrowExtraFrames = 0;
+                break;
+            case BLUE_ARROW_DIRECTION.WEST:
+                this.caveArrowExtraFrames = 0;
+                this.rightInnerArrowExtraFrames = 0;
+                this.leftInnerArrowExtraFrames = 2;
+                break;
+            default:
+                break;
+        }
     }
 
 }

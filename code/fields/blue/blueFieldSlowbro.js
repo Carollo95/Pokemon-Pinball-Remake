@@ -25,7 +25,6 @@ class BlueFieldSlowbro {
         }
         if (this.sprite.ani.name === 'idle' && this.well.capturedBall(ball.sprite)) {
             this.sprite.changeAni('eat');
-            //TODO change SFX
             Audio.playSFX('sfx05');
             this.gravityActive = false;
             ball.sprite.visible = false;
@@ -36,7 +35,6 @@ class BlueFieldSlowbro {
     spitBall(ball) {
         ball.regainPhysics();
         this.sprite.changeAni('spit');
-        //TODO change SFX
         Audio.playSFX('sfx06');
         ball.sprite.velocity.x = -5;
         ball.sprite.visible = true;
