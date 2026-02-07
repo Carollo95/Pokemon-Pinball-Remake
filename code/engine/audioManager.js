@@ -314,6 +314,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('cloneStage', 'assets/audio/CloneStage_Mewtwo', { loop: true }));
     promises.push(audio.registerMusic('redField', 'assets/audio/Red_Field_Theme', { loop: true }));
     promises.push(audio.registerMusic('catchEmEvolutionModeRedField', 'assets/audio/Catch_em_Evolution_Mode_Red_Field', { loop: true }));
+    promises.push(audio.registerMusic('blueField', 'assets/audio/Blue_Field_Theme', { loop: true }));
+    promises.push(audio.registerMusic('catchEmEvolutionModeBlueField', 'assets/audio/Catch_em_Evolution_Mode_Blue_Field', { loop: true }));
     promises.push(audio.registerMusic('mapMode', 'assets/audio/Field_MapMode', { loop: true }));
 
     // SFX

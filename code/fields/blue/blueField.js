@@ -153,6 +153,15 @@ class BlueField extends Field {
         this.removeLauncherDoor();
     }
 
+
+    playMusic() {
+        Audio.playMusic('blueField');
+    }
+    
+    playCatchemEvolutionMusic() {
+        Audio.playMusic('catchEmEvolutionModeBlueField');
+    }
+
     getLeftMultiplierTarget() { return BlueFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
     getArrows() { return new BlueFieldArrows(); }
     getRightMultiplierTarget() { return BlueFieldMultiplierTarget.createRightMultiplierTarget(this.onRightMultiplierHitCallback); }
