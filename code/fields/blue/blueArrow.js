@@ -27,7 +27,7 @@ class BlueArrow {
     update(ballSprite, captureGateOpen, evolutionGateOpen, fieldState) {
         if (this.updateTimer.hasElapsed()) {
             this.updateTimer.restart();
-            const direction = this.getRandomDirection(this.getValidDirections(captureGateOpen, evolutionGateOpen, fieldState, ballSprite));
+            const direction = this.getRandomDirection(this.getValidDirections(captureGateOpen, evolutionGateOpen, ballSprite, fieldState));
             this.changeDirection(direction);
         }
 
@@ -61,19 +61,17 @@ class BlueArrow {
     getValidDirections(captureGateOpen, evolutionGateOpen, ballSprite, fieldState) {
         let validDirections = [];
 
-        if (captureGateOpen && fieldState === FIELD_STATE.PLAYING) {
-            validDirections.push(BLUE_ARROW_DIRECTION.EAST);
-        }
-
-        if (evolutionGateOpen && fieldState === FIELD_STATE.PLAYING) {
-            validDirections.push(BLUE_ARROW_DIRECTION.WEST);
-        }
-
-        //TODO extract variable
         if (ballSprite.y < this.sprite.y) {
-            validDirections = [];
             validDirections.push(BLUE_ARROW_DIRECTION.SOUTH);
         } else {
+            if ((captureGateOpen && fieldState === FIELD_STATE.PLAYING) || fieldState === FIELD_STATE.TRAVEL_RIGHT) {
+                validDirections.push(BLUE_ARROW_DIRECTION.EAST);
+            }
+
+            if ((evolutionGateOpen && fieldState === FIELD_STATE.PLAYING) || fieldState === FIELD_STATE.TRAVEL_LEFT) {
+                validDirections.push(BLUE_ARROW_DIRECTION.WEST);
+            }
+
             validDirections.push(BLUE_ARROW_DIRECTION.NORTH);
         }
 
