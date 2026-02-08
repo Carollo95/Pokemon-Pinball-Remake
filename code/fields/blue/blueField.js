@@ -117,7 +117,7 @@ class BlueField extends Field {
         this.leftTravelPoliwag.update(this.getBall().sprite);
         this.leftTravelPsyduck.update(this.getBall().sprite);
 
-        this.blueArrow.update(this.getBall().sprite, this.arrows.captureArrowsLevel >= 2, this.arrows.evolutionArrowsLevel >= 3);
+        this.blueArrow.update(this.getBall().sprite, this.arrows.captureArrowsLevel >= 2, this.arrows.evolutionArrowsLevel >= 3, this.state);
     }
 
     onAfterEvolutionTargetSelectedOnEvolutionHole() {

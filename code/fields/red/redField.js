@@ -154,11 +154,6 @@ class RedField extends Field {
         });
     }
 
-
-    disableCaptureTargetArrow() {
-        this.bumpersTargetArrow.setActive(false);
-    }
-
     playMusic() {
         Audio.playMusic('redField');
     }

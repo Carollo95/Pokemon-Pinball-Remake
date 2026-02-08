@@ -32,6 +32,11 @@ class BlueFieldArrows extends Arrows {
                 this.rightInnerArrowExtraFrames = 0;
                 this.leftInnerArrowExtraFrames = 2;
                 break;
+            case BLUE_ARROW_DIRECTION.SOUTH:
+                this.caveArrowExtraFrames = 0;
+                this.rightInnerArrowExtraFrames = 0;
+                this.leftInnerArrowExtraFrames = 0;
+                break;
             default:
                 break;
         }

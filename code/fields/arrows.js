@@ -88,7 +88,7 @@ class Arrows {
 
     blinkEvolutionArrows(visible) {
         if (visible) {
-            if (this.evolutionArrowsLevel < this.evolutionArrows.ani.length - 1) {
+            if (this.evolutionArrowsLevel <= this.evolutionArrows.ani.length - 1) {
                 frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
                     this.evolutionArrows.ani.frame = this.evolutionArrowsLevel :
                     this.evolutionArrows.ani.frame = this.evolutionArrowsLevel + 1;
@@ -102,7 +102,7 @@ class Arrows {
         if (visible) {
             frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
                 this.rightInnerArrow.ani.frame = 0 + this.rightInnerArrowExtraFrames :
-                this.rightInnerArrow.ani.frame = (this.captureArrowsLevel >= 2 ? 1 + this.rightInnerArrowExtraFrames : 0 + this.rightInnerArrowExtraFrames);
+                this.rightInnerArrow.ani.framere = (this.captureArrowsLevel >= 2 ? 1 + this.rightInnerArrowExtraFrames : 0 + this.rightInnerArrowExtraFrames);
         } else {
             this.rightInnerArrow.ani.frame = 0 + this.rightInnerArrowExtraFrames;
         }

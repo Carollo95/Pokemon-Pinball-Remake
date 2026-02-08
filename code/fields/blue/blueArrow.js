@@ -5,7 +5,7 @@ const BLUE_ARROW_DIRECTION = {
     WEST: "WEST"
 }
 
-const UPDATE_EVENT_TIMER = 2000;
+const UPDATE_EVENT_TIMER = 1000;
 const BLUE_ARROW_SPEED_PUSH_MULTIPLIER = 3;
 const BLUE_ARROW_SPEED_DECREASE_MULTIPLIER = 0.25;
 
@@ -24,10 +24,10 @@ class BlueArrow {
         this.changeDirection(BLUE_ARROW_DIRECTION.NORTH);
     }
 
-    update(ballSprite, captureGateOpen, evolutionGateOpen) {
+    update(ballSprite, captureGateOpen, evolutionGateOpen, fieldState) {
         if (this.updateTimer.hasElapsed()) {
             this.updateTimer.restart();
-            const direction = this.getRandomDirection(this.getValidDirections(captureGateOpen, evolutionGateOpen, ballSprite));
+            const direction = this.getRandomDirection(this.getValidDirections(captureGateOpen, evolutionGateOpen, fieldState, ballSprite));
             this.changeDirection(direction);
         }
 
@@ -58,19 +58,19 @@ class BlueArrow {
         this.updateTimer.restart();
     }
 
-    getValidDirections(captureGateOpen, evolutionGateOpen, ballSprite) {
+    getValidDirections(captureGateOpen, evolutionGateOpen, ballSprite, fieldState) {
         let validDirections = [];
 
-        if (captureGateOpen) {
+        if (captureGateOpen && fieldState === FIELD_STATE.PLAYING) {
             validDirections.push(BLUE_ARROW_DIRECTION.EAST);
         }
 
-        if (evolutionGateOpen) {
+        if (evolutionGateOpen && fieldState === FIELD_STATE.PLAYING) {
             validDirections.push(BLUE_ARROW_DIRECTION.WEST);
         }
 
         //TODO extract variable
-        if (ballSprite.y < this.sprite.y - 10) {
+        if (ballSprite.y < this.sprite.y) {
             validDirections = [];
             validDirections.push(BLUE_ARROW_DIRECTION.SOUTH);
         } else {
@@ -85,25 +85,22 @@ class BlueArrow {
     }
 
     changeDirection(newDirection) {
-        {
-            this.direction = newDirection;
-            this.callback(newDirection);
+        this.direction = newDirection;
+        this.callback(newDirection);
 
-            switch (newDirection) {
-                case BLUE_ARROW_DIRECTION.NORTH:
-                    this.sprite.ani.frame = 0;
-                    break;
-                case BLUE_ARROW_DIRECTION.EAST:
-                    this.sprite.ani.frame = 1;
-                    break;
-                case BLUE_ARROW_DIRECTION.SOUTH:
-                    this.sprite.ani.frame = 2;
-                    break;
-                case BLUE_ARROW_DIRECTION.WEST:
-                    this.sprite.ani.frame = 3;
-                    break;
-            }
+        switch (newDirection) {
+            case BLUE_ARROW_DIRECTION.NORTH:
+                this.sprite.ani.frame = 0;
+                break;
+            case BLUE_ARROW_DIRECTION.EAST:
+                this.sprite.ani.frame = 1;
+                break;
+            case BLUE_ARROW_DIRECTION.SOUTH:
+                this.sprite.ani.frame = 2;
+                break;
+            case BLUE_ARROW_DIRECTION.WEST:
+                this.sprite.ani.frame = 3;
+                break;
         }
-
     }
 }

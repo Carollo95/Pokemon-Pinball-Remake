@@ -510,7 +510,7 @@ class Field extends Stage {
     }
 
     onCaptureStartAnimatedSpritePhaseCallback = () => {
-        this.disableCaptureTargetArrow();
+        this.bumpersTargetArrow.setActive(false);
     }
 
     onCaptureCompleteAnimationStartedCallback = (pokemonCaught) => {
@@ -718,8 +718,6 @@ class Field extends Stage {
     getBallUpgraderManager() { }
 
     getPikachuSaverManager() { }
-
-    disableCaptureTargetArrow() { }
 
     onLaunchNewBallWaiting() { }
     resetTravelTriggers() { }
