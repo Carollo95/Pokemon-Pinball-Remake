@@ -8,14 +8,16 @@ const MULTIPLIER_ANIMATION_DURATION_MS = 3000;
 
 class MultiplierManager {
 
-    constructor(status, onLeftMultiplierHitCallback, onRightMultiplierHitCallback, onMultiplierUpgradeCallback) {
+    constructor(status, onLeftMultiplierHitCallback, onRightMultiplierHitCallback, onMultiplierUpgradeCallback, leftMultiplier, rightMultiplier) {
         this.status = status;
         this.onLeftMultiplierHitCallback = onLeftMultiplierHitCallback;
         this.onRightMultiplierHitCallback = onRightMultiplierHitCallback;
         this.onMultiplierUpgradeCallback = onMultiplierUpgradeCallback;
 
-        this.leftMultiplier = new MultiplierTarget(85, 298, 75, 281, this.leftMultiplierHitCallback);
-        this.rightMultiplier = new MultiplierTarget(233, 298, 245, 281, this.rightMultiplierHitCallback);
+        this.leftMultiplier = leftMultiplier;
+        this.leftMultiplier.callback = this.leftMultiplierHitCallback;
+        this.rightMultiplier = rightMultiplier;
+        this.rightMultiplier.callback = this.rightMultiplierHitCallback;
 
         this._lastmultiplierUpgradeTime = -MULTIPLIER_ANIMATION_DURATION_MS;
         this.setInitialState();

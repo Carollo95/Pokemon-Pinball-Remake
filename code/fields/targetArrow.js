@@ -4,7 +4,7 @@ class TargetArrow {
         this.sprite = new Sprite(x, y, 16, 16, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
-        this.sprite.addAni('arrow', Asset.getAnimation('redFieldTargetArrows'));
+        this.sprite.addAni('arrow', Asset.getAnimation('targetArrows'));
         this.sprite.changeAni('arrow');
         this.sprite.ani.frame = arrow;
         this.sprite.ani.playing = false;

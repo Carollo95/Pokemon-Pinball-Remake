@@ -25,7 +25,7 @@ function setup() {
   EngineUtils.initPhysics();
 
   // Start level
-  CheatEngine.startRedField();
+  CheatEngine.startBlueField();
 }
 
 function draw() {
@@ -35,6 +35,10 @@ function draw() {
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("red-field").addEventListener("click", CheatEngine.startRedField);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("blue-field").addEventListener("click", CheatEngine.startBlueField);
 });
 
 document.addEventListener("DOMContentLoaded", function () {

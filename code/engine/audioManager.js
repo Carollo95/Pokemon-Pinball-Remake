@@ -314,6 +314,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('cloneStage', 'assets/audio/CloneStage_Mewtwo', { loop: true }));
     promises.push(audio.registerMusic('redField', 'assets/audio/Red_Field_Theme', { loop: true }));
     promises.push(audio.registerMusic('catchEmEvolutionModeRedField', 'assets/audio/Catch_em_Evolution_Mode_Red_Field', { loop: true }));
+    promises.push(audio.registerMusic('blueField', 'assets/audio/Blue_Field_Theme', { loop: true }));
+    promises.push(audio.registerMusic('catchEmEvolutionModeBlueField', 'assets/audio/Catch_em_Evolution_Mode_Blue_Field', { loop: true }));
     promises.push(audio.registerMusic('mapMode', 'assets/audio/Field_MapMode', { loop: true }));
 
     // SFX
@@ -322,8 +324,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx02', 'assets/audio/sfx/SFX-02'));
     promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03')); //Evolution chooser change selection
     promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); //Well ball on capture area
-    promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05')); //Red field Bellsprout eat
-    promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //Red field Bellsprout spit AND capture pokemon hit
+    promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05')); //field pokemon eat
+    promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //field pokemon spit AND capture pokemon hit
     promises.push(audio.registerSFX('sfx07', 'assets/audio/sfx/SFX-07')); //Red field Staryu active
     promises.push(audio.registerSFX('sfx08', 'assets/audio/sfx/SFX-08')); //Bonus scenario hit
     promises.push(audio.registerSFX('sfx09', 'assets/audio/sfx/SFX-09')); //Slot machin spin
@@ -331,8 +333,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx0B', 'assets/audio/sfx/SFX-0B')); //Pokemon entering ball
     promises.push(audio.registerSFX('sfx0C', 'assets/audio/sfx/SFX-0C')); //Flipper moved
     promises.push(audio.registerSFX('sfx0D', 'assets/audio/sfx/SFX-0D')); //Multiplier hit
-    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //red field Voltorb Bumper hit
-    promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //red field Travel Diglett hit
+    promises.push(audio.registerSFX('sfx0E', 'assets/audio/sfx/SFX-0E')); //Field bumper hit
+    promises.push(audio.registerSFX('sfx0F', 'assets/audio/sfx/SFX-0F')); //Travel Button hit
     promises.push(audio.registerSFX('sfx10', 'assets/audio/sfx/SFX-10')); //Pikachu lighting
     promises.push(audio.registerSFX('sfx11', 'assets/audio/sfx/SFX-11')); //Spinner charge 16
     promises.push(audio.registerSFX('sfx12', 'assets/audio/sfx/SFX-12')); //Spinner charge 1

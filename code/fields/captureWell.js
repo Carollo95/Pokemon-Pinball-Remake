@@ -1,0 +1,38 @@
+class CaptureWell {
+
+    constructor(eatCallback, spitCallback= () => {}) {
+        this.sprite = this.getSprite();
+        this.sprite.debug = DEBUG;
+        this.sprite.layer = FIELD_ELEMENTS_LAYER;
+
+        this.eatCallback = eatCallback;
+        this.spitCallback = spitCallback;
+        this.well = this.getWell();
+        this.gravityActive = true;
+    }
+
+    update(ballSprite) {
+        if (this.gravityActive) {
+            this.well.applyGravity(ballSprite)
+        }
+        if (this.sprite.ani.name === 'idle' && this.well.capturedBall(ballSprite)) {
+            this.sprite.changeAni('eat');
+            Audio.playSFX('sfx05');
+            ballSprite.visible = false;
+            this.sprite.ani.onComplete = () => {
+                this.eatCallback();
+                this.gravityActive = false;
+                this.sprite.changeAni('spit');
+                Audio.playSFX('sfx06');
+                this.spitCallback(ballSprite);
+                ballSprite.visible = true;
+                this.sprite.ani.onComplete = () => {
+                    this.sprite.changeAni('idle');
+                    this.gravityActive = true;
+                }
+            }
+        }
+    }
+
+
+}

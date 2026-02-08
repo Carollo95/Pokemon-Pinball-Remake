@@ -1,9 +1,9 @@
 class BallUpgraderManager {
 
-    constructor(xl, yl, xc, yc, xr, yr) {
-        this.leftElement = new BallUpgraderElement(xl, yl);
-        this.centerElement = new BallUpgraderElement(xc, yc);
-        this.rightElement = new BallUpgraderElement(xr, yr);
+    constructor(xl, yl, xc, yc, xr, yr, animation) {
+        this.leftElement = new BallUpgraderElement(xl, yl, animation);
+        this.centerElement = new BallUpgraderElement(xc, yc, animation);
+        this.rightElement = new BallUpgraderElement(xr, yr, animation);
     }
 
     update(ball) {
@@ -24,16 +24,24 @@ class BallUpgraderManager {
 
     displaceLeft() {
         let pivot = this.leftElement.active;
-        this.leftElement.setActive(this.centerElement.active);
-        this.centerElement.setActive(this.rightElement.active);
-        this.rightElement.setActive(pivot);
+        this.leftElement.setActive(this.centerElement.active, false);
+        this.centerElement.setActive(this.rightElement.active, false);
+        this.rightElement.setActive(pivot, false);
     }
 
     displaceRight() {
         let pivot = this.rightElement.active;
-        this.rightElement.setActive(this.centerElement.active);
-        this.centerElement.setActive(this.leftElement.active);
-        this.leftElement.setActive(pivot);
+        this.rightElement.setActive(this.centerElement.active, false);
+        this.centerElement.setActive(this.leftElement.active, false);
+        this.leftElement.setActive(pivot, false);
+    }
+
+    static createBlueFieldBallUpgraderManager() {
+        return new BallUpgraderManager(112, 77, 160, 61, 208, 77, Asset.getAnimation('blueFieldBallUpgraderElement'));
+    }
+
+    static createRedFieldBallUpgraderManager() {
+        return new BallUpgraderManager(116, 129, 160, 107, 204, 109, Asset.getAnimation('redFieldBallUpgraderElement'));
     }
 
 }

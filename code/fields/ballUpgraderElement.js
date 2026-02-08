@@ -2,13 +2,13 @@ const BALL_UPGRADER_ANIMATION_DURATION = 1000;
 
 class BallUpgraderElement {
 
-    constructor(x, y) {
+    constructor(x, y, animation) {
         this.active = false;
 
         this.sprite = new Sprite(x, y, 12, 24, 'none');
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
-        this.sprite.addAnimation('upgraderElement', Asset.getAnimation('ballUpgraderElement'));
+        this.sprite.addAnimation('upgraderElement', animation);
         this.sprite.ani.playing = false;
 
         this.sensor = new Sprite(x, y + 8, 6, 12, 'none');
@@ -34,9 +34,11 @@ class BallUpgraderElement {
     }
 
 
-    setActive(active) {
+    setActive(active, addPoints = true) {
         this.active = active;
-        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_BALL_MULTIPLIER_SWITCH);
+        if (addPoints) {
+            EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_BALL_MULTIPLIER_SWITCH);
+        }
         if (this.active) {
             this.sprite.ani.frame = 1;
         } else {

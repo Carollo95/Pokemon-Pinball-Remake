@@ -16,9 +16,10 @@ class Screen {
         captureCompleteAnimationStartedCallback,
         capturePhaseFinishedCallback,
         captureOnPokemonAnimatedHitCallback,
-        slotCallback
+        slotCallback,
+        screenLandscapes
     ) {
-        this.screenLandscapes = new ScreenLandscapes();
+        this.screenLandscapes = screenLandscapes;
         if (initialLandmark === undefined || initialLandmark === null) {
             this.screenLandscapes.spinBW();
         } else {

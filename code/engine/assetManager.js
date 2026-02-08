@@ -111,6 +111,7 @@ function preLoadBackgrounds() {
   Asset.registerBackground('bonusStageFrame', 'assets/img/bonus_state_frame');
 
   Asset.registerBackground('redFieldBackground', 'assets/img/red-field/background');
+  Asset.registerBackground('blueFieldBackground', 'assets/img/blue-field/background');
 }
 
 
@@ -239,8 +240,6 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('evolveMoon', 'assets/img/field/evolve_moon', 96, 16, 4);
   Asset.registerAnimationTemplate('evolveCable', 'assets/img/field/evolve_cable', 96, 16, 4);
 
-  Asset.registerAnimationTemplate('ballUpgraderElement', 'assets/img/field/ball_upgrader_element', 12, 26, 2, 7);
-
   Asset.registerAnimationTemplate('catch', 'assets/img/field/catch', 96, 16, 4);
   Asset.registerAnimationTemplate('capture-puff', 'assets/img/field/capture_puff', 96, 112, 4);
   Asset.registerAnimationTemplate('captured-ball', 'assets/img/field/captured_ball', 32, 16, 1);
@@ -255,12 +254,18 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('redArea1LandmarksBW', 'assets/img/landmarks/red_landmarks_area_1_bw', 96, 64, 7);
   Asset.registerAnimationTemplate('redArea2Landmarks', 'assets/img/landmarks/red_landmarks_area_2', 96, 64, 4);
   Asset.registerAnimationTemplate('redArea2LandmarksBW', 'assets/img/landmarks/red_landmarks_area_2_bw', 96, 64, 4);
+  Asset.registerAnimationTemplate('blueArea1Landmarks', 'assets/img/landmarks/blue_landmarks_area_1', 96, 64, 7);
+  Asset.registerAnimationTemplate('blueArea1LandmarksBW', 'assets/img/landmarks/blue_landmarks_area_1_bw', 96, 64, 7);
+  Asset.registerAnimationTemplate('blueArea2Landmarks', 'assets/img/landmarks/blue_landmarks_area_2', 96, 64, 4);
+  Asset.registerAnimationTemplate('blueArea2LandmarksBW', 'assets/img/landmarks/blue_landmarks_area_2_bw', 96, 64, 4);
   Asset.registerAnimationTemplate('Area3Landmarks', 'assets/img/landmarks/landmarks_area_3', 96, 64, 1);
   Asset.registerAnimationTemplate('Area3LandmarksBW', 'assets/img/landmarks/landmarks_area_3_bw', 96, 64, 1);
 
   Asset.registerAnimationTemplate('pikachuSaverIdle', 'assets/img/field/pikachu_idle', 32, 32, 2);
   Asset.registerAnimationTemplate('pikachuSaverHurt', 'assets/img/field/pikachu_hurt', 32, 32, 1);
   Asset.registerAnimationTemplate('pikachuSaverLightning', 'assets/img/field/pikachu_lightning', 32, 48, 23, 9);
+
+  Asset.registerAnimationTemplate('targetArrows', 'assets/img/field/target_arrows', 16, 16, 14);
 
   Asset.registerAnimationTemplate('redFieldDittoOpen', 'assets/img/red-field/ditto-open', 53, 106, 1);
   Asset.registerAnimationTemplate('redFieldDittoClosed', 'assets/img/red-field/ditto-closed', 78, 140, 1);
@@ -291,13 +296,51 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('redFieldCaptureArrows', 'assets/img/red-field/capture_arrows', 46, 68, 4);
   Asset.registerAnimationTemplate('redFieldEvolutionArrows', 'assets/img/red-field/evolution_arrows', 46, 68, 5);
-  Asset.registerAnimationTemplate('redFieldBellsproutArrow', 'assets/img/red-field/bellsprout_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldLeftInnerArrow', 'assets/img/red-field/left_inner_arrow', 34, 32, 2);
   Asset.registerAnimationTemplate('redFieldCaveArrow', 'assets/img/red-field/cave_arrow', 26, 22, 2);
-  Asset.registerAnimationTemplate('redFieldTargetArrows', 'assets/img/red-field/target_arrows', 16, 16, 14);
+
   Asset.registerAnimationTemplate('redFieldBellsproutIdle', 'assets/img/red-field/bellsprout_idle', 64, 80, 2);
   Asset.registerAnimationTemplate('redFieldBellsproutEat', 'assets/img/red-field/bellsprout_eat', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 2);
   Asset.registerAnimationTemplate('redFieldBellsproutSpit', 'assets/img/red-field/bellsprout_spit', 64, 80, 1, DEFAULT_ANIMATION_DELAY * 3);
+
+  Asset.registerAnimationTemplate('redFieldBallUpgraderElement', 'assets/img/red-field/ball_upgrader_element', 12, 26, 2, 7);
+
+  Asset.registerAnimationTemplate('blueFieldRubberBand', 'assets/img/blue-field/rubber_band', 30, 56, 2);
+
+  Asset.registerAnimationTemplate('blueFieldMultiplier', 'assets/img/blue-field/multiplier', 14, 14, 10);
+  Asset.registerAnimationTemplate('blueFieldMultiplierActive', 'assets/img/blue-field/multiplier_active', 14, 14, 10);
+  Asset.registerAnimationTemplate('blueFieldMultiplierButton', 'assets/img/blue-field/multiplier_button', 28, 20, 2);
+
+  Asset.registerAnimationTemplate('blueFieldBallUpgraderElement', 'assets/img/blue-field/ball_upgrader_element', 12, 26, 2, 7);
+
+  Asset.registerAnimationTemplate('blueFieldPaddle', 'assets/img/blue-field/paddle', 32, 16, 6);
+  Asset.registerAnimationTemplate('blueFieldChargeIndicator', 'assets/img/blue-field/charge_indicator', 36, 40, 17);
+
+  Asset.registerAnimationTemplate('blueFieldShellderIdle', 'assets/img/blue-field/shellder_idle', 32, 32, 1);
+  Asset.registerAnimationTemplate('blueFieldShellderHurt', 'assets/img/blue-field/shellder_hurt', 32, 32, 1);
+
+  Asset.registerAnimationTemplate('blueFieldCaptureArrows', 'assets/img/blue-field/capture_arrows', 30, 50, 4);
+  Asset.registerAnimationTemplate('blueFieldEvolutionArrows', 'assets/img/blue-field/evolution_arrows', 30, 50, 4);
+  Asset.registerAnimationTemplate('blueFieldLeftInnerArrow', 'assets/img/blue-field/left_inner_arrow', 20, 30, 4);
+  Asset.registerAnimationTemplate('blueFieldCaveArrow', 'assets/img/blue-field/cave_arrow', 26, 26, 4);
+
+  Asset.registerAnimationTemplate('blueFieldPoliwagIdle', 'assets/img/blue-field/poliwag_idle', 60, 34, 1);
+  Asset.registerAnimationTemplate('blueFieldPoliwagHurt', 'assets/img/blue-field/poliwag_hurt', 60, 34, 1, 30);
+  Asset.registerAnimationTemplate('blueFieldPoliwagCounter', 'assets/img/blue-field/poliwag_counter', 42, 20, 4);
+
+  Asset.registerAnimationTemplate('blueFieldBlueArrow', 'assets/img/blue-field/blue_arrow', 32, 48, 4);
+
+  Asset.registerAnimationTemplate('blueFieldPsyduckIdle', 'assets/img/blue-field/psyduck_idle', 74, 48, 1);
+  Asset.registerAnimationTemplate('blueFieldPsyduckHurt1', 'assets/img/blue-field/psyduck_hurt_1', 74, 48, 2, 30);
+  Asset.registerAnimationTemplate('blueFieldPsyduckHurt2', 'assets/img/blue-field/psyduck_hurt_2', 74, 48, 2, 30);
+  Asset.registerAnimationTemplate('blueFieldPsyduckHurt3', 'assets/img/blue-field/psyduck_hurt_3', 74, 48, 1, 30);
+  Asset.registerAnimationTemplate('blueFieldPsyduckCounter', 'assets/img/blue-field/psyduck_counter', 40, 20, 4);
+
+  Asset.registerAnimationTemplate('blueFieldCloysterIdle', 'assets/img/blue-field/cloyster_idle', 48, 64, 2, DEFAULT_ANIMATION_DELAY * 2);
+  Asset.registerAnimationTemplate('blueFieldCloysterEat', 'assets/img/blue-field/cloyster_eat', 48, 64, 1, DEFAULT_ANIMATION_DELAY * 3);
+
+  Asset.registerAnimationTemplate('blueFieldSlowbroIdle', 'assets/img/blue-field/slowbro_idle', 64, 64, 2, DEFAULT_ANIMATION_DELAY * 2);
+  Asset.registerAnimationTemplate('blueFieldSlowbroEat', 'assets/img/blue-field/slowbro_eat', 64, 64, 1, DEFAULT_ANIMATION_DELAY * 3);
 
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);
@@ -305,18 +348,18 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('again', 'assets/img/field/again', 64, 16, 2);
   Asset.registerAnimationTemplate('saver', 'assets/img/field/saver', 64, 16, 2);
-  
+
   Asset.registerAnimationTemplate('slotCave', 'assets/img/slot-machine/slot_cave', 96, 64, 1);
   Asset.registerAnimationTemplate('slotsBW', 'assets/img/slot-machine/slots_bw', 96, 64, 18);
-  for(let i=0; i<18; i++){
-    Asset.registerAnimationTemplate('slots'+i, 'assets/img/slot-machine/slots_'+i, 96, 64, 2);
+  for (let i = 0; i < 18; i++) {
+    Asset.registerAnimationTemplate('slots' + i, 'assets/img/slot-machine/slots_' + i, 96, 64, 2);
   }
-  for(let i=1; i<=5; i++){
-    Asset.registerAnimationTemplate('multi'+i, 'assets/img/slot-machine/multi_'+i, 96, 64, 2);
+  for (let i = 1; i <= 5; i++) {
+    Asset.registerAnimationTemplate('multi' + i, 'assets/img/slot-machine/multi_' + i, 96, 64, 2);
   }
-  for(let i=1; i<=9; i++){
-    Asset.registerAnimationTemplate('big'+i, 'assets/img/slot-machine/big_'+i, 96, 64, 2);
-    Asset.registerAnimationTemplate('small'+i, 'assets/img/slot-machine/small_'+i, 96, 64, 2);
+  for (let i = 1; i <= 9; i++) {
+    Asset.registerAnimationTemplate('big' + i, 'assets/img/slot-machine/big_' + i, 96, 64, 2);
+    Asset.registerAnimationTemplate('small' + i, 'assets/img/slot-machine/small_' + i, 96, 64, 2);
   }
 
   Asset.registerAnimationTemplate('openWell', 'assets/img/field/open_well', 30, 30, 1);
