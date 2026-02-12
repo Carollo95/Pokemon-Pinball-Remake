@@ -381,6 +381,7 @@ function preloadAnimations() {
   }
 
   Asset.registerAnimationTemplate('HighScoreLetters', 'assets/img/high-score/letters', 16, 32, 46);
+  Asset.registerAnimationTemplate('HighScoreNumbers', 'assets/img/high-score/numbers', 16, 24, 10);
 
 }
 
