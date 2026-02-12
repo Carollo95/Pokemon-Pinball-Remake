@@ -25,7 +25,7 @@ function setup() {
   EngineUtils.initPhysics();
 
   // Start level
-  CheatEngine.startBlueField();
+  EngineUtils.startHighScore();
 }
 
 function draw() {

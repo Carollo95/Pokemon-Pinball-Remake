@@ -1,13 +1,10 @@
 const SHAKE_STRENGTH = 4; // Strength of the screen shake
 const DEFAULT_SHAKE_DURATION_MS = 300; // default shake duration in milliseconds
 
-class Stage {
+class Stage extends Sketch{
 
     constructor(status = new StageStatus()) {
         this.status = status;
-
-        // background image
-        this.background = null;
 
         // shake state (use timestamps in ms)
         this._shakeEndAt = 0;
@@ -23,17 +20,6 @@ class Stage {
         this.flippers = null;
         this.stageText = null;
         this.controls = null;
-    }
-
-    replaceBackground(newBackgroundImage) { this.background = newBackgroundImage; }
-    getBackground() { return this.background; }
-
-    drawBackground() {
-        if (this.background) {
-            image(this.background, 0, 0, this.width, this.height);
-        } else {
-            background(0);
-        }
     }
 
     /**
@@ -54,6 +40,7 @@ class Stage {
      * Applies shake if active and draws the background exactly once.
      */
     draw() {
+        super.draw(); // Draw background
         if (this.isShaking()) {
             push();
             const dx = random(-this._shakeStrength, this._shakeStrength);
@@ -61,8 +48,6 @@ class Stage {
             translate(dx, dy);
             this.drawBackground();
             pop();
-        } else {
-            this.drawBackground();
         }
 
         EngineUtils.drawWhiteFlash();
@@ -95,13 +80,12 @@ class Stage {
 
 
     // --- helpers to attach common per-stage components ---
-    attachControls(controlsInstance) { this.controls = controlsInstance; }
     attachBall(ballInstance) { this.ball = ballInstance; }
     attachTimer(timerInstance) { this.timer = timerInstance; }
     attachFlippers(flippersInstance) { this.flippers = flippersInstance; }
     attachStageText(stageTextInstance) { this.stageText = stageTextInstance; }
 
-    getControls() { return this.controls; }
+    
     getBall() { return this.ball; }
     getTimer() { return this.timer; }
     getFlippers() { return this.flippers; }

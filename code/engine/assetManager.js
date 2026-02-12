@@ -112,6 +112,10 @@ function preLoadBackgrounds() {
 
   Asset.registerBackground('redFieldBackground', 'assets/img/red-field/background');
   Asset.registerBackground('blueFieldBackground', 'assets/img/blue-field/background');
+
+  Asset.registerBackground('highScoreRed', 'assets/img/high-score/high_score_red_background');
+  Asset.registerBackground('highScoreBlue', 'assets/img/high-score/high_score_blue_background');
+
 }
 
 
