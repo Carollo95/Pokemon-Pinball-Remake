@@ -14,6 +14,7 @@ class Diglett {
     this.sprite.debug = DEBUG;
     this.sprite.layer = SPRITE_LAYER;
     this.sprite.visible = false;
+    //TODO ????
     this.sprite.layer = 8;
     this.onHitCallback = onHitCallback;
   }

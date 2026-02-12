@@ -379,6 +379,9 @@ function preloadAnimations() {
     Asset.registerAnimationTemplate(BASIC_POKEMON[i].id + '-idle', 'assets/img/dex/' + BASIC_POKEMON[i].id + '-idle', 64, 64, 2);
     Asset.registerAnimationTemplate(BASIC_POKEMON[i].id + '-idle-hurt', 'assets/img/dex/' + BASIC_POKEMON[i].id + '-idle-hurt', 64, 64, 3);
   }
+
+  Asset.registerAnimationTemplate('HighScoreLetters', 'assets/img/high-score/letters', 16, 32, 46);
+
 }
 
 function pad3(num) {
