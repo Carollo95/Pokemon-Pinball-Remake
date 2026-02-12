@@ -4,11 +4,11 @@ const HIGH_SCORE_STATE = {
 }
 
 const HIGH_SCORE_ROWS = [
-    [146],
-    [194],
-    [242],
-    [290],
-    [338]
+    [148],
+    [196],
+    [244],
+    [292],
+    [340]
 ];
 
 const HIGH_SCORE_LETTER_X = [84, 100, 116];
@@ -18,26 +18,26 @@ const BLUE_NUMBER_COLORS = [[248, 0, 0], [248, 64, 0], [248, 128, 0], [248, 192,
 const RED_NUMBER_COLORS = [[0, 0, 248], [0, 64, 248], [0, 128, 248], [0, 192, 248], [0, 248, 248]];
 
 
-const HIGH_SCORE_DEFAULT_TEXT = [
+const DEFAULT_HIGH_SCORE_DATA = [
     {
-        name: [1, 2, 3],
-        points: "999999999"
+        name: [13, 8, 13],
+        points: "500000000"
     },
     {
-        name: [10, 12, 13],
-        points: "123456789"
+        name: [2, 17, 4],
+        points: "400000000"
     },
     {
-        name: [4, 6, 5],
-        points: "123456789"
+        name: [6, 0, 12],
+        points: "300000000"
     },
     {
-        name: [1, 2, 3],
-        points: "123456789"
+        name: [7, 0, 11],
+        points: "200000000"
     },
     {
-        name: [1, 2, 3],
-        points: "000000000"
+        name: [9, 20, 15],
+        points: "100000000"
     }
 ]
 
@@ -53,7 +53,7 @@ class HighScore extends Sketch {
         this.letterMatrix = HIGH_SCORE_ROWS.map(([y]) => HIGH_SCORE_LETTER_X.map((x) => this.createLetterSprite(x, y)));
         this.numberMatrix = HIGH_SCORE_ROWS.map(([y], i) => HIGH_SCORE_NUMBER_X.map((x) => this.createNumberSprite(x, y, RED_NUMBER_COLORS[i])));
 
-        this.setData(HIGH_SCORE_DEFAULT_TEXT);
+        this.setData(this.getSavedData());
     }
 
     createLetterSprite(x, y) {
@@ -96,6 +96,19 @@ class HighScore extends Sketch {
 
     draw() {
         super.draw();
+    }
+
+    getSavedData() {
+        const savedData = localStorage.getItem('highScoreData')
+        if(savedData !== null) {
+        return JSON.parse(savedData);
+        }else{
+            return DEFAULT_HIGH_SCORE_DATA;
+        }
+    }
+
+    saveData(data) {
+        localStorage.setItem('highScoreData', JSON.stringify(data));
     }
 
 }
