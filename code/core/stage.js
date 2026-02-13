@@ -4,6 +4,7 @@ const DEFAULT_SHAKE_DURATION_MS = 300; // default shake duration in milliseconds
 class Stage extends Sketch{
 
     constructor(status = new StageStatus()) {
+        super();
         this.status = status;
 
         // shake state (use timestamps in ms)
@@ -56,7 +57,6 @@ class Stage extends Sketch{
         if (this.getFlippers()) this.getFlippers().update();
         if (this.getTimer()) this.getTimer().update();
         if (this.getStageText()) this.getStageText().draw();
-        if (this.controls) this.controls.update();
     }
 
     addPointsAndShowText(text, pts, peristence = DEFAULT_TEXT_PERSISTENCE_MILLIS, callback = () => { }) {

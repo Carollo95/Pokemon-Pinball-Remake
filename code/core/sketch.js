@@ -16,6 +16,8 @@ class Sketch {
 
     draw() {
         this.drawBackground();
+        
+        if (this.controls) this.controls.update();
     }
 
     attachControls(controlsInstance) { this.controls = controlsInstance; }

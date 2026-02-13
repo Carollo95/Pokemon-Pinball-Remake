@@ -1,6 +1,14 @@
+const HIGH_SCORE_ARROW_ANIMATION_TIMER = 600;
+const HIGH_SCORE_ARROW_FRAME_TIMER = 15;
+
 const HIGH_SCORE_STATE = {
     VIEW: 'VIEW',
     EDIT: 'EDIT'
+}
+
+const HIGH_SCORE_TABLES = {
+    RED: 'RED',
+    BLUE: 'BLUE'
 }
 
 const HIGH_SCORE_ROWS = [
@@ -17,6 +25,10 @@ const HIGH_SCORE_NUMBER_X = [196, 212, 228, 244, 260, 276, 292, 308, 324];
 const BLUE_NUMBER_COLORS = [[248, 0, 0], [248, 64, 0], [248, 128, 0], [248, 192, 0], [248, 248, 0]];
 const RED_NUMBER_COLORS = [[0, 0, 248], [0, 64, 248], [0, 128, 248], [0, 192, 248], [0, 248, 248]];
 
+const RED_ARROW_X = 326;
+const RED_ARROW_MAX_X = RED_ARROW_X + 4;
+const BLUE_ARROW_X = 58;
+const BLUE_ARROW_MAX_X = BLUE_ARROW_X - 4;
 
 const DEFAULT_HIGH_SCORE_DATA = [
     {
@@ -39,7 +51,7 @@ const DEFAULT_HIGH_SCORE_DATA = [
         name: [9, 20, 15],
         points: "100000000"
     }
-]
+];
 
 class HighScore extends Sketch {
 
@@ -47,13 +59,63 @@ class HighScore extends Sketch {
         super();
         this.background = Asset.getBackground('highScoreRed');
         this.createFrame();
+        this.attachControls(new Controls(() => { }, () => { }, () => { }, this.leftFlipperCallback, () => { }, this.rightFlipperCallback));
+
     }
 
-    setup() {
-        this.letterMatrix = HIGH_SCORE_ROWS.map(([y]) => HIGH_SCORE_LETTER_X.map((x) => this.createLetterSprite(x, y)));
-        this.numberMatrix = HIGH_SCORE_ROWS.map(([y], i) => HIGH_SCORE_NUMBER_X.map((x) => this.createNumberSprite(x, y, RED_NUMBER_COLORS[i])));
+    leftFlipperCallback = () => {
+        if (this.state === HIGH_SCORE_STATE.VIEW && this.table === HIGH_SCORE_TABLES.BLUE) {
+            this.switchTable(HIGH_SCORE_TABLES.RED);
+        }
+    }
 
-        this.setData(this.getSavedData());
+    rightFlipperCallback = () => {
+        if (this.state === HIGH_SCORE_STATE.VIEW && this.table === HIGH_SCORE_TABLES.RED) {
+            this.switchTable(HIGH_SCORE_TABLES.BLUE);
+        }
+    }
+
+    setup(newHighScore) {
+
+        if (newHighScore !== undefined) {
+            this.state = HIGH_SCORE_STATE.EDIT;
+        } else {
+            this.state = HIGH_SCORE_STATE.VIEW;
+            this.table = HIGH_SCORE_TABLES.RED;
+            this.createSwitchArrow();
+        }
+
+        this.switchTable(this.table);
+    }
+
+    createDataSprites() {
+        this.letterMatrix = HIGH_SCORE_ROWS.map(([y]) => HIGH_SCORE_LETTER_X.map((x) => this.createLetterSprite(x, y)));
+        this.numberMatrix = HIGH_SCORE_ROWS.map(([y], i) => HIGH_SCORE_NUMBER_X.map((x) => this.createNumberSprite(x, y, this.getColors()[i])));
+    }
+
+    removeDataSprites() {
+        if(this.letterMatrix) this.letterMatrix.forEach(row => row.forEach(sprite => sprite.remove()));
+        if(this.numberMatrix) this.numberMatrix.forEach(row => row.forEach(sprite => sprite.remove()));
+    }
+
+    getColors() {
+        switch (this.table) {
+            case HIGH_SCORE_TABLES.RED:
+                return RED_NUMBER_COLORS;
+            case HIGH_SCORE_TABLES.BLUE:
+                return BLUE_NUMBER_COLORS;
+        }
+    }
+
+    createSwitchArrow() {
+        this.arrowSprite = new Sprite(RED_ARROW_X, 362, 36, 20, "static");
+        this.arrowSprite.layer = SCENARIO_LAYER;
+        this.arrowSprite.debug = DEBUG;
+        this.arrowSprite.addAnimation("default", Asset.getAnimation('HighScoreArrow'));
+        this.arrowSprite.visible = this.state === HIGH_SCORE_STATE.VIEW;
+
+        this.arrowSpriteAnimationTimer = new EventTimer(HIGH_SCORE_ARROW_ANIMATION_TIMER);
+        this.arrowSpriteFrameTimer = new EventTimer(HIGH_SCORE_ARROW_FRAME_TIMER);
     }
 
     createLetterSprite(x, y) {
@@ -96,19 +158,64 @@ class HighScore extends Sketch {
 
     draw() {
         super.draw();
+
+        if (this.state === HIGH_SCORE_STATE.VIEW) {
+            this.updateSwitchArrow();
+        }
+    }
+
+    updateSwitchArrow() {
+        if (this.arrowSpriteAnimationTimer.hasElapsed()) {
+            if (this.arrowSpriteFrameTimer.hasElapsed()) {
+                if (this.arrowSprite.mirror.x) {
+                    this.arrowSprite.x = this.arrowSprite.x - 1;
+                    if (this.arrowSprite.x < BLUE_ARROW_MAX_X) {
+                        this.arrowSprite.x = BLUE_ARROW_X;
+                        this.arrowSpriteAnimationTimer.restart();
+                    }
+                } else {
+                    this.arrowSprite.x = this.arrowSprite.x + 1;
+                    if (this.arrowSprite.x > RED_ARROW_MAX_X) {
+                        this.arrowSprite.x = RED_ARROW_X;
+                        this.arrowSpriteAnimationTimer.restart();
+                    }
+                }
+                this.arrowSpriteFrameTimer.restart();
+
+            }
+        }
     }
 
     getSavedData() {
-        const savedData = localStorage.getItem('highScoreData')
-        if(savedData !== null) {
-        return JSON.parse(savedData);
-        }else{
+        const savedData = localStorage.getItem('highScoreData-' + this.table)
+        if (savedData !== null) {
+            return JSON.parse(savedData);
+        } else {
             return DEFAULT_HIGH_SCORE_DATA;
         }
     }
 
+    switchTable(newTable) {
+        this.table = newTable;
+        switch (this.table) {
+            case HIGH_SCORE_TABLES.RED:
+                this.background = Asset.getBackground('highScoreRed');
+                this.arrowSprite.x = RED_ARROW_X;
+                this.arrowSprite.mirror.x = false;
+                break;
+            case HIGH_SCORE_TABLES.BLUE:
+                this.background = Asset.getBackground('highScoreBlue');
+                this.arrowSprite.x = BLUE_ARROW_X;
+                this.arrowSprite.mirror.x = true;
+                break;
+        }
+        this.removeDataSprites();
+        this.createDataSprites();
+        this.setData(this.getSavedData());
+    }
+
     saveData(data) {
-        localStorage.setItem('highScoreData', JSON.stringify(data));
+        localStorage.setItem('highScoreData-' + this.table, JSON.stringify(data));
     }
 
 }
