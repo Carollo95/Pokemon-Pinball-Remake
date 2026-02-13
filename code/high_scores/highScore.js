@@ -57,35 +57,73 @@ class HighScore extends Sketch {
 
     constructor() {
         super();
-        this.background = Asset.getBackground('highScoreRed');
         this.createFrame();
-        this.attachControls(new Controls(() => { }, () => { }, () => { }, this.leftFlipperCallback, () => { }, this.rightFlipperCallback));
-
+        this.attachControls(new Controls(() => { }, () => { }, () => { }, this.leftFlipperCallback, this.centerFlipperCallback, this.rightFlipperCallback));
     }
 
     leftFlipperCallback = () => {
         if (this.state === HIGH_SCORE_STATE.VIEW && this.table === HIGH_SCORE_TABLES.BLUE) {
             this.switchTable(HIGH_SCORE_TABLES.RED);
+        } else if (this.state === HIGH_SCORE_STATE.EDIT) {
+            this.moveToPreviousLetter();
         }
     }
 
     rightFlipperCallback = () => {
         if (this.state === HIGH_SCORE_STATE.VIEW && this.table === HIGH_SCORE_TABLES.RED) {
             this.switchTable(HIGH_SCORE_TABLES.BLUE);
+        } else if (this.state === HIGH_SCORE_STATE.EDIT) {
+            this.moveToNextLetter();
         }
     }
 
-    setup(newHighScore) {
+    centerFlipperCallback = () => {
+        if (this.state === HIGH_SCORE_STATE.EDIT) {
+            this.moveToNextCharacter();
+        }
+    }
 
-        if (newHighScore !== undefined) {
-            this.state = HIGH_SCORE_STATE.EDIT;
-        } else {
-            this.state = HIGH_SCORE_STATE.VIEW;
-            this.table = HIGH_SCORE_TABLES.RED;
-            this.createSwitchArrow();
+    setup(table, newHighScore) {
+
+        this.table = table;
+        let savedData = this.getSavedData();
+
+        for (let i = 0; i < 5; i++) {
+            if (newHighScore !== undefined && newHighScore > parseInt(savedData[i].points)) {
+                this.editedRow = i;
+                savedData.splice(i, 0, {
+                    name: [46, 46, 46],
+                    points: newHighScore.toString().padStart(9, '0')
+                });
+                savedData.pop();
+                break;
+            }
         }
 
-        this.switchTable(this.table);
+        this.savedData = savedData;
+
+        if (this.editedRow !== undefined) {
+            this.state = HIGH_SCORE_STATE.EDIT;
+            this.editedLetter = 0;
+            this.createDataSprites();
+            this.changeBackground(this.table);
+            this.setData(savedData);
+        } else {
+            this.state = HIGH_SCORE_STATE.VIEW;
+            this.createSwitchArrow();
+            this.switchTable(this.table);
+        }
+    }
+
+    changeBackground(table) {
+        switch (table) {
+            case HIGH_SCORE_TABLES.RED:
+                this.background = Asset.getBackground('highScoreRed');
+                break;
+            case HIGH_SCORE_TABLES.BLUE:
+                this.background = Asset.getBackground('highScoreBlue');
+                break;
+        }
     }
 
     createDataSprites() {
@@ -94,8 +132,8 @@ class HighScore extends Sketch {
     }
 
     removeDataSprites() {
-        if(this.letterMatrix) this.letterMatrix.forEach(row => row.forEach(sprite => sprite.remove()));
-        if(this.numberMatrix) this.numberMatrix.forEach(row => row.forEach(sprite => sprite.remove()));
+        if (this.letterMatrix) this.letterMatrix.forEach(row => row.forEach(sprite => sprite.remove()));
+        if (this.numberMatrix) this.numberMatrix.forEach(row => row.forEach(sprite => sprite.remove()));
     }
 
     getColors() {
@@ -199,16 +237,15 @@ class HighScore extends Sketch {
         this.table = newTable;
         switch (this.table) {
             case HIGH_SCORE_TABLES.RED:
-                this.background = Asset.getBackground('highScoreRed');
                 this.arrowSprite.x = RED_ARROW_X;
                 this.arrowSprite.mirror.x = false;
                 break;
             case HIGH_SCORE_TABLES.BLUE:
-                this.background = Asset.getBackground('highScoreBlue');
                 this.arrowSprite.x = BLUE_ARROW_X;
                 this.arrowSprite.mirror.x = true;
                 break;
         }
+        this.changeBackground(this.table);
         this.removeDataSprites();
         this.createDataSprites();
         this.setData(this.getSavedData());
@@ -216,6 +253,50 @@ class HighScore extends Sketch {
 
     saveData(data) {
         localStorage.setItem('highScoreData-' + this.table, JSON.stringify(data));
+    }
+
+    moveToPreviousLetter() {
+        if (this.letterMatrix[this.editedRow][this.editedLetter].ani.frame <= 0) {
+            this.letterMatrix[this.editedRow][this.editedLetter].ani.frame = 46;
+        } else {
+            this.letterMatrix[this.editedRow][this.editedLetter].ani.frame--;
+        }
+    }
+
+    moveToNextLetter() {
+        if (this.letterMatrix[this.editedRow][this.editedLetter].ani.frame >= 46) {
+            this.letterMatrix[this.editedRow][this.editedLetter].ani.frame = 0;
+        } else {
+            this.letterMatrix[this.editedRow][this.editedLetter].ani.frame++;
+        }
+    }
+
+    moveToNextCharacter() {
+        this.editedLetter++;
+        if (this.editedLetter > 2) {
+            this.saveData(this.getData());
+            this.changeToEditView();
+        }
+    }
+
+    getData() {
+        const data = [];
+        for (let i = 0; i < 5; i++) {
+            data.push({
+                name: [
+                    this.letterMatrix[i][0].ani.frame,
+                    this.letterMatrix[i][1].ani.frame,
+                    this.letterMatrix[i][2].ani.frame
+                ],
+                points: this.savedData[i].points
+            });
+        }
+        return data;
+    }
+
+    changeToEditView() {
+        this.editedRow = undefined;
+        this.setup(this.table, 0);
     }
 
 }
