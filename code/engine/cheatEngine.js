@@ -100,6 +100,11 @@ const CheatEngine = {
             stage.caveDetectorManager.detectorV.setActive(true);
             stage.caveDetectorManager.detectorC.setActive(true);
         }
+    },
+
+    clearHighScores(){
+       localStorage.removeItem('highScoreData-' + HIGH_SCORE_TABLES.RED);
+       localStorage.removeItem('highScoreData-' + HIGH_SCORE_TABLES.BLUE); 
     }
 
 }

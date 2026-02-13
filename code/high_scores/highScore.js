@@ -20,7 +20,8 @@ const HIGH_SCORE_ROWS = [
 ];
 
 const HIGH_SCORE_LETTER_X = [84, 100, 116];
-const HIGH_SCORE_NUMBER_X = [196, 212, 228, 244, 260, 276, 292, 308, 324];
+const HIGH_SCORE_NUMBER_X = [148, 164, 180, 196, 212, 228, 244, 260, 276, 292, 308, 324];
+const NUMBER_BLANK_FRAME = 10;
 
 const BLUE_NUMBER_COLORS = [[248, 0, 0], [248, 64, 0], [248, 128, 0], [248, 192, 0], [248, 248, 0]];
 const RED_NUMBER_COLORS = [[0, 0, 248], [0, 64, 248], [0, 128, 248], [0, 192, 248], [0, 248, 248]];
@@ -87,13 +88,14 @@ class HighScore extends Sketch {
 
         this.table = table;
         let savedData = this.getSavedData();
+        newHighScore = this.clampHighScore(newHighScore);
 
         for (let i = 0; i < 5; i++) {
             if (newHighScore !== undefined && newHighScore > parseInt(savedData[i].points)) {
                 this.editedRow = i;
                 savedData.splice(i, 0, {
                     name: [46, 46, 46],
-                    points: newHighScore.toString().padStart(9, '0')
+                    points: newHighScore.toString()
                 });
                 savedData.pop();
                 break;
@@ -113,6 +115,16 @@ class HighScore extends Sketch {
             this.createSwitchArrow();
             this.switchTable(this.table);
         }
+    }
+
+    clampHighScore(newHighScore) {
+        if (newHighScore !== undefined) {
+            newHighScore = Number(newHighScore);
+            if (newHighScore > 999999999999) {
+                newHighScore = 999999999999;
+            }
+        }
+        return newHighScore;
     }
 
     changeBackground(table) {
@@ -188,8 +200,18 @@ class HighScore extends Sketch {
             }
         }
         for (let i = 0; i < 5; i++) {
-            for (let j = 0; j < 9; j++) {
-                this.numberMatrix[i][j].ani.frame = data[i].points[j];
+            let points = String(data[i].points ?? "");
+            if (points.length > 12) {
+                points = "999999999999";
+            }
+            const startIndex = Math.max(0, 12 - points.length);
+            for (let j = 0; j < 12; j++) {
+                if (j < startIndex) {
+                    this.numberMatrix[i][j].ani.frame = NUMBER_BLANK_FRAME;
+                } else {
+                    const digit = points[j - startIndex];
+                    this.numberMatrix[i][j].ani.frame = digit === undefined ? NUMBER_BLANK_FRAME : Number(digit);
+                }
             }
         }
     }
