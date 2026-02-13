@@ -383,6 +383,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('HighScoreLetters', 'assets/img/high-score/letters', 16, 32, 47);
   Asset.registerAnimationTemplate('HighScoreNumbers', 'assets/img/high-score/numbers', 16, 24, 11);
   Asset.registerAnimationTemplate('HighScoreArrow', 'assets/img/high-score/arrow', 36, 20, 1);
+  Asset.registerAnimationTemplate('HighScoreNumberSeparator', 'assets/img/high-score/number_separator', 6, 8, 1);
 
 }
 

@@ -22,6 +22,14 @@ const HIGH_SCORE_ROWS = [
 const HIGH_SCORE_LETTER_X = [84, 100, 116];
 const HIGH_SCORE_NUMBER_X = [148, 164, 180, 196, 212, 228, 244, 260, 276, 292, 308, 324];
 const NUMBER_BLANK_FRAME = 10;
+const HIGH_SCORE_MAX_DIGITS = 12;
+const NUMBER_WIDTH = 16;
+const NUMBER_HEIGHT = 24;
+const SEPARATOR_WIDTH = 6;
+const SEPARATOR_HEIGHT = 8;
+const SEPARATOR_OFFSET_X = (NUMBER_WIDTH - SEPARATOR_WIDTH) / 2;
+const SEPARATOR_OFFSET_Y = (NUMBER_HEIGHT - SEPARATOR_HEIGHT) / 2 +2;
+const SEPARATOR_POSITIONS_FROM_RIGHT = [4, 7, 10];
 
 const BLUE_NUMBER_COLORS = [[248, 0, 0], [248, 64, 0], [248, 128, 0], [248, 192, 0], [248, 248, 0]];
 const RED_NUMBER_COLORS = [[0, 0, 248], [0, 64, 248], [0, 128, 248], [0, 192, 248], [0, 248, 248]];
@@ -141,11 +149,18 @@ class HighScore extends Sketch {
     createDataSprites() {
         this.letterMatrix = HIGH_SCORE_ROWS.map(([y]) => HIGH_SCORE_LETTER_X.map((x) => this.createLetterSprite(x, y)));
         this.numberMatrix = HIGH_SCORE_ROWS.map(([y], i) => HIGH_SCORE_NUMBER_X.map((x) => this.createNumberSprite(x, y, this.getColors()[i])));
+        const separatorIndexes = this.getSeparatorIndexes();
+        this.separatorMatrix = HIGH_SCORE_ROWS.map(([y]) =>
+            separatorIndexes.map((index) => {
+                const x = HIGH_SCORE_NUMBER_X[index];
+                return this.createSeparatorSprite(x + SEPARATOR_OFFSET_X, y + SEPARATOR_OFFSET_Y);
+            }));
     }
 
     removeDataSprites() {
         if (this.letterMatrix) this.letterMatrix.forEach(row => row.forEach(sprite => sprite.remove()));
         if (this.numberMatrix) this.numberMatrix.forEach(row => row.forEach(sprite => sprite.remove()));
+        if (this.separatorMatrix) this.separatorMatrix.forEach(row => row.forEach(sprite => sprite.remove()));
     }
 
     getColors() {
@@ -193,6 +208,19 @@ class HighScore extends Sketch {
         return sprite;
     }
 
+    createSeparatorSprite(x, y) {
+        let sprite = new Sprite(x, y, SEPARATOR_WIDTH, SEPARATOR_HEIGHT, "static");
+        sprite.layer = OVER_SCENARIO_LAYER;
+        sprite.debug = DEBUG;
+        sprite.addAnimation("default", Asset.getAnimation('HighScoreNumberSeparator'));
+        sprite.ani.playing = false;
+        return sprite;
+    }
+
+    getSeparatorIndexes() {
+        return SEPARATOR_POSITIONS_FROM_RIGHT.map((position) => HIGH_SCORE_MAX_DIGITS - position);
+    }
+
     setData(data) {
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 3; j++) {
@@ -201,16 +229,22 @@ class HighScore extends Sketch {
         }
         for (let i = 0; i < 5; i++) {
             let points = String(data[i].points ?? "");
-            if (points.length > 12) {
-                points = "999999999999";
+            if (points.length > HIGH_SCORE_MAX_DIGITS) {
+                points = "9".repeat(HIGH_SCORE_MAX_DIGITS);
             }
-            const startIndex = Math.max(0, 12 - points.length);
-            for (let j = 0; j < 12; j++) {
+            const startIndex = Math.max(0, HIGH_SCORE_MAX_DIGITS - points.length);
+            for (let j = 0; j < HIGH_SCORE_MAX_DIGITS; j++) {
                 if (j < startIndex) {
                     this.numberMatrix[i][j].ani.frame = NUMBER_BLANK_FRAME;
                 } else {
                     const digit = points[j - startIndex];
                     this.numberMatrix[i][j].ani.frame = digit === undefined ? NUMBER_BLANK_FRAME : Number(digit);
+                }
+            }
+            if (this.separatorMatrix) {
+                for (let j = 0; j < SEPARATOR_POSITIONS_FROM_RIGHT.length; j++) {
+                    const showSeparator = points.length >= SEPARATOR_POSITIONS_FROM_RIGHT[j];
+                    this.separatorMatrix[i][j].visible = showSeparator;
                 }
             }
         }
