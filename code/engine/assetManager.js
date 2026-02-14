@@ -385,6 +385,8 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('HighScoreArrow', 'assets/img/high-score/arrow', 36, 20, 1);
   Asset.registerAnimationTemplate('HighScoreNumberSeparator', 'assets/img/high-score/number_separator', 6, 8, 1);
 
+  Asset.registerAnimationTemplate('mainMenuBackground', 'assets/img/main-menu/main_menu', 320, 288, 4, DEFAULT_ANIMATION_DELAY / 2);
+
 }
 
 function pad3(num) {

@@ -246,6 +246,12 @@ const EngineUtils = {
         stage.setup();
     },
 
+    startMainMenu(){
+        allSprites.remove();
+        stage = new MainMenu();
+        stage.setup();
+    },
+
     startHighScore(table, highScore) {
         allSprites.remove();
         stage = new HighScore();
