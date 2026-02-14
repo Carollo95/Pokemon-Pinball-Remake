@@ -1,6 +1,14 @@
 class Sketch {
     constructor() {
         this.background = null;
+
+        // shake state (use timestamps in ms)
+        this._shakeEndAt = 0;
+        this._shakeStrength = SHAKE_STRENGTH;
+
+        // stage dimensions (can be overridden by subclasses)
+        this.width = SCREEN_WIDTH;
+        this.height = SCREEN_HEIGHT;
     }
 
     replaceBackground(newBackgroundImage) { this.background = newBackgroundImage; }
@@ -15,10 +23,33 @@ class Sketch {
     }
 
     draw() {
-        this.drawBackground();
-        
+        if (this.isShaking()) {
+            push();
+            const dx = random(-this._shakeStrength, this._shakeStrength);
+            const dy = random(-this._shakeStrength, this._shakeStrength);
+            translate(dx, dy);
+            this.drawBackground();
+            pop();
+        } else {
+            this.drawBackground();
+        }
+
         if (this.controls) this.controls.update();
     }
+
+    /**
+     * Start a screen shake using milliseconds (durationMs).
+     * @param {number} durationMs Shake duration in milliseconds (default 300ms)
+     * @param {number} strength Shake strength in pixels (optional)
+     */
+    startShake(durationMs = DEFAULT_SHAKE_DURATION_MS, strength = SHAKE_STRENGTH) {
+        const now = millis();
+        this._shakeEndAt = now + Math.max(0, Number(durationMs) || 0);
+        this._shakeStrength = strength;
+    }
+
+    isShaking() { return millis() < this._shakeEndAt; }
+
 
     attachControls(controlsInstance) { this.controls = controlsInstance; }
     getControls() { return this.controls; }

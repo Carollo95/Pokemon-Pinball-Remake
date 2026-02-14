@@ -7,14 +7,6 @@ class Stage extends Sketch{
         super();
         this.status = status;
 
-        // shake state (use timestamps in ms)
-        this._shakeEndAt = 0;
-        this._shakeStrength = SHAKE_STRENGTH;
-
-        // stage dimensions (can be overridden by subclasses)
-        this.width = SCREEN_WIDTH;
-        this.height = SCREEN_HEIGHT;
-
         // common objects present on every stage (attach in setup())
         this.ball = null;
         this.timer = null;
@@ -22,34 +14,11 @@ class Stage extends Sketch{
         this.stageText = null;
         this.controls = null;
     }
-
-    /**
-     * Start a screen shake using milliseconds (durationMs).
-     * @param {number} durationMs Shake duration in milliseconds (default 300ms)
-     * @param {number} strength Shake strength in pixels (optional)
-     */
-    startShake(durationMs = DEFAULT_SHAKE_DURATION_MS, strength = SHAKE_STRENGTH) {
-        const now = millis();
-        this._shakeEndAt = now + Math.max(0, Number(durationMs) || 0);
-        this._shakeStrength = strength;
-    }
-
-    isShaking() { return millis() < this._shakeEndAt; }
-
     /**
      * Single entry point to draw stage visuals.
-     * Applies shake if active and draws the background exactly once.
      */
     draw() {
-        super.draw(); // Draw background
-        if (this.isShaking()) {
-            push();
-            const dx = random(-this._shakeStrength, this._shakeStrength);
-            const dy = random(-this._shakeStrength, this._shakeStrength);
-            translate(dx, dy);
-            this.drawBackground();
-            pop();
-        }
+        super.draw();
 
         EngineUtils.drawWhiteFlash();
 

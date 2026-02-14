@@ -645,7 +645,6 @@ class Field extends Stage {
         this.stageText.setScrollText(I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier, I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier);
     }
 
-
     onOpenCaveCallback = () => {
         this.caveActive = true;
     }
@@ -655,7 +654,6 @@ class Field extends Stage {
             Audio.stopMusic();
             Audio.playSFX('sfx50', 0, () => {
                 EngineUtils.flashWhite();
-                //TODO for red field
                 EngineUtils.startHighScore(this.getHighScoresTable(), this.status.points);
             });
 

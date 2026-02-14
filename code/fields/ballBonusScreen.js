@@ -104,7 +104,7 @@ class BallBonusScreen {
 
 
     showPage(lines) {
-        this.remove()
+        this.remove();
         Audio.playSFX('sfx3E');
         for (let i = 0; i < 5; i++) {
             let line = this.createLine(BALL_BONUS_SCREEN_YS[i], lines[i][1]);

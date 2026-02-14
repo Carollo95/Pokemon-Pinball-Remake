@@ -104,7 +104,7 @@ const CheatEngine = {
 
     clearHighScores(){
        localStorage.removeItem('highScoreData-' + HIGH_SCORE_TABLES.RED);
-       localStorage.removeItem('highScoreData-' + HIGH_SCORE_TABLES.BLUE); 
+       localStorage.removeItem('highScoreData-' + HIGH_SCORE_TABLES.BLUE);
     }
 
 }

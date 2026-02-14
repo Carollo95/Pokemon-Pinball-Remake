@@ -28,7 +28,7 @@ const NUMBER_HEIGHT = 24;
 const SEPARATOR_WIDTH = 6;
 const SEPARATOR_HEIGHT = 8;
 const SEPARATOR_OFFSET_X = (NUMBER_WIDTH - SEPARATOR_WIDTH) / 2;
-const SEPARATOR_OFFSET_Y = (NUMBER_HEIGHT - SEPARATOR_HEIGHT) / 2 +2;
+const SEPARATOR_OFFSET_Y = (NUMBER_HEIGHT - SEPARATOR_HEIGHT) / 2 + 2;
 const SEPARATOR_POSITIONS_FROM_RIGHT = [4, 7, 10];
 
 const BLUE_NUMBER_COLORS = [[248, 0, 0], [248, 64, 0], [248, 128, 0], [248, 192, 0], [248, 248, 0]];
@@ -89,7 +89,7 @@ class HighScore extends Sketch {
     centerFlipperCallback = () => {
         if (this.state === HIGH_SCORE_STATE.EDIT) {
             this.moveToNextCharacter();
-        }else{
+        } else {
             console.log("Go to main menu");
         }
     }
@@ -335,7 +335,7 @@ class HighScore extends Sketch {
         this.editedLetter++;
         if (this.editedLetter > 2) {
             this.saveData(this.getData());
-            this.changeToEditView();
+            this.changeToView();
         }
     }
 
@@ -354,7 +354,7 @@ class HighScore extends Sketch {
         return data;
     }
 
-    changeToEditView() {
+    changeToView() {
         this.editedRow = undefined;
         this.setup(this.table, 0);
     }
