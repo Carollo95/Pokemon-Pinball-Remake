@@ -246,11 +246,18 @@ const EngineUtils = {
         stage.setup();
     },
 
-    startMainMenu(){
+    startMainMenu() {
         allSprites.remove();
         stage = new MainMenu();
         stage.setup();
     },
+
+    startFieldMenu() {
+        allSprites.remove();
+        stage = new FieldSelector();
+        stage.setup();
+    },
+
 
     startHighScore(table, highScore) {
         allSprites.remove();

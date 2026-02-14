@@ -57,7 +57,8 @@ class MainMenu extends Sketch {
     centerFlipperCallback = () => {
         switch (this.row) {
             case 0:
-                console.log("Move to field selection");
+                EngineUtils.flashWhite();
+                EngineUtils.startFieldMenu();
                 break;
             case 1:
                 console.log("Move to pokedex");

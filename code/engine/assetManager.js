@@ -116,6 +116,8 @@ function preLoadBackgrounds() {
   Asset.registerBackground('highScoreRed', 'assets/img/high-score/high_score_red_background');
   Asset.registerBackground('highScoreBlue', 'assets/img/high-score/high_score_blue_background');
 
+  Asset.registerBackground('fieldSelector', 'assets/img/main-menu/field_selector_background');
+
 }
 
 
@@ -387,6 +389,8 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('mainMenuBackground', 'assets/img/main-menu/main_menu', 320, 288, 4, DEFAULT_ANIMATION_DELAY / 2);
   Asset.registerAnimationTemplate('mainMenuSelector', 'assets/img/main-menu/selector', 32, 32, 4, DEFAULT_ANIMATION_DELAY / 2);
+
+  Asset.registerAnimationTemplate('tableSelector', 'assets/img/main-menu/table_selector', 136, 184, 3, DEFAULT_ANIMATION_DELAY / 2);
 
 }
 
