@@ -9,6 +9,8 @@ class MainMenu extends Sketch {
 
         this.createBackgroundSprite();
         this.createSelectorSprite();
+        //TODO remove if options are implemented
+        this.createHiderRowSprite()
     }
 
     createBackgroundSprite() {
@@ -30,6 +32,15 @@ class MainMenu extends Sketch {
         this.selectorSprite.addAnimation("mainMenuSelector", Asset.getAnimation("mainMenuSelector"));
         this.row = 0;
 
+    }
+
+    createHiderRowSprite() {
+        this.hiderRowSprite = new Sprite(100, 364, 100, 32, "static");
+        this.hiderRowSprite.layer = SCENARIO_LAYER;
+        this.hiderRowSprite.color = "rgb(248, 248, 248)";
+        this.hiderRowSprite.stroke = "rgb(248, 248, 248)";
+        this.hiderRowSprite.strokeWeight = 0;
+        
     }
 
     leftFlipperCallback = () => {
