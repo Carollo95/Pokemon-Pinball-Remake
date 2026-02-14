@@ -74,9 +74,10 @@ const EngineUtils = {
      * Starts a white flash with independent fade in / fade out lengths.
      * @param {number} fadeInFrames  Frames for fade in (>=1)
      * @param {number} fadeOutFrames Frames for fade out (>=1)
-     * @param {number} maxAlpha      Peak opacity 0–255
+    * @param {number} maxAlpha      Peak opacity 0–255
+    * @param {function|null} callback Function to call when flash is fully white
      */
-    flashWhite(fadeInFrames = 5, fadeOutFrames = 10, maxAlpha = 255) {
+    flashWhite(fadeInFrames = 5, fadeOutFrames = 10, maxAlpha = 255, callback = null) {
         if (fadeInFrames < 1) fadeInFrames = 1;
         if (fadeOutFrames < 1) fadeOutFrames = 1;
 
@@ -100,6 +101,8 @@ const EngineUtils = {
             fadeIn: fadeInFrames,
             fadeOut: fadeOutFrames,
             maxAlpha,
+            callback,
+            callbackFired: false,
             active: true,
             total: fadeInFrames + fadeOutFrames
         };
@@ -115,6 +118,15 @@ const EngineUtils = {
         if (!whiteFlash || !whiteFlash.active || !whiteFlashSprite) return;
 
         const f = whiteFlash.frame;
+
+        if (!whiteFlash.callbackFired && f >= whiteFlash.fadeIn && typeof whiteFlash.callback === 'function') {
+            whiteFlash.callbackFired = true;
+            whiteFlash.callback();
+            whiteFlash.active = false;
+            whiteFlashSprite.visible = false;
+            whiteFlashSprite.color = color(255, 255, 255, 0);
+            return;
+        }
 
         let alpha;
         if (f < whiteFlash.fadeIn) {
@@ -245,6 +257,19 @@ const EngineUtils = {
         stage = new BlueField(EngineUtils.getGameStatus());
         stage.setup();
     },
+
+    startMainMenu() {
+        allSprites.remove();
+        stage = new MainMenu();
+        stage.setup();
+    },
+
+    startFieldMenu() {
+        allSprites.remove();
+        stage = new FieldSelector();
+        stage.setup();
+    },
+
 
     startHighScore(table, highScore) {
         allSprites.remove();

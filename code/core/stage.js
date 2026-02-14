@@ -20,8 +20,6 @@ class Stage extends Sketch{
     draw() {
         super.draw();
 
-        EngineUtils.drawWhiteFlash();
-
         if (this.getBall()) this.getBall().update();
         if (this.getFlippers()) this.getFlippers().update();
         if (this.getTimer()) this.getTimer().update();
