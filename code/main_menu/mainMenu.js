@@ -10,7 +10,7 @@ class MainMenu extends Sketch {
         this.createBackgroundSprite();
         this.createSelectorSprite();
         //TODO remove if options are implemented
-        this.createHiderRowSprite()
+        this.createHiderRowSprite();
     }
 
     createBackgroundSprite() {
