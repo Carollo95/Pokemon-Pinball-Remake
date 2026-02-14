@@ -105,14 +105,6 @@ class BonusStage extends Stage {
             [SCREEN_WIDTH, 212]]);
     }
 
-    createFrame() {
-        const frame = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, 'none');
-        const bg = Asset.getBackground('bonusStageFrame');
-        frame.addAnimation("", bg);
-        frame.layer = FRAME_LAYER;
-        return frame;
-    }
-
     draw() {
         super.draw();
         if (this.scenarioTop.collide(this.getBall().sprite)) {

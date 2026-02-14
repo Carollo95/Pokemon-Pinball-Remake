@@ -112,6 +112,10 @@ function preLoadBackgrounds() {
 
   Asset.registerBackground('redFieldBackground', 'assets/img/red-field/background');
   Asset.registerBackground('blueFieldBackground', 'assets/img/blue-field/background');
+
+  Asset.registerBackground('highScoreRed', 'assets/img/high-score/high_score_red_background');
+  Asset.registerBackground('highScoreBlue', 'assets/img/high-score/high_score_blue_background');
+
 }
 
 
@@ -375,6 +379,12 @@ function preloadAnimations() {
     Asset.registerAnimationTemplate(BASIC_POKEMON[i].id + '-idle', 'assets/img/dex/' + BASIC_POKEMON[i].id + '-idle', 64, 64, 2);
     Asset.registerAnimationTemplate(BASIC_POKEMON[i].id + '-idle-hurt', 'assets/img/dex/' + BASIC_POKEMON[i].id + '-idle-hurt', 64, 64, 3);
   }
+
+  Asset.registerAnimationTemplate('HighScoreLetters', 'assets/img/high-score/letters', 16, 32, 47);
+  Asset.registerAnimationTemplate('HighScoreNumbers', 'assets/img/high-score/numbers', 16, 24, 11);
+  Asset.registerAnimationTemplate('HighScoreArrow', 'assets/img/high-score/arrow', 36, 20, 1);
+  Asset.registerAnimationTemplate('HighScoreNumberSeparator', 'assets/img/high-score/number_separator', 6, 8, 1);
+
 }
 
 function pad3(num) {

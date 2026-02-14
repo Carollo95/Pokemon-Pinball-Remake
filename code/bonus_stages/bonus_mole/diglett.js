@@ -12,9 +12,8 @@ class Diglett {
     this.sprite.addAnimation("idle", Asset.getAnimation('animDiglett'));
     this.sprite.addAnimation("down", Asset.getAnimation('animDiglettDown'));
     this.sprite.debug = DEBUG;
-    this.sprite.layer = SPRITE_LAYER;
+    this.sprite.layer = FIELD_ELEMENTS_LAYER;
     this.sprite.visible = false;
-    this.sprite.layer = 8;
     this.onHitCallback = onHitCallback;
   }
 

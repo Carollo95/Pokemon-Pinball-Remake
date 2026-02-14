@@ -169,5 +169,6 @@ class BlueField extends Field {
     getPikachuSaverManager() { return PikachuSaverManager.createBlueFieldPikachuSaverManager(this.status); }
     getScreenLandscapes() { return new BlueFieldScreenLandscapes(); }
     getBonusStateStates() { return BLUE_FIELD_BALL_SCREEN_LINES_ORDER; }
+    getHighScoresTable() { return HIGH_SCORE_TABLES.BLUE; }
 
 }

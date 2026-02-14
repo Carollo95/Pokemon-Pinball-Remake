@@ -246,6 +246,12 @@ const EngineUtils = {
         stage.setup();
     },
 
+    startHighScore(table, highScore) {
+        allSprites.remove();
+        stage = new HighScore();
+        stage.setup(table, highScore);
+    },
+
     addPointsForBallHelper(points) {
         stage.status.addPoints(points, stage.ball);
     }

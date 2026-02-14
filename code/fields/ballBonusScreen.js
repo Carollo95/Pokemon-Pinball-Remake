@@ -22,7 +22,8 @@ const BONUS_BALL_SCREEN_LINES = {
     PSYDUCK: "psyduck",
     CAVE_SHOTS: "cave_shots",
     SPINNER_TURNS: "spinner_turns",
-    TOTAL: "total"
+    TOTAL: "total",
+    GAME_OVER: "game_over"
 }
 
 const RED_FIELD_BALL_SCREEN_LINES_ORDER = [
@@ -84,6 +85,11 @@ class BallBonusScreen {
 
     show() {
         this.currentStateIndex = 1;
+
+        if (this.status.balls < 0) {
+            this.states.push(BONUS_BALL_SCREEN_LINES.GAME_OVER);
+        }
+
         this.state = this.states[this.currentStateIndex];
         this.progressTimer.restart();
         this.showCurrentPage();
@@ -98,7 +104,7 @@ class BallBonusScreen {
 
 
     showPage(lines) {
-        this.remove()
+        this.remove();
         Audio.playSFX('sfx3E');
         for (let i = 0; i < 5; i++) {
             let line = this.createLine(BALL_BONUS_SCREEN_YS[i], lines[i][1]);
@@ -226,6 +232,10 @@ class BallBonusScreen {
     createScoreLine() {
         let total = this.calculateSubtotal() * this.status.fieldMultiplier;
         return I18NManager.translate("score") + this.createProperFormatNumber(this.status.points + total, 15) + " ";
+    }
+
+    createGameOverLine() {
+        return this.centerTextForTextRow(I18NManager.translate("game_over"));
     }
 
     centerTextForTextRow(text) {
@@ -392,14 +402,27 @@ class BallBonusScreen {
                     ]);
                 this.status.addPoints(this.calculateSubtotal());
                 break;
+            case BONUS_BALL_SCREEN_LINES.GAME_OVER:
+                this.showPage
+                    ([
+                        [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createGameOverLine(), BALL_BONUS_SCREEN_TEXT_XS],
+                        [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS],
+                        [this.createScoreLine(), BALL_BONUS_SCREEN_BIG_NUMERIC_XS],
+                        [" ".repeat(BALL_BONUS_SCREEN_TEXT_XS.length), BALL_BONUS_SCREEN_TEXT_XS]
+
+                    ]);
+                break;
         }
     }
 
 
     progress() {
-        if (this.state === BONUS_BALL_SCREEN_LINES.TOTAL) {
-            this.remove();
-            this.onScreenEndCallback();
+        if ((this.state === BONUS_BALL_SCREEN_LINES.TOTAL && this.status.balls >= 0) || this.state === BONUS_BALL_SCREEN_LINES.GAME_OVER) {
+            if (this.state !== BONUS_BALL_SCREEN_LINES.GAME_OVER) {
+                this.remove();
+            }
+            this.onScreenEndCallback(this.state === BONUS_BALL_SCREEN_LINES.GAME_OVER);
         }
 
         this.currentStateIndex++;

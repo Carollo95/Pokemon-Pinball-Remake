@@ -361,8 +361,9 @@ class Field extends Stage {
             this.launchNewBall();
             this.arrows.setCaptureArrowsLevel(2);
             this.setState(FIELD_STATE.NEW_BALL_WAITING);
-            this.playMusic
+            this.playMusic();
         } else {
+            //TODO not needed now probably
             this.setState(FIELD_STATE.GAME_OVER);
             console.log("GAME OVER");
         }
@@ -383,8 +384,6 @@ class Field extends Stage {
         this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
         this.onLaunchNewBall();
     }
-
-
 
     startNewBall() {
         if (this.state === FIELD_STATE.CAPTURE) {
@@ -646,13 +645,21 @@ class Field extends Stage {
         this.stageText.setScrollText(I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier, I18NManager.translate("bonus_multiplier_times") + this.multiplierManager.multiplier);
     }
 
-
     onOpenCaveCallback = () => {
         this.caveActive = true;
     }
 
-    onBonusScreenCompleteCallback = () => {
-        this.stageText.setScrollText(I18NManager.translate("shoot_again"), I18NManager.translate("shoot_again"), 1000, () => this.createNewBallOrEndStage());
+    onBonusScreenCompleteCallback = (showEndScreen) => {
+        if (showEndScreen) {
+            Audio.stopMusic();
+            Audio.playSFX('sfx50', 0, () => {
+                EngineUtils.flashWhite();
+                EngineUtils.startHighScore(this.getHighScoresTable(), this.status.points);
+            });
+
+        } else {
+            this.stageText.setScrollText(I18NManager.translate("shoot_again"), I18NManager.translate("shoot_again"), 1000, () => this.createNewBallOrEndStage());
+        }
     }
 
     onTravelToLeft() {
@@ -713,7 +720,7 @@ class Field extends Stage {
     getRightMultiplierTarget() { }
     getArrows() { }
     getScreenLandscapes() { }
-    getBonusStateStates() {}
+    getBonusStateStates() { }
 
     getBallUpgraderManager() { }
 
@@ -733,6 +740,6 @@ class Field extends Stage {
 
     updateSensors() { }
 
-    
+
 
 }
