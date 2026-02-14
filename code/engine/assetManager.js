@@ -386,6 +386,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('HighScoreNumberSeparator', 'assets/img/high-score/number_separator', 6, 8, 1);
 
   Asset.registerAnimationTemplate('mainMenuBackground', 'assets/img/main-menu/main_menu', 320, 288, 4, DEFAULT_ANIMATION_DELAY / 2);
+  Asset.registerAnimationTemplate('mainMenuSelector', 'assets/img/main-menu/selector', 32, 32, 4, DEFAULT_ANIMATION_DELAY / 2);
 
 }
 

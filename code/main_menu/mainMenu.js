@@ -1,3 +1,5 @@
+const MAIN_MENU_ROWS_Y = [310, 334]//, 358];
+
 class MainMenu extends Sketch {
 
     constructor() {
@@ -5,6 +7,11 @@ class MainMenu extends Sketch {
         this.createFrame();
         this.attachControls(new Controls(() => { }, () => { }, () => { }, this.leftFlipperCallback, this.centerFlipperCallback, this.rightFlipperCallback));
 
+        this.createBackgroundSprite();
+        this.createSelectorSprite();
+    }
+
+    createBackgroundSprite() {
         this.backgroundSprite = new Sprite(188, 244, 1, 1, "static");
         this.backgroundSprite.debug = DEBUG;
         this.backgroundSprite.layer = SCENARIO_LAYER;
@@ -14,20 +21,40 @@ class MainMenu extends Sketch {
         this.backgroundSprite.ani.onComplete = () => {
             this.backgroundSprite.ani.playing = false;
         }
+    }
 
+    createSelectorSprite() {
+        this.selectorSprite = new Sprite(54, MAIN_MENU_ROWS_Y[0], 1, 1, "static");
+        this.selectorSprite.debug = DEBUG;
+        this.selectorSprite.layer = OVER_SCENARIO_LAYER;
+        this.selectorSprite.addAnimation("mainMenuSelector", Asset.getAnimation("mainMenuSelector"));
+        this.row = 0;
 
     }
 
     leftFlipperCallback = () => {
-
+        this.row = (this.row - 1 + MAIN_MENU_ROWS_Y.length) % MAIN_MENU_ROWS_Y.length;
+        this.selectorSprite.position.y = MAIN_MENU_ROWS_Y[this.row];
     }
 
     rightFlipperCallback = () => {
+        this.row = (this.row + 1) % MAIN_MENU_ROWS_Y.length;
+        this.selectorSprite.position.y = MAIN_MENU_ROWS_Y[this.row];
 
     }
 
     centerFlipperCallback = () => {
-
+        switch (this.row) {
+            case 0:
+                console.log("Move to field selection");
+                break;
+            case 1:
+                console.log("Move to pokedex");
+                break;
+            case 2:
+                console.log("Move to options");
+                break;
+        }
     }
 
     setup() {
