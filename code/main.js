@@ -25,7 +25,7 @@ function setup() {
   EngineUtils.initPhysics();
 
   // Start level
-  EngineUtils.startHighScore(HIGH_SCORE_TABLES.RED, 3500000000);
+  EngineUtils.startBlueField();
 }
 
 function draw() {

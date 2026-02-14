@@ -146,7 +146,7 @@ class AudioManager {
         doStopAndDisconnect();
     }
 
-    playSFX(id, cooldown = 0) {
+    playSFX(id, cooldown = 0, callback = undefined) {
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
         }
@@ -175,6 +175,9 @@ class AudioManager {
         source.onended = () => {
             try { source.disconnect(); } catch {}
             try { gainNode.disconnect(); } catch {}
+            if (typeof callback === 'function') {
+                callback();
+            }
         };
 
         source.start(0);
@@ -317,6 +320,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('blueField', 'assets/audio/Blue_Field_Theme', { loop: true }));
     promises.push(audio.registerMusic('catchEmEvolutionModeBlueField', 'assets/audio/Catch_em_Evolution_Mode_Blue_Field', { loop: true }));
     promises.push(audio.registerMusic('mapMode', 'assets/audio/Field_MapMode', { loop: true }));
+    promises.push(audio.registerMusic('entryName', 'assets/audio/Entry_Name', { loop: true }));
+    promises.push(audio.registerMusic('highScoreScreen', 'assets/audio/High_Score_Screen', { loop: true }));
 
     // SFX
     promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red field ditto close
@@ -399,6 +404,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx4D', 'assets/audio/sfx/SFX-4D')); //Upgrade master ball
     promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4E')); //Pikachu saver cry
     promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4F')); //Pikachu double kickback
+    promises.push(audio.registerSFX('sfx50', 'assets/audio/sfx/SFX-50')); //Game over
     
 
     for (let i = 1; i <= 151; i++) {

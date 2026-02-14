@@ -52,6 +52,7 @@ const I18NManager = {
             "pokemon_ran_away": "pokémon ran away",
 
             "shoot_again": "shoot again",
+            "game_over": "game over",
 
             "start_training": "start training",
             "find_items": "find items",

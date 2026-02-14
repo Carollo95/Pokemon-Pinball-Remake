@@ -89,6 +89,8 @@ class HighScore extends Sketch {
     centerFlipperCallback = () => {
         if (this.state === HIGH_SCORE_STATE.EDIT) {
             this.moveToNextCharacter();
+        }else{
+            console.log("Go to main menu");
         }
     }
 
@@ -118,10 +120,12 @@ class HighScore extends Sketch {
             this.createDataSprites();
             this.changeBackground(this.table);
             this.setData(savedData);
+            Audio.playMusic('entryName');
         } else {
             this.state = HIGH_SCORE_STATE.VIEW;
             this.createSwitchArrow();
             this.switchTable(this.table);
+            Audio.playMusic('highScoreScreen');
         }
     }
 
