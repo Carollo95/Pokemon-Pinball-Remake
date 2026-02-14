@@ -48,7 +48,7 @@ class FieldSelector extends Sketch {
     }
 
     setup() {
-
+        Audio.playMusic("fieldSelect");
     }
 
     draw() {

@@ -70,7 +70,7 @@ class MainMenu extends Sketch {
     }
 
     setup() {
-
+        Audio.playMusic("titleScreen");
     }
 
     draw() {

@@ -322,6 +322,8 @@ function preloadAudioAssets() {
     promises.push(audio.registerMusic('mapMode', 'assets/audio/Field_MapMode', { loop: true }));
     promises.push(audio.registerMusic('entryName', 'assets/audio/Entry_Name', { loop: true }));
     promises.push(audio.registerMusic('highScoreScreen', 'assets/audio/High_Score_Screen', { loop: true }));
+    promises.push(audio.registerMusic('titleScreen', 'assets/audio/Title_Screen', { loop: true }));
+    promises.push(audio.registerMusic('fieldSelect', 'assets/audio/Field_Select', { loop: true }));
 
     // SFX
     promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red field ditto close

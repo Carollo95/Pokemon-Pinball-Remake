@@ -90,7 +90,7 @@ class HighScore extends Sketch {
         if (this.state === HIGH_SCORE_STATE.EDIT) {
             this.moveToNextCharacter();
         } else {
-            console.log("Go to main menu");
+            EngineUtils.startMainMenu();
         }
     }
 
