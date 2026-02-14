@@ -40,25 +40,31 @@ class MainMenu extends Sketch {
         this.hiderRowSprite.color = "rgb(248, 248, 248)";
         this.hiderRowSprite.stroke = "rgb(248, 248, 248)";
         this.hiderRowSprite.strokeWeight = 0;
-        
+
     }
 
     leftFlipperCallback = () => {
         this.row = (this.row - 1 + MAIN_MENU_ROWS_Y.length) % MAIN_MENU_ROWS_Y.length;
         this.selectorSprite.position.y = MAIN_MENU_ROWS_Y[this.row];
+        Audio.playSFX("sfx03");
     }
 
     rightFlipperCallback = () => {
         this.row = (this.row + 1) % MAIN_MENU_ROWS_Y.length;
         this.selectorSprite.position.y = MAIN_MENU_ROWS_Y[this.row];
+        Audio.playSFX("sfx03");
 
     }
 
     centerFlipperCallback = () => {
         switch (this.row) {
             case 0:
-                EngineUtils.flashWhite();
-                EngineUtils.startFieldMenu();
+                Audio.stopMusic();
+                Audio.playSFX("sfx27", 0, () => {
+                    EngineUtils.flashWhite(5, 10, 255, () => {
+                        EngineUtils.startFieldMenu();
+                    });
+                });
                 break;
             case 1:
                 console.log("Move to pokedex");

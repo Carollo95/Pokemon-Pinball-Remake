@@ -34,6 +34,8 @@ class Sketch {
             this.drawBackground();
         }
 
+        EngineUtils.drawWhiteFlash();
+
         if (this.controls) this.controls.update();
     }
 

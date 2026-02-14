@@ -98,11 +98,11 @@ class AudioManager {
 
         // When intro ends, start loop
         introSource.onended = () => {
-            try { introSource.disconnect(); } catch {}
+            try { introSource.disconnect(); } catch { }
 
             // Check if music was stopped during intro
             if (!this.currentMusic || this.currentMusic.id !== id) {
-                try { gainNode.disconnect(); } catch {}
+                try { gainNode.disconnect(); } catch { }
                 return;
             }
 
@@ -119,8 +119,8 @@ class AudioManager {
             delete this.currentMusic.introSource;
 
             loopSource.onended = () => {
-                try { loopSource.disconnect(); } catch {}
-                try { gainNode.disconnect(); } catch {}
+                try { loopSource.disconnect(); } catch { }
+                try { gainNode.disconnect(); } catch { }
             };
         };
     }
@@ -133,14 +133,14 @@ class AudioManager {
 
         const doStopAndDisconnect = () => {
             if (music.introSource) {
-                try { music.introSource.stop(); } catch {}
-                try { music.introSource.disconnect(); } catch {}
+                try { music.introSource.stop(); } catch { }
+                try { music.introSource.disconnect(); } catch { }
             }
             if (music.loopSource) {
-                try { music.loopSource.stop(); } catch {}
-                try { music.loopSource.disconnect(); } catch {}
+                try { music.loopSource.stop(); } catch { }
+                try { music.loopSource.disconnect(); } catch { }
             }
-            try { music.gainNode.disconnect(); } catch {}
+            try { music.gainNode.disconnect(); } catch { }
         };
 
         doStopAndDisconnect();
@@ -173,8 +173,8 @@ class AudioManager {
         gainNode.connect(this.sfxGain);
 
         source.onended = () => {
-            try { source.disconnect(); } catch {}
-            try { gainNode.disconnect(); } catch {}
+            try { source.disconnect(); } catch { }
+            try { gainNode.disconnect(); } catch { }
             if (typeof callback === 'function') {
                 callback();
             }
@@ -192,7 +192,7 @@ class AudioManager {
             const g = this.audioContext.createGain();
             g.gain.value = this.sfx[id].baseVolume;
             src.connect(g); g.connect(this.sfxGain);
-            src.onended = () => { try{src.disconnect();}catch{} try{g.disconnect();}catch{} resolve(); };
+            src.onended = () => { try { src.disconnect(); } catch { } try { g.disconnect(); } catch { } resolve(); };
             src.start(0);
         })), Promise.resolve());
     }
@@ -225,8 +225,8 @@ class AudioManager {
         gainNode.connect(this.sfxGain);
 
         source.onended = () => {
-            try { source.disconnect(); } catch {}
-            try { gainNode.disconnect(); } catch {}
+            try { source.disconnect(); } catch { }
+            try { gainNode.disconnect(); } catch { }
             if (musicToResumeId) {
                 this.playMusic(musicToResumeId, { restart: true, fade: true });
             }
@@ -251,10 +251,10 @@ class AudioManager {
     dispose() {
         try {
             this.stopMusic({ fade: false });
-        } catch {}
+        } catch { }
 
-        try { this.musicGain.disconnect(); } catch {}
-        try { this.sfxGain.disconnect(); } catch {}
+        try { this.musicGain.disconnect(); } catch { }
+        try { this.sfxGain.disconnect(); } catch { }
 
         for (const k in this.musicTracks) {
             if (this.musicTracks[k]) {
@@ -269,11 +269,11 @@ class AudioManager {
         }
 
         if (this._lastSfxTime) {
-            try { this._lastSfxTime.clear(); } catch {}
+            try { this._lastSfxTime.clear(); } catch { }
         }
 
         if (this.audioContext && this.audioContext.state !== 'closed') {
-            try { this.audioContext.close(); } catch {}
+            try { this.audioContext.close(); } catch { }
         }
 
         this.audioContext = null;
@@ -296,7 +296,7 @@ function getAudio() {
 if (typeof window !== 'undefined') {
     window.addEventListener('pagehide', () => {
         if (Audio) {
-            try { Audio.dispose(); } catch {}
+            try { Audio.dispose(); } catch { }
             Audio = null;
         }
     }, { once: true });
@@ -327,9 +327,9 @@ function preloadAudioAssets() {
 
     // SFX
     promises.push(audio.registerSFX('sfx00', 'assets/audio/sfx/SFX-00')); //Red field ditto close
-    promises.push(audio.registerSFX('sfx01', 'assets/audio/sfx/SFX-01'));
+    promises.push(audio.registerSFX('sfx01', 'assets/audio/sfx/SFX-01')); //Field Select
     promises.push(audio.registerSFX('sfx02', 'assets/audio/sfx/SFX-02'));
-    promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03')); //Evolution chooser change selection
+    promises.push(audio.registerSFX('sfx03', 'assets/audio/sfx/SFX-03')); //Menu selection 
     promises.push(audio.registerSFX('sfx04', 'assets/audio/sfx/SFX-04')); //Well ball on capture area
     promises.push(audio.registerSFX('sfx05', 'assets/audio/sfx/SFX-05')); //field pokemon eat
     promises.push(audio.registerSFX('sfx06', 'assets/audio/sfx/SFX-06')); //field pokemon spit AND capture pokemon hit
@@ -365,7 +365,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx24', 'assets/audio/sfx/SFX-24')); //Field ball loss
     promises.push(audio.registerSFX('sfx25', 'assets/audio/sfx/SFX-25')); //Field map travel complete
     promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26')); //Pokemon evolved
-    promises.push(audio.registerSFX('sfx27', 'assets/audio/sfx/SFX-27'));
+    promises.push(audio.registerSFX('sfx27', 'assets/audio/sfx/SFX-27')); //Main menu confirm
     promises.push(audio.registerSFX('sfx28', 'assets/audio/sfx/SFX-28'));
     promises.push(audio.registerSFX('sfx29', 'assets/audio/sfx/SFX-29')); //Pokemon captured
     promises.push(audio.registerSFX('sfx2A', 'assets/audio/sfx/SFX-2A')); //Bonus stage clear
@@ -385,7 +385,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx38', 'assets/audio/sfx/SFX-38')); //Mewtwo shield destroyed
     promises.push(audio.registerSFX('sfx39', 'assets/audio/sfx/SFX-39')); //Mewtwo hurt
     promises.push(audio.registerSFX('sfx3A', 'assets/audio/sfx/SFX-3A')); //Ball upgrade
-    promises.push(audio.registerSFX('sfx3B', 'assets/audio/sfx/SFX-3B'));
+    promises.push(audio.registerSFX('sfx3B', 'assets/audio/sfx/SFX-3B')); //TODO pikachu press inactive????????
     promises.push(audio.registerSFX('sfx3C', 'assets/audio/sfx/SFX-3C'));
     promises.push(audio.registerSFX('sfx3D', 'assets/audio/sfx/SFX-3D'));
     promises.push(audio.registerSFX('sfx3E', 'assets/audio/sfx/SFX-3E')); //Bonus ball screen progress
@@ -407,7 +407,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4E')); //Pikachu saver cry
     promises.push(audio.registerSFX('sfx4E', 'assets/audio/sfx/SFX-4F')); //Pikachu double kickback
     promises.push(audio.registerSFX('sfx50', 'assets/audio/sfx/SFX-50')); //Game over
-    
+
 
     for (let i = 1; i <= 151; i++) {
         promises.push(audio.registerCRY("cry-" + pad3(i), 'assets/audio/cries/' + pad3(i)));

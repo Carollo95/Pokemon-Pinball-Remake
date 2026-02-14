@@ -24,11 +24,13 @@ class FieldSelector extends Sketch {
     }
 
     leftFlipperCallback = () => {
+        //TODO missing sfx
         this.column = (this.column - 1 + TABLE_SELECTOR_X.length) % TABLE_SELECTOR_X.length;
         this.selectorSprite.position.x = TABLE_SELECTOR_X[this.column];
     }
 
     rightFlipperCallback = () => {
+        //TODO missing sfx
         this.column = (this.column + 1) % TABLE_SELECTOR_X.length;
         this.selectorSprite.position.x = TABLE_SELECTOR_X[this.column];
 
@@ -38,10 +40,20 @@ class FieldSelector extends Sketch {
         if (this.pressWaitTimer.hasElapsed()) {
             switch (this.column) {
                 case 0:
-                    EngineUtils.startRedField();
+                        Audio.stopMusic();
+                        Audio.playSFX("sfx02", 0, () => {
+                            EngineUtils.flashWhite(5, 10, 255, () => {
+                                EngineUtils.startRedField();
+                            });
+                        });
                     break;
                 case 1:
-                    EngineUtils.startBlueField();
+                    Audio.stopMusic();
+                    Audio.playSFX("sfx02", 0, () => {
+                        EngineUtils.flashWhite(5, 10, 255, () => {
+                            EngineUtils.startBlueField();
+                        });
+                    });
                     break;
             }
         }
