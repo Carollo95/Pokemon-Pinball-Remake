@@ -38,13 +38,13 @@ class RedField extends Field {
         this.bumpers.push(new RedFieldVoltorb(170, 208, this.onBumperHitCallback));
 
         this.bumpersTargetArrow = new TargetArrow(130, 210, 6);
-        this.leftDiglettTargetArrow = new TargetArrow(83, 364, 0);
-        this.rightDiglettTargetArrow = new TargetArrow(238, 364, 1);
+        this.leftTravelTargetArrow = new TargetArrow(83, 364, 0);
+        this.rightTravelTargetArrow = new TargetArrow(238, 364, 1);
         this.leftMultiplierTargetArrow = new TargetArrow(96, 308, 4);
         this.rightMultiplierTargetArrow = new TargetArrow(224, 308, 5);
 
-        this.targetArrows.push(this.leftDiglettTargetArrow);
-        this.targetArrows.push(this.rightDiglettTargetArrow);
+        this.targetArrows.push(this.leftTravelTargetArrow);
+        this.targetArrows.push(this.rightTravelTargetArrow);
         this.targetArrows.push(this.bumpersTargetArrow);
         this.targetArrows.push(this.leftMultiplierTargetArrow);
         this.targetArrows.push(this.rightMultiplierTargetArrow);
@@ -161,7 +161,7 @@ class RedField extends Field {
     onBellsproutEatCallback = () => {
         //TODO this should increates on travel???
         this.status.bellsproutOnBall++;
-        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_BELLSPROUT);
+        EngineUtils.addPointsForBallHelper(POINTS.FIELD_CAPTURE_WELL);
         if (this.state === FIELD_STATE.TRAVEL_RIGHT) {
             this.startTravelCave();
         } else if (this.state === FIELD_STATE.PLAYING && this.arrows.captureArrowsLevel >= 2) {
@@ -171,18 +171,6 @@ class RedField extends Field {
 
     playCatchemEvolutionMusic() {
         Audio.playMusic('catchEmEvolutionModeRedField');
-    }
-
-    doOnCaptureTimeupCallback = () => {
-        if (this.state === FIELD_STATE.CAPTURE) {
-            this.disableTimer()
-            this.stageText.setScrollText(I18NManager.translate("pokemon_ran_away"), "", 1000, () => {
-                this.screen.setState(SCREEN_STATE.LANDSCAPE);
-                this.setState(FIELD_STATE.PLAYING);
-            });
-            this.playMusic();
-            this.bumpersTargetArrow.setVisible(false);
-        }
     }
 
     draw() {
@@ -238,8 +226,6 @@ class RedField extends Field {
         return this.getBall().getPositionY() > 240 && this.getBall().getPositionX() < 45;
     }
 
-
-
     onLaunchNewBall() {
         this.ditto.open();
     }
@@ -259,42 +245,10 @@ class RedField extends Field {
         this.rightTravelDiglett.reset();
     }
 
-    startEvolutionSequence(pokemon) {
-        this.interruptCave();
-        this.setState(FIELD_STATE.EVOLUTION);
-        this.attachTimer(Timer.createFieldTimer(FIELD_EVOLUTION_TIMER_MS, this.doOnEvolutionTimeupCallback));
-        this.stageText.setScrollText(I18NManager.translate("start_training"));
-        this.screen.startEvolution(pokemon);
-        Audio.playMusic('catchEmEvolutionModeRedField');
-
-        this.saverAgain.set60sSaver();
-
-        this.evolutionManager.startEvolution(pokemon);
-    }
-
-    doOnEvolutionTimeupCallback = () => {
-        this.finishEvolutionPhase();
-    }
-
     onFinishEvolutionPhase() {
         this.ditto.close();
     }
 
-    onEvolutionTargetArrowHit(targetArrow) {
-        this.evolutionManager.onEvolutionTargetArrowHit(targetArrow);
-    }
-
-    onEvolutionModeSelectedOnSlots = (selected) => {
-        if (selected !== null) {
-            this.startEvolutionSequence(selected);
-        } else {
-            this.setState(FIELD_STATE.PLAYING);
-        }
-
-        this.evolutionScreenChooser.remove();
-        this.arrows.evolutionArrowsLevel = 0;
-        this.spitAndCloseWell();
-    }
 
     getLeftMultiplierTarget() { return RedFieldMultiplierTarget.createLeftMultiplierTarget(this.onLeftMultiplierHitCallback); }
     getRightMultiplierTarget() { return RedFieldMultiplierTarget.createRightMultiplierTarget(this.onRightMultiplierHitCallback); }

@@ -165,6 +165,14 @@ const POKEDEX = {
 const BASIC_POKEMON = Object.values(POKEDEX).filter(pokemon => pokemon.basic);
 const ALL_POKEMON = Object.values(POKEDEX);
 
+function saveObtainedPokemon(pokemonId) {
+    const obtainedPokemon = JSON.parse(localStorage.getItem("obtainedPokemon") || "[]");
+    if (!obtainedPokemon.includes(pokemonId)) {
+        obtainedPokemon.push(pokemonId);
+        localStorage.setItem("obtainedPokemon", JSON.stringify(obtainedPokemon));
+    }
+}
+
 function getPokemonById(id) {
     const key = String(id).padStart(3, '0');
     return Object.values(POKEDEX).find(p => p.id === key) || null;

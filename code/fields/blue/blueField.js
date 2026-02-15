@@ -24,7 +24,18 @@ class BlueField extends Field {
         this.bumpers.push(new BlueFieldShellder(202, 141, this.onBumperHitCallback));
 
         this.bumpersTargetArrow = new TargetArrow(159, 152, 2);
+        this.leftMultiplierTargetArrow = new TargetArrow(96, 318, 4);
+        this.rightMultiplierTargetArrow = new TargetArrow(224, 318, 5);
+        this.leftTravelTargetArrow = new TargetArrow(74, 362, 0);
+        this.rightTravelTargetArrow = new TargetArrow(240, 362, 1);
+
+        this.targetArrows.push(this.leftTravelTargetArrow);
+        this.targetArrows.push(this.rightTravelTargetArrow);
         this.targetArrows.push(this.bumpersTargetArrow);
+        this.targetArrows.push(this.leftMultiplierTargetArrow);
+        this.targetArrows.push(this.rightMultiplierTargetArrow);
+
+        //TODO add evolution items
 
         this.captureWell = new BlueFieldCloyster(this.onCloysterEatCallback);
         this.evolutionWell = new BlueFieldSlowbro(this.onEvolutionWellCallback);
@@ -48,7 +59,7 @@ class BlueField extends Field {
     onCloysterEatCallback = () => {
         //TODO this should increates on travel???
         this.status.cloysterOnBall++;
-        EngineUtils.addPointsForBallHelper(POINTS.BLUE_FIELD_CLOYSTER);
+        EngineUtils.addPointsForBallHelper(POINTS.FIELD_CAPTURE_WELL);
         if (this.state === FIELD_STATE.TRAVEL_RIGHT) {
             this.startTravelCave();
         } else if (this.state === FIELD_STATE.PLAYING && this.arrows.captureArrowsLevel >= 2) {
@@ -153,11 +164,16 @@ class BlueField extends Field {
         this.removeLauncherDoor();
     }
 
+    resetTravelTriggers() {
+        this.leftTravelPoliwag.reset();
+        this.rightTravelPsyduck.reset();
+    }
+
 
     playMusic() {
         Audio.playMusic('blueField');
     }
-    
+
     playCatchemEvolutionMusic() {
         Audio.playMusic('catchEmEvolutionModeBlueField');
     }

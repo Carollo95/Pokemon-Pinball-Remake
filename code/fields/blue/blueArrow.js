@@ -37,7 +37,7 @@ class BlueArrow {
                     this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, BLUE_ARROW_SPEED_PUSH_MULTIPLIER);
                     break;
                 case BLUE_ARROW_DIRECTION.SOUTH:
-                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, BLUE_ARROW_SPEED_PUSH_MULTIPLIER / 2);
+                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, BLUE_ARROW_SPEED_PUSH_MULTIPLIER / 6);
                     break;
                 case BLUE_ARROW_DIRECTION.EAST:
                     this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_PUSH_MULTIPLIER, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER);

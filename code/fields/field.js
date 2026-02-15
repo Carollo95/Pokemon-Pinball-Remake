@@ -85,14 +85,14 @@ class Field extends Stage {
         this.pikachuSaverManager = this.getPikachuSaverManager();
         this.pikachuSaverManager.setState(pikachuSaverState);
 
+        this.targetArrows = [];
+        this.evolutionItems = [];
+
         this.evolutionManager = new EvolutionManager(this.stageText, this.targetArrows, this.evolutionItems, this.addEvolutionExperienceCallback, this.onFullExperienceCallback);
+
         this.ballUpgraderManager = this.getBallUpgraderManager();
 
         this.saverAgain = new SaverAgain();
-
-        this.evolutionItems = [];
-
-        this.targetArrows = [];
 
         this.speedPad = [];
 
@@ -459,6 +459,19 @@ class Field extends Stage {
         this.arrows.evolutionArrowsLevel = 0;
     }
 
+    startEvolutionSequence(pokemon) {
+        this.interruptCave();
+        this.setState(FIELD_STATE.EVOLUTION);
+        this.attachTimer(Timer.createFieldTimer(FIELD_EVOLUTION_TIMER_MS, this.doOnEvolutionTimeupCallback));
+        this.stageText.setScrollText(I18NManager.translate("start_training"));
+        this.screen.startEvolution(pokemon);
+        this.playCatchemEvolutionMusic();
+
+        this.saverAgain.set60sSaver();
+
+        this.evolutionManager.startEvolution(pokemon);
+    }
+
     //Callbacks
     onFullUpgradeAgainCallback = () => {
         EngineUtils.addPointsForBallHelper(POINTS.BALL_FULLY_UPGRADED);
@@ -516,6 +529,7 @@ class Field extends Stage {
         //TODO how many points on jackpot
         this.stageText.setScrollText(I18NManager.translate("you_got_a") + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name), 1000, this.showAfterCaptureJackpot);
         this.status.addPokemonCaught(pokemonCaught);
+        saveObtainedPokemon(pokemonCaught.id);
     }
 
     showAfterCaptureJackpot = () => {
@@ -544,6 +558,7 @@ class Field extends Stage {
         //TODO how many points on jackpot
         let targetEvolution = this.screen.showTargetEvolution();
         this.status.addPokemonEvolved(targetEvolution);
+        saveObtainedPokemon(targetEvolution.id);
         this.stageText.setScrollText(I18NManager.translate("it_evolved_into") + I18NManager.translate(targetEvolution.name), I18NManager.translate(targetEvolution.name), 1000, this.showAfterEvolutionJackpot);
     }
 
@@ -704,15 +719,47 @@ class Field extends Stage {
     }
 
     onTravelHitCallback = (isRight) => {
-        //TODO rename this
-        EngineUtils.addPointsForBallHelper(POINTS.RED_FIELD_TRAVEL_DIGLETT);
+        EngineUtils.addPointsForBallHelper(POINTS.FIELD_TRAVEL);
         if (this.state === FIELD_STATE.EVOLUTION) {
             if (isRight) {
-                this.onEvolutionTargetArrowHit(this.rightDiglettTargetArrow);
+                this.onEvolutionTargetArrowHit(this.rightTravelTargetArrow);
             } else {
-                this.onEvolutionTargetArrowHit(this.leftDiglettTargetArrow);
+                this.onEvolutionTargetArrowHit(this.leftTravelTargetArrow);
             }
         }
+    }
+
+    onEvolutionTargetArrowHit(targetArrow) {
+        this.evolutionManager.onEvolutionTargetArrowHit(targetArrow);
+    }
+
+        doOnCaptureTimeupCallback = () => {
+        if (this.state === FIELD_STATE.CAPTURE) {
+            this.disableTimer()
+            this.stageText.setScrollText(I18NManager.translate("pokemon_ran_away"), "", 1000, () => {
+                this.screen.setState(SCREEN_STATE.LANDSCAPE);
+                this.setState(FIELD_STATE.PLAYING);
+            });
+            this.playMusic();
+            this.bumpersTargetArrow.setVisible(false);
+        }
+    }
+
+
+    onEvolutionModeSelectedOnSlots = (selected) => {
+        if (selected !== null) {
+            this.startEvolutionSequence(selected);
+        } else {
+            this.setState(FIELD_STATE.PLAYING);
+        }
+
+        this.evolutionScreenChooser.remove();
+        this.arrows.evolutionArrowsLevel = 0;
+        this.spitAndCloseWell();
+    }
+
+        doOnEvolutionTimeupCallback = () => {
+        this.finishEvolutionPhase();
     }
 
     //Interface

@@ -41,7 +41,15 @@ const CheatEngine = {
 
     startCapture() {
         if ((stage instanceof Field)) {
-            stage.onBellsproutEatCallback();
+            stage.captureWell.eatCallback();
+        }
+    },
+
+    startEvolution() {
+        if (stage instanceof BlueField) {
+            stage.evolutionWell.onCapturedBallCallback();
+        }else if (stage instanceof RedField) {
+            //TODO
         }
     },
 
@@ -102,9 +110,9 @@ const CheatEngine = {
         }
     },
 
-    clearHighScores(){
-       localStorage.removeItem('highScoreData-' + HIGH_SCORE_TABLES.RED);
-       localStorage.removeItem('highScoreData-' + HIGH_SCORE_TABLES.BLUE);
+    clearHighScores() {
+        localStorage.removeItem('highScoreData-' + HIGH_SCORE_TABLES.RED);
+        localStorage.removeItem('highScoreData-' + HIGH_SCORE_TABLES.BLUE);
     }
 
 }

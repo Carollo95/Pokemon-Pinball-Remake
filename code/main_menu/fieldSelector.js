@@ -9,7 +9,7 @@ class FieldSelector extends Sketch {
         this.attachControls(new Controls(() => { }, () => { }, () => { }, this.leftFlipperCallback, this.centerFlipperCallback, this.rightFlipperCallback));
         this.createSelectorSprite();
 
-        this.pressWaitTimer = new EventTimer(1000);
+        this.pressWaitTimer = new EventTimer(500);
         this.pressWaitTimer.restart();
         this.controlsActive = true;
 
