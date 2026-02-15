@@ -7,6 +7,7 @@ class MainMenu extends Sketch {
         this.createFrame();
         this.attachControls(new Controls(() => { }, () => { }, () => { }, this.leftFlipperCallback, this.centerFlipperCallback, this.rightFlipperCallback));
 
+        this.controlsActive = true;
         this.createBackgroundSprite();
         this.createSelectorSprite();
         //TODO remove if options are implemented
@@ -44,34 +45,42 @@ class MainMenu extends Sketch {
     }
 
     leftFlipperCallback = () => {
-        this.row = (this.row - 1 + MAIN_MENU_ROWS_Y.length) % MAIN_MENU_ROWS_Y.length;
-        this.selectorSprite.position.y = MAIN_MENU_ROWS_Y[this.row];
-        Audio.playSFX("sfx03");
+        if (this.controlsActive) {
+            this.row = (this.row - 1 + MAIN_MENU_ROWS_Y.length) % MAIN_MENU_ROWS_Y.length;
+            this.selectorSprite.position.y = MAIN_MENU_ROWS_Y[this.row];
+            Audio.playSFX("sfx03");
+        }
     }
 
     rightFlipperCallback = () => {
-        this.row = (this.row + 1) % MAIN_MENU_ROWS_Y.length;
-        this.selectorSprite.position.y = MAIN_MENU_ROWS_Y[this.row];
-        Audio.playSFX("sfx03");
+        if (this.controlsActive) {
+            this.row = (this.row + 1) % MAIN_MENU_ROWS_Y.length;
+            this.selectorSprite.position.y = MAIN_MENU_ROWS_Y[this.row];
+            Audio.playSFX("sfx03");
+        }
 
     }
 
     centerFlipperCallback = () => {
-        switch (this.row) {
-            case 0:
-                Audio.stopMusic();
-                Audio.playSFX("sfx27", 0, () => {
-                    EngineUtils.flashWhite(5, 10, 255, () => {
-                        EngineUtils.startFieldMenu();
+        if (this.controlsActive) {
+            switch (this.row) {
+                case 0:
+                    //TODO move this when other options are available
+                    this.controlsActive = false;
+                    Audio.stopMusic();
+                    Audio.playSFX("sfx27", 0, () => {
+                        EngineUtils.flashWhite(5, 10, 255, () => {
+                            EngineUtils.startFieldMenu();
+                        });
                     });
-                });
-                break;
-            case 1:
-                console.log("Move to pokedex");
-                break;
-            case 2:
-                console.log("Move to options");
-                break;
+                    break;
+                case 1:
+                    console.log("Move to pokedex");
+                    break;
+                case 2:
+                    console.log("Move to options");
+                    break;
+            }
         }
     }
 

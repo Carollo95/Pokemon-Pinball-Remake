@@ -11,6 +11,7 @@ class FieldSelector extends Sketch {
 
         this.pressWaitTimer = new EventTimer(1000);
         this.pressWaitTimer.restart();
+        this.controlsActive = true;
 
     }
 
@@ -25,36 +26,44 @@ class FieldSelector extends Sketch {
 
     leftFlipperCallback = () => {
         //TODO missing sfx
-        this.column = (this.column - 1 + TABLE_SELECTOR_X.length) % TABLE_SELECTOR_X.length;
-        this.selectorSprite.position.x = TABLE_SELECTOR_X[this.column];
+        if (this.controlsActive) {
+            this.column = (this.column - 1 + TABLE_SELECTOR_X.length) % TABLE_SELECTOR_X.length;
+            this.selectorSprite.position.x = TABLE_SELECTOR_X[this.column];
+        }
     }
 
     rightFlipperCallback = () => {
         //TODO missing sfx
-        this.column = (this.column + 1) % TABLE_SELECTOR_X.length;
-        this.selectorSprite.position.x = TABLE_SELECTOR_X[this.column];
+        if (this.controlsActive) {
+            this.column = (this.column + 1) % TABLE_SELECTOR_X.length;
+            this.selectorSprite.position.x = TABLE_SELECTOR_X[this.column];
+        }
 
     }
 
     centerFlipperCallback = () => {
-        if (this.pressWaitTimer.hasElapsed()) {
-            switch (this.column) {
-                case 0:
+
+        if (this.controlsActive) {
+            if (this.pressWaitTimer.hasElapsed()) {
+                this.controlsActive = false;
+                switch (this.column) {
+                    case 0:
                         Audio.stopMusic();
                         Audio.playSFX("sfx02", 0, () => {
                             EngineUtils.flashWhite(5, 10, 255, () => {
                                 EngineUtils.startRedField();
                             });
                         });
-                    break;
-                case 1:
-                    Audio.stopMusic();
-                    Audio.playSFX("sfx02", 0, () => {
-                        EngineUtils.flashWhite(5, 10, 255, () => {
-                            EngineUtils.startBlueField();
+                        break;
+                    case 1:
+                        Audio.stopMusic();
+                        Audio.playSFX("sfx02", 0, () => {
+                            EngineUtils.flashWhite(5, 10, 255, () => {
+                                EngineUtils.startBlueField();
+                            });
                         });
-                    });
-                    break;
+                        break;
+                }
             }
         }
     }

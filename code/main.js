@@ -25,7 +25,7 @@ function setup() {
   EngineUtils.initPhysics();
 
   // Start level
-  EngineUtils.startMainMenu();
+  EngineUtils.startBlueField();
 }
 
 function draw() {

@@ -36,7 +36,7 @@ class BlueFieldSlowbro {
         ball.regainPhysics();
         this.sprite.changeAni('spit');
         Audio.playSFX('sfx06');
-        ball.sprite.velocity.x = -5;
+        ball.sprite.velocity.x = 5;
         ball.sprite.visible = true;
         this.sprite.ani.onComplete = () => {
             this.sprite.changeAni('idle');
