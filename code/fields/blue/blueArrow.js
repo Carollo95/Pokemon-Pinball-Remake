@@ -14,7 +14,7 @@ class BlueArrow {
     constructor(callback) {
         this.callback = callback;
 
-        this.sprite = new Sprite(159, 210, 1, 1, "none");
+        this.sprite = new Sprite(160, 209, 1, 1, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.addAnimation('blueArrow', Asset.getAnimation('blueFieldBlueArrow'));

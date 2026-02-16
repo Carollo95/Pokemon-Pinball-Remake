@@ -17,7 +17,7 @@ class BlueField extends Field {
         this.setupSensors();
 
         this.leftTravelPoliwag = new BlueFieldTravelPoliwag(() => { this.onTravelHitCallback(false) }, () => { this.status.poliwagOnBall++; this.onTravelToLeft(); });
-        this.leftTravelPsyduck = new BlueFieldTravelPsyduck(() => { this.onTravelHitCallback(true) }, () => { this.status.psyduckOnBall++; this.onTravelToRight(); });
+        this.rightTravelPsyduck = new BlueFieldTravelPsyduck(() => { this.onTravelHitCallback(true) }, () => { this.status.psyduckOnBall++; this.onTravelToRight(); });
 
         this.bumpers.push(new BlueFieldShellder(117, 140, this.onBumperHitCallback));
         this.bumpers.push(new BlueFieldShellder(160, 107, this.onBumperHitCallback));
@@ -140,7 +140,7 @@ class BlueField extends Field {
         this.evolutionWell.update(this.getBall());
 
         this.leftTravelPoliwag.update(this.getBall().sprite);
-        this.leftTravelPsyduck.update(this.getBall().sprite);
+        this.rightTravelPsyduck.update(this.getBall().sprite);
 
         this.blueArrow.update(this.getBall().sprite, this.arrows.captureArrowsLevel >= 2, this.arrows.evolutionArrowsLevel >= 3, this.state);
     }
