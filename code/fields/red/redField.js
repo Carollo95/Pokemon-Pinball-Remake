@@ -160,7 +160,7 @@ class RedField extends Field {
 
     onBellsproutEatCallback = () => {
         //TODO this should increates on travel???
-        this.status.bellsproutOnBall++;
+        this.status.addCaptureWellOnBall();
         EngineUtils.addPointsForBallHelper(POINTS.FIELD_CAPTURE_WELL);
         if (this.state === FIELD_STATE.TRAVEL_RIGHT) {
             this.startTravelCave();

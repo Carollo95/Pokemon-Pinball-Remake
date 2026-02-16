@@ -72,7 +72,7 @@ class BlueField extends Field {
 
     onCloysterEatCallback = () => {
         //TODO this should increates on travel???
-        this.status.cloysterOnBall++;
+        this.status.addCaptureWellOnBall();
         EngineUtils.addPointsForBallHelper(POINTS.FIELD_CAPTURE_WELL);
         if (this.state === FIELD_STATE.TRAVEL_RIGHT) {
             this.startTravelCave();
@@ -148,6 +148,7 @@ class BlueField extends Field {
     onAfterEvolutionTargetSelectedOnEvolutionHole() {
         this.blueArrow.restartTimer();
         this.evolutionWell.spitBall(this.getBall());
+        this.status.addSlowbroOnBall();
     }
 
     createLauncherDoor() {

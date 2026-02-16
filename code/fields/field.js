@@ -38,6 +38,9 @@ class Field extends Stage {
     }
 
     setup(initialLandmark = undefined, arrowsState = undefined, spawnOnWell = false, pikachuSaverState = undefined, multiplierLevel = undefined, caveActive = false) {
+
+        this.status.setOnExtraBallEarnedCallback(this.onExtraBallEarnedCallback);
+
         this.attachBall(Ball.spawnFieldBall(this.onFullUpgradeAgainCallback));
 
         this.attachFlippers(createTableFlippers());
@@ -570,7 +573,7 @@ class Field extends Stage {
 
     onCaveEnterCallback = () => {
         this.caveActive = false;
-        this.status.caveShotsOnBall++;
+        this.status.addCaveShotOnBall();
         this.screen.startSlotMachine(this.getStartSlotMachineParams());
     }
 
@@ -760,6 +763,11 @@ class Field extends Stage {
 
         doOnEvolutionTimeupCallback = () => {
         this.finishEvolutionPhase();
+    }
+
+    onExtraBallEarnedCallback = () => {
+        this.saverAgain.setExtra();
+        this.stageText.setScrollText(I18NManager.translate("extra_ball"), I18NManager.translate("extra_ball"));
     }
 
     //Interface
