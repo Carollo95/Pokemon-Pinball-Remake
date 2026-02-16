@@ -258,7 +258,7 @@ class BallBonusScreen {
     }
 
     createBellsproutLine() {
-        return this.centerTextForTextRow(this.status.bellsproutOnBall + " " + I18NManager.translate("bellsprout"));
+        return this.centerTextForTextRow(this.status.captureWellOnBall + " " + I18NManager.translate("bellsprout"));
     }
 
     createDugtrioLine() {
@@ -266,7 +266,7 @@ class BallBonusScreen {
     }
 
     createCloysterLine() {
-        return this.centerTextForTextRow(this.status.cloysterOnBall + " " + I18NManager.translate("cloyster"));
+        return this.centerTextForTextRow(this.status.captureWellOnBall + " " + I18NManager.translate("cloyster"));
     }
 
     createSlowbroLine() {

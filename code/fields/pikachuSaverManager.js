@@ -18,6 +18,7 @@ class PikachuSaverManager {
     onPikachuSaverDischargeCallback = () => {
         this.status.activeThunder = false;
         this.charger.discharge();
+        this.status.addPikachuKickbackOnBall();
     }
 
     onSpinnerMoveCallback = () => {

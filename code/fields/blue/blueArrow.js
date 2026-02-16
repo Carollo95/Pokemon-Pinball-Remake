@@ -14,7 +14,7 @@ class BlueArrow {
     constructor(callback) {
         this.callback = callback;
 
-        this.sprite = new Sprite(159, 210, 1, 1, "none");
+        this.sprite = new Sprite(160, 209, 1, 1, "none");
         this.sprite.debug = DEBUG;
         this.sprite.layer = SCENARIO_LAYER;
         this.sprite.addAnimation('blueArrow', Asset.getAnimation('blueFieldBlueArrow'));
@@ -37,12 +37,9 @@ class BlueArrow {
                     this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, BLUE_ARROW_SPEED_PUSH_MULTIPLIER);
                     break;
                 case BLUE_ARROW_DIRECTION.SOUTH:
-                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, BLUE_ARROW_SPEED_PUSH_MULTIPLIER / 6);
+                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, 1);
                     break;
                 case BLUE_ARROW_DIRECTION.EAST:
-                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_PUSH_MULTIPLIER, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER);
-                    break;
-                case BLUE_ARROW_DIRECTION.WEST:
                     this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_PUSH_MULTIPLIER, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER);
                     break;
             }

@@ -9,17 +9,26 @@ class StageStatus {
         this.pokemonCaughtOnBall = 0;
         this.pokemonEvolvedOnBall = 0;
 
-        this.bellsproutOnBall = 0;
+        this.captureWellOnBall = 0;
         this.dugtrioOnBall = 0;
 
         this.poliwagOnBall = 0;
         this.psyduckOnBall = 0;
-        this.cloysterOnBall = 0;
         this.slowbroOnBall = 0;
 
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
         this.fieldMultiplier = 0;
+
+        this.pikachuKickbacksOnBall = 0;
+
+        this.extraBallEarned = false;
+
+        this.onExtraBallEarnedCallback = () => { };
+    }
+
+    setOnExtraBallEarnedCallback(callback) {
+        this.onExtraBallEarnedCallback = callback;
     }
 
     getBonusForCaughtPokemonOnBall() {
@@ -31,7 +40,7 @@ class StageStatus {
     }
 
     getBonusForBellsproutOnBall() {
-        return this.bellsproutOnBall * POINTS.END_OF_BALL_BONUS_BELLSPROUT;
+        return this.captureWellOnBall * POINTS.END_OF_BALL_BONUS_BELLSPROUT;
     }
 
     getBonusForDugtrioOnBall() {
@@ -43,7 +52,7 @@ class StageStatus {
     }
 
     getBonusForCloysterOnBall() {
-        return this.cloysterOnBall * POINTS.END_OF_BALL_BONUS_CLOYSTER;
+        return this.captureWellOnBall * POINTS.END_OF_BALL_BONUS_CLOYSTER;
     }
 
     getBonusForPsyduckOnBall() {
@@ -84,21 +93,56 @@ class StageStatus {
     }
 
     startExtraBall() {
-        this.balls--;
-
         this.pokemonCaughtOnBall = 0;
         this.pokemonEvolvedOnBall = 0;
-        this.bellsproutOnBall = 0;
+        this.captureWellOnBall = 0;
         this.dugtrioOnBall = 0;
 
         this.poliwagOnBall = 0;
         this.psyduckOnBall = 0;
-        this.cloysterOnBall = 0;
         this.slowbroOnBall = 0;
 
         this.caveShotsOnBall = 0;
         this.spinnerTurnsOnBall = 0;
         this.fieldMultiplier = 0;
+
+        this.pikachuKickbacksOnBall = 0;
+
+        this.extraBallEarned = false;
+    }
+
+    addPikachuKickbackOnBall() {
+        this.pikachuKickbacksOnBall++;
+        if (this.pikachuKickbacksOnBall === 5 && !this.extraBallEarned) {
+            this.extraBallEarned = true;
+            this.onExtraBallEarnedCallback();
+        }
+    }
+
+    addCaveShotOnBall() {
+        this.caveShotsOnBall++;
+        if (this.caveShotsOnBall === 10 && !this.extraBallEarned) {
+            this.extraBallEarned = true;
+            this.onExtraBallEarnedCallback();
+        }
+    }
+
+    addCaptureWellOnBall() {
+        this.captureWellOnBall++;
+
+        if (this.captureWellOnBall === 15 && !this.extraBallEarned) {
+            this.extraBallEarned = true;
+            this.onExtraBallEarnedCallback();
+        }
+    }
+
+    addSlowbroOnBall() {
+        this.slowbroOnBall++;
+        if (this.slowbroOnBall === 10 && !this.extraBallEarned) {
+            this.extraBallEarned = true;
+            this.onExtraBallEarnedCallback();
+        }
+
     }
 
     addPoints(pts, ball = null) {
