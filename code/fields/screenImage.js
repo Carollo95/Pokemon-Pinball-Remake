@@ -7,8 +7,8 @@ class ScreenImage {
 
         this.sprite.addAnimation(FIELD_BONUS.MOLE, Asset.getAnimation('goToBonusMole'));
         this.sprite.addAnimation(FIELD_BONUS.GHOST, Asset.getAnimation('goToBonusGhost'));
-        //this.sprite.addAnimation(FIELD_BONUS.CAT, Asset.getAnimation('goToBonusCat'));
-        //this.sprite.addAnimation(FIELD_BONUS.SEAL, Asset.getAnimation('goToBonusSeal'));
+        this.sprite.addAnimation(FIELD_BONUS.CAT, Asset.getAnimation('goToBonusCat'));
+        this.sprite.addAnimation(FIELD_BONUS.SEAL, Asset.getAnimation('goToBonusSeal'));
         this.sprite.addAnimation(FIELD_BONUS.CLONE, Asset.getAnimation('goToBonusClone'));
         this.sprite.addAnimation(TRAVEL_DIRECTION.LEFT, Asset.getAnimation('travelLeft'));
         this.sprite.addAnimation(TRAVEL_DIRECTION.RIGHT, Asset.getAnimation('travelRight'));

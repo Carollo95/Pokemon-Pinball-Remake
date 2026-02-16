@@ -350,6 +350,8 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('goToBonusMole', 'assets/img/field/go_to_bonus_mole', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusGhost', 'assets/img/field/go_to_bonus_ghost', 96, 64, 1);
+  Asset.registerAnimationTemplate('goToBonusCat', 'assets/img/field/go_to_bonus_cat', 96, 64, 1);
+  Asset.registerAnimationTemplate('goToBonusSeal', 'assets/img/field/go_to_bonus_seal', 96, 64, 1);
   Asset.registerAnimationTemplate('goToBonusClone', 'assets/img/field/go_to_bonus_clone', 96, 64, 1);
 
   Asset.registerAnimationTemplate('again', 'assets/img/field/again', 64, 16, 2);

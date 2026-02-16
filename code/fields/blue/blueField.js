@@ -46,6 +46,20 @@ class BlueField extends Field {
         this.speedPad.push(new SpeedPad(272, 296));
         this.speedPad.push(new SpeedPad(159, 245, 12, 0.2));
 
+        this.evolutionItems.push(new EvolutionItem(91, 46));
+        this.evolutionItems.push(new EvolutionItem(220, 41));
+        this.evolutionItems.push(new EvolutionItem(52, 85));
+        this.evolutionItems.push(new EvolutionItem(23, 205));
+        this.evolutionItems.push(new EvolutionItem(293, 205));
+        this.evolutionItems.push(new EvolutionItem(163, 243));
+        this.evolutionItems.push(new EvolutionItem(163, 243));
+        this.evolutionItems.push(new EvolutionItem(119, 267));
+        this.evolutionItems.push(new EvolutionItem(202, 267));
+        this.evolutionItems.push(new EvolutionItem(108, 320));
+        this.evolutionItems.push(new EvolutionItem(210, 320));
+        this.evolutionItems.push(new EvolutionItem(78, 360));
+        this.evolutionItems.push(new EvolutionItem(242, 360));
+
         this.rightRubberBand = BlueFieldRubberBand.createLeftRubberBand();
         this.leftRubberBand = BlueFieldRubberBand.createRightRubberBand();
 
