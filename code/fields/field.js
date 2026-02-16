@@ -20,7 +20,6 @@ const FIELD_STATE = {
     PLAYING: "playing",
     GAME_START: "game_start",
     BALL_LOST: "ball_lost",
-    GAME_OVER: "game_over",
     NEW_BALL_WAITING: "new_ball_waiting",
     CAPTURE: "capture",
     TRAVEL_LEFT: "travel_left",
@@ -365,10 +364,6 @@ class Field extends Stage {
             this.arrows.setCaptureArrowsLevel(2);
             this.setState(FIELD_STATE.NEW_BALL_WAITING);
             this.playMusic();
-        } else {
-            //TODO not needed now probably
-            this.setState(FIELD_STATE.GAME_OVER);
-            console.log("GAME OVER");
         }
     }
 

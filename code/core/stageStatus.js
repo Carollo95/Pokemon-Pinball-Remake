@@ -130,7 +130,6 @@ class StageStatus {
     }
 
     addCaptureWellOnBall() {
-        console.log("capture well on ball", this.captureWellOnBall);
         this.captureWellOnBall++;
 
         if (this.captureWellOnBall === 15 && !this.extraBallEarned) {

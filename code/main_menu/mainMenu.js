@@ -75,10 +75,10 @@ class MainMenu extends Sketch {
                     });
                     break;
                 case 1:
-                    console.log("Move to pokedex");
+                    //TODO move to pokedex
                     break;
                 case 2:
-                    console.log("Move to options");
+                    //TODO move to options
                     break;
             }
         }
