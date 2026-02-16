@@ -13,7 +13,7 @@ function setup() {
   //Create canvas and asign it to its div on html
   let cnv = createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   cnv.parent("canvas-container");
-  
+
   // Ensure the 2D context doesn't smooth scaled images
   drawingContext.imageSmoothingEnabled = false;
 
@@ -59,5 +59,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("clone-stage").addEventListener("click", CheatEngine.startCloneStage);
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const controlsDiv = document.getElementById('bonus-stage-selector-buttons');
+  if (controlsDiv && typeof DEBUG !== 'undefined' && !DEBUG) {
+    controlsDiv.style.display = 'none';
+  }
 });
 
