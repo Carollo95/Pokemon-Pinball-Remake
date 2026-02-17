@@ -270,6 +270,11 @@ const EngineUtils = {
         stage.setup();
     },
 
+    startPokedex() {
+        allSprites.remove();
+        stage = new Pokedex();
+        stage.setup();
+    },
 
     startHighScore(table, highScore) {
         allSprites.remove();

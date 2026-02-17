@@ -118,6 +118,8 @@ function preLoadBackgrounds() {
 
   Asset.registerBackground('fieldSelector', 'assets/img/main-menu/field_selector_background');
 
+  Asset.registerBackground('pokedex', 'assets/img/pokedex/background');
+
 }
 
 
