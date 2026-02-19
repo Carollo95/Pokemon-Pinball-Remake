@@ -20,6 +20,34 @@ class Pokedex extends Sketch {
         this.createBackgroundSprite();
         this.createSelector();
 
+        this.createPokemonImage();
+
+        this.updatePokemonDataData();
+
+    }
+
+    createPokemonImage() {
+        this.pokemonImageSprite = new Sprite(92, 164, 96, 64, "static");
+        this.pokemonImageSprite.debug = DEBUG;
+        this.pokemonImageSprite.layer = SCENARIO_LAYER;
+        for (let i = 0; i < ALL_POKEMON.length; i++) {
+            this.pokemonImageSprite.addAnimation(ALL_POKEMON[i].id, Asset.getAnimation(ALL_POKEMON[i].id));
+            this.pokemonImageSprite.addAnimation(ALL_POKEMON[i].id + "-bw", Asset.getAnimation(ALL_POKEMON[i].id + "-bw"));
+        }
+    }
+
+    updatePokemonDataData() {
+        const pokemonId = this.getSelectedByCursor().id;
+        this.pokemonImageSprite.visible = false;
+
+        if (this.seen.includes(pokemonId)) {
+            this.pokemonImageSprite.changeAnimation(pokemonId + "-bw");
+            this.pokemonImageSprite.visible = true;
+        }
+
+        if (this.captured.includes(pokemonId)) {
+            this.pokemonImageSprite.changeAnimation(pokemonId);
+        }
     }
 
     createSelector() {
@@ -43,8 +71,6 @@ class Pokedex extends Sketch {
         }
     }
 
-
-
     createNumberRows() {
         this.rows = [];
         for (let i = 0; i < ALL_POKEMON.length; i++) {
@@ -58,9 +84,11 @@ class Pokedex extends Sketch {
         if (this.cursorPosition > 0) {
             this.cursorPosition--;
             this.cursorSprite.y = POKEDEX_CURSOR_YS[this.cursorPosition];
+            this.updatePokemonDataData();
         } else if (this.listOffset > 0) {
             this.listOffset--;
             this.rows.forEach(row => row.moveDown());
+            this.updatePokemonDataData();
         }
     }
 
@@ -72,9 +100,11 @@ class Pokedex extends Sketch {
         if (this.cursorPosition < POKEDEX_CURSOR_YS.length - 1) {
             this.cursorPosition++
             this.cursorSprite.y = POKEDEX_CURSOR_YS[this.cursorPosition];
+            this.updatePokemonDataData();
         } else if (this.listOffset < POKEDEX_ROW_NUMBER_YS.length - 5) {
             this.listOffset++;
             this.rows.forEach(row => row.moveUp());
+            this.updatePokemonDataData();
         }
 
     }
