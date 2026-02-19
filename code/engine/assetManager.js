@@ -118,7 +118,7 @@ function preLoadBackgrounds() {
 
   Asset.registerBackground('fieldSelector', 'assets/img/main-menu/field_selector_background');
 
-  Asset.registerBackground('pokedex', 'assets/img/pokedex/background');
+  Asset.registerBackground('pokedex', 'assets/img/pokedex/pokedex-background');
 
 }
 
@@ -395,6 +395,13 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('mainMenuSelector', 'assets/img/main-menu/selector', 32, 32, 4, DEFAULT_ANIMATION_DELAY / 2);
 
   Asset.registerAnimationTemplate('tableSelector', 'assets/img/main-menu/table_selector', 136, 184, 3, DEFAULT_ANIMATION_DELAY / 2);
+
+  Asset.registerAnimationTemplate('pokedexNumber', 'assets/img/pokedex/numbers', 16, 16, 10);
+  Asset.registerAnimationTemplate('pokedexLetter', 'assets/img/pokedex/letters', 16, 24, 70);
+  Asset.registerAnimationTemplate('pokedexNumberMarker', 'assets/img/pokedex/number', 34, 12, 1);
+
+  Asset.registerAnimationTemplate('pokedexBackground', 'assets/img/pokedex/background', 320, 288, 1);
+
 
 }
 
