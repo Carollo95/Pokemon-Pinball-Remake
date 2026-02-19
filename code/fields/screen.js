@@ -133,7 +133,9 @@ class Screen {
 
     startCapture(level) {
         this.setState(SCREEN_STATE.CAPTURE_EVOLUTION);
-        this.screenCapture.startCapture(this.screenLandscapes.getPokemonFromLandmark(level));
+        const captureTarget = this.screenLandscapes.getPokemonFromLandmark(level)
+        this.screenCapture.startCapture(captureTarget);
+        return captureTarget;
     }
 
     startEvolution(pokemon) {
