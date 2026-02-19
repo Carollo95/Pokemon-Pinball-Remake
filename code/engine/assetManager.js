@@ -402,6 +402,7 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('pokedexBackground', 'assets/img/pokedex/background', 320, 288, 1);
 
+  Asset.registerAnimationTemplate('pokedexCursor', 'assets/img/pokedex/cursor', 16, 16, 2, 4);
 
 }
 
