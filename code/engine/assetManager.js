@@ -398,6 +398,8 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('pokedexNumber', 'assets/img/pokedex/numbers', 16, 16, 10);
   Asset.registerAnimationTemplate('pokedexLetter', 'assets/img/pokedex/letters', 16, 24, 70);
+  Asset.registerAnimationTemplate('pokedexNumberInv', 'assets/img/pokedex/numbers_inv', 16, 16, 10);
+  Asset.registerAnimationTemplate('pokedexLetterInv', 'assets/img/pokedex/letters_inv', 16, 24, 70);
   Asset.registerAnimationTemplate('pokedexNumberMarker', 'assets/img/pokedex/number', 34, 12, 1);
 
   Asset.registerAnimationTemplate('pokedexBackground', 'assets/img/pokedex/background', 320, 288, 1);
