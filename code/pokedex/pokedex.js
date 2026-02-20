@@ -1,7 +1,7 @@
 const POKEDEX_ROW_NUMBER_YS = [225, 257, 289, 321, 353, 385, 417, 449, 481, 513, 545, 577, 609, 641, 673, 705, 737, 769, 801, 833, 865, 897, 929, 961, 993, 1025, 1057, 1089, 1121, 1153, 1185, 1217, 1249, 1281, 1313, 1345, 1377, 1409, 1441, 1473, 1505, 1537, 1569, 1601, 1633, 1665, 1697, 1729, 1761, 1793, 1825, 1857, 1889, 1921, 1953, 1985, 2017, 2049, 2081, 2113, 2145, 2177, 2209, 2241, 2273, 2305, 2337, 2369, 2401, 2433, 2465, 2497, 2529, 2561, 2593, 2625, 2657, 2689, 2721, 2753, 2785, 2817, 2849, 2881, 2913, 2945, 2977, 3009, 3041, 3073, 3105, 3137, 3169, 3201, 3233, 3265, 3297, 3329, 3361, 3393, 3425, 3457, 3489, 3521, 3553, 3585, 3617, 3649, 3681, 3713, 3745, 3777, 3809, 3841, 3873, 3905, 3937, 3969, 4001, 4033, 4065, 4097, 4129, 4161, 4193, 4225, 4257, 4289, 4321, 4353, 4385, 4417, 4449, 4481, 4513, 4545, 4577, 4609, 4641, 4673, 4705, 4737, 4769, 4801, 4833, 4865, 4897, 4929, 4961, 4993, 5025];
 const POKEDEX_CURSOR_YS = [235, 267, 299, 331, 363];
 const POKEDEX_SELECTED_NUMBER_XS = [92, 108, 124];
-const POKEDEX_SELECTED_NAME_XS = [152, 168, 184, 200, 216, 232, 248, 264, 280, 296];
+const POKEDEX_SELECTED_NAME_XS = [172, 188, 204, 220, 236, 252, 268, 284, 300, 316];
 
 class Pokedex extends Sketch {
 
@@ -25,6 +25,7 @@ class Pokedex extends Sketch {
         this.createPokemonImage();
         this.createCurrentPokemonNumber();
         this.createCurrentPokemonName();
+        this.createCurrentPokemonType();
 
         this.updatePokemonDataData();
 
@@ -59,9 +60,29 @@ class Pokedex extends Sketch {
         this.currentPokemonName = [];
         const name = I18NManager.translate(this.getSelectedByCursor().name).toUpperCase().padEnd(10, " ");
         for (let i = 0; i < POKEDEX_SELECTED_NAME_XS.length; i++) {
-            let letter = new PokedexLetterSprite(POKEDEX_SELECTED_NAME_XS[i], 140, name[i], true);
+            let letter = new PokedexLetterSprite(POKEDEX_SELECTED_NAME_XS[i], 138, name[i], true);
             letter.sprite.layer = OVER_SCENARIO_LAYER;
             this.currentPokemonName.push(letter);
+        }
+    }
+
+    updateSelectedPokemonType(captured = false) {
+        let type = "          ";
+        if (captured) {
+            type = I18NManager.translate(this.getSelectedByCursor().type).toUpperCase().padEnd(10, " ");
+        }
+        for (let i = 0; i < POKEDEX_SELECTED_NAME_XS.length; i++) {
+            this.currentPokemonType[i].changeValue(type[i]);
+        }
+    }
+
+    createCurrentPokemonType() {
+        this.currentPokemonType = [];
+        const type = I18NManager.translate(this.getSelectedByCursor().type).toUpperCase().padEnd(10, " ");
+        for (let i = 0; i < POKEDEX_SELECTED_NAME_XS.length; i++) {
+            let letter = new PokedexLetterSprite(POKEDEX_SELECTED_NAME_XS[i], 160, type[i], true);
+            letter.sprite.layer = OVER_SCENARIO_LAYER;
+            this.currentPokemonType.push(letter);
         }
     }
 
@@ -86,10 +107,14 @@ class Pokedex extends Sketch {
 
             if (this.captured.includes(pokemonId)) {
                 this.pokemonImageSprite.changeAnimation(pokemonId);
+                this.updateSelectedPokemonType(true);
+            } else {
+                this.updateSelectedPokemonType(false);
             }
         } else {
             this.pokemonImageSprite.visible = false;
             this.updateSelectedPokemonName(false);
+            this.updateSelectedPokemonType(false);
         }
     }
 
