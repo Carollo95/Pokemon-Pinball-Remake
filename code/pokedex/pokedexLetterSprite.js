@@ -1,9 +1,9 @@
 class PokedexLetterSprite {
-    constructor(x, y, value = 0) {
+    constructor(x, y, value = 0, invert = false) {
         this.sprite = new Sprite(x, y, 16, 16, "static");
         this.sprite.debug = DEBUG;
         this.sprite.layer = BACK;
-        this.sprite.addAnimation("letter", Asset.getAnimation("pokedexLetter"));
+        this.sprite.addAnimation("letter", Asset.getAnimation(invert ? "pokedexLetterInv" : "pokedexLetter"));
         this.sprite.ani.playing = false;
         this.sprite.ani.frame = this.getValue(value);
     }
@@ -12,8 +12,8 @@ class PokedexLetterSprite {
         this.sprite.ani.frame = this.getValue(value);
     }
 
-    getValue(character){
-        switch(character){
+    getValue(character) {
+        switch (character) {
             case "A":
                 return 0;
             case "B":
