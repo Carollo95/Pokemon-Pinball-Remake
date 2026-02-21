@@ -63,24 +63,25 @@ class MainMenu extends Sketch {
 
     centerFlipperCallback = () => {
         if (this.controlsActive) {
-            switch (this.row) {
-                case 0:
-                    //TODO move this when other options are available
-                    this.controlsActive = false;
-                    Audio.stopMusic();
-                    Audio.playSFX("sfx27", 0, () => {
-                        EngineUtils.flashWhite(5, 10, 255, () => {
+            this.controlsActive = false;
+            Audio.stopMusic();
+            Audio.playSFX("sfx27", 0, () => {
+                EngineUtils.flashWhite(5, 10, 255, () => {
+                    switch (this.row) {
+                        case 0:
                             EngineUtils.startFieldMenu();
-                        });
-                    });
-                    break;
-                case 1:
-                    //TODO move to pokedex
-                    break;
-                case 2:
-                    //TODO move to options
-                    break;
-            }
+                            break;
+                        case 1:
+                            EngineUtils.startPokedex();
+                            break;
+                        case 2:
+                            //TODO move to options
+                            break;
+                    }
+                });
+            });
+
+
         }
     }
 
