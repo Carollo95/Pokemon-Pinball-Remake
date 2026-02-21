@@ -141,7 +141,7 @@ const POKEDEX = {
     GYARADOS: { id: "130", name: "gyarados", type: "pokemon_type_atrocious", heightI: "2103", heightM: " 650", weightI: " 518", weightM: "235 0", evolutionId: null, basic: false, evolutionMethod: null },
     LAPRAS: { id: "131", name: "lapras", type: "pokemon_type_transport", heightI: " 802", heightM: " 250", weightI: " 485", weightM: "220 0", evolutionId: null, basic: true, evolutionMethod: null },
     DITTO: { id: "132", name: "ditto", type: "pokemon_type_transform", heightI: " 011", heightM: " 030", weightI: "   8", weightM: "  4 0", evolutionId: null, basic: true, evolutionMethod: null },
-    EEVEE: { id: "133", name: "eevee", type: "pokemon_type_evolution", heightI: " 011", heightM: " 030", weightI: "  14", weightM: "  6 5", evolutionId: null, basic: true, evolutionMethod: null }, // evoluciones por piedra (WS/TS/FS) gestionadas fuera
+    EEVEE: { id: "133", name: "eevee", type: "pokemon_type_evolution", heightI: " 011", heightM: " 030", weightI: "  14", weightM: "  6 5", evolutionId: null, basic: true, evolutionMethod: null }, // TODO eevee evolution
     VAPOREON: { id: "134", name: "vaporeon", type: "pokemon_type_bubble_jet", heightI: " 303", heightM: " 100", weightI: "  63", weightM: " 29 0", evolutionId: null, basic: false, evolutionMethod: null },
     JOLTEON: { id: "135", name: "jolteon", type: "pokemon_type_lightning", heightI: " 207", heightM: " 080", weightI: "  54", weightM: " 24 5", evolutionId: null, basic: false, evolutionMethod: null },
     FLAREON: { id: "136", name: "flareon", type: "pokemon_type_flame", heightI: " 211", heightM: " 090", weightI: "  55", weightM: " 25 0", evolutionId: null, basic: false, evolutionMethod: null },

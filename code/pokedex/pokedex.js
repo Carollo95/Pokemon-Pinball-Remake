@@ -3,6 +3,7 @@ const POKEDEX_CURSOR_YS = [235, 267, 299, 331, 363];
 const POKEDEX_SELECTED_NUMBER_XS = [92, 108, 124];
 const POKEDEX_SELECTED_NAME_XS = [172, 188, 204, 220, 236, 252, 268, 284, 300, 316];
 const POKEDEX_SELECTED_HEIGHT_XS = [164, 180, 198, 214];
+const POKEDEX_SELECTED_WEIGHT_XS = [274, 290, 306, 322];
 
 class Pokedex extends Sketch {
 
@@ -28,6 +29,7 @@ class Pokedex extends Sketch {
         this.createCurrentPokemonName();
         this.createCurrentPokemonType();
         this.createCurrentPokemonHeight();
+        this.createCurrentPokemonWeight();
         this.updatePokemonDataData();
 
     }
@@ -65,6 +67,27 @@ class Pokedex extends Sketch {
         }
         for (let i = 0; i < POKEDEX_SELECTED_HEIGHT_XS.length; i++) {
             this.currentPokemonHeight[i].changeValue(height[i]);
+        }
+    }
+
+    createCurrentPokemonWeight() {
+        this.currentPokemonWeight = [];
+        //TODO internationalize
+        let weightString = this.getSelectedByCursor().weightM;
+        for (let i = 0; i < POKEDEX_SELECTED_WEIGHT_XS.length; i++) {
+            let weight = new PokedexNumberSprite(POKEDEX_SELECTED_WEIGHT_XS[i], 190, weightString[i], true);
+            weight.sprite.layer = OVER_SCENARIO_LAYER;
+            this.currentPokemonWeight.push(weight);
+        }
+    }
+
+    updateCurrentPokemonWeight(seen = false) {
+        let weight = "    ";
+        if (seen) {
+            weight = this.getSelectedByCursor().weightM;
+        }
+        for (let i = 0; i < POKEDEX_SELECTED_WEIGHT_XS.length; i++) {
+            this.currentPokemonWeight[i].changeValue(weight[i]);
         }
     }
 
@@ -131,15 +154,18 @@ class Pokedex extends Sketch {
                 this.pokemonImageSprite.changeAnimation(pokemonId);
                 this.updateSelectedPokemonType(true);
                 this.updateCurrentPokemonHeight(true);
+                this.updateCurrentPokemonWeight(true);
             } else {
                 this.updateSelectedPokemonType(false);
                 this.updateCurrentPokemonHeight(false);
+                this.updateCurrentPokemonWeight(false);
             }
         } else {
             this.pokemonImageSprite.visible = false;
             this.updateSelectedPokemonName(false);
             this.updateSelectedPokemonType(false);
             this.updateCurrentPokemonHeight(false);
+            this.updateCurrentPokemonWeight(false);
         }
     }
 
