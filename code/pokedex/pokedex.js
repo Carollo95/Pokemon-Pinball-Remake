@@ -22,7 +22,7 @@ class Pokedex extends Sketch {
         this.createNumberRows();
 
         this.createBackgroundSprite();
-        this.createSelector();
+        this.createCursor();
 
         this.createPokemonImage();
         this.createCurrentPokemonNumber();
@@ -32,6 +32,15 @@ class Pokedex extends Sketch {
         this.createCurrentPokemonWeight();
         this.updatePokemonDataData();
 
+        this.createScrollbar();
+
+    }
+
+    createScrollbar() {
+        this.scrollbar = new Sprite(324, 247, 16, 4, "static");
+        this.scrollbar.debug = DEBUG;
+        this.scrollbar.layer = SCENARIO_LAYER;
+        this.scrollbar.addAnimation("scrollbar", Asset.getAnimation("pokedexScrollbar"));
     }
 
     updateSelectedPokemonNumber() {
@@ -169,7 +178,7 @@ class Pokedex extends Sketch {
         }
     }
 
-    createSelector() {
+    createCursor() {
         this.cursorSprite = new Sprite(70, POKEDEX_CURSOR_YS[0], 16, 16, "static");
         this.cursorPosition = 0;
         this.cursorSprite.debug = DEBUG;
@@ -206,6 +215,10 @@ class Pokedex extends Sketch {
             this.updatePokemonDataData();
         } else if (this.listOffset > 0) {
             this.listOffset--;
+            //Dont scroll the scollbar once every six scrolls
+            if (this.listOffset % 6) {
+                this.scrollbar.y--;
+            }
             this.rows.forEach(row => row.moveDown());
             this.updatePokemonDataData();
         }
@@ -222,6 +235,9 @@ class Pokedex extends Sketch {
             this.updatePokemonDataData();
         } else if (this.listOffset < POKEDEX_ROW_NUMBER_YS.length - 5) {
             this.listOffset++;
+            if (this.listOffset % 6) {
+                this.scrollbar.y++;
+            }
             this.rows.forEach(row => row.moveUp());
             this.updatePokemonDataData();
         }
