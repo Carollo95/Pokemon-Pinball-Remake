@@ -9,7 +9,12 @@ class PokedexNumberSprite {
     }
 
     changeValue(value) {
-        this.sprite.ani.frame = value;
+        if (value === " ") {
+            this.sprite.ani.frame = 10;
+        } else {
+            this.sprite.ani.frame = value;
+        }
+
     }
 
 }

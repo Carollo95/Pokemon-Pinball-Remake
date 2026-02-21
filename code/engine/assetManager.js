@@ -396,9 +396,9 @@ function preloadAnimations() {
 
   Asset.registerAnimationTemplate('tableSelector', 'assets/img/main-menu/table_selector', 136, 184, 3, DEFAULT_ANIMATION_DELAY / 2);
 
-  Asset.registerAnimationTemplate('pokedexNumber', 'assets/img/pokedex/numbers', 16, 16, 10);
+  Asset.registerAnimationTemplate('pokedexNumber', 'assets/img/pokedex/numbers', 16, 16, 11);
   Asset.registerAnimationTemplate('pokedexLetter', 'assets/img/pokedex/letters', 16, 24, 70);
-  Asset.registerAnimationTemplate('pokedexNumberInv', 'assets/img/pokedex/numbers_inv', 16, 16, 10);
+  Asset.registerAnimationTemplate('pokedexNumberInv', 'assets/img/pokedex/numbers_inv', 16, 16, 11);
   Asset.registerAnimationTemplate('pokedexLetterInv', 'assets/img/pokedex/letters_inv', 16, 24, 70);
   Asset.registerAnimationTemplate('pokedexNumberMarker', 'assets/img/pokedex/number', 34, 12, 1);
 
