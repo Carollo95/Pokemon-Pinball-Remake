@@ -155,7 +155,7 @@ class PokedexLetterSprite {
             case "'":
                 return 69;
             default:
-                return 0;
+                return 62;
         }
     }
 

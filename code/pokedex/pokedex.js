@@ -34,6 +34,7 @@ class Pokedex extends Sketch {
 
         this.createScrollbar();
 
+        this.pokedexText = new PokedexText();
     }
 
     createScrollbar() {
@@ -245,7 +246,24 @@ class Pokedex extends Sketch {
     }
 
     centerFlipperCallback = () => {
+        if (this.captured.includes(this.getSelectedByCursor().id)) {
+            this.openPokedexEntry();
+        }
+    }
 
+    openPokedexEntry() {
+        this.pokedexText.show(this.getPokedexEntryText(this.getSelectedByCursor().id));
+    }
+
+    getPokedexEntryText(id) {
+        return [
+            I18NManager.translate("pokedex_" + id + "_1"),
+            I18NManager.translate("pokedex_" + id + "_2"),
+            I18NManager.translate("pokedex_" + id + "_3"),
+            I18NManager.translate("pokedex_" + id + "_4"),
+            I18NManager.translate("pokedex_" + id + "_5"),
+            I18NManager.translate("pokedex_" + id + "_6")
+        ];
     }
 
     setup() {
