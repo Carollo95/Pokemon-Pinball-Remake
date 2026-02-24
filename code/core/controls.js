@@ -22,6 +22,11 @@ class Controls {
         this._centerDownPrev = false;
 
         this._lastCallbackCall = 0;
+        this.callbackDelay = CALLBACK_DELAY_MS;
+    }
+
+    setCallbackDelay(delay) {
+        this.callbackDelay = delay;
     }
 
     update() {
@@ -129,12 +134,12 @@ class Controls {
         return kb.pressing(CENTER_BUTTON_KEY) || this.centerButtonPressed;
     }
 
-    hasControlCallbackTimePassed(){
-        return millis() > this._lastCallbackCall + CALLBACK_DELAY_MS   
+    hasControlCallbackTimePassed() {
+        return millis() > (this._lastCallbackCall + this.callbackDelay);
     }
 
     restartPressCallback() {
         this._lastCallbackCall = millis();
     }
-    
+
 }

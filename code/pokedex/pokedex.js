@@ -15,7 +15,8 @@ class Pokedex extends Sketch {
 
         background(255)
         this.createFrame();
-        this.attachControls(new Controls(() => { }, () => { }, () => { }, this.leftFlipperCallback, this.centerFlipperCallback, this.rightFlipperCallback));
+        this.attachControls(new Controls(this.leftFlipperCallback, () => { }, this.rightFlipperCallback, () => { }, this.centerFlipperCallback, () => { }));
+        this.controls.setCallbackDelay(100);
 
         this.background = Asset.getBackground("pokedex");
 
@@ -210,6 +211,13 @@ class Pokedex extends Sketch {
 
 
     leftFlipperCallback = () => {
+        if (this.controls.hasControlCallbackTimePassed()) {
+            this.selectPreviousPokemon();
+            this.controls.restartPressCallback();
+        }
+    }
+
+    selectPreviousPokemon() {
         if (this.cursorPosition > 0) {
             this.cursorPosition--;
             this.cursorSprite.y = POKEDEX_CURSOR_YS[this.cursorPosition];
@@ -225,11 +233,7 @@ class Pokedex extends Sketch {
         }
     }
 
-    getSelectedByCursor() {
-        return ALL_POKEMON[this.cursorPosition + this.listOffset];
-    }
-
-    rightFlipperCallback = () => {
+    selectNextPokemon() {
         if (this.cursorPosition < POKEDEX_CURSOR_YS.length - 1) {
             this.cursorPosition++
             this.cursorSprite.y = POKEDEX_CURSOR_YS[this.cursorPosition];
@@ -242,7 +246,17 @@ class Pokedex extends Sketch {
             this.rows.forEach(row => row.moveUp());
             this.updatePokemonDataData();
         }
+    }
 
+    getSelectedByCursor() {
+        return ALL_POKEMON[this.cursorPosition + this.listOffset];
+    }
+
+    rightFlipperCallback = () => {
+        if (this.controls.hasControlCallbackTimePassed()) {
+            this.selectNextPokemon();
+            this.controls.restartPressCallback();
+        }
     }
 
     centerFlipperCallback = () => {
