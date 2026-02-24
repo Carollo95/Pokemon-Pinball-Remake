@@ -3,7 +3,7 @@ const POKEDEX_CURSOR_YS = [235, 267, 299, 331, 363];
 const POKEDEX_SELECTED_NUMBER_XS = [92, 108, 124];
 const POKEDEX_SELECTED_NAME_XS = [172, 188, 204, 220, 236, 252, 268, 284, 300, 316];
 const POKEDEX_SELECTED_HEIGHT_XS = [164, 180, 198, 214];
-const POKEDEX_SELECTED_WEIGHT_XS = [274, 290, 306, 322];
+const POKEDEX_SELECTED_WEIGHT_XS = [262, 278, 294, 310];
 
 class Pokedex extends Sketch {
 
@@ -31,7 +31,7 @@ class Pokedex extends Sketch {
         this.createCurrentPokemonType();
         this.createCurrentPokemonHeight();
         this.createCurrentPokemonWeight();
-        this.updatePokemonDataData();
+        this.updatePokemonData();
 
         this.createScrollbar();
 
@@ -66,7 +66,7 @@ class Pokedex extends Sketch {
         //TODO internationalize
         let heightString = this.getSelectedByCursor().heightI;
         for (let i = 0; i < POKEDEX_SELECTED_HEIGHT_XS.length; i++) {
-            let height = new PokedexNumberSprite(POKEDEX_SELECTED_HEIGHT_XS[i], 190, heightString[i], true);
+            let height = new PokedexNumberSprite(POKEDEX_SELECTED_HEIGHT_XS[i], 188, heightString[i], true);
             height.sprite.layer = OVER_SCENARIO_LAYER;
             this.currentPokemonHeight.push(height);
         }
@@ -87,7 +87,7 @@ class Pokedex extends Sketch {
         //TODO internationalize
         let weightString = this.getSelectedByCursor().weightM;
         for (let i = 0; i < POKEDEX_SELECTED_WEIGHT_XS.length; i++) {
-            let weight = new PokedexNumberSprite(POKEDEX_SELECTED_WEIGHT_XS[i], 190, weightString[i], true);
+            let weight = new PokedexNumberSprite(POKEDEX_SELECTED_WEIGHT_XS[i], 188, weightString[i], true);
             weight.sprite.layer = OVER_SCENARIO_LAYER;
             this.currentPokemonWeight.push(weight);
         }
@@ -153,7 +153,7 @@ class Pokedex extends Sketch {
         }
     }
 
-    updatePokemonDataData() {
+    updatePokemonData() {
         const pokemonId = this.getSelectedByCursor().id;
         this.updateSelectedPokemonNumber();
 
@@ -196,7 +196,6 @@ class Pokedex extends Sketch {
         this.backgroundSprite.layer = SCENARIO_LAYER;
         this.backgroundSprite.addAnimation("pokedexBackground", Asset.getAnimation("pokedexBackground"));
         this.backgroundSprite.ani.playing = false;
-        this.backgroundTimer = new EventTimer(2000);
         this.backgroundSprite.ani.onComplete = () => {
             this.backgroundSprite.ani.playing = false;
         }
@@ -212,8 +211,9 @@ class Pokedex extends Sketch {
 
 
     leftFlipperCallback = () => {
-        if (this.controls.hasControlCallbackTimePassed()) {
+        if (this.pokedexText.state === POKEDEX_TEXT_STATES.HIDDEN && this.controls.hasControlCallbackTimePassed()) {
             this.selectPreviousPokemon();
+            Audio.playSFX("sfx03");
             this.controls.restartPressCallback();
         }
     }
@@ -222,30 +222,30 @@ class Pokedex extends Sketch {
         if (this.cursorPosition > 0) {
             this.cursorPosition--;
             this.cursorSprite.y = POKEDEX_CURSOR_YS[this.cursorPosition];
-            this.updatePokemonDataData();
+            this.updatePokemonData();
         } else if (this.listOffset > 0) {
             this.listOffset--;
-            //Dont scroll the scollbar once every six scrolls
+            //Dont scroll the scrollbar once every six scrolls
             if (this.listOffset % 6) {
                 this.scrollbar.y--;
             }
             this.rows.forEach(row => row.moveDown());
-            this.updatePokemonDataData();
+            this.updatePokemonData();
         }
     }
 
     selectNextPokemon() {
         if (this.cursorPosition < POKEDEX_CURSOR_YS.length - 1) {
-            this.cursorPosition++
+            this.cursorPosition++;
             this.cursorSprite.y = POKEDEX_CURSOR_YS[this.cursorPosition];
-            this.updatePokemonDataData();
+            this.updatePokemonData();
         } else if (this.listOffset < POKEDEX_ROW_NUMBER_YS.length - 5) {
             this.listOffset++;
             if (this.listOffset % 6) {
                 this.scrollbar.y++;
             }
             this.rows.forEach(row => row.moveUp());
-            this.updatePokemonDataData();
+            this.updatePokemonData();
         }
     }
 
@@ -254,8 +254,9 @@ class Pokedex extends Sketch {
     }
 
     rightFlipperCallback = () => {
-        if (this.controls.hasControlCallbackTimePassed()) {
+        if (this.pokedexText.state === POKEDEX_TEXT_STATES.HIDDEN &&this.controls.hasControlCallbackTimePassed()) {
             this.selectNextPokemon();
+            Audio.playSFX("sfx03");
             this.controls.restartPressCallback();
         }
     }
@@ -267,6 +268,9 @@ class Pokedex extends Sketch {
     }
 
     openPokedexEntry() {
+        if(this.pokedexText.state === POKEDEX_TEXT_STATES.HIDDEN) {
+            Audio.playCry(this.getSelectedByCursor().id);
+        }
         this.pokedexText.show(this.getPokedexEntryText(this.getSelectedByCursor().id));
     }
 
