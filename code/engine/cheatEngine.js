@@ -101,6 +101,13 @@ const CheatEngine = {
         }
     },
 
+    showLevelChooseControls(){
+        const controlsDiv = document.getElementById('bonus-stage-selector-buttons');
+        if (controlsDiv) {
+            controlsDiv.style.display = 'flex';
+        }
+    },
+
     openCave() {
         if (stage instanceof Field) {
             stage.caveDetectorManager.detectorE.setActive(true);
