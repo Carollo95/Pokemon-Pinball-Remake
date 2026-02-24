@@ -36,6 +36,7 @@ class Pokedex extends Sketch {
         this.createScrollbar();
 
         this.pokedexText = new PokedexText();
+        this.pokemonCounter = new PokemonCounter();
     }
 
     createScrollbar() {
