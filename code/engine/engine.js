@@ -11,6 +11,7 @@ const GRAVITY = 7; //The gravity applied to the game
 const EPSILON = 0.1; //Marging for physics calculation (Avoids jittering)
 
 // Layer settings
+const BACK = -1; //Layer for the under everything items
 const SCENARIO_LAYER = 0; //Layer for the scenario items
 const OVER_SCENARIO_LAYER = 1; //Layer for items that go over the scenario
 const SPRITE_LAYER = 2; //Base layer for any sprite
@@ -270,6 +271,11 @@ const EngineUtils = {
         stage.setup();
     },
 
+    startPokedex() {
+        allSprites.remove();
+        stage = new Pokedex();
+        stage.setup();
+    },
 
     startHighScore(table, highScore) {
         allSprites.remove();

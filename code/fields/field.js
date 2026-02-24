@@ -423,7 +423,8 @@ class Field extends Stage {
         this.attachTimer(Timer.createFieldTimer(FIELD_CAPTURE_TIMER_MS, this.doOnCaptureTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("lets_get_pokemon"), "");
 
-        this.screen.startCapture(this.arrows.captureArrowsLevel);
+        const captureTarget = this.screen.startCapture(this.arrows.captureArrowsLevel);
+        saveSeenPokemon(captureTarget.id);
         this.arrows.resetCaptureArrows();
         this.bumpersTargetArrow.setVisible(true);
         this.bumpersTargetArrow.setActive(true);
@@ -468,6 +469,7 @@ class Field extends Stage {
         this.saverAgain.set60sSaver();
 
         this.evolutionManager.startEvolution(pokemon);
+        saveSeenPokemon(pokemon.id);
     }
 
     //Callbacks
