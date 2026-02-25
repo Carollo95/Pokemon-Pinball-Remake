@@ -373,8 +373,9 @@ class ScreenCaptureEvolution {
         drawingContext.rect(this.width / 6, 0, this.width / 3, this.height / 2);
     }
 
-    startEvolution(pokemon){
+    startEvolution(pokemon, evolutionTarget){
         this.captureTarget = pokemon;
+        this.evolutionTarget = evolutionTarget;
 
         this.sprite.changeAnimation(this.captureTarget.id);
         this.hideSprite.visible = false;
@@ -382,14 +383,9 @@ class ScreenCaptureEvolution {
         this.catchTextSprite.visible = false;
     }
 
-    showTargetEvolution(){
-        if(this.captureTarget.evolutionId ===null){
-            return this.captureTarget;
-        }
-        
-        let evolution = getPokemonById(this.captureTarget.evolutionId);
-        this.sprite.changeAnimation(evolution.id);
-        return evolution;
+    showTargetEvolution(){       
+        this.sprite.changeAnimation(this.evolutionTarget.id);
+        return this.evolutionTarget;
     }
 
 }

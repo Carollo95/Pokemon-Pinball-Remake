@@ -43,10 +43,10 @@ class EvolutionManager {
         }
     }
 
-    startEvolution(target) {
+    startEvolution(targetPokemon) {
         this.targetArrows.forEach(ta => ta.setActive(false));
-        
-        this.targetPokemon = target;
+    
+        this.targetPokemon = targetPokemon;
         const pool = this.chooseTargetsForTheEvolutionPhase(this.targetArrows);
         for (let i = pool.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -55,7 +55,7 @@ class EvolutionManager {
         this.validTargetArrows = pool.slice(0, Math.min(3, pool.length));
 
         pool.forEach(ta => { ta.setActive(true); });
-        this.evolutionItems.forEach(et => et.setEvolutionMethod(getEvolutionMethod(target)));
+        this.evolutionItems.forEach(et => et.setEvolutionMethod(this.targetPokemon.evolutionMethod));
         this.evolutionLevel = 0;
 
         if (this.targetPokemon.evolutionMethod === EVOLUTION_METHODS.EXPERIENCE) {

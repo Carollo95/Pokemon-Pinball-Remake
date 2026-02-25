@@ -161,10 +161,10 @@ class StageStatusBanner {
      */
     showStatus() {
         this.changeState(STAGE_TEXT_STATE.STATUS);
-        text = this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus(), DEFAULT_TEXT_PERSISTENCE_MILLIS;
-        text = text.split('').reverse().join('');
+        const statusText = this.createCapturedStatus() + this.createBallsStatus() + this.createThunderStatus() + this.createPointsStatus();
+        const reversedStatusText = statusText.split('').reverse().join('');
         for (var i = 0; i < this.getStateCharsLength(); i++) {
-            this.statusArray[i].changeAnimation("$" + text[i]);
+            this.statusArray[i].changeAnimation("$" + reversedStatusText[i]);
         }
     }
 

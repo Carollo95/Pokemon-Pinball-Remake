@@ -440,9 +440,11 @@ class Field extends Stage {
     }
 
     openEvolutionChooserScreen = (onEvolutionTargetSelectedCallback) => {
-        this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.captured, onEvolutionTargetSelectedCallback);
-        this.evolutionScreenChooser.show();
-        this.setState(FIELD_STATE.EVOLUTION_CHOOSE_SCREEN);
+        if (!this.evolutionScreenChooser) {
+            this.evolutionScreenChooser = new EvolutionChooserScreen(this.status.captured, onEvolutionTargetSelectedCallback);
+            this.evolutionScreenChooser.show();
+            this.setState(FIELD_STATE.EVOLUTION_CHOOSE_SCREEN);
+        }
     }
 
     onEvolutionTargetSelectedOnEvolutionHole = (selected) => {
@@ -455,21 +457,29 @@ class Field extends Stage {
         this.onAfterEvolutionTargetSelectedOnEvolutionHole();
 
         this.evolutionScreenChooser.remove();
+        this.evolutionScreenChooser = null;
         this.arrows.evolutionArrowsLevel = 0;
     }
 
     startEvolutionSequence(pokemon) {
+        let evolutionPokemon = getEvolution(pokemon);
+
+        //If can't evolve, evolve onto itself
+        if(evolutionPokemon === null){
+            evolutionPokemon = pokemon;
+        }
+
         this.interruptCave();
         this.setState(FIELD_STATE.EVOLUTION);
         this.attachTimer(Timer.createFieldTimer(FIELD_EVOLUTION_TIMER_MS, this.doOnEvolutionTimeupCallback));
         this.stageText.setScrollText(I18NManager.translate("start_training"));
-        this.screen.startEvolution(pokemon);
+        this.screen.startEvolution(pokemon, evolutionPokemon);
         this.playCatchemEvolutionMusic();
 
         this.saverAgain.set60sSaver();
 
-        this.evolutionManager.startEvolution(pokemon);
-        saveSeenPokemon(pokemon.id);
+        this.evolutionManager.startEvolution(evolutionPokemon);
+        saveSeenPokemon(evolutionPokemon.id);
     }
 
     //Callbacks
@@ -733,7 +743,7 @@ class Field extends Stage {
         this.evolutionManager.onEvolutionTargetArrowHit(targetArrow);
     }
 
-        doOnCaptureTimeupCallback = () => {
+    doOnCaptureTimeupCallback = () => {
         if (this.state === FIELD_STATE.CAPTURE) {
             this.disableTimer()
             this.stageText.setScrollText(I18NManager.translate("pokemon_ran_away"), "", 1000, () => {
@@ -758,7 +768,7 @@ class Field extends Stage {
         this.spitAndCloseWell();
     }
 
-        doOnEvolutionTimeupCallback = () => {
+    doOnEvolutionTimeupCallback = () => {
         this.finishEvolutionPhase();
     }
 

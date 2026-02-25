@@ -57,7 +57,7 @@ class EvolutionChooserScreen {
 
     isPokemonFullyEvolved(i) {
         let pos = i + this.scroll;
-        return this.pokemonList[pos] !== undefined && this.pokemonList[pos].evolutionId === null;
+        return this.pokemonList[pos] !== undefined && getEvolutionId(this.pokemonList[pos]) === null;
     }
 
     next() {
