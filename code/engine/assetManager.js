@@ -407,6 +407,7 @@ function preloadAnimations() {
   Asset.registerAnimationTemplate('pokedexCursor', 'assets/img/pokedex/cursor', 16, 16, 2, 4);
   Asset.registerAnimationTemplate('pokedexScrollbar', 'assets/img/pokedex/scrollbar', 16, 4, 3, 4);
   Asset.registerAnimationTemplate('pokedexText', 'assets/img/pokedex/pokedex_text', 320, 128, 1);
+  Asset.registerAnimationTemplate('pokedex', 'assets/img/pokedex/pokedex', 98, 16, 1);
 
 }
 
