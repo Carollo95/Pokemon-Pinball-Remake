@@ -1,4 +1,4 @@
-let SHOW_FPS = false; // true to show FPS
+let SHOW_FPS = true; // true to show FPS
 let DEBUG = false; //true to start the game on debug mode
 
 const CheatEngine = {
@@ -98,6 +98,13 @@ const CheatEngine = {
     upgradeBall() {
         if ((stage instanceof Field) && stage && stage.getBall()) {
             stage.getBall().upgrade();
+        }
+    },
+
+    showLevelChooseControls(){
+        const controlsDiv = document.getElementById('bonus-stage-selector-buttons');
+        if (controlsDiv) {
+            controlsDiv.style.display = 'flex';
         }
     },
 

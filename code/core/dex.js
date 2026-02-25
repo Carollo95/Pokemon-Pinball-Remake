@@ -205,8 +205,24 @@ function canEvolve(id) {
 }
 
 function getEvolutionMethod(pokemon) {
-    if (pokemon.evolutionMethod === null) {
+    const evolutionTarget = getEvolution(pokemon);
+
+    if (evolutionTarget.evolutionMethod === null) {
         return EVOLUTION_METHODS.EXPERIENCE;
     }
-    return pokemon.evolutionMethod;
+
+    return evolutionTarget.evolutionMethod;
+}
+
+function getEvolution(pokemon) {
+    if(pokemon === POKEDEX.EEVEE){
+        const eevolutions = [POKEDEX.FLAREON, POKEDEX.JOLTEON, POKEDEX.VAPOREON];
+        return eevolutions[Math.floor(Math.random() * eevolutions.length)];
+    }
+    return getPokemonById(pokemon.evolutionId);
+}
+
+function getEvolutionId(pokemon) {
+    const evolution = getEvolution(pokemon);
+    return evolution != null ? evolution.id : null;
 }

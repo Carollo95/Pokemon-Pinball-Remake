@@ -138,13 +138,13 @@ class Screen {
         return captureTarget;
     }
 
-    startEvolution(pokemon) {
+    startEvolution(pokemon, evolution) {
         this.setState(SCREEN_STATE.CAPTURE_EVOLUTION);
         for (let i = 0; i < this.ballSprites.length; i++) {
             this.ballSprites[i].visible = false;
         }
-        this.screenCapture.startEvolution(pokemon);
-        this.evolutionSprite.changeAnimation(getEvolutionMethod(pokemon));
+        this.screenCapture.startEvolution(pokemon, evolution);
+        this.evolutionSprite.changeAnimation(evolution.evolutionMethod != null ? evolution.evolutionMethod : EVOLUTION_METHODS.EXPERIENCE);
         this.evolutionSprite.visible = true;
         this.evolutionSprite.ani.frame = 0;
         this.evolutionSprite.ani.playing = 0;
@@ -224,7 +224,7 @@ class Screen {
         }
     }
 
-    restartSlotNumber(){
+    restartSlotNumber() {
         this.screenSlot.restartSlotNumber();
     }
 
