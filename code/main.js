@@ -62,9 +62,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  const controlsDiv = document.getElementById('bonus-stage-selector-buttons');
-  if (controlsDiv && typeof DEBUG !== 'undefined' && !DEBUG) {
-    controlsDiv.style.display = 'none';
+  const bonusStageSelectorButtons = document.getElementById('bonus-stage-selector-buttons');
+  if (bonusStageSelectorButtons && typeof DEBUG !== 'undefined' && DEBUG) {
+    bonusStageSelectorButtons.style.display = 'flex';
   }
 });
 

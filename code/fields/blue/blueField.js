@@ -35,8 +35,6 @@ class BlueField extends Field {
         this.targetArrows.push(this.leftMultiplierTargetArrow);
         this.targetArrows.push(this.rightMultiplierTargetArrow);
 
-        //TODO add evolution items
-
         this.captureWell = new BlueFieldCloyster(this.onCloysterEatCallback);
         this.evolutionWell = new BlueFieldSlowbro(this.onEvolutionWellCallback);
 

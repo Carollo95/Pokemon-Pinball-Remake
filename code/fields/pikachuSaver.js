@@ -53,6 +53,7 @@ class PikachuSaver {
                 this.inAnimation = true;
                 this.lightningSprite.visible = true;
             } else {
+                Audio.playSFX('sfx3B');
                 this.sprite.ani.onComplete = () => {
                     EngineUtils.addPointsForBallHelper(POINTS.PIKACHU_SAVER);
                     this.sprite.changeAnimation('idle');
