@@ -28,7 +28,7 @@ body {
 
 #bonus-stage-selector-buttons {
     margin-top: 5px;
-    display: flex;
+    display: none;
     gap: 5px;
     justify-content: center;
 }

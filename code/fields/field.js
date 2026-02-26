@@ -395,7 +395,6 @@ class Field extends Stage {
         this.caveActive = false;
         this.screen.restartSlotNumber();
         this.screen.setState(SCREEN_STATE.LANDSCAPE);
-        //TODO probably not needed since it is closed on interrupt cave
         this.closeWell();
         this.onStartNewBall();
         this.setState(FIELD_STATE.BALL_LOST);
@@ -465,7 +464,7 @@ class Field extends Stage {
         let evolutionPokemon = getEvolution(pokemon);
 
         //If can't evolve, evolve onto itself
-        if(evolutionPokemon === null){
+        if (evolutionPokemon === null) {
             evolutionPokemon = pokemon;
         }
 
@@ -504,19 +503,22 @@ class Field extends Stage {
     }
 
     goToBonusStageCallback = () => {
-        //TODO scroll text "go to X stage" and SFX
-        let nextLevel = this.getNextBonusLevel();
-        if (nextLevel === FIELD_BONUS.MOLE) {
-            EngineUtils.startMoleStage(this.onBackFromBonusStageCallback);
-        } else if (nextLevel === FIELD_BONUS.GHOST) {
-            EngineUtils.startGhostStage(this.onBackFromBonusStageCallback);
-        } else if (nextLevel === FIELD_BONUS.CLONE) {
-            EngineUtils.startCloneStage(this.onBackFromBonusStageCallback);
-        } else if (nextLevel === FIELD_BONUS.CAT) {
-            EngineUtils.startCatStage(this.onBackFromBonusStageCallback);
-        } else if (nextLevel === FIELD_BONUS.SEAL) {
-            EngineUtils.startSealStage(this.onBackFromBonusStageCallback);
-        }
+        Audio.stopMusic();
+        Audio.playSFX('sfx23');
+        this.stageText.setScrollText(I18NManager.translate("go_to_bonus_stage"), I18NManager.translate("go_to_bonus_stage"), 1000, () => {
+            let nextLevel = this.getNextBonusLevel();
+            if (nextLevel === FIELD_BONUS.MOLE) {
+                EngineUtils.startMoleStage(this.onBackFromBonusStageCallback);
+            } else if (nextLevel === FIELD_BONUS.GHOST) {
+                EngineUtils.startGhostStage(this.onBackFromBonusStageCallback);
+            } else if (nextLevel === FIELD_BONUS.CLONE) {
+                EngineUtils.startCloneStage(this.onBackFromBonusStageCallback);
+            } else if (nextLevel === FIELD_BONUS.CAT) {
+                EngineUtils.startCatStage(this.onBackFromBonusStageCallback);
+            } else if (nextLevel === FIELD_BONUS.SEAL) {
+                EngineUtils.startSealStage(this.onBackFromBonusStageCallback);
+            }
+        });
     }
 
     onBackFromBonusStageCallback = () => {

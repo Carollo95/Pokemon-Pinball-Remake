@@ -46,6 +46,8 @@ const I18NManager = {
             "pokemon_evolved": "pokémon evolved",
             "cave_shots": "cave shots",
             "spinner_turns": "spinner turns",
+
+            "go_to_bonus_stage": "go to bonus stage",
             
             "lets_get_pokemon": "let`s get pokémon",
             "flipped": "flipped",

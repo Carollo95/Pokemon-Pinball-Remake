@@ -361,7 +361,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx20', 'assets/audio/sfx/SFX-20')); //Spinner charge 15
     promises.push(audio.registerSFX('sfx21', 'assets/audio/sfx/SFX-21')); //Well capture ball
     promises.push(audio.registerSFX('sfx22', 'assets/audio/sfx/SFX-22')); //Spinner got full
-    promises.push(audio.registerSFX('sfx23', 'assets/audio/sfx/SFX-23')); //Go to bonus stage TODO
+    promises.push(audio.registerSFX('sfx23', 'assets/audio/sfx/SFX-23')); //Go to bonus stage
     promises.push(audio.registerSFX('sfx24', 'assets/audio/sfx/SFX-24')); //Field ball loss
     promises.push(audio.registerSFX('sfx25', 'assets/audio/sfx/SFX-25')); //Field map travel complete
     promises.push(audio.registerSFX('sfx26', 'assets/audio/sfx/SFX-26')); //Pokemon evolved
@@ -385,7 +385,7 @@ function preloadAudioAssets() {
     promises.push(audio.registerSFX('sfx38', 'assets/audio/sfx/SFX-38')); //Mewtwo shield destroyed
     promises.push(audio.registerSFX('sfx39', 'assets/audio/sfx/SFX-39')); //Mewtwo hurt
     promises.push(audio.registerSFX('sfx3A', 'assets/audio/sfx/SFX-3A')); //Ball upgrade
-    promises.push(audio.registerSFX('sfx3B', 'assets/audio/sfx/SFX-3B')); //TODO pikachu press inactive????????
+    promises.push(audio.registerSFX('sfx3B', 'assets/audio/sfx/SFX-3B')); //pikachu press inactive
     promises.push(audio.registerSFX('sfx3C', 'assets/audio/sfx/SFX-3C'));
     promises.push(audio.registerSFX('sfx3D', 'assets/audio/sfx/SFX-3D'));
     promises.push(audio.registerSFX('sfx3E', 'assets/audio/sfx/SFX-3E')); //Bonus ball screen progress

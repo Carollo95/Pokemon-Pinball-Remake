@@ -1,4 +1,4 @@
-let SHOW_FPS = true; // true to show FPS
+let SHOW_FPS = false; // true to show FPS
 let DEBUG = false; //true to start the game on debug mode
 
 const CheatEngine = {
@@ -48,8 +48,9 @@ const CheatEngine = {
     startEvolution() {
         if (stage instanceof BlueField) {
             stage.evolutionWell.onCapturedBallCallback();
-        }else if (stage instanceof RedField) {
-            //TODO
+        } else if (stage instanceof RedField) {
+            stage.ditto.fullyOpen();
+            stage.ditto.onCapturedBallCallback();
         }
     },
 
@@ -101,13 +102,13 @@ const CheatEngine = {
         }
     },
 
-    showLevelChooseControls(){
+    showLevelChooseControls() {
         const controlsDiv = document.getElementById('bonus-stage-selector-buttons');
         if (controlsDiv) {
             controlsDiv.style.display = 'flex';
         }
     },
-
+    
     openCave() {
         if (stage instanceof Field) {
             stage.caveDetectorManager.detectorE.setActive(true);
