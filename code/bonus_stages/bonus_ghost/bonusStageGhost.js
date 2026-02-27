@@ -323,7 +323,6 @@ class BonusStageGhost extends BonusStage {
   updateGengar() {
     this.gengar.update(this.getBallSprite());
 
-    //TODO review this condition, why did I do this???
     if (this.gengar.isDefeated && this.gengar.isDefeated()) {
       this.finishGhostStageSuccessfully();
     } else if (this.gengar.readyToRespawn && this.gengar.readyToRespawn()) {

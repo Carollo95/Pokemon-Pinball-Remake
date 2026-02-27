@@ -361,7 +361,6 @@ class Field extends Stage {
             this.pikachuSaverManager.reset();
             this.lastSensor = undefined;
             this.launchNewBall();
-            this.arrows.setCaptureArrowsLevel(2);
             this.setState(FIELD_STATE.NEW_BALL_WAITING);
             this.playMusic();
         }
@@ -398,7 +397,6 @@ class Field extends Stage {
         this.closeWell();
         this.onStartNewBall();
         this.setState(FIELD_STATE.BALL_LOST);
-        this.arrows.restart();
         Audio.playSFX('sfx24');
         this.stageText.setScrollText(I18NManager.translate("end_of_ball_bonus"), "", 1000, () => { this.ballBonusScreen.show(); });
         Audio.stopMusic();

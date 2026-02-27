@@ -79,7 +79,10 @@ class Ball {
             return;
         }
 
-        //TODO is any of this crap in use???
+        this.updateAnimationSpeedBasedOnVelocity(absVelX);
+    }
+
+    updateAnimationSpeedBasedOnVelocity(absVelX) {
         const t = Math.min(absVelX / MAX_VEL, 1);
         const speedMagnitude = t * MAX_ANI_SPEED;
 
@@ -88,6 +91,7 @@ class Ball {
         const frameDelay = Math.round(MAX_DELAY + (MIN_DELAY - MAX_DELAY) * (speedMagnitude / MAX_ANI_SPEED));
         this.sprite.ani.frameDelay = Math.max(MIN_DELAY, Math.min(MAX_DELAY, frameDelay));
     }
+
 
     updateSize() {
         if (this.minimizing && this.timeToUpdateSize()) {
@@ -130,7 +134,7 @@ class Ball {
         Audio.playSFX('sfx0A');
     }
 
-    launchFromGutter(){
+    launchFromGutter() {
         this.sprite.physics = "dynamic";
         this.sprite.applyForce(0, -700);
     }

@@ -270,7 +270,6 @@ const BLUE_LANDMARKS = {
         ]
     }
 }
-//TODO missing mew
 
 class BlueFieldScreenLandscapes extends ScreenLandscapes {
 
