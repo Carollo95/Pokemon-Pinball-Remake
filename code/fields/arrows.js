@@ -81,7 +81,6 @@ class Arrows {
 
 
     blinkLeftInnerArrow(visible) {
-        //TODO this is not blinking on slowbro, instead right inner arrow is???
         this.leftInnerArrow.ani.frame = 0 + this.leftInnerArrowExtraFrames;
     }
 
@@ -111,7 +110,7 @@ class Arrows {
     blinkCaveArrow(visible) {
         if (visible) {
             frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
-                this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames:
+                this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames :
                 this.caveArrow.ani.frame = this.caveActive ? 1 + this.caveArrowExtraFrames : 0 + this.caveArrowExtraFrames;
         } else {
             this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames;
