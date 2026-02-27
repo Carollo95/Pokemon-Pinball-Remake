@@ -6,8 +6,8 @@ const BLUE_ARROW_DIRECTION = {
 }
 
 const UPDATE_EVENT_TIMER = 1000;
-const BLUE_ARROW_SPEED_PUSH_MULTIPLIER = 3;
-const BLUE_ARROW_SPEED_DECREASE_MULTIPLIER = 0.05;
+const BLUE_ARROW_PUSH_FORCE = 120;
+const BLUE_ARROW_HORIZONTAL_DAMPING_FORCE = 20;
 
 class BlueArrow {
 
@@ -21,34 +21,40 @@ class BlueArrow {
         this.sprite.ani.playing = false;
 
         this.updateTimer = new EventTimer(UPDATE_EVENT_TIMER);
-        this.changeDirection(BLUE_ARROW_DIRECTION.NORTH);
+
+        this.eastGateExclusionZone = new Sprite(220, 206, 85, 30, "none");
+        this.eastGateExclusionZone.debug = DEBUG;
+        this.eastGateExclusionZone.layer = SCENARIO_LAYER;
+        this.eastGateExclusionZone.visible = false;
+        this.westGateExclusionZone = new Sprite(100, 206, 85, 30, "none");
+        this.westGateExclusionZone.debug = DEBUG;
+        this.westGateExclusionZone.layer = SCENARIO_LAYER;
+        this.westGateExclusionZone.visible = false;
+
     }
 
     update(ballSprite, captureGateOpen, evolutionGateOpen, fieldState) {
         if (this.updateTimer.hasElapsed()) {
             this.updateTimer.restart();
             const direction = this.getRandomDirection(this.getValidDirections(captureGateOpen, evolutionGateOpen, ballSprite, fieldState));
-            this.changeDirection(direction);
+            this.changeDirection(direction, ballSprite);
         }
 
         if (ballSprite.overlaps(this.sprite)) {
             switch (this.direction) {
                 case BLUE_ARROW_DIRECTION.NORTH:
-                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, BLUE_ARROW_SPEED_PUSH_MULTIPLIER);
+                    ballSprite.applyForce(0, -BLUE_ARROW_PUSH_FORCE);
                     break;
-                case BLUE_ARROW_DIRECTION.SOUTH:
-                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER, 1);
+                case BLUE_ARROW_DIRECTION.WEST:
+                    ballSprite.vel.y = 0;
+                    ballSprite.applyForce(-BLUE_ARROW_PUSH_FORCE, 0);
                     break;
                 case BLUE_ARROW_DIRECTION.EAST:
-                    this.multiplyBallVelocity(ballSprite, BLUE_ARROW_SPEED_PUSH_MULTIPLIER, BLUE_ARROW_SPEED_DECREASE_MULTIPLIER);
+                    ballSprite.vel.y = 0;
+                    ballSprite.applyForce(BLUE_ARROW_PUSH_FORCE, 0);
                     break;
             }
         }
-    }
-
-    multiplyBallVelocity(ballSprite, multiplierX, multiplierY, maxSpeed = 10) {
-        ballSprite.velocity.x = Math.max(ballSprite.velocity.x * multiplierX, maxSpeed * Math.sign(ballSprite.velocity.x));
-        ballSprite.velocity.y = Math.max(ballSprite.velocity.y * multiplierY, maxSpeed * Math.sign(ballSprite.velocity.y));
     }
 
     restartTimer() {
@@ -79,23 +85,64 @@ class BlueArrow {
         return directions[Math.floor(Math.random() * directions.length)];
     }
 
-    changeDirection(newDirection) {
+    changeDirection(newDirection, ballSprite) {
         this.direction = newDirection;
         this.callback(newDirection);
 
         switch (newDirection) {
             case BLUE_ARROW_DIRECTION.NORTH:
+                this.createEastGate(ballSprite);
+                this.createWestGate(ballSprite);
                 this.sprite.ani.frame = 0;
                 break;
             case BLUE_ARROW_DIRECTION.EAST:
+                this.removeEastGate();
+                this.createWestGate(ballSprite);
                 this.sprite.ani.frame = 1;
                 break;
             case BLUE_ARROW_DIRECTION.SOUTH:
+                this.createEastGate(ballSprite);
+                this.createWestGate(ballSprite);
                 this.sprite.ani.frame = 2;
                 break;
             case BLUE_ARROW_DIRECTION.WEST:
+                this.createEastGate(ballSprite);
+                this.removeWestGate();
                 this.sprite.ani.frame = 3;
                 break;
         }
     }
+
+    createEastGate(ballSprite) {
+        if (!this.eastGate && !this.eastGateExclusionZone.overlapping(ballSprite)) {
+            this.eastGate = new Sprite(190, 210, 20, 30, "static");
+            this.eastGate.debug = DEBUG;
+            this.eastGate.layer = SCENARIO_LAYER;
+            this.eastGate.visible = false;
+        }
+    }
+
+    removeEastGate() {
+        if (this.eastGate != null) {
+            this.eastGate.remove();
+            this.eastGate = null;
+        }
+    }
+
+    createWestGate(ballSprite) {
+        if (!this.westGate && !this.westGateExclusionZone.overlapping(ballSprite)) {
+            this.westGate = new Sprite(130, 210, 20, 30, "static");
+            this.westGate.debug = DEBUG;
+            this.westGate.layer = SCENARIO_LAYER;
+            this.westGate.visible = false;
+        }
+    }
+
+    removeWestGate() {
+        if (this.westGate != null) {
+            this.westGate.remove();
+            this.westGate = null;
+        }
+    }
+
 }

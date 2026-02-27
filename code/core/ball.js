@@ -101,7 +101,8 @@ class Ball {
             } else if (this.sprite.animation.name.endsWith("BallSmall")) {
                 this.sprite.changeAnimation(this.type + "Small2");
             } else if (this.sprite.animation.name.endsWith("BallSmall2")) {
-                this.sprite.visible = false;
+                //TODO if invisible for some reason if fallse maybe stage well update isVisible()
+                //this.sprite.visible = false;
                 this.minimizing = false;
 
                 //Called only once
