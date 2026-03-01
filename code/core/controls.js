@@ -1,25 +1,30 @@
 const LEFT_BUTTON_KEY = 'a'; //Key for the movemenet of the left flipper
 const RIGHT_BUTTON_KEY = 'l'; //Key for the movemenet of the right flipper
-const CENTER_BUTTON_KEY = ' '; //Key for the pressing of the center button
+const CENTER_BUTTON_KEY = ' '; //Key for the pressing of the accept button
+const CANCEL_BUTTON_KEY = 'Backspace'; //Key for the pressing of the cancel button
 
 const CALLBACK_DELAY_MS = 200;
 
 class Controls {
-    constructor(leftIsPressedCallback = () => { }, centerIsPressedCallback = () => { }, rightIsPressedCallback = () => { },
-        leftPressCallback = () => { }, centerPressCallback = () => { }, rightPressCallback = () => { }) {
+    constructor(leftIsPressedCallback = () => { }, acceptIsPressedCallback = () => { }, rightIsPressedCallback = () => { },
+        leftPressCallback = () => { }, acceptPressCallback = () => { }, rightPressCallback = () => { },
+        cancelIsPressedCallback = () => { }, cancelPressCallback = () => { }) {
         this.createHtmlButtonControls();
 
         this.leftIsPressedCallback = leftIsPressedCallback;
-        this.centerIsPressedCallback = centerIsPressedCallback;
+        this.acceptIsPressedCallback = acceptIsPressedCallback;
         this.rightIsPressedCallback = rightIsPressedCallback;
 
         this.leftPressCallback = leftPressCallback;
-        this.centerPressCallback = centerPressCallback;
+        this.acceptPressCallback = acceptPressCallback;
         this.rightPressCallback = rightPressCallback;
+        this.cancelIsPressedCallback = cancelIsPressedCallback;
+        this.cancelPressCallback = cancelPressCallback;
 
         this._leftDownPrev = false;
         this._rightDownPrev = false;
-        this._centerDownPrev = false;
+        this._acceptDownPrev = false;
+        this._cancelDownPrev = false;
 
         this._lastCallbackCall = 0;
         this.callbackDelay = CALLBACK_DELAY_MS;
@@ -44,28 +49,38 @@ class Controls {
         }
         this._rightDownPrev = rightDown;
 
-        const centerDown = this.isCenterButtonAction();
-        if (centerDown) {
-            if (!this._centerDownPrev) this.centerPressCallback();
-            else this.centerIsPressedCallback();
+        const acceptDown = this.isAcceptButtonAction();
+        if (acceptDown) {
+            if (!this._acceptDownPrev) this.acceptPressCallback();
+            else this.acceptIsPressedCallback();
         }
-        this._centerDownPrev = centerDown;
+        this._acceptDownPrev = acceptDown;
+
+        const cancelDown = this.isCancelButtonAction();
+        if (cancelDown) {
+            if (!this._cancelDownPrev) this.cancelPressCallback();
+            else this.cancelIsPressedCallback();
+        }
+        this._cancelDownPrev = cancelDown;
     }
 
     createHtmlButtonControls() {
         this.createLeftButton();
-        this.createCenterButton();
+        this.createAcceptButton();
+        this.createCancelButton();
         this.createRightButton();
 
         document.addEventListener("mouseup", () => {
             this.leftButtonPressed = false;
             this.rightButtonPressed = false;
-            this.centerButtonPressed = false;
+            this.acceptButtonPressed = false;
+            this.cancelButtonPressed = false;
         });
         document.addEventListener("touchend", () => {
             this.leftButtonPressed = false;
             this.rightButtonPressed = false;
-            this.centerButtonPressed = false;
+            this.acceptButtonPressed = false;
+            this.cancelButtonPressed = false;
         });
     }
 
@@ -103,21 +118,40 @@ class Controls {
         }, { passive: false });
     }
 
-    createCenterButton() {
+    createAcceptButton() {
 
-        centerButton.addEventListener("mousedown", () => {
-            this.centerButtonPressed = true;
+        acceptButton.addEventListener("mousedown", () => {
+            this.acceptButtonPressed = true;
         });
-        centerButton.addEventListener("mouseup", () => {
-            this.centerButtonPressed = false;
+        acceptButton.addEventListener("mouseup", () => {
+            this.acceptButtonPressed = false;
         });
-        centerButton.addEventListener("touchstart", (e) => {
+        acceptButton.addEventListener("touchstart", (e) => {
             e.preventDefault();
-            this.centerButtonPressed = true;
+            this.acceptButtonPressed = true;
         }, { passive: false });
-        centerButton.addEventListener("touchend", (e) => {
+        acceptButton.addEventListener("touchend", (e) => {
             e.preventDefault();
-            this.centerButtonPressed = false;
+            this.acceptButtonPressed = false;
+        }, { passive: false });
+
+    }
+
+    createCancelButton() {
+
+        cancelButton.addEventListener("mousedown", () => {
+            this.cancelButtonPressed = true;
+        });
+        cancelButton.addEventListener("mouseup", () => {
+            this.cancelButtonPressed = false;
+        });
+        cancelButton.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            this.cancelButtonPressed = true;
+        }, { passive: false });
+        cancelButton.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            this.cancelButtonPressed = false;
         }, { passive: false });
 
     }
@@ -130,8 +164,12 @@ class Controls {
         return kb.pressing(RIGHT_BUTTON_KEY) || this.rightButtonPressed;
     }
 
-    isCenterButtonAction() {
-        return kb.pressing(CENTER_BUTTON_KEY) || this.centerButtonPressed;
+    isAcceptButtonAction() {
+        return kb.pressing(CENTER_BUTTON_KEY) || this.acceptButtonPressed;
+    }
+
+    isCancelButtonAction() {
+        return kb.pressing(CANCEL_BUTTON_KEY) || this.cancelButtonPressed;
     }
 
     hasControlCallbackTimePassed() {

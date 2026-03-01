@@ -6,7 +6,7 @@ class FieldSelector extends Sketch {
         super();
         this.background = Asset.getBackground('fieldSelector');
         this.createFrame();
-        this.attachControls(new Controls(() => { }, () => { }, () => { }, this.leftFlipperCallback, this.centerFlipperCallback, this.rightFlipperCallback));
+        this.attachControls(new Controls(() => { }, () => { }, () => { }, this.leftFlipperCallback, this.centerFlipperCallback, this.rightFlipperCallback, () => { }, this.onCancelButtonPress));
         this.createSelectorSprite();
 
         this.pressWaitTimer = new EventTimer(500);
@@ -75,5 +75,10 @@ class FieldSelector extends Sketch {
     draw() {
         super.draw();
     }
+
+    onCancelButtonPress = () => {
+        EngineUtils.flashWhite(5, 10, 255, () => EngineUtils.startMainMenu());
+    }
+
 
 }

@@ -26,6 +26,20 @@ body {
     justify-content: center;
 }
 
+#action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 72px;
+    height: 48px;
+}
+
+#action-buttons .flipper-button {
+    width: 100%;
+    height: calc((48px - 2px) / 2);
+    padding: 0;
+}
+
 #bonus-stage-selector-buttons {
     margin-top: 5px;
     display: none;
@@ -54,7 +68,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: none;
+    border: 1px solid currentColor;
     background: transparent;
 }
 

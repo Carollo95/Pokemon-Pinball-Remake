@@ -46,7 +46,7 @@ class Field extends Stage {
         this.attachStageText(createStageStatusBanner(this.status));
 
         this.attachControls(new Controls(this.leftFlipperCallback, this.centerButtonCallback, this.rightFlipperCallback,
-            this.leftFlipperPressCallback, () => { }, this.rightFlipperPressCallback
+            this.leftFlipperPressCallback, () => { }, this.rightFlipperPressCallback, () => { }, this.onCancelButtonPress
         ));
 
         this.caveDetectorManager = new CaveDetectorManager(this.onOpenCaveCallback);
@@ -775,6 +775,17 @@ class Field extends Stage {
     onExtraBallEarnedCallback = () => {
         this.saverAgain.setExtra();
         this.stageText.setScrollText(I18NManager.translate("extra_ball"), I18NManager.translate("extra_ball"));
+    }
+
+    onCancelButtonPress = () => {
+        if (this.state === FIELD_STATE.EVOLUTION_CHOOSE_SCREEN) {
+            this.setState(FIELD_STATE.PLAYING);
+            this.onAfterEvolutionTargetSelectedOnEvolutionHole();
+
+            this.evolutionScreenChooser.remove();
+            this.evolutionScreenChooser = null;
+            this.arrows.evolutionArrowsLevel = 0;
+        }
     }
 
     //Interface

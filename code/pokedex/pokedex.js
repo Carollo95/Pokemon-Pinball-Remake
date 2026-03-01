@@ -15,7 +15,7 @@ class Pokedex extends Sketch {
 
         background(255)
         this.createFrame();
-        this.attachControls(new Controls(this.leftFlipperCallback, () => { }, this.rightFlipperCallback, () => { }, this.centerFlipperCallback, () => { }));
+        this.attachControls(new Controls(this.leftFlipperCallback, () => { }, this.rightFlipperCallback, () => { }, this.centerFlipperCallback, () => { }, () => { }, this.onCancelButtonPress));
         this.controls.setCallbackDelay(100);
 
         this.background = Asset.getBackground("pokedex");
@@ -254,7 +254,7 @@ class Pokedex extends Sketch {
     }
 
     rightFlipperCallback = () => {
-        if (this.pokedexText.state === POKEDEX_TEXT_STATES.HIDDEN &&this.controls.hasControlCallbackTimePassed()) {
+        if (this.pokedexText.state === POKEDEX_TEXT_STATES.HIDDEN && this.controls.hasControlCallbackTimePassed()) {
             this.selectNextPokemon();
             Audio.playSFX("sfx03");
             this.controls.restartPressCallback();
@@ -268,7 +268,7 @@ class Pokedex extends Sketch {
     }
 
     openPokedexEntry() {
-        if(this.pokedexText.state === POKEDEX_TEXT_STATES.HIDDEN) {
+        if (this.pokedexText.state === POKEDEX_TEXT_STATES.HIDDEN) {
             Audio.playCry(this.getSelectedByCursor().id);
         }
         this.pokedexText.show(this.getPokedexEntryText(this.getSelectedByCursor().id));
@@ -292,6 +292,10 @@ class Pokedex extends Sketch {
     draw() {
         super.draw();
 
+    }
+
+    onCancelButtonPress = () => {
+        EngineUtils.flashWhite(5, 10, 255, () => EngineUtils.startMainMenu());
     }
 
 }
