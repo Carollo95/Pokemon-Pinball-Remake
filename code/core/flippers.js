@@ -1,5 +1,7 @@
 const FLIPPER_LENGTH = 48; //Length of the flipper
 const FLIPPER_WIDTH = 18; //Height of the flipper
+const FLIPPER_PHYSICS_HEIGHT = 5; //Height of the flipper physics
+const FLIPPER_PHYSICS_TOP_ALIGNMENT_OFFSET_Y = -(FLIPPER_WIDTH - FLIPPER_PHYSICS_HEIGHT) / 2;
 
 const LEFT_FLIPPER_ROTATION_POINT_X = 111; //Horizontal pixel for the left flipper axis of rotation
 const LEFT_FLIPPER_ROTATION_POINT_Y = 515; //Vertical pixel for the left flipper axis of rotation
@@ -36,18 +38,29 @@ class Flippers {
     }
 
     createLeftFlipper(leftFlipperRotationPointX, leftFlipperRotationPointY) {
-        this.leftFlipper = new Sprite(leftFlipperRotationPointX, leftFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
+        this.leftFlipper = new Sprite(leftFlipperRotationPointX, leftFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_PHYSICS_HEIGHT, 'kinematic');
         this.leftFlipper.layer = BALL_LAYER;
         this.leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
         this.leftFlipper.debug = DEBUG;
+        this.leftFlipper.visible = DEBUG;
         this.leftFlipper.offset.x = LEFT_FLIPPER_OFFSET;
+        this.leftFlipper.offset.y = FLIPPER_PHYSICS_TOP_ALIGNMENT_OFFSET_Y;
 
-        this.leftFlipper.addAnimation("up", Asset.getAnimation('animLeftFlipperUp'));
-        this.leftFlipper.addAnimation("middle", Asset.getAnimation('animLeftFlipperMiddle'));
-        this.leftFlipper.addAnimation("down", Asset.getAnimation('animLeftFlipperDown'));
-        this.leftFlipper.addAnimation("down_disabled", Asset.getAnimation('animLeftFlipperDownDisabled'));
+        this.leftFlipperVisual = new Sprite(leftFlipperRotationPointX, leftFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'none');
+        this.leftFlipperVisual.layer = BALL_LAYER;
+        this.leftFlipperVisual.rotation = LEFT_FLIPPER_MIN_ROTATION;
+        this.leftFlipperVisual.debug = DEBUG;
+        this.leftFlipperVisual.offset.x = LEFT_FLIPPER_OFFSET;
+        this.leftFlipperVisual.visible = !DEBUG;
 
-        this.leftFlipper.draw = function () { rotateFlipperAnimation(this, LEFT_FLIPPER_MIN_ROTATION, LEFT_FLIPPER_MAX_ROTATION, LEFT_FLIPPER_OFFSET); }
+        this.leftFlipperVisual.addAnimation("up", Asset.getAnimation('animLeftFlipperUp'));
+        this.leftFlipperVisual.addAnimation("middle", Asset.getAnimation('animLeftFlipperMiddle'));
+        this.leftFlipperVisual.addAnimation("down", Asset.getAnimation('animLeftFlipperDown'));
+        this.leftFlipperVisual.addAnimation("down_disabled", Asset.getAnimation('animLeftFlipperDownDisabled'));
+
+        this.leftFlipperVisual.draw = function () { rotateFlipperAnimation(this, LEFT_FLIPPER_MIN_ROTATION, LEFT_FLIPPER_MAX_ROTATION, LEFT_FLIPPER_OFFSET); }
+
+        this.syncLeftFlipperVisual();
 
         this.hasLeftFlipperBeenLowered = true;
 
@@ -55,18 +68,29 @@ class Flippers {
     }
 
     createRightFlipper(rightFlipperRotationPointX, rightFlipperRotationPointY) {
-        this.rightFlipper = new Sprite(rightFlipperRotationPointX, rightFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'kinematic');
+        this.rightFlipper = new Sprite(rightFlipperRotationPointX, rightFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_PHYSICS_HEIGHT, 'kinematic');
         this.rightFlipper.layer = BALL_LAYER;
         this.rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
         this.rightFlipper.debug = DEBUG;
+        this.rightFlipper.visible = DEBUG;
         this.rightFlipper.offset.x = RIGHT_FLIPPER_OFFSET;
+        this.rightFlipper.offset.y = FLIPPER_PHYSICS_TOP_ALIGNMENT_OFFSET_Y;
 
-        this.rightFlipper.addAnimation("up", Asset.getAnimation('animRightFlipperUp'));
-        this.rightFlipper.addAnimation("middle", Asset.getAnimation('animRightFlipperMiddle'));
-        this.rightFlipper.addAnimation("down", Asset.getAnimation('animRightFlipperDown'));
-        this.rightFlipper.addAnimation("down_disabled", Asset.getAnimation('animRightFlipperDownDisabled'));
+        this.rightFlipperVisual = new Sprite(rightFlipperRotationPointX, rightFlipperRotationPointY, FLIPPER_LENGTH, FLIPPER_WIDTH, 'none');
+        this.rightFlipperVisual.layer = BALL_LAYER;
+        this.rightFlipperVisual.rotation = RIGHT_FLIPPER_MIN_ROTATION;
+        this.rightFlipperVisual.debug = DEBUG;
+        this.rightFlipperVisual.offset.x = RIGHT_FLIPPER_OFFSET;
+        this.rightFlipperVisual.visible = !DEBUG;
 
-        this.rightFlipper.draw = function () { rotateFlipperAnimation(this, RIGHT_FLIPPER_MIN_ROTATION, RIGHT_FLIPPER_MAX_ROTATION, RIGHT_FLIPPER_OFFSET); }
+        this.rightFlipperVisual.addAnimation("up", Asset.getAnimation('animRightFlipperUp'));
+        this.rightFlipperVisual.addAnimation("middle", Asset.getAnimation('animRightFlipperMiddle'));
+        this.rightFlipperVisual.addAnimation("down", Asset.getAnimation('animRightFlipperDown'));
+        this.rightFlipperVisual.addAnimation("down_disabled", Asset.getAnimation('animRightFlipperDownDisabled'));
+
+        this.rightFlipperVisual.draw = function () { rotateFlipperAnimation(this, RIGHT_FLIPPER_MIN_ROTATION, RIGHT_FLIPPER_MAX_ROTATION, RIGHT_FLIPPER_OFFSET); }
+
+        this.syncRightFlipperVisual();
 
         this.hasRightFlipperBeenLowered = true;
 
@@ -76,6 +100,8 @@ class Flippers {
     update() {
         this.controlLeftFlipper();
         this.controlRightFlipper();
+        this.syncLeftFlipperVisual();
+        this.syncRightFlipperVisual();
     }
 
     moveLeftFlipper = () => {
@@ -117,18 +143,19 @@ class Flippers {
 
     changeLeftFlipperAnimation() {
         if (this.leftFlipper.rotation < -10) {
-            this.leftFlipper.changeAnimation("up");
+            this.leftFlipperVisual.changeAnimation("up");
         } else if (this.leftFlipper.rotation < 10) {
-            this.leftFlipper.changeAnimation("middle");
+            this.leftFlipperVisual.changeAnimation("middle");
         } else {
-            this.leftFlipper.changeAnimation("down");
+            this.leftFlipperVisual.changeAnimation("down");
         }
     }
 
     disableLeftFlipper() {
         this.leftFlipper.rotation = LEFT_FLIPPER_MIN_ROTATION;
-        this.leftFlipper.changeAnimation("down_disabled");
+        this.leftFlipperVisual.changeAnimation("down_disabled");
         this.leftFlipper.rotationSpeed = 0;
+        this.syncLeftFlipperVisual();
     }
 
     playLeftFLipperSFX() {
@@ -179,19 +206,36 @@ class Flippers {
 
     changeActiveRightFlipperAnimation() {
         if (this.rightFlipper.rotation > 10) {
-            this.rightFlipper.changeAnimation("up");
+            this.rightFlipperVisual.changeAnimation("up");
         } else if (this.rightFlipper.rotation > -10) {
 
-            this.rightFlipper.changeAnimation("middle");
+            this.rightFlipperVisual.changeAnimation("middle");
         } else {
-            this.rightFlipper.changeAnimation("down");
+            this.rightFlipperVisual.changeAnimation("down");
         }
     }
 
     disableRightFlipper() {
         this.rightFlipper.rotation = RIGHT_FLIPPER_MIN_ROTATION;
-        this.rightFlipper.changeAnimation("down_disabled");
+        this.rightFlipperVisual.changeAnimation("down_disabled");
         this.rightFlipper.rotationSpeed = 0;
+        this.syncRightFlipperVisual();
+    }
+
+    syncFlipperVisualWithPhysics(physicsFlipper, visualFlipper) {
+        if (!physicsFlipper || !visualFlipper) return;
+
+        visualFlipper.x = physicsFlipper.x;
+        visualFlipper.y = physicsFlipper.y;
+        visualFlipper.rotation = physicsFlipper.rotation;
+    }
+
+    syncLeftFlipperVisual() {
+        this.syncFlipperVisualWithPhysics(this.leftFlipper, this.leftFlipperVisual);
+    }
+
+    syncRightFlipperVisual() {
+        this.syncFlipperVisualWithPhysics(this.rightFlipper, this.rightFlipperVisual);
     }
 
     playRightFlipperSFX() {
