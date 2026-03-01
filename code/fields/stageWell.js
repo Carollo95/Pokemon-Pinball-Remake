@@ -21,11 +21,11 @@ class StageWell {
     }
 
     update(ball) {
-        if (this.isOpen && ball.isVisible()) {
+        if (this.isOpen) {
             this.well.applyGravity(
                 ball.sprite,
-                () => this.onCapturedBallByWellCallback(ball),
-                () => { Audio.playSFX('sfx04', 6500); });
+                () => { if (ball.isVisible()) this.onCapturedBallByWellCallback(ball); },
+                () => { if (ball.isVisible()) Audio.playSFX('sfx04', 6500); });
         }
     }
 
@@ -47,7 +47,7 @@ class StageWell {
         this.auraSprite.animation.visible = false;
     }
 
-    isClosed(){
+    isClosed() {
         return !this.isOpen;
     }
 
