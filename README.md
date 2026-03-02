@@ -27,7 +27,7 @@ assets/
 
 ```mermaid
 classDiagram
-direction TB
+direction LR
 
 class Sketch
 class Stage
@@ -130,7 +130,7 @@ BallUpgraderManager *-- BallUpgraderElement
 
 ```mermaid
 classDiagram
-direction TB
+direction LR
 
 class Sketch
 class Stage
@@ -237,7 +237,7 @@ BallUpgraderManager *-- BallUpgraderElement
 
 ```mermaid
 classDiagram
-direction TB
+direction LR
 
 class Sketch
 class Stage
@@ -276,7 +276,7 @@ BonusStageGhost *-- Ghost
 
 ```mermaid
 classDiagram
-direction TB
+direction LR
 
 class Sketch
 class Stage
@@ -309,7 +309,7 @@ BonusStageMole *-- Dugtrio
 
 ```mermaid
 classDiagram
-direction TB
+direction LR
 
 class Sketch
 class Stage
@@ -346,7 +346,7 @@ BonusStageCat *-- FlyingCoin
 
 ```mermaid
 classDiagram
-direction TB
+direction LR
 
 class Sketch
 class Stage
@@ -379,7 +379,7 @@ BonusStageClone *-- Shield
 
 ```mermaid
 classDiagram
-direction TB
+direction LR
 
 class Sketch
 class Stage
