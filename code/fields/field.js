@@ -229,6 +229,10 @@ class Field extends Stage {
         this.arrows.turnOffCaveArrow();
     }
 
+    getJackpotPoints() {
+        return (Math.floor(Math.random() * 3001) + 1000) * 1000;
+    }
+
     spitAndCloseWell() {
         this.well.spitBall(this.getBall());
         this.arrows.turnOffCaveArrow();
@@ -246,8 +250,7 @@ class Field extends Stage {
     showAfterEvolutionJackpot = () => {
         Audio.stopMusic();
         Audio.playSFX('sfx26');
-        //TODO how much points on jackpot
-        this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 3000, this.finishEvolutionPhaseCallback);
+        this.addPointsAndShowText(I18NManager.translate("jackpot"), this.getJackpotPoints(), 3000, this.finishEvolutionPhaseCallback);
     }
 
     shouldOpenEvolutionCave() {
@@ -536,14 +539,13 @@ class Field extends Stage {
     }
 
     onCaptureCompleteAnimationStartedCallback = (pokemonCaught) => {
-        //TODO how many points on jackpot
         this.stageText.setScrollText(I18NManager.translate("you_got_a") + I18NManager.translate(pokemonCaught.name), I18NManager.translate(pokemonCaught.name), 1000, this.showAfterCaptureJackpot);
         this.status.addPokemonCaught(pokemonCaught);
         saveObtainedPokemon(pokemonCaught.id);
     }
 
     showAfterCaptureJackpot = () => {
-        this.addPointsAndShowText(I18NManager.translate("jackpot"), 123456, 1000);
+        this.addPointsAndShowText(I18NManager.translate("jackpot"), this.getJackpotPoints(), 1000);
     }
 
     onCapturePhaseFinishedCallback = () => {
@@ -565,7 +567,6 @@ class Field extends Stage {
 
     onEvolutionCompletedCallback = () => {
         this.getTimer().stop();
-        //TODO how many points on jackpot
         let targetEvolution = this.screen.showTargetEvolution();
         this.status.addPokemonEvolved(targetEvolution);
         saveObtainedPokemon(targetEvolution.id);
