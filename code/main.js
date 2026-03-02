@@ -20,6 +20,8 @@ function setup() {
   //Start I18N
   let userLang = navigator.language || navigator.userLanguage;
   I18NManager.setLanguage(userLang);
+  
+  setPageContents();
 
   //Init physics
   EngineUtils.initPhysics();
@@ -30,6 +32,16 @@ function setup() {
 
 function draw() {
   EngineUtils.drawStage();
+}
+
+function setPageContents() {
+  const instructionsElement = document.getElementById("keyboard-instructions-text");
+
+  if (!instructionsElement) {
+    return;
+  }
+
+  instructionsElement.innerHTML = I18NManager.translate("keyboard_instructions");
 }
 
 
