@@ -26,14 +26,16 @@ class CaveDetector {
         this.companionDetector = companionDetector;
     }
 
-    setActive(active) {
+    setActive(active, addPoints = true) {
         this.active = active;
         if (this.active) {
             this.sprite.ani.frame = this.frame;
-            if (this.companionDetector.active) {
-                EngineUtils.addPointsForBallHelper(POINTS.OUT_LANE_RETURN_LANE_LIGHT_UP);
-            } else {
-                EngineUtils.addPointsForBallHelper(POINTS.OUT_LANE_RETURN_LANE_MATCH_UP);
+            if (addPoints) {
+                if (this.companionDetector.active) {
+                    EngineUtils.addPointsForBallHelper(POINTS.OUT_LANE_RETURN_LANE_LIGHT_UP);
+                } else {
+                    EngineUtils.addPointsForBallHelper(POINTS.OUT_LANE_RETURN_LANE_MATCH_UP);
+                }
             }
         } else {
             this.sprite.ani.frame = 0;
