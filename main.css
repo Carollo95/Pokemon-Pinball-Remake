@@ -7,6 +7,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: #426b5a;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,7 +23,7 @@ body {
 #flipper-buttons {
     margin-top: 5px;
     display: none;
-    gap: 10px;
+    gap: 2px;
     justify-content: center;
 }
 
@@ -30,13 +31,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    width: 72px;
-    height: 48px;
+    width: 121px;
+    height: 121px;
 }
 
 #action-buttons .flipper-button {
     width: 100%;
-    height: calc((48px - 2px) / 2);
+    height: 50%;
     padding: 0;
 }
 
@@ -48,10 +49,10 @@ body {
 }
 
 .flipper-button {
-    width: 150px;
-    height: 60px;
-    font-size: 24px;
-    padding: 10px 20px;
+    width: 210px;
+    height: 84px;
+    font-size: 34px;
+    padding: 14px 28px;
 }
 
 #keyboard-instructions{
@@ -70,6 +71,32 @@ body {
     justify-content: center;
     border: 1px solid currentColor;
     background: transparent;
+}
+
+#controls #flipper-buttons .flipper-button {
+    width: 121px;
+    height: 121px;
+    font-size: 34px;
+    padding: 0;
+}
+
+#controls #leftButton,
+#controls #rightButton {
+    border-radius: 50%;
+}
+
+#controls #leftButton,
+#controls #rightButton {
+    background-color: #c73a3a;
+    border-color: #c73a3a;
+    color: #ffffff;
+}
+
+#controls #acceptButton,
+#controls #cancelButton {
+    background-color: #2f66d0;
+    border-color: #2f66d0;
+    color: #ffffff;
 }
 
 #controls button img {
