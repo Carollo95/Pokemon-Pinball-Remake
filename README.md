@@ -84,10 +84,14 @@ RedField *-- RedFieldDitto
 RedField *-- RedFieldStaryu
 RedField *-- TravelDiglett
 RedField *-- RedFieldVoltorb
+RedField *-- RedFieldBellsprout
 RedField *-- TargetArrow
 RedField *-- EvolutionItem
 RedField *-- Sensor
 RedField *-- SpeedPad
+RedField ..> RedFieldArrows : getArrows()
+RedField ..> RedFieldMultiplierTarget : get*MultiplierTarget()
+RedField ..> RedFieldScreenLandscapes : getScreenLandscapes()
 TravelDiglett --|> TravelButton
 RedFieldArrows --|> Arrows
 RedFieldRubberBand --|> RubberBand
@@ -190,10 +194,14 @@ BlueField *-- BlueFieldTravelPoliwag
 BlueField *-- BlueFieldTravelPsyduck
 BlueField *-- BlueFieldShellder
 BlueField *-- BlueFieldCloyster
+BlueField *-- BlueFieldArrows
+BlueField *-- BlueFieldRubberBand
 BlueField *-- TargetArrow
 BlueField *-- EvolutionItem
 BlueField *-- Sensor
 BlueField *-- SpeedPad
+BlueField ..> BlueFieldMultiplierTarget : get*MultiplierTarget()
+BlueField ..> BlueFieldScreenLandscapes : getScreenLandscapes()
 BlueFieldArrows --|> Arrows
 BlueFieldRubberBand --|> RubberBand
 BlueFieldMultiplierTarget --|> MultiplierTarget
@@ -270,6 +278,9 @@ Stage o-- Controls
 Stage *-- StageStatus
 Stage *-- StageStatusBanner
 BonusStageGhost *-- Ghost
+BonusStageGhost *-- Gastly
+BonusStageGhost *-- Haunter
+BonusStageGhost *-- Gengar
 ```
 
 ### Mole Bonus
