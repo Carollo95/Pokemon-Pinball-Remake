@@ -20,8 +20,8 @@ function setup() {
   //Start I18N
   let userLang = navigator.language || navigator.userLanguage;
   I18NManager.setLanguage(userLang);
-  
-  setPageContents();
+
+  initializeMainPageContent();
 
   //Init physics
   EngineUtils.initPhysics();
@@ -33,50 +33,4 @@ function setup() {
 function draw() {
   EngineUtils.drawStage();
 }
-
-function setPageContents() {
-  const instructionsElement = document.getElementById("keyboard-instructions-text");
-
-  if (!instructionsElement) {
-    return;
-  }
-
-  instructionsElement.innerHTML = I18NManager.translate("keyboard_instructions");
-}
-
-
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("red-field").addEventListener("click", CheatEngine.startRedField);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("blue-field").addEventListener("click", CheatEngine.startBlueField);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("ghost-stage").addEventListener("click", CheatEngine.startGhostStage);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("mole-stage").addEventListener("click", CheatEngine.startMoleStage);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("cat-stage").addEventListener("click", CheatEngine.startCatStage);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("seal-stage").addEventListener("click", CheatEngine.startSealStage);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("clone-stage").addEventListener("click", CheatEngine.startCloneStage);
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-  const bonusStageSelectorButtons = document.getElementById('bonus-stage-selector-buttons');
-  if (bonusStageSelectorButtons && typeof DEBUG !== 'undefined' && DEBUG) {
-    bonusStageSelectorButtons.style.display = 'flex';
-  }
-});
 
