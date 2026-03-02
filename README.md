@@ -51,6 +51,7 @@ class MultiplierManager
 class MultiplierTarget
 class EvolutionManager
 class EvolutionItem
+class TargetArrow
 class CaveDetectorManager
 class CaveDetector
 class PikachuSaverManager
@@ -63,6 +64,8 @@ class EvolutionChooserScreen
 class TravelButton
 class Charger
 class Bumper
+class Sensor
+class SpeedPad
 class RedFieldArrows
 class RedFieldRubberBand
 class RedFieldMultiplierTarget
@@ -77,6 +80,14 @@ class TravelDiglett
 Stage --|> Sketch
 Field --|> Stage
 RedField --|> Field
+RedField *-- RedFieldDitto
+RedField *-- RedFieldStaryu
+RedField *-- TravelDiglett
+RedField *-- RedFieldVoltorb
+RedField *-- TargetArrow
+RedField *-- EvolutionItem
+RedField *-- Sensor
+RedField *-- SpeedPad
 TravelDiglett --|> TravelButton
 RedFieldArrows --|> Arrows
 RedFieldRubberBand --|> RubberBand
@@ -143,6 +154,7 @@ class MultiplierManager
 class MultiplierTarget
 class EvolutionManager
 class EvolutionItem
+class TargetArrow
 class CaveDetectorManager
 class CaveDetector
 class PikachuSaverManager
@@ -155,6 +167,8 @@ class EvolutionChooserScreen
 class TravelButton
 class Charger
 class Bumper
+class Sensor
+class SpeedPad
 class BlueFieldArrows
 class BlueFieldRubberBand
 class BlueFieldMultiplierTarget
@@ -170,6 +184,16 @@ class BlueFieldTravelPsyduck
 Stage --|> Sketch
 Field --|> Stage
 BlueField --|> Field
+BlueField *-- BlueFieldSlowbro
+BlueField *-- BlueArrow
+BlueField *-- BlueFieldTravelPoliwag
+BlueField *-- BlueFieldTravelPsyduck
+BlueField *-- BlueFieldShellder
+BlueField *-- BlueFieldCloyster
+BlueField *-- TargetArrow
+BlueField *-- EvolutionItem
+BlueField *-- Sensor
+BlueField *-- SpeedPad
 BlueFieldArrows --|> Arrows
 BlueFieldRubberBand --|> RubberBand
 BlueFieldMultiplierTarget --|> MultiplierTarget
