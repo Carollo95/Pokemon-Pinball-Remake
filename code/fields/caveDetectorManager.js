@@ -24,10 +24,10 @@ class CaveDetectorManager {
     update(ballSprite) {
         if (this._blinking) {
             let blinkActive = frameCount % CAVE_DETECTOR_BLINK_RATE > CAVE_DETECTOR_BLINK_HALF_RATE;
-            this.detectorC.setActive(blinkActive);
-            this.detectorA.setActive(blinkActive);
-            this.detectorV.setActive(blinkActive);
-            this.detectorE.setActive(blinkActive);
+            this.detectorC.setActive(blinkActive, false);
+            this.detectorA.setActive(blinkActive, false);
+            this.detectorV.setActive(blinkActive, false);
+            this.detectorE.setActive(blinkActive, false);
 
             if (this.blinkCooldown.hasElapsed()) {
                 this._blinking = false;
