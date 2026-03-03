@@ -14,7 +14,7 @@ class CaveDetectorManager {
         this.detectorE = new CaveDetector(293, 419, 4);
         this.detectorV.setCompanionDetector(this.detectorE);
         this.detectorE.setCompanionDetector(this.detectorV);
-        
+
         this.onOpenCaveCallback = onOpenCaveCallback;
         this._blinking = false;
         this.blinkCooldown = new EventTimer(CAVE_DETECTOR_BLINK_DURATION);
@@ -24,12 +24,12 @@ class CaveDetectorManager {
     update(ballSprite) {
         if (this._blinking) {
             let blinkActive = frameCount % CAVE_DETECTOR_BLINK_RATE > CAVE_DETECTOR_BLINK_HALF_RATE;
-            this.detectorC.setActive(blinkActive);
-            this.detectorA.setActive(blinkActive);
-            this.detectorV.setActive(blinkActive);
-            this.detectorE.setActive(blinkActive);
+            this.detectorC.setActive(blinkActive, false);
+            this.detectorA.setActive(blinkActive, false);
+            this.detectorV.setActive(blinkActive, false);
+            this.detectorE.setActive(blinkActive, false);
 
-            if(this.blinkCooldown.hasElapsed()) {
+            if (this.blinkCooldown.hasElapsed()) {
                 this._blinking = false;
                 this.onOpenCaveCallback();
                 this.reset();
@@ -51,18 +51,18 @@ class CaveDetectorManager {
 
     shiftLeft() {
         let pivot = this.detectorC.active;
-        this.detectorC.setActive(this.detectorA.active);
-        this.detectorA.setActive(this.detectorV.active);
-        this.detectorV.setActive(this.detectorE.active);
-        this.detectorE.setActive(pivot);
+        this.detectorC.setActive(this.detectorA.active, false);
+        this.detectorA.setActive(this.detectorV.active, false);
+        this.detectorV.setActive(this.detectorE.active, false);
+        this.detectorE.setActive(pivot, false);
     }
 
     shiftRight() {
         let pivot = this.detectorE.active;
-        this.detectorE.setActive(this.detectorV.active);
-        this.detectorV.setActive(this.detectorA.active);
-        this.detectorA.setActive(this.detectorC.active);
-        this.detectorC.setActive(pivot);
+        this.detectorE.setActive(this.detectorV.active, false);
+        this.detectorV.setActive(this.detectorA.active, false);
+        this.detectorA.setActive(this.detectorC.active, false);
+        this.detectorC.setActive(pivot, false);
     }
 
     reset() {

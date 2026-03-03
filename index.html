@@ -52,7 +52,32 @@
 
         </div>
 
-        <main id="canvas-container" role="main" aria-live="polite"></main>
+        <div id="game-layout">
+            <aside id="desktop-high-scores" aria-label="">
+                <h3 id="desktop-high-scores-title"></h3>
+                <div class="score-table">
+                    <h4 id="desktop-high-scores-red-title"></h4>
+                    <table id="desktop-high-scores-red-table" class="desktop-score-table" aria-label="">
+                        <tbody id="desktop-high-scores-red"></tbody>
+                    </table>
+                </div>
+                <div class="score-table">
+                    <h4 id="desktop-high-scores-blue-title"></h4>
+                    <table id="desktop-high-scores-blue-table" class="desktop-score-table" aria-label="">
+                        <tbody id="desktop-high-scores-blue"></tbody>
+                    </table>
+                </div>
+            </aside>
+
+            <main id="canvas-container" role="main" aria-live="polite"></main>
+
+            <aside id="desktop-pokedex-stats" aria-label="">
+                <h3 id="desktop-pokedex-title"></h3>
+                <p id="desktop-caught-seen-count"></p>
+                <h4 id="desktop-last-captured-title"></h4>
+                <ul id="desktop-last-captured-list"></ul>
+            </aside>
+        </div>
 
         <div id="flipper-buttons" aria-label="Flipper controls">
             <button class="flipper-button" id="leftButton" type="button" aria-label="Left Flipper">L</button>
@@ -64,8 +89,8 @@
         </div>
     </header>
 
-    <aside id="keyboard-instructions" aria-label="Instrucciones">
-        <p>Press 'a' for the left flipper and 'l' for the right one, and the spacebar to confirm and backspace to cancel</p>
+    <aside id="keyboard-instructions" aria-label="Instructions">
+        <p id="keyboard-instructions-text"></p>
     </aside>
 
     <noscript>
@@ -74,6 +99,7 @@
     </noscript>
 
     <!-- App scripts -->
+    <script defer src="code/mainPageContent.js"></script>
     <script defer src="code/engine/engine.js"></script>
     <script defer src="code/engine/cheatEngine.js"></script>
     <script defer src="code/engine/i18nManager.js"></script>
@@ -197,6 +223,9 @@
     <script defer src="code/pokedex/pokedexLetterSprite.js"></script>
     <script defer src="code/pokedex/pokedexText.js"></script>
     <script defer src="code/pokedex/pokemonCounter.js"></script>
+
+
+    <script defer src="code/mainPageContent.js"></script>
 
     <!-- main sketch last so all libs and modules are available -->
     <script defer src="code/main.js"></script>
