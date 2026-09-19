@@ -48,6 +48,6 @@ const I18NManager = {
     },
 
     translate(key) {
-        return this.currentTranslations[key] || key;
+        return key in this.currentTranslations ? this.currentTranslations[key] : key;
     }
 };
