@@ -2,13 +2,29 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    min-height: 100%;
+}
 
 body {
-    height: 100%;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: #426b5a;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #243b53 0%,
+            #101c28 100%
+        );
+
+    background-attachment: fixed;
+
+    color: #e8eef3;
+
     font-family: "Inter", "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,7 +34,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 #game-layout {
@@ -33,7 +49,17 @@ body {
     display: none;
     width: 220px;
     height: 572px;
-    padding: 10px;
+    padding: 14px;
+
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(8px);
 }
 
 #desktop-high-scores h3,
@@ -83,39 +109,88 @@ body {
 #flipper-buttons {
     margin-top: 5px;
     display: none;
-    gap: 2px;
+    gap: 6px;
+    justify-content: center;
+}
+
+#bonus-stage-selector-buttons {
+    margin-top: 5px;
+    display: none;
+    gap: 6px;
     justify-content: center;
 }
 
 #action-buttons {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 6px;
     width: 121px;
     height: 121px;
 }
 
 #action-buttons .flipper-button {
     width: 100%;
-    height: calc((100% - 2px) / 2);
+    height: calc((100% - 6px) / 2);
     padding: 0;
-}
-
-#bonus-stage-selector-buttons {
-    margin-top: 5px;
-    display: none;
-    gap: 5px;
-    justify-content: center;
 }
 
 .flipper-button {
     width: 210px;
     height: 84px;
+
     font-size: 34px;
+    font-weight: 600;
+
     padding: 14px 28px;
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+
+    color: #edf4f8;
+
+    background:
+        linear-gradient(
+            145deg,
+            #35556d,
+            #263f54
+        );
+
+    box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.12s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
-#keyboard-instructions{
+.flipper-button:hover {
+    background:
+        linear-gradient(
+            145deg,
+            #41677f,
+            #2d4c63
+        );
+
+    box-shadow:
+        0 8px 18px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+    transform: translateY(-1px);
+}
+
+.flipper-button:active {
+    transform: translateY(2px);
+
+    box-shadow:
+        0 3px 7px rgba(0, 0, 0, 0.25),
+        inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+#keyboard-instructions {
     margin-top: 10px;
     display: none;
     gap: 10px;
@@ -124,40 +199,134 @@ body {
 
 #controls button {
     padding: 0;
+
     width: 72px;
     height: 48px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid currentColor;
-    background: transparent;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+
+    background: #263f54;
+    color: #edf4f8;
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.12s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+#controls button:hover {
+    background: #35556d;
+
+    box-shadow:
+        0 7px 15px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.09);
+
+    transform: translateY(-1px);
+}
+
+#controls button:active {
+    transform: translateY(2px);
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.25),
+        inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 #controls #leftButton,
 #controls #rightButton {
     width: 121px;
     height: 121px;
-    font-size: 34px;
+
     padding: 0;
-}
+    font-size: 34px;
 
-#controls #leftButton,
-#controls #rightButton {
     border-radius: 50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #397b78,
+            #285d5b
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+
+    color: #ffffff;
+
+    box-shadow:
+        0 8px 18px rgba(0, 0, 0, 0.25),
+        inset 0 2px 0 rgba(255, 255, 255, 0.1);
+
+    transition:
+        transform 0.12s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
-#controls #leftButton,
-#controls #rightButton {
-    background-color: #c73a3a;
-    border-color: #c73a3a;
-    color: #ffffff;
+#controls #leftButton:hover,
+#controls #rightButton:hover {
+    background:
+        linear-gradient(
+            145deg,
+            #438e8a,
+            #32716e
+        );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 11px 22px rgba(0, 0, 0, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.12);
+}
+
+#controls #leftButton:active,
+#controls #rightButton:active {
+    transform: translateY(2px);
+
+    box-shadow:
+        0 4px 9px rgba(0, 0, 0, 0.25),
+        inset 0 3px 6px rgba(0, 0, 0, 0.18);
 }
 
 #controls #acceptButton,
 #controls #cancelButton {
-    background-color: #2f66d0;
-    border-color: #2f66d0;
+    background:
+        linear-gradient(
+            145deg,
+            #466783,
+            #304c64
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
     color: #ffffff;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+#controls #acceptButton:hover,
+#controls #cancelButton:hover {
+    background:
+        linear-gradient(
+            145deg,
+            #527794,
+            #3a5c76
+        );
 }
 
 #controls button img {
@@ -167,15 +336,15 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  #flipper-buttons{
-    display: flex;
-  }
+    #flipper-buttons {
+        display: flex;
+    }
 }
 
 @media screen and (min-width: 768px) {
-  #keyboard-instructions{
-    display: block;
-  }
+    #keyboard-instructions {
+        display: block;
+    }
 
     #desktop-high-scores,
     #desktop-pokedex-stats {
