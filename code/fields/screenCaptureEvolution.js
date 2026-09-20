@@ -186,6 +186,7 @@ class ScreenCaptureEvolution {
                 EngineUtils.disableSprite(this.animatedPokemon);
                 this.animatedPokemon.visible = false;
                 this.captureStartCaptureAnimationCallback();
+                this.animatedPokemon.ani.onComplete = () =>{};
             };
 
             this.startCapturedAnimation(ball);
