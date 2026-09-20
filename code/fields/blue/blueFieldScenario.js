@@ -157,9 +157,9 @@ const BLUE_FIELD_BALL_UPGRADE_SEPARATOR_LEFT = [
     [130, 50],
     [135, 47],
     [141, 50],
-    [141, 75],
-    [135, 78],
-    [130, 75]
+    [141, 70],
+    [135, 73],
+    [130, 70]
 ];
 
 
@@ -168,9 +168,9 @@ const BLUE_FIELD_BALL_UPGRADE_SEPARATOR_RIGHT = [
     [180, 50],
     [185, 47],
     [191, 50],
-    [191, 75],
-    [185, 78],
-    [180, 75]
+    [191, 70],
+    [185, 73],
+    [180, 70]
 ];
 
 
@@ -187,4 +187,3 @@ const BLUE_FIELD_GEOMETRY = [
     BLUE_FIELD_BALL_UPGRADE_SEPARATOR_LEFT,
     BLUE_FIELD_BALL_UPGRADE_SEPARATOR_RIGHT
 ];
-
