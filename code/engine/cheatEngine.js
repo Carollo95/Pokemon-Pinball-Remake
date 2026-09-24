@@ -1,5 +1,12 @@
 let SHOW_FPS = false; // true to show FPS
-let DEBUG = false; //true to start the game on debug mode
+let DEBUG = new URLSearchParams(window.location.search)
+  .get('debug')
+  ?.toLowerCase() === 'true';
+let RESOLUTION = window.location.pathname
+    .split('/')
+    .some(part => part.toLowerCase() === 'hd')
+    ? "HD"
+    : "SD";
 
 const CheatEngine = {
 
