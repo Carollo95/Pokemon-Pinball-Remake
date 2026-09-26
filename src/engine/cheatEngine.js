@@ -8,12 +8,6 @@ export let SHOW_FPS = false; // true to show FPS
 export const DEBUG = new URLSearchParams(window.location.search)
   .get('debug')
   ?.toLowerCase() === 'true';
-export const RESOLUTION = window.location.pathname
-    .split('/')
-    .some(part => part.toLowerCase() === 'hd')
-    ? "HD"
-    : "SD";
-
 export const CheatEngine = {
 
     showFPS() {

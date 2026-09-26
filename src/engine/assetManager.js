@@ -3,6 +3,9 @@ import {BASIC_POKEMON} from "../core/dex.js";
 
 const DEFAULT_ANIMATION_DELAY = 12; //Default delay between frames of animation
 
+const IMG_ROOT = window.location.pathname.split('/').some(part => part.toLowerCase() === 'hd')
+  ? 'assets/img/HD/' : 'assets/img/SD/';
+
 /*
   AssetManager for images / spritesheets / animations / backgrounds.
   - load images in preload
@@ -22,7 +25,7 @@ class AssetManager {
   // Load and cache a PNG image (path without extension)
   getImage(path) {
     if (this.imageCache.has(path)) return this.imageCache.get(path);
-    const img = loadImage(path + '.png', (loadedImg) => {
+    const img = loadImage(path.replace('assets/img/', IMG_ROOT) + '.png', (loadedImg) => {
       if (DEBUG) {
         img.filter(GRAY);
       }
