@@ -13,7 +13,6 @@ export const BLUE_ARROW_DIRECTION = {
 
 const UPDATE_EVENT_TIMER = 1000;
 const BLUE_ARROW_PUSH_FORCE = 120;
-const BLUE_ARROW_HORIZONTAL_DAMPING_FORCE = 20;
 
 export class BlueArrow {
 

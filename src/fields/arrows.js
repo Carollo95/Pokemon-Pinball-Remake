@@ -104,20 +104,20 @@ export class Arrows {
     blinkRightInnerArrow(visible) {
         if (visible) {
             frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
-                this.rightInnerArrow.ani.frame = 0 + this.rightInnerArrowExtraFrames :
-                this.rightInnerArrow.ani.frame = (this.captureArrowsLevel >= 2 ? 1 + this.rightInnerArrowExtraFrames : 0 + this.rightInnerArrowExtraFrames);
+                this.rightInnerArrow.ani.frame = this.rightInnerArrowExtraFrames :
+                this.rightInnerArrow.ani.frame = (this.captureArrowsLevel >= 2 ? 1 + this.rightInnerArrowExtraFrames : this.rightInnerArrowExtraFrames);
         } else {
-            this.rightInnerArrow.ani.frame = 0 + this.rightInnerArrowExtraFrames;
+            this.rightInnerArrow.ani.frame = this.rightInnerArrowExtraFrames;
         }
     }
 
     blinkCaveArrow(visible) {
         if (visible) {
             frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
-                this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames :
-                this.caveArrow.ani.frame = this.caveActive ? 1 + this.caveArrowExtraFrames : 0 + this.caveArrowExtraFrames;
+                this.caveArrow.ani.frame = this.caveArrowExtraFrames :
+                this.caveArrow.ani.frame = this.caveActive ? 1 + this.caveArrowExtraFrames : this.caveArrowExtraFrames;
         } else {
-            this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames;
+            this.caveArrow.ani.frame = this.caveArrowExtraFrames;
         }
     }
 
@@ -202,10 +202,10 @@ export class Arrows {
     blinkCaveArrows(visible) {
         if (visible) {
             frameCount % FIELD_ARROWS_BLINK_RATE > FIELD_ARROWS_BLINK_HALF_RATE ?
-                this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames :
+                this.caveArrow.ani.frame = this.caveArrowExtraFrames :
                 this.caveArrow.ani.frame = 1 + this.caveArrowExtraFrames;
         } else {
-            this.caveArrow.ani.frame = 0 + this.caveArrowExtraFrames;
+            this.caveArrow.ani.frame = this.caveArrowExtraFrames;
         }
     }
 

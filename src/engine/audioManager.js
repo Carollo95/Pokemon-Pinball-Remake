@@ -29,8 +29,7 @@ class AudioManager {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const arrayBuffer = await response.arrayBuffer();
-            const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-            return audioBuffer;
+            return await this.audioContext.decodeAudioData(arrayBuffer);
         } catch (error) {
             console.error(`Failed to load audio: ${path}`, error);
             return null;

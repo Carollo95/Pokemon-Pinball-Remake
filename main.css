@@ -12,14 +12,11 @@ body {
     margin: 0;
     padding: 0;
 
-    background:
-        linear-gradient(
+    background: linear-gradient(
             to bottom,
             #243b53 0%,
             #101c28 100%
-        );
-
-    background-attachment: fixed;
+    ) fixed;
 
     color: #e8eef3;
 

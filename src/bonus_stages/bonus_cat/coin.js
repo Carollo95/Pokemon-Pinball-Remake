@@ -80,8 +80,8 @@ export class Coin {
      * fall there 
      */
     createAuxiliarySpriteIfNeeded() {
-        if (this.sprite.pos.y == COIN_LOW_LANE) {
-            if (this.sprite.pos.x == COIN_LOW_SLOT_1) {
+        if (this.sprite.pos.y === COIN_LOW_LANE) {
+            if (this.sprite.pos.x === COIN_LOW_SLOT_1) {
                 this.auxiliarySprite = new Sprite([
                     [40, 268],
                     [82, 268],
@@ -90,7 +90,7 @@ export class Coin {
                 this.auxiliarySprite.visible = false;
                 this.auxiliarySprite.debug = DEBUG;
                 this.auxiliarySprite.layer = SPRITE_LAYER;
-            } else if (this.sprite.pos.x == COIN_LOW_SLOT_6) {
+            } else if (this.sprite.pos.x === COIN_LOW_SLOT_6) {
                 this.auxiliarySprite = new Sprite([
                     [290, 268],
                     [340, 268],
@@ -129,11 +129,11 @@ export class Coin {
     }
 
     isCoinHit(ballSprite) {
-        return this.sprite.animation.name == "idle" && (this.sprite.collide(ballSprite) || (this.auxiliarySprite != null && this.auxiliarySprite.collide(ballSprite)))
+        return this.sprite.animation.name === "idle" && (this.sprite.collide(ballSprite) || (this.auxiliarySprite != null && this.auxiliarySprite.collide(ballSprite)))
     }
 
     timeToDisappear() {
-        return this.sprite.animation.name == "dissapear" && millis() - this.timeOfLastHit > (this.dissapearAnimationMillis)
+        return this.sprite.animation.name === "dissapear" && millis() - this.timeOfLastHit > (this.dissapearAnimationMillis)
     }
 
     onCoinHit(lastElementHit) {

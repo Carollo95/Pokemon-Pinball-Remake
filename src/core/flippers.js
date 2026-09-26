@@ -164,10 +164,10 @@ export class Flippers {
     }
 
     playLeftFLipperSFX() {
-        if (this.leftFlipper.rotation == LEFT_FLIPPER_MIN_ROTATION) {
+        if (this.leftFlipper.rotation === LEFT_FLIPPER_MIN_ROTATION) {
             this.hasLeftFlipperBeenLowered = true;
 
-        } else if (this.hasLeftFlipperBeenLowered == true && this.leftFlipper.rotation > 0) {
+        } else if (this.hasLeftFlipperBeenLowered === true && this.leftFlipper.rotation > 0) {
             this.hasLeftFlipperBeenLowered = false;
             Audio.playSFX('sfx0C');
         }

@@ -20,7 +20,7 @@ const SCREEN_CAPTURE_STATE = {
 export class ScreenCaptureEvolution {
     constructor(captureStartCaptureAnimationCallback, captureStartAnimatedSpritePhaseCallback, captureCompleteAnimationStartedCallback, capturePhaseFinishedCallback, onPokemonAnimatedHitCallback) {
 
-        this.captureStartCaptureAnimationCallback = captureStartCaptureAnimationCallback;;
+        this.captureStartCaptureAnimationCallback = captureStartCaptureAnimationCallback;
         this.captureStartAnimatedSpritePhaseCallback = captureStartAnimatedSpritePhaseCallback;
         this.captureCompleteAnimationStartedCallback = captureCompleteAnimationStartedCallback;
         this.capturePhaseFinishedCallback = capturePhaseFinishedCallback;

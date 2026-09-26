@@ -255,8 +255,7 @@ export class HighScore extends Sketch {
             }
             if (this.separatorMatrix) {
                 for (let j = 0; j < SEPARATOR_POSITIONS_FROM_RIGHT.length; j++) {
-                    const showSeparator = points.length >= SEPARATOR_POSITIONS_FROM_RIGHT[j];
-                    this.separatorMatrix[i][j].visible = showSeparator;
+                    this.separatorMatrix[i][j].visible = points.length >= SEPARATOR_POSITIONS_FROM_RIGHT[j];
                 }
             }
         }
