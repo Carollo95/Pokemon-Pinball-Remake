@@ -19,10 +19,6 @@
         })();
     </script>
 
-    <!-- p5 and p5 sound (defer to avoid blocking) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.4/lib/p5.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/planck-js/1.4.2/planck.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/p5play/3.32.2/p5play.min.js"></script>
 </head>
 
 <body>
@@ -98,137 +94,7 @@
         </div>
     </noscript>
 
-    <!-- App scripts -->
-    <script defer src="code/mainPageContent.js"></script>
-    <script defer src="code/engine/engine.js"></script>
-    <script defer src="code/engine/cheatEngine.js"></script>
-    <script defer src="code/engine/i18nManager.js"></script>
-    <script defer src="code/engine/audioManager.js"></script>
-    <script defer src="code/engine/assetManager.js"></script>
-
-    <!-- core game pieces -->
-    <script defer src="code/core/sketch.js"></script>
-    <script defer src="code/core/controls.js"></script>
-    <script defer src="code/core/eventTimer.js"></script>
-    <script defer src="code/core/stageCharacter.js"></script>
-    <script defer src="code/core/stageText.js"></script>
-    <script defer src="code/core/stage.js"></script>
-    <script defer src="code/core/stageStatus.js"></script>
-    <script defer src="code/core/ball.js"></script>
-    <script defer src="code/core/flippers.js"></script>
-    <script defer src="code/core/timer.js"></script>
-    <script defer src="code/core/points.js"></script>
-    <script defer src="code/core/sensor.js"></script>
-    <script defer src="code/core/well.js"></script>
-    <script defer src="code/core/dex.js"></script>
-
-    <!-- bonus stages -->
-    <script defer src="code/bonus_stages/bonusStage.js"></script>
-    <!-- ghost-->
-    <script defer src="code/bonus_stages/bonus_ghost/ghosts/ghost.js"></script>
-    <script defer src="code/bonus_stages/bonus_ghost/ghosts/smallGhost.js"></script>
-    <script defer src="code/bonus_stages/bonus_ghost/ghosts/gastly.js"></script>
-    <script defer src="code/bonus_stages/bonus_ghost/ghosts/haunter.js"></script>
-    <script defer src="code/bonus_stages/bonus_ghost/ghosts/gengar.js"></script>
-    <script defer src="code/bonus_stages/bonus_ghost/bonusStageGhost.js"></script>
-    <!-- mole-->
-    <script defer src="code/bonus_stages/bonus_mole/diglett.js"></script>
-    <script defer src="code/bonus_stages/bonus_mole/dugtrio.js"></script>
-    <script defer src="code/bonus_stages/bonus_mole/bonusStageMole.js"></script>
-    <!--cat-->
-    <script defer src="code/bonus_stages/bonus_cat/meowth.js"></script>
-    <script defer src="code/bonus_stages/bonus_cat/coinCounter.js"></script>
-    <script defer src="code/bonus_stages/bonus_cat/coin.js"></script>
-    <script defer src="code/bonus_stages/bonus_cat/flyingCoin.js"></script>
-    <script defer src="code/bonus_stages/bonus_cat/bonusStageCat.js"></script>
-    <!--seal-->
-    <script defer src="code/bonus_stages/bonus_seal/seal.js"></script>
-    <script defer src="code/bonus_stages/bonus_seal/pearlCounter.js"></script>
-    <script defer src="code/bonus_stages/bonus_seal/bonusStageSeal.js"></script>
-    <!--clone-->
-    <script defer src="code/bonus_stages/bonus_clone/mewtwo.js"></script>
-    <script defer src="code/bonus_stages/bonus_clone/shield.js"></script>
-    <script defer src="code/bonus_stages/bonus_clone/bonusStageClone.js"></script>
-
-    <!-- Field -->
-    <script defer src="code/fields/field.js"></script>
-    <script defer src="code/fields/charger.js"></script>
-    <script defer src="code/fields/saverAgain.js"></script>
-    <script defer src="code/fields/caveDetector.js"></script>
-    <script defer src="code/fields/caveDetectorManager.js"></script>
-    <script defer src="code/fields/pikachuSaver.js"></script>
-    <script defer src="code/fields/pikachuSaverManager.js"></script>
-    <script defer src="code/fields/evolutionItem.js"></script>
-    <script defer src="code/fields/evolutionManager.js"></script>
-    <script defer src="code/fields/arrows.js"></script>
-    <script defer src="code/fields/bumper.js"></script>
-    <script defer src="code/fields/ballUpgraderManager.js"></script>
-    <script defer src="code/fields/travelButton.js"></script>
-    <script defer src="code/fields/ballUpgraderElement.js"></script>
-    <script defer src="code/fields/stageWell.js"></script>
-    <script defer src="code/fields/multiplierTarget.js"></script>
-    <script defer src="code/fields/multiplierManager.js"></script>
-    <script defer src="code/fields/speedPad.js"></script>
-    <script defer src="code/fields/targetArrow.js"></script>
-    <script defer src="code/fields/screen.js"></script>
-    <script defer src="code/fields/screenImage.js"></script>
-    <script defer src="code/fields/screenLandscapes.js"></script>
-    <script defer src="code/fields/screenSlot.js"></script>
-    <script defer src="code/fields/screenCaptureEvolution.js"></script>
-    <script defer src="code/fields/ballBonusScreen.js"></script>
-    <script defer src="code/fields/evolutionChooserScreen.js"></script>
-    <script defer src="code/fields/rubberBand.js"></script>
-    <script defer src="code/fields/captureWell.js"></script>
-
-    <!-- Red Stage-->
-    <script defer src="code/fields/red/redFieldTravelDiglett.js"></script>
-    <script defer src="code/fields/red/redFieldArrows.js"></script>
-    <script defer src="code/fields/red/redFieldDitto.js"></script>
-    <script defer src="code/fields/red/redFieldRubberBand.js"></script>
-    <script defer src="code/fields/red/redFieldMultiplierTarget.js"></script>
-    <script defer src="code/fields/red/redFieldStaryu.js"></script>
-    <script defer src="code/fields/red/redFieldVoltorb.js"></script>
-    <script defer src="code/fields/red/redFieldBellsprout.js"></script>
-    <script defer src="code/fields/red/redFieldScenario.js"></script>
-    <script defer src="code/fields/red/redFieldCharger.js"></script>
-    <script defer src="code/fields/red/redFieldScreenLandscapes.js"></script>
-    <script defer src="code/fields/red/redField.js"></script>
-
-    <!-- Blue Stage-->
-    <script defer src="code/fields/blue/blueField.js"></script>
-    <script defer src="code/fields/blue/blueFieldRubberBand.js"></script>
-    <script defer src="code/fields/blue/blueFieldTravelPoliwag.js"></script>
-    <script defer src="code/fields/blue/blueFieldTravelPsyduck.js"></script>
-    <script defer src="code/fields/blue/blueFieldArrows.js"></script>
-    <script defer src="code/fields/blue/blueFieldMultiplierTarget.js"></script>
-    <script defer src="code/fields/blue/blueFieldScenario.js"></script>
-    <script defer src="code/fields/blue/blueFieldCloyster.js"></script>
-    <script defer src="code/fields/blue/blueFieldSlowbro.js"></script>
-    <script defer src="code/fields/blue/blueArrow.js"></script>
-    <script defer src="code/fields/blue/blueFieldScreenLandscapes.js"></script>
-    <script defer src="code/fields/blue/blueFieldCharger.js"></script>
-    <script defer src="code/fields/blue/blueFieldShellder.js"></script>
-
-    <!-- High Score-->
-    <script defer src="code/high_scores/highScore.js"></script>
-
-    <!-- Main Menu-->
-    <script defer src="code/main_menu/mainMenu.js"></script>
-    <script defer src="code/main_menu/fieldSelector.js"></script>
-
-    <!-- Pokedex -->
-    <script defer src="code/pokedex/pokedex.js"></script>
-    <script defer src="code/pokedex/pokedexNumberSprite.js"></script>
-    <script defer src="code/pokedex/pokedexPokemon.js"></script>
-    <script defer src="code/pokedex/pokedexLetterSprite.js"></script>
-    <script defer src="code/pokedex/pokedexText.js"></script>
-    <script defer src="code/pokedex/pokemonCounter.js"></script>
-
-
-    <script defer src="code/mainPageContent.js"></script>
-
-    <!-- main sketch last so all libs and modules are available -->
-    <script defer src="code/main.js"></script>
+    <script type="module" src="src/main.js"></script>
 </body>
 
 </html>
