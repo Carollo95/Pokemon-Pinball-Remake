@@ -1,0 +1,39 @@
+{
+  "name": "pokemonpinballremake",
+  "version": "1.0.0",
+  "description": "A remake of an old classic",
+  "keywords": [
+    "pokemon",
+    "pinball",
+    "remake"
+  ],
+  "homepage": "https://github.com/Carollo95/CopyrightInfringementPinball#readme",
+  "bugs": {
+    "url": "https://github.com/Carollo95/CopyrightInfringementPinball/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Carollo95/CopyrightInfringementPinball.git"
+  },
+  "license": "ISC",
+  "author": "Carollo95",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "p5": "1.11.4",
+    "p5play": "3.32.2",
+    "planck": "1.4.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@types/p5": "^1.7.7",
+    "eslint": "^9.32.0",
+    "globals": "^16.3.0",
+    "vite": "^8.3.1"
+  }
+}
